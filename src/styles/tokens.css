@@ -1,0 +1,91 @@
+:root {
+  --bg-canvas: #FAF7F2;
+  --text-primary: #0A0A0A;
+  --text-secondary: #4A4A4A;
+  --text-muted: #6F6F6F;
+  --accent-amber: #D97706;
+  --accent-marigold: #F59E0B;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.16);
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --panel-transition-duration: 550ms;
+}
+
+/* Horizontal track container */
+.panel-track-container {
+  display: flex;
+  width: 100vw;
+  height: 100dvh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.panel-track-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Fullscreen panel */
+.panel-viewport {
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow-y: hidden;
+  position: relative;
+}
+
+/* 200% zoom safety fallback per spec §3.5 */
+@media (max-height: 480px), (max-width: 320px) {
+  .panel-content-scroll-fallback {
+    overflow-y: auto !important;
+  }
+}
+
+/* Horizontal reader multi-column layout per spec §6.9 & §6.15 */
+.reader-columns {
+  column-width: 44ch;
+  column-gap: 3.5rem;
+  column-fill: auto;
+  height: calc(100dvh - 12rem);
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.reader-columns::-webkit-scrollbar {
+  display: none;
+}
+
+/* Subtle poster ambient drift (scale 1 -> 1.05 over 30s) */
+@keyframes ambient-drift {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-ambient-drift {
+  animation: ambient-drift 30s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ambient-drift,
+  .animate-fade-rise,
+  .animate-fade-rise-delay,
+  .animate-fade-rise-delay-2 {
+    animation: none !important;
+    transition: none !important;
+  }
+}
