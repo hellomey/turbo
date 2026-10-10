@@ -1,0 +1,44 @@
+@keyframes fade-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-rise {
+  animation: fade-rise 0.8s ease-out forwards;
+}
+
+.animate-fade-rise-delay {
+  opacity: 0;
+  animation: fade-rise 0.8s ease-out 0.2s forwards;
+}
+
+.animate-fade-rise-delay-2 {
+  opacity: 0;
+  animation: fade-rise 0.8s ease-out 0.4s forwards;
+}
+
+/* Responsive editorial typography for Instrument Serif headline */
+.hero-headline {
+  letter-spacing: -1px;
+  line-height: 1.08;
+}
+
+@media (min-width: 640px) {
+  .hero-headline {
+    letter-spacing: -1.8px;
+    line-height: 1.0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-headline {
+    letter-spacing: -2.46px;
+    line-height: 0.95;
+  }
+}
