@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import { VideoBackground } from './VideoBackground';
@@ -20,30 +20,16 @@ export const Scene = ({
   const location = useLocation();
   const isHome = location.pathname === '/';
 
-  // Persist pause choice in localStorage per spec §3.4 and §4.5
-  const [isPaused, setIsPaused] = useState<boolean>(() => {
-    return localStorage.getItem('heymey_bg_paused') === 'true';
-  });
-
-  const togglePause = () => {
-    setIsPaused((prev) => {
-      const next = !prev;
-      localStorage.setItem('heymey_bg_paused', String(next));
-      return next;
-    });
-  };
-
-  // Sync title and meta per route if needed
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return (
     <div className="relative w-screen h-[100dvh] overflow-hidden bg-[#FAF7F2] flex flex-col justify-between selection:bg-neutral-900 selection:text-white">
-      {/* Background layer */}
-      <VideoBackground isPaused={isPaused} route={location.pathname} />
+      {/* Background video ONLY for home screen root route alone per user requirement */}
+      {isHome && <VideoBackground />}
 
-      {/* Top Navbar */}
+      {/* Top Navigation Bar */}
       <Navbar />
 
       {/* Main viewport content */}
@@ -51,14 +37,12 @@ export const Scene = ({
         {children}
       </main>
 
-      {/* Bottom EdgeBar on every page except Home per spec §2.4 */}
+      {/* Bottom EdgeBar on every page except Home */}
       {!isHome && (
         <EdgeBar
           panelCount={panelCount}
           currentPanel={currentPanel}
           onPanelChange={onPanelChange}
-          isPaused={isPaused}
-          onTogglePause={togglePause}
         />
       )}
     </div>

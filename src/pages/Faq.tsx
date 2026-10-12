@@ -30,18 +30,18 @@ export const Faq = () => {
             total={content.categories.length}
             badge={cat.badge}
             headline={cat.title}
-            body="Straightforward answers to the questions aspirants and educators ask most."
+            body="Direct, straightforward answers to the questions aspirants and educators ask most."
             visual={
-              <div className="w-full max-w-md p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-neutral-200/80 shadow-2xl flex flex-col space-y-3.5 text-left text-xs font-sans">
+              <div className="w-full max-w-xl p-6 rounded-2xl bg-white border border-neutral-200/90 shadow-sm flex flex-col space-y-4 text-left font-sans text-xs">
                 {cat.items.map((item, i) => (
                   <div
                     key={i}
-                    className="p-3.5 rounded-2xl bg-neutral-50/80 border border-neutral-200/60 flex flex-col"
+                    className="pb-3.5 border-b border-neutral-100 last:border-none last:pb-0"
                   >
-                    <span className="font-semibold text-neutral-950 mb-1">
+                    <span className="font-medium text-neutral-950 block mb-1 text-sm">
                       {item.q}
                     </span>
-                    <p className="text-neutral-600 leading-relaxed text-[11.5px]">
+                    <p className="text-neutral-600 leading-relaxed text-xs">
                       {item.a}
                     </p>
                   </div>

@@ -5,7 +5,6 @@ import { Panel } from '../components/Panel';
 import { CtaButton } from '../components/CtaButton';
 import { pricingContent } from '../content/pricing';
 import { PRICING_CONFIG } from '../config/pricing.config';
-import { Sudi } from '../components/Sudi';
 
 export const Pricing = () => {
   const content = pricingContent.en;
@@ -35,26 +34,25 @@ export const Pricing = () => {
           id={content.panels[0].id}
           index={0}
           total={content.panels.length}
-          badge={content.panels[0].badge}
-          headline={content.panels[0].headline}
+          badge="01 / 04 • FOUNDATION"
+          headline="Start freely. No card required."
           body={content.panels[0].body}
           visual={
-            <div className="w-full max-w-sm p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-neutral-200/80 shadow-2xl flex flex-col space-y-3 text-left">
-              <span className="text-xs font-sans font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full self-start">
-                Free Forever
+            <div className="w-full max-w-md p-6 rounded-2xl bg-white border border-neutral-200/90 shadow-sm text-left font-sans text-xs">
+              <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-400 block mb-3">
+                Included at No Cost
               </span>
-              <ul className="space-y-2 text-xs font-sans text-neutral-700">
+              <ul className="space-y-2.5 text-neutral-700">
                 {content.panels[0].features?.map((f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <span className="text-emerald-600 font-bold">✓</span>
+                  <li key={f} className="flex items-center gap-2.5">
+                    <span className="text-neutral-400 text-sm">—</span>
                     <span>{f}</span>
                   </li>
                 ))}
               </ul>
-              <CtaButton label="Start For Free" className="w-full mt-2" />
             </div>
           }
-          actions={<CtaButton label="Start For Free" />}
+          actions={<CtaButton label="Start For Free" href="/begin?plan=free" />}
         />
 
         {/* Panel 2: Cycle Pass */}
@@ -62,34 +60,31 @@ export const Pricing = () => {
           id={content.panels[1].id}
           index={1}
           total={content.panels.length}
-          badge={content.panels[1].badge}
-          headline={content.panels[1].headline}
+          badge="02 / 04 • CYCLE PASS"
+          headline="One honest price for your whole exam season."
           body={content.panels[1].body}
-          footnote={content.panels[1].badgeNote}
           visual={
-            <div className="w-full max-w-sm p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-neutral-200/80 shadow-2xl flex flex-col space-y-3.5 text-left">
-              <span className="text-xs font-sans font-bold uppercase tracking-wider text-amber-900 bg-amber-100 px-2.5 py-1 rounded-full self-start">
-                Cycle Pass
-              </span>
-              <div className="p-3.5 rounded-2xl bg-neutral-50/90 border border-neutral-200/80 flex items-baseline justify-between">
-                <span className="font-serif text-2xl font-bold text-neutral-900">
+            <div className="w-full max-w-md p-6 rounded-2xl bg-white border border-neutral-200/90 shadow-sm text-left font-sans text-xs">
+              <div className="flex items-baseline justify-between pb-4 mb-4 border-b border-neutral-100">
+                <span className="font-serif text-3xl font-normal text-neutral-950">
                   {priceDisplay}
                 </span>
-                <span className="text-[11px] font-sans text-neutral-500 font-medium">
+                <span className="text-[11px] text-neutral-500 font-medium">
                   {PRICING_CONFIG.cyclePassDuration}
                 </span>
               </div>
-              <ul className="space-y-2 text-xs font-sans text-neutral-700">
+              <ul className="space-y-2.5 text-neutral-700">
                 {content.panels[1].features?.map((f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <span className="text-amber-600 font-bold">✦</span>
+                  <li key={f} className="flex items-center gap-2.5">
+                    <span className="text-neutral-400 text-sm">—</span>
                     <span>{f}</span>
                   </li>
                 ))}
               </ul>
             </div>
           }
-          actions={<CtaButton label="Join Waitlist" />}
+          actions={<CtaButton label="Join Pass Waitlist" href="/begin?plan=pass" />}
+          footnote={content.panels[1].badgeNote}
         />
 
         {/* Panel 3: For Institutions */}
@@ -97,45 +92,43 @@ export const Pricing = () => {
           id={content.panels[2].id}
           index={2}
           total={content.panels.length}
-          badge={content.panels[2].badge}
-          headline={content.panels[2].headline}
+          badge="03 / 04 • INSTITUTIONS"
+          headline="Support your whole academy cohort."
           body={content.panels[2].body}
           visual={
-            <div className="w-full max-w-sm p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-neutral-200/80 shadow-2xl flex flex-col items-center text-center space-y-3">
-              <Sudi state="thinking" size={64} />
-              <h4 className="font-serif text-xl font-normal text-neutral-950">
-                Cohort Intelligence
-              </h4>
-              <p className="font-sans text-xs text-neutral-600">
-                Custom batch pricing and campus diagnostics.
-              </p>
+            <div className="w-full max-w-md p-6 rounded-2xl bg-white border border-neutral-200/90 shadow-sm text-left font-sans text-xs space-y-3">
+              <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/60">
+                <span className="font-medium text-neutral-950 block mb-0.5">Custom Batch Pricing</span>
+                <span className="text-neutral-600">Tiered licensing based on student volume and exam targets.</span>
+              </div>
+              <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-200/60">
+                <span className="font-medium text-neutral-950 block mb-0.5">Faculty Diagnostic Dashboard</span>
+                <span className="text-neutral-600">Cohort-level analytics with zero infringement on individual student privacy.</span>
+              </div>
             </div>
           }
           actions={
             <CtaButton
               label={content.panels[2].ctaText || 'For Institutions'}
               variant="secondary"
-              href={content.panels[2].ctaHref}
+              href={content.panels[2].ctaHref || '/institutions'}
             />
           }
         />
 
-        {/* Panel 4: Pricing Promises */}
+        {/* Panel 4: Promises */}
         <Panel
           id={content.panels[3].id}
           index={3}
           total={content.panels.length}
-          badge={content.panels[3].badge}
-          headline={content.panels[3].headline}
+          badge="04 / 04 • OUR COMMITMENT"
+          headline="Zero hidden traps. Clean principles."
           body={content.panels[3].body}
           visual={
-            <div className="w-full max-w-sm p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-neutral-200/80 shadow-2xl flex flex-col space-y-2.5 text-left text-xs font-sans">
-              <span className="font-bold uppercase tracking-wider text-amber-900 mb-1">
-                Zero Hidden Surprises
-              </span>
+            <div className="w-full max-w-md p-5 rounded-2xl bg-white border border-neutral-200/90 shadow-sm text-left font-sans text-xs space-y-2.5">
               {content.panels[3].points?.map((p) => (
-                <div key={p} className="p-2.5 rounded-xl bg-neutral-50 flex items-center gap-2 border border-neutral-200/60">
-                  <span className="text-emerald-600">✓</span>
+                <div key={p} className="flex items-center gap-3 py-1.5 border-b border-neutral-100 last:border-none">
+                  <span className="text-neutral-400">—</span>
                   <span className="text-neutral-800">{p}</span>
                 </div>
               ))}
@@ -145,7 +138,7 @@ export const Pricing = () => {
             <CtaButton
               label="Read Refund Policy"
               variant="secondary"
-              href={content.panels[3].refundLink}
+              href={content.panels[3].refundLink || '/legal/refunds'}
             />
           }
         />

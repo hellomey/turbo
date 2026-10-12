@@ -77,7 +77,7 @@ export const faqContent = {
           },
           {
             q: 'What happens if I miss a daily study streak?',
-            a: 'Your streak receives a built-in forgiveness shield every month. Sudi, our companion flame, never shames or penalizes you.',
+            a: 'Your streak receives a built-in forgiveness shield every month. HeyMey never shames or penalizes you for living a human life.',
           },
           {
             q: 'Can I export or delete my personal data?',

@@ -4,67 +4,110 @@ import { PanelTrack } from '../components/PanelTrack';
 import { Panel } from '../components/Panel';
 import { CtaButton } from '../components/CtaButton';
 import { AlsoExplore } from '../components/AlsoExplore';
-import {
-  ReadinessRing,
-  QuestionCard,
-  ChatTyping,
-  SudiCycler,
-  ExamTimeline,
-} from '../components/PanelVisuals';
-import { studioContent } from '../content/studio';
-import { Sudi } from '../components/Sudi';
 
 export const Studio = () => {
-  const content = studioContent.en;
   const [currentPanel, setCurrentPanel] = useState(0);
 
-  const panelIds = content.panels.map((p) => p.id);
+  const panels = [
+    {
+      id: 'intro',
+      badge: '01 / Product Tour',
+      headline: (
+        <>
+          Inside <span className="italic text-neutral-500 font-serif">HeyMey.</span>
+        </>
+      ),
+      headlineText: 'Inside HeyMey.',
+      body: 'Four quiet ideas, built for a phone and five spare minutes of focused daily preparation.',
+      highlights: [
+        'Readiness Score',
+        'Daily Five Minutes',
+        'Bilingual Explanations',
+        'Forgiving Habits',
+      ],
+    },
+    {
+      id: 'know',
+      badge: '02 / Transparency',
+      headline: (
+        <>
+          A readiness score you can <span className="italic text-neutral-500 font-serif">open up.</span>
+        </>
+      ),
+      headlineText: 'A readiness score you can open up.',
+      body: 'See where you stand today, how sure we are, and what moved it. Never an opaque black box.',
+      highlights: [
+        'Accuracy & retention depth',
+        'Consistency over time',
+        'Syllabus breadth covered',
+        'Directional progress velocity',
+      ],
+    },
+    {
+      id: 'practise',
+      badge: '03 / Daily Practice',
+      headline: (
+        <>
+          Five minutes a day, <span className="italic text-neutral-500 font-serif">aimed at you.</span>
+        </>
+      ),
+      headlineText: 'Five minutes a day, aimed at you.',
+      body: 'A daily challenge and a personalized revision list built from what you missed earlier, never random drill dumps.',
+    },
+    {
+      id: 'understand',
+      badge: '04 / Bilingual Doubts',
+      headline: (
+        <>
+          Ask in <span className="italic text-neutral-500 font-serif">Tamil or English.</span>
+        </>
+      ),
+      headlineText: 'Ask in Tamil or English.',
+      body: 'Stuck on a concept? Get a clear, textbook-verified explanation in seconds, in the language you naturally think in.',
+      footnote: 'AI explanations can make mistakes. Report errors and our academic team corrects them.',
+    },
+    {
+      id: 'return',
+      badge: '05 / Habit & Streak',
+      headline: (
+        <>
+          A habit that <span className="italic text-neutral-500 font-serif">forgives.</span>
+        </>
+      ),
+      headlineText: 'A habit that forgives.',
+      body: 'Miss a day and your streak receives a quiet shield, never an anxious scolding. Steady discipline beats artificial pressure.',
+    },
+    {
+      id: 'calendar',
+      badge: '06 / Exam Cycle',
+      headline: (
+        <>
+          It moves with <span className="italic text-neutral-500 font-serif">your exam.</span>
+        </>
+      ),
+      headlineText: 'It moves with your exam.',
+      body: 'Notification out: a sprint plan. Exam week: calm revision mode. Results: your next-attempt roadmap.',
+    },
+    {
+      id: 'begin',
+      badge: '07 / Getting Started',
+      headline: (
+        <>
+          Ready when <span className="italic text-neutral-500 font-serif">you are.</span>
+        </>
+      ),
+      headlineText: 'Ready when you are.',
+      body: 'Your first diagnostic test is completely free. Understand where you truly stand today.',
+      cta: true,
+      alsoExplore: [
+        { label: 'Exams', href: '/exams' },
+        { label: 'Result Day', href: '/result-day' },
+        { label: 'Pricing', href: '/pricing' },
+      ],
+    },
+  ];
 
-  const renderVisual = (type: string) => {
-    switch (type) {
-      case 'phone':
-        return (
-          <div className="w-full max-w-xs p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-neutral-200/80 shadow-2xl flex flex-col items-center text-center">
-            <div className="w-full py-2 px-3 rounded-full bg-neutral-100 flex items-center justify-between text-xs text-neutral-600 mb-6">
-              <span className="font-medium">Daily Diagnostic</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            </div>
-            <Sudi state="bright" size={72} />
-            <h4 className="font-serif text-2xl text-neutral-950 font-normal mt-4 mb-1">
-              5 Minutes a Day
-            </h4>
-            <p className="font-sans text-xs text-neutral-600">
-              Calibrated specifically for your exam syllabus.
-            </p>
-          </div>
-        );
-      case 'readinessRing':
-        return <ReadinessRing />;
-      case 'questionCard':
-        return <QuestionCard />;
-      case 'chatTyping':
-        return <ChatTyping />;
-      case 'sudiCycler':
-        return <SudiCycler />;
-      case 'examTimeline':
-        return <ExamTimeline />;
-      case 'beginCta':
-        return (
-          <div className="w-full max-w-sm p-8 rounded-3xl bg-white/85 backdrop-blur-md border border-neutral-200/80 shadow-2xl flex flex-col items-center text-center space-y-4">
-            <Sudi state="bright" size={72} />
-            <h4 className="font-serif text-2xl text-neutral-950 font-normal">
-              Zero Guesswork.
-            </h4>
-            <p className="font-sans text-xs text-neutral-600 leading-relaxed">
-              Start with your comprehensive diagnostic test completely free.
-            </p>
-            <CtaButton label="Begin Journey" />
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
+  const panelIds = panels.map((p) => p.id);
 
   return (
     <Scene
@@ -78,32 +121,42 @@ export const Studio = () => {
         onPanelChange={setCurrentPanel}
         ariaLabel="Product Tour Panels"
       >
-        {content.panels.map((panel, idx) => (
+        {panels.map((panel, idx) => (
           <Panel
             key={panel.id}
             id={panel.id}
             index={idx}
-            total={content.panels.length}
+            total={panels.length}
             badge={panel.badge}
             headline={panel.headline}
             body={panel.body}
             footnote={panel.footnote}
-            visual={renderVisual(panel.visualType)}
             actions={
-              panel.ctaText ? (
-                <div className="flex flex-wrap items-center gap-3">
-                  <CtaButton label={panel.ctaText} />
-                  {panel.secondaryCtaText && panel.secondaryCtaHref && (
-                    <CtaButton
-                      label={panel.secondaryCtaText}
-                      variant="secondary"
-                      href={panel.secondaryCtaHref}
-                    />
-                  )}
+              panel.cta ? (
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <CtaButton label="Begin Journey" />
+                  <CtaButton
+                    label="See what's free"
+                    variant="secondary"
+                    href="/pricing"
+                  />
                 </div>
               ) : undefined
             }
           >
+            {panel.highlights && (
+              <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 max-w-lg mt-2 mb-4">
+                {panel.highlights.map((h) => (
+                  <span
+                    key={h}
+                    className="px-4 py-2 rounded-full text-xs sm:text-sm font-sans bg-white border border-neutral-200/80 text-neutral-800 shadow-xs"
+                  >
+                    {h}
+                  </span>
+                ))}
+              </div>
+            )}
+
             {panel.alsoExplore && <AlsoExplore links={panel.alsoExplore} />}
           </Panel>
         ))}

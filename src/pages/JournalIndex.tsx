@@ -14,16 +14,16 @@ export const JournalIndex = () => {
 
   return (
     <Scene panelCount={1} currentPanel={0}>
-      <section className="max-w-6xl mx-auto w-full px-4 sm:px-8 py-16 flex flex-col items-center text-center justify-center h-full">
-        <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-amber-900 bg-amber-100 px-3 py-1 rounded-full mb-3 border border-amber-200">
+      <section className="max-w-5xl mx-auto w-full px-6 sm:px-10 py-16 flex flex-col items-center text-center justify-center h-full">
+        <span className="text-[11px] font-sans font-medium uppercase tracking-widest text-neutral-400 mb-3">
           The HeyMey Journal
         </span>
 
-        <h1 className="font-serif text-4xl sm:text-6xl text-neutral-950 font-normal tracking-tight mb-2">
-          Notes on preparation & truth.
+        <h1 className="font-serif text-4xl sm:text-6xl text-neutral-950 font-normal tracking-tight leading-[1.08] mb-3">
+          Notes on preparation <span className="italic text-neutral-500 font-serif">&amp; truth.</span>
         </h1>
 
-        <p className="font-sans text-sm sm:text-base text-neutral-600 max-w-xl mb-6">
+        <p className="font-sans text-base text-[#4A4A4A] max-w-xl mb-8 leading-relaxed">
           Rigorous analysis of Tamil Nadu examinations, learning psychology, and honest study craft.
         </p>
 
@@ -34,10 +34,10 @@ export const JournalIndex = () => {
               key={cat}
               type="button"
               onClick={() => setFilter(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-sans font-medium transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full text-xs font-sans font-medium transition-all cursor-pointer ${
                 filter === cat
-                  ? 'bg-neutral-950 text-white shadow-sm'
-                  : 'bg-white/80 hover:bg-white text-neutral-700 border border-neutral-200'
+                  ? 'bg-neutral-950 text-white'
+                  : 'bg-white hover:bg-neutral-100 text-neutral-700 border border-neutral-200'
               }`}
             >
               {cat}
@@ -45,23 +45,23 @@ export const JournalIndex = () => {
           ))}
         </div>
 
-        {/* Horizontal Article Cards Grid */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
+        {/* Article Cards Grid */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
           {filteredArticles.map((art: JournalArticle) => (
             <Link
               key={art.slug}
               to={`/journal/${art.slug}`}
-              className="p-6 rounded-3xl bg-white/85 hover:bg-white/95 backdrop-blur-md border border-neutral-200/80 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between text-left group hover:scale-[1.02]"
+              className="p-6 rounded-2xl bg-white border border-neutral-200/90 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between text-left group"
             >
               <div>
-                <div className="flex items-center justify-between text-xs font-sans text-neutral-500 mb-3">
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-100/80 text-amber-900 font-semibold text-[10px] uppercase tracking-wider">
+                <div className="flex items-center justify-between text-xs font-sans text-neutral-400 mb-3">
+                  <span className="text-[10px] uppercase tracking-wider font-medium">
                     {art.category}
                   </span>
                   <span>{art.readMinutes} min read</span>
                 </div>
 
-                <h3 className="font-serif text-2xl text-neutral-950 font-normal group-hover:text-amber-900 transition-colors mb-2 leading-tight">
+                <h3 className="font-serif text-2xl text-neutral-950 font-normal group-hover:text-neutral-600 transition-colors mb-2 leading-snug">
                   {art.title}
                 </h3>
 
@@ -70,9 +70,9 @@ export const JournalIndex = () => {
                 </p>
               </div>
 
-              <div className="mt-6 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs font-sans text-neutral-800 font-medium">
-                <span>Read Article</span>
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              <div className="mt-6 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs font-sans text-neutral-950 font-medium">
+                <span>Read article</span>
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
               </div>
             </Link>
           ))}

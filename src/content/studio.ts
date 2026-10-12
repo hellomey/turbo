@@ -57,7 +57,7 @@ export const studioContent = {
         id: 'return',
         badge: '05 / Habit & Streak',
         headline: 'A habit that forgives.',
-        body: 'Miss a day and your streak gets a shield, not a scolding. Sudi, our little flame, is on your side.',
+        body: 'Miss a day and your streak gets a quiet shield, not an anxious scolding. Steady discipline beats artificial pressure.',
         visualType: 'sudiCycler',
       },
       {

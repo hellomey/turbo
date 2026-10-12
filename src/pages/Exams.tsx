@@ -7,37 +7,37 @@ export const Exams = () => {
 
   return (
     <Scene panelCount={1} currentPanel={0}>
-      <section className="max-w-6xl mx-auto w-full px-4 sm:px-8 py-16 flex flex-col items-center text-center justify-center h-full">
-        <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-amber-900 bg-amber-100 px-3 py-1 rounded-full mb-3 border border-amber-200">
-          Target Coverage
+      <section className="max-w-5xl mx-auto w-full px-6 sm:px-10 py-16 flex flex-col items-center text-center justify-center h-full select-none">
+        <span className="text-[11px] font-sans font-medium uppercase tracking-widest text-neutral-400 mb-4">
+          Target Examinations
         </span>
 
-        <h1 className="font-serif text-4xl sm:text-6xl text-neutral-950 font-normal tracking-tight mb-2">
-          {content.headline}
+        <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl text-neutral-950 font-normal tracking-tight mb-4 leading-[1.08]">
+          Choose your <span className="italic text-neutral-500 font-serif">exam.</span>
         </h1>
 
-        <p className="font-sans text-sm sm:text-base text-neutral-600 max-w-xl mb-8">
+        <p className="font-sans text-base sm:text-lg text-[#4A4A4A] max-w-xl mb-10 leading-relaxed">
           {content.subhead}
         </p>
 
-        {/* Horizontal Cards Row */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mb-8">
+        {/* Minimalist Cards Grid */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mb-10">
           {content.cards.map((card) => (
             <Link
               key={card.id}
               to={card.href}
-              className="p-5 rounded-3xl bg-white/80 hover:bg-white/95 backdrop-blur-md border border-neutral-200/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between text-left group hover:scale-[1.02]"
+              className="p-5 sm:p-6 rounded-3xl bg-white hover:bg-neutral-50 border border-neutral-200/80 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between text-left group"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`text-[10px] font-sans font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${card.badgeColor}`}>
+                  <span className="text-[10px] font-sans font-semibold uppercase tracking-wider text-neutral-500 px-2.5 py-0.5 rounded-full bg-neutral-100">
                     {card.status}
                   </span>
-                  <span className="text-neutral-400 group-hover:text-neutral-900 transition-colors">
+                  <span className="text-neutral-400 group-hover:text-neutral-950 group-hover:translate-x-0.5 transition-all text-sm">
                     →
                   </span>
                 </div>
-                <h3 className="font-serif text-xl sm:text-2xl text-neutral-950 font-normal mb-1">
+                <h3 className="font-serif text-xl sm:text-2xl text-neutral-950 font-normal mb-1.5 leading-snug">
                   {card.title}
                 </h3>
                 <p className="font-sans text-xs text-neutral-600 leading-relaxed">
@@ -45,16 +45,16 @@ export const Exams = () => {
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs font-sans text-amber-900 font-medium">
-                <span>{card.status === 'In beta' ? 'Explore Preparation' : 'Get notified'}</span>
+              <div className="mt-5 pt-3 border-t border-neutral-100 text-xs font-sans text-neutral-900 font-medium flex items-center justify-between">
+                <span>{card.status === 'In beta' ? 'Explore Preparation' : 'Get Notified'}</span>
                 <span>›</span>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Independence Disclaimer */}
-        <p className="text-xs font-sans text-neutral-500 max-w-lg italic">
+        {/* Disclaimer */}
+        <p className="text-xs font-sans text-neutral-400 max-w-md italic">
           {content.disclaimer}
         </p>
       </section>
