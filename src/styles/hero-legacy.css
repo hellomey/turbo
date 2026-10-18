@@ -1,0 +1,460 @@
+:root {
+  --bg-black: #000000;
+  --bg-card: rgba(14, 12, 22, 0.70);
+  --bg-card-hover: rgba(22, 18, 34, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-hover: rgba(93, 243, 190, 0.40);
+  --ink-primary: #ffffff;
+  --ink-secondary: rgba(255, 255, 255, 0.65);
+  --ink-muted: rgba(255, 255, 255, 0.45);
+  --cyan-mint: #5df3be;
+  --sky-blue: #38bdf8;
+  --violet-purple: #8b5cf6;
+  --electric-purple: #a855f7;
+  --radius-pill: 999px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-black);
+  color: var(--ink-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ==========================================================================
+   GRADIENT TEXT UTILITIES
+   ========================================================================== */
+.grad-cyan-purple {
+  background: linear-gradient(90deg, #5df3be 0%, #38bdf8 50%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grad-indigo-purple {
+  background: linear-gradient(90deg, #818cf8 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grad-cyan-mint {
+  background: linear-gradient(90deg, #38bdf8 0%, #5df3be 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grad-mint-purple {
+  background: linear-gradient(90deg, #5df3be 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   HEADER / NAVBAR
+   ========================================================================== */
+
+.btn-pill-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #ffffff;
+  color: #000000;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-pill-primary:hover {
+  background: #dbfcf3;
+  box-shadow: 0 0 20px rgba(93, 243, 190, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-pill-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(20, 20, 25, 0.80);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.btn-pill-ghost:hover {
+  background: rgba(30, 30, 42, 0.95);
+  border-color: rgba(93, 243, 190, 0.60);
+  box-shadow: 0 0 16px rgba(93, 243, 190, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.hero-wrapper {
+  position: relative;
+  min-height: calc(100vh - 65px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  overflow: hidden;
+  padding: 2.5rem 1.5rem 2rem;
+}
+
+.hero-video {
+  position: absolute;
+  top: -20%;  
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  object-fit: cover;
+  object-position: center top; 
+  pointer-events: none; 
+}
+
+
+.hero-veil {
+  position: absolute;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+/* Eyebrow Pill */
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 1.2rem;
+  border-radius: var(--radius-pill);
+  background: rgba(18, 14, 28, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.8rem;
+}
+
+.hero-pill-sparkle {
+  color: var(--violet-purple);
+  font-size: 0.75rem;
+}
+
+/* Headline */
+.hero-title {
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.6rem, 5.8vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+}
+
+.hero-title-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.heymey-brand {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 24px rgba(255, 255, 255, 0.12);
+}
+
+.mey-struck {
+  position: relative;
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.72);
+  transition: color 0.3s ease;
+}
+
+.mey-struck::after {
+  content: "";
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  top: 51%;
+  height: 2.5px;
+  background: linear-gradient(90deg, #5df3be 0%, #38bdf8 50%, #a855f7 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 8px rgba(93, 243, 190, 0.85), 0 0 18px rgba(56, 189, 248, 0.45);
+  pointer-events: none;
+}
+
+@font-face {
+  font-family: "Alankaram";
+  src: url("/fonts/Alankaram.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-alankaram {
+  font-family: "Alankaram", var(--font-tamil), serif;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+
+.mey-tamil-alankaram,
+.mey-tamil-badge {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  font-family: "Alankaram", var(--font-tamil), serif;
+  font-size: 1em;
+  font-weight: normal;
+  line-height: inherit;
+  padding: 0;
+  border-radius: 0;
+  vertical-align: baseline;
+  background: none;
+  background-image: none;
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(93, 243, 190, 0.5), 0 0 40px rgba(168, 85, 247, 0.3);
+  flex-shrink: 0;
+  margin-left: 0.35rem;
+}
+
+.hero-title-sub {
+  display: block;
+  font-size: clamp(2.3rem, 5.2vw, 3.8rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-top: 0.15rem;
+}
+
+.hero-description {
+  margin: 0 0 2.2rem;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.6;
+  max-width: 580px;
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+}
+
+.hero-cta-group .btn-pill-primary {
+  padding: 0.75rem 1.6rem;
+  font-size: 0.95rem;
+}
+
+.hero-cta-group .btn-pill-ghost {
+  padding: 0.75rem 1.6rem;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   HERO RESPONSIVE (MOBILE & TABLET)
+   Maintains 100% desktop fidelity while optimizing for mobile/tablet screens
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  .hero-wrapper {
+    min-height: calc(100svh - 64.5625px);
+    padding: 1.5rem 1rem 1rem;
+    justify-content: space-between;
+  }
+
+  .hero-video {
+    top: -5%;
+    width: 100%;
+    height: 110%;
+    min-height: 110%;
+    min-width: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+  }
+
+  .hero-content {
+    padding-top: 0.5rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-title {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.85rem, 6.8vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-title-row {
+    flex-wrap: nowrap;
+    gap: 0.45rem;
+  }
+
+  .mey-struck::after {
+    height: 1.75px;
+    left: -3%;
+    right: -3%;
+  }
+
+  .mey-tamil-alankaram,
+  .mey-tamil-badge {
+    font-size: 1em;
+    padding: 0;
+    border-radius: 0;
+    vertical-align: baseline;
+    background: none;
+    border: none;
+    box-shadow: none;
+    margin-left: 0.2rem;
+    flex-shrink: 0;
+  }
+
+  .hero-title-sub {
+    font-size: clamp(1.35rem, 5vw, 2.05rem);
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    margin-top: 0.25rem;
+    text-wrap: balance;
+  }
+
+  .hero-description {
+    font-size: clamp(0.875rem, 3.4vw, 1rem);
+    line-height: 1.55;
+    margin: 0 0 1rem;
+    padding: 0 0.5rem;
+    max-width: 440px;
+    text-wrap: balance;
+  }
+
+  .hero-cta-group {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-wrapper {
+    padding: 1.25rem 0.75rem 0.75rem;
+  }
+
+  .hero-title {
+    font-size: 1.65rem;
+  }
+
+  .hero-title-row {
+    gap: 0.35rem;
+  }
+
+  .mey-tamil-alankaram,
+  .mey-tamil-badge {
+    font-size: 1em;
+    padding: 0;
+    vertical-align: baseline;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .hero-title-sub {
+    font-size: 1.25rem;
+  }
+
+  .hero-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+}
+
+/* Four Feature Strip */
+.hero-features-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1.5rem;
+  margin-top: auto;
+  margin-bottom: 1.5rem;
+}
+
+.feature-strip-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.feature-strip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+}
+
+.feature-strip-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ==========================================================================
+   SECTION COMMON STYLES

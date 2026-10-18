@@ -1,0 +1,383 @@
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+
+interface EarthCanvasProps {
+  className?: string;
+}
+
+export default function EarthCanvas({ className }: EarthCanvasProps) {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+
+  useEffect(() => {
+    const container = mountRef.current;
+    if (!container) return;
+
+    if (typeof window !== "undefined") {
+      (window as any).THREE = THREE;
+    }
+    let animId: number;
+    let mixer: THREE.AnimationMixer | null = null;
+    let earthRootGroup: THREE.Group | null = null;
+    const autoRotateSpeed = 0.038;
+    let isDragging = false;
+    let prevMouseX = 0;
+    let dragVelocity = 0;
+    let targetParallaxX = 0;
+    let targetParallaxY = 0;
+    let currentParallaxX = 0;
+    let currentParallaxY = 0;
+    let lastTime = 0;
+
+    // 1. Scene & Camera Setup
+    const scene = new THREE.Scene();
+    const width = container.clientWidth || window.innerWidth;
+    const height = container.clientHeight || window.innerHeight;
+
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 0, 5.8);
+
+    // 2. High-Performance WebGL Renderer (True Black / Crystal Clear Transparency)
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.domElement.style.width = "100%";
+    renderer.domElement.style.height = "100%";
+    renderer.domElement.style.display = "block";
+    renderer.domElement.style.pointerEvents = "auto";
+    renderer.domElement.style.cursor = "grab";
+    container.appendChild(renderer.domElement);
+
+    // 3. Crisp, Authentic Space Lighting
+    // Soft neutral ambient light: reveals true deep blue oceans and green/gold land
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.78);
+    scene.add(ambientLight);
+
+    // Sun Key Light: crisp white light from the upper right
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    sunLight.position.set(5.0, 4.0, 4.5);
+    scene.add(sunLight);
+
+    // Soft cyan rim light from upper right edge
+    const rimLight = new THREE.DirectionalLight(0x5df3be, 0.55);
+    rimLight.position.set(6.0, 4.5, -1.0);
+    scene.add(rimLight);
+
+    // 4. Hierarchy Groups for Scale, Position, Tilt, and Rotation
+    const positionGroup = new THREE.Group();
+    scene.add(positionGroup);
+
+    const parallaxGroup = new THREE.Group();
+    positionGroup.add(parallaxGroup);
+
+    const tiltGroup = new THREE.Group();
+    tiltGroup.rotation.z = THREE.MathUtils.degToRad(-15);
+    tiltGroup.rotation.x = THREE.MathUtils.degToRad(12);
+    parallaxGroup.add(tiltGroup);
+
+    const earthSpinGroup = new THREE.Group();
+    tiltGroup.add(earthSpinGroup);
+    earthRootGroup = earthSpinGroup;
+
+    // 5. Responsive Layout Function:
+    // Calibrated so the Earth forms a grand, panoramic planetary horizon
+    // connecting the bottom-left and bottom-right corners of the desktop screen.
+    const updatePositionAndScale = () => {
+      const w = container.clientWidth || window.innerWidth;
+      const h = container.clientHeight || window.innerHeight;
+      const aspect = w / h;
+
+      camera.aspect = aspect;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+
+      // Calibrated parameters to form a vast planetary curvature spanning from the
+      // bottom-left corner across to the bottom-right corner of the viewport
+      let earthRadius = 9.1;
+      let yOffset = -6.0;
+      let zOffset = -3.5;
+
+      if (aspect < 0.9) {
+        // Mobile screens: prominent dome filling lower half
+        earthRadius = 4.8;
+        yOffset = -4.3;
+        zOffset = -1.5;
+      } else if (aspect < 1.3) {
+        // Tablet screens
+        earthRadius = 6.8;
+        yOffset = -5.4;
+        zOffset = -2.2;
+      } else if (aspect > 2.0) {
+        // Ultrawide monitors
+        earthRadius = 10.5;
+        yOffset = -7.2;
+        zOffset = -4.0;
+      } else {
+        // Standard Desktop: Wide planetary arc connecting both bottom corners
+        earthRadius = 9.1;
+        yOffset = -6.0;
+        zOffset = -3.5;
+      }
+
+      positionGroup.scale.setScalar(earthRadius);
+      positionGroup.position.set(0, yOffset, zOffset);
+    };
+
+    updatePositionAndScale();
+
+    // 6. Load earth.glb
+    const loader = new GLTFLoader();
+    loader.load(
+      "/assets/earth.glb",
+      (gltf) => {
+        // 1. Traverse meshes to hide Layer3-8, setup materials, and identify the true Earth mesh (TERRE)
+        let terreMesh: THREE.Mesh | null = null;
+
+        gltf.scene.traverse((child) => {
+          if ((child as THREE.Mesh).isMesh) {
+            const mesh = child as THREE.Mesh;
+            mesh.castShadow = false;
+            mesh.receiveShadow = false;
+
+            // Hide empty atmosphere onion-ring shells (Layer3 through Layer8)
+            if (
+              mesh.name.includes("Layer3") ||
+              mesh.name.includes("Layer4") ||
+              mesh.name.includes("Layer5") ||
+              mesh.name.includes("Layer6") ||
+              mesh.name.includes("Layer7") ||
+              mesh.name.includes("Layer8")
+            ) {
+              mesh.visible = false;
+              return;
+            }
+
+            if (mesh.material) {
+              const mat = mesh.material as THREE.MeshStandardMaterial;
+
+              // Earth surface (TERRE)
+              if (mesh.name.includes("Layer1") || mat.name === "TERRE") {
+                terreMesh = mesh;
+                mat.roughness = 0.75;
+                mat.metalness = 0.05;
+                // Subtle golden city lights on dark side
+                if (mat.emissiveMap) {
+                  mat.emissive = new THREE.Color(0xffd27d);
+                  mat.emissiveIntensity = 0.8;
+                }
+              }
+              // Cloud layer (NUAGES)
+              else if (mesh.name.includes("Layer2") || mat.name === "NUAGES") {
+                mat.transparent = true;
+                mat.depthWrite = false;
+                mat.opacity = 0.45; // Delicate, fluffy clouds allowing blue oceans to show through
+              }
+            }
+          }
+        });
+
+        // 2. Compute normalization strictly from the visible Earth sphere (TERRE)
+        const targetObj = terreMesh || gltf.scene;
+        const box = new THREE.Box3().setFromObject(targetObj);
+        const sphere = box.getBoundingSphere(new THREE.Sphere());
+        const normScale = sphere.radius > 0 ? 1.0 / sphere.radius : 1.0;
+
+        gltf.scene.scale.setScalar(normScale);
+        gltf.scene.position.sub(sphere.center.clone().multiplyScalar(normScale));
+
+        if (typeof window !== "undefined") {
+          (window as any).__earthDebug = {
+            normScale,
+            sphereRadius: sphere.radius,
+            foundTerre: !!terreMesh,
+          };
+        }
+
+        // Built-in animation mixer: spins the clouds smoothly
+        if (gltf.animations && gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(gltf.scene);
+          const action = mixer.clipAction(gltf.animations[0]);
+          action.play();
+        }
+
+        earthSpinGroup.add(gltf.scene);
+        if (typeof window !== "undefined") {
+          (window as any).__earthScene = { scene, camera, positionGroup, terreMesh, gltfScene: gltf.scene };
+        }
+        setIsLoaded(true);
+      },
+      (progress) => {
+        if (progress.total > 0) {
+          const pct = Math.round((progress.loaded / progress.total) * 100);
+          setLoadProgress(pct);
+        }
+      },
+      (err) => {
+        console.error("Failed to load earth.glb:", err);
+      }
+    );
+
+    // 7. Interactive Event Listeners (Drag to Spin & Parallax)
+    const onPointerDown = (e: PointerEvent) => {
+      isDragging = true;
+      prevMouseX = e.clientX;
+      renderer.domElement.style.cursor = "grabbing";
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      const rect = container.getBoundingClientRect();
+      const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+      targetParallaxX = nx * 0.10;
+      targetParallaxY = -ny * 0.06;
+
+      if (!isDragging || !earthRootGroup) return;
+      const deltaX = e.clientX - prevMouseX;
+      prevMouseX = e.clientX;
+      dragVelocity = deltaX * 0.005;
+      earthRootGroup.rotation.y += dragVelocity;
+    };
+
+    const onPointerUp = () => {
+      isDragging = false;
+      renderer.domElement.style.cursor = "grab";
+    };
+
+    const domEl = renderer.domElement;
+    domEl.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+
+    // Scroll-driven natural Earth rotation
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    const onScroll = () => {
+      const curY = window.scrollY;
+      const diff = curY - lastScrollY;
+      lastScrollY = curY;
+      if (earthRootGroup) {
+        earthRootGroup.rotation.y += diff * 0.0012;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // 8. Resize Observer
+    const resizeObserver = new ResizeObserver(() => {
+      updatePositionAndScale();
+    });
+    resizeObserver.observe(container);
+
+    // 9. Standard 60fps Animation Loop (Using timestamp, zero deprecation warnings)
+    const animate = (time: number) => {
+      animId = requestAnimationFrame(animate);
+      if (!lastTime) lastTime = time;
+      const delta = Math.min((time - lastTime) / 1000, 0.1);
+      lastTime = time;
+
+      // Animate cloud layers
+      if (mixer) {
+        mixer.update(delta * 0.7);
+      }
+
+      // Continuous axial rotation of the globe
+      if (earthRootGroup) {
+        if (!isDragging) {
+          dragVelocity *= 0.94;
+          earthRootGroup.rotation.y += autoRotateSpeed * delta + dragVelocity;
+        }
+      }
+
+      // Smooth cursor parallax lerp
+      currentParallaxX += (targetParallaxX - currentParallaxX) * 0.05;
+      currentParallaxY += (targetParallaxY - currentParallaxY) * 0.05;
+      parallaxGroup.rotation.y = currentParallaxX;
+      parallaxGroup.rotation.x = currentParallaxY;
+
+      renderer.render(scene, camera);
+    };
+    animId = requestAnimationFrame(animate);
+
+    // Cleanup
+    return () => {
+      cancelAnimationFrame(animId);
+      resizeObserver.disconnect();
+      domEl.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("scroll", onScroll);
+
+      renderer.dispose();
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      ref={mountRef}
+      className={`earth-3d-container ${className || ""}`}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        overflow: "hidden",
+        zIndex: 1,
+      }}
+    >
+      {/* Subtle loading progress indicator */}
+      {!isLoaded && (
+        <div
+          className="earth-loading-indicator"
+          style={{
+            position: "absolute",
+            bottom: "25%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            color: "rgba(255, 255, 255, 0.7)",
+            fontSize: "0.825rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.5rem",
+            zIndex: 2,
+            pointerEvents: "none",
+          }}
+        >
+          <div
+            style={{
+              width: "120px",
+              height: "2px",
+              background: "rgba(255, 255, 255, 0.15)",
+              borderRadius: "2px",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${loadProgress || 35}%`,
+                height: "100%",
+                background: "linear-gradient(90deg, #5df3be, #38bdf8)",
+                transition: "width 0.2s ease-out",
+              }}
+            />
+          </div>
+          <span style={{ letterSpacing: "0.08em", textTransform: "uppercase", fontSize: "0.68rem" }}>
+            Loading 3D Earth...
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}

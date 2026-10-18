@@ -1,0 +1,961 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useSpring,
+} from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const EarthCanvas = dynamic(() => import("@/components/EarthCanvas"), {
+  ssr: false,
+});
+
+export default function Home() {
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check window size for mobile adaptations
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 900);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Background videos playback and looping controllers
+  useEffect(() => {
+    const heroVid = heroVideoRef.current;
+    if (heroVid) {
+      heroVid.muted = true;
+      const playHero = () => {
+        if (heroVid.paused) heroVid.play().catch(() => {});
+      };
+      playHero();
+      heroVid.addEventListener("canplay", playHero);
+      heroVid.addEventListener("ended", () => {
+        heroVid.currentTime = 0;
+        playHero();
+      });
+    }
+
+    const onVisibility = () => {
+      if (!document.hidden) {
+        if (heroVid && heroVid.paused) heroVid.play().catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    const onInteract = () => {
+      if (heroVid && heroVid.paused) heroVid.play().catch(() => {});
+    };
+    window.addEventListener("pointerdown", onInteract, { once: true, passive: true });
+    window.addEventListener("touchstart", onInteract, { once: true, passive: true });
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pointerdown", onInteract);
+      window.removeEventListener("touchstart", onInteract);
+    };
+  }, []);
+
+  // 3D Tilt controller for CuriosityToConfidence stage
+  const curiosityStageRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [5, -5]), {
+    stiffness: 100,
+    damping: 24,
+  });
+  const rotateY = useSpring(useTransform(mouseX, [-500, 500], [-6, 6]), {
+    stiffness: 100,
+    damping: 24,
+  });
+
+  const handleMouseMoveCuriosity = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile || !curiosityStageRef.current) return;
+    const rect = curiosityStageRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    mouseX.set(e.clientX - centerX);
+    mouseY.set(e.clientY - centerY);
+  };
+
+  const handleMouseLeaveCuriosity = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  // GSAP & ScrollTrigger Master Animation Setup
+  const landingPageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !landingPageRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Hero Kinetic Entrance Timeline
+      const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      heroTl
+        .from(".nav-header", { y: -25, opacity: 0, duration: 0.85 })
+        .from(".hero-title-row", { y: 45, opacity: 0, duration: 1.0, ease: "power4.out" }, "-=0.35")
+        .from(".hero-title-sub", { y: 25, opacity: 0, duration: 0.85 }, "-=0.65")
+        .from(".hero-description", { y: 25, opacity: 0, duration: 0.85 }, "-=0.6")
+        .from(
+          ".hero-cta-group .btn-pill-primary, .hero-cta-group .btn-pill-ghost",
+          {
+            y: 20,
+            opacity: 0,
+            scale: 0.94,
+            stagger: 0.12,
+            duration: 0.7,
+            ease: "back.out(1.5)",
+          },
+          "-=0.5"
+        );
+
+      // Floating gentle breathing on Tamil badge "மெய்"
+      gsap.to(".mey-tamil-badge", {
+        y: -4,
+        duration: 2.2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      // 2. Navbar glassmorph on scroll
+      ScrollTrigger.create({
+        start: "top -70",
+        end: 99999,
+        toggleClass: { className: "nav-scrolled", targets: ".nav-header" },
+      });
+
+      // 3. Section Headers Reveal
+      gsap.utils.toArray<HTMLElement>(".sec-header").forEach((header) => {
+        const eyebrow = header.querySelector(".sec-eyebrow");
+        const title = header.querySelector(".sec-title");
+        const desc = header.querySelector(".sec-desc");
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: header,
+            start: "top 86%",
+            toggleActions: "play none none none",
+          },
+          defaults: { ease: "power3.out" },
+        });
+        if (eyebrow) tl.from(eyebrow, { opacity: 0, y: 15, duration: 0.6 });
+        if (title) tl.from(title, { opacity: 0, y: 30, duration: 0.85 }, "-=0.4");
+        if (desc) tl.from(desc, { opacity: 0, y: 20, duration: 0.75 }, "-=0.5");
+      });
+
+      // 4. Pillars Cards Staggered 3D Pop-in
+      gsap.from(".pillar-card", {
+        scrollTrigger: {
+          trigger: ".pillars-grid",
+          start: "top 84%",
+          toggleActions: "play none none none",
+        },
+        y: 50,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.85,
+        ease: "power3.out",
+      });
+
+      // 5. Feature List Stagger
+      gsap.from(".feature-item", {
+        scrollTrigger: {
+          trigger: ".feature-list",
+          start: "top 82%",
+          toggleActions: "play none none none",
+        },
+        x: -35,
+        opacity: 0,
+        stagger: 0.13,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+
+      // Dashboard Mockup 3D Slide & Parallax
+      gsap.from(".mockup-img", {
+        scrollTrigger: {
+          trigger: ".mockup-container",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        x: 50,
+        opacity: 0,
+        scale: 0.94,
+        duration: 1.1,
+        ease: "power4.out",
+      });
+
+      gsap.to(".mockup-img", {
+        scrollTrigger: {
+          trigger: ".split-grid",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.2,
+        },
+        y: -40,
+        ease: "none",
+      });
+
+      // 6. Live Counting Up Stats Numbers
+      const statItems = [
+        { selector: ".stat-learners", target: 50, suffix: "K+" },
+        { selector: ".stat-questions", target: 1, suffix: "M+" },
+        { selector: ".stat-rating", target: 4.8, suffix: "/5", isDecimal: true },
+        { selector: ".stat-recommend", target: 95, suffix: "%" },
+      ];
+
+      ScrollTrigger.create({
+        trigger: ".stats-grid",
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          gsap.from(".stat-item", {
+            y: 35,
+            opacity: 0,
+            stagger: 0.12,
+            duration: 0.8,
+            ease: "power3.out",
+          });
+
+          statItems.forEach((item) => {
+            const el = document.querySelector(item.selector);
+            if (!el) return;
+            const counter = { val: 0 };
+            gsap.to(counter, {
+              val: item.target,
+              duration: 2.2,
+              ease: "power2.out",
+              onUpdate: () => {
+                if (item.isDecimal) {
+                  el.textContent = `${counter.val.toFixed(1)}${item.suffix}`;
+                } else {
+                  el.textContent = `${Math.floor(counter.val)}${item.suffix}`;
+                }
+              },
+            });
+          });
+        },
+      });
+
+      // 7. Curiosity Orbit Step Cards Stagger
+      gsap.from(".orbit-step-card", {
+        scrollTrigger: {
+          trigger: ".curiosity-section",
+          start: "top 76%",
+          toggleActions: "play none none none",
+        },
+        scale: 0.85,
+        opacity: 0,
+        y: 30,
+        stagger: 0.16,
+        duration: 0.9,
+        ease: "back.out(1.4)",
+      });
+
+      // Orbit Cards gentle zero-gravity float
+      gsap.utils.toArray<HTMLElement>(".orbit-step-card").forEach((card, idx) => {
+        gsap.to(card, {
+          y: "+=6",
+          duration: 2.4 + idx * 0.4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: idx * 0.3,
+        });
+      });
+
+      // 8. Built for Real Learners Cards
+      gsap.from(".cards-2x2-grid .inner-glass-card", {
+        scrollTrigger: {
+          trigger: ".cards-2x2-grid",
+          start: "top 82%",
+          toggleActions: "play none none none",
+        },
+        y: 40,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+
+      // 9. Final Universe: Our Belief quote luminous reveal
+      gsap.from(".belief-quote", {
+        scrollTrigger: {
+          trigger: ".belief-universe-wrapper",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 1.0,
+        ease: "power3.out",
+      });
+
+      gsap.from(".belief-body p", {
+        scrollTrigger: {
+          trigger: ".belief-body",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        y: 20,
+        opacity: 0,
+        stagger: 0.14,
+        duration: 0.75,
+        ease: "power3.out",
+      });
+
+      // 10. Ready to Begin CTA Entrance
+      gsap.from(".ready-begin-universe-wrapper", {
+        scrollTrigger: {
+          trigger: ".ready-begin-universe-wrapper",
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        y: 45,
+        opacity: 0,
+        duration: 0.95,
+        ease: "power3.out",
+      });
+
+      // 11. Magnetic Button Hover Interaction (Award-winning GSAP micro-interaction)
+      const magneticBtns = gsap.utils.toArray<HTMLElement>(
+        ".btn-pill-primary, .btn-pill-ghost"
+      );
+      magneticBtns.forEach((btn) => {
+        const xTo = gsap.quickTo(btn, "x", { duration: 0.35, ease: "power3.out" });
+        const yTo = gsap.quickTo(btn, "y", { duration: 0.35, ease: "power3.out" });
+
+        const onMove = (e: MouseEvent) => {
+          const rect = btn.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = (e.clientX - cx) * 0.28;
+          const dy = (e.clientY - cy) * 0.28;
+          xTo(dx);
+          yTo(dy);
+        };
+
+        const onLeave = () => {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.4)" });
+        };
+
+        btn.addEventListener("mousemove", onMove);
+        btn.addEventListener("mouseleave", onLeave);
+      });
+    }, landingPageRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div ref={landingPageRef} className="landing-page-root">
+      {/* ====================================================================
+          1. HEADER / NAVBAR
+          ==================================================================== */}
+      <header className="nav-header" data-open={menuOpen ? "true" : "false"}>
+        <div className="nav-container">
+          <a href="#home" className="brand-link" aria-label="HeyMey Home">
+            {/* Gradient Crossing "X" Ribbon Logo */}
+            <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path
+                d="M7 7L25 25"
+                stroke="url(#logo-grad-cyan)"
+                strokeWidth="5.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M25 7L7 25"
+                stroke="url(#logo-grad-purple)"
+                strokeWidth="5.5"
+                strokeLinecap="round"
+              />
+              <defs>
+                <linearGradient id="logo-grad-cyan" x1="7" y1="7" x2="25" y2="25" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#38bdf8" />
+                  <stop offset="1" stopColor="#5df3be" />
+                </linearGradient>
+                <linearGradient id="logo-grad-purple" x1="25" y1="7" x2="7" y2="25" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#818cf8" />
+                  <stop offset="1" stopColor="#a855f7" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <span className="brand-name">HeyMey</span>
+          </a>
+
+          <nav className="nav-links" aria-label="Main Navigation">
+            <a href="#learners">For Learners</a>
+            <a href="#flash">Daily Flash</a>
+            <a href="#exams">TNPSC Exams</a>
+            <a href="#creators">For Creators</a>
+            <a href="#pricing">Pricing</a>
+          </nav>
+
+          <div className="nav-actions">
+            <button className="nav-search-btn" aria-label="Search topics or exams">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+            <span className="nav-divider" />
+            <a href="#signin" className="nav-signin">Sign in</a>
+            <a href="#start" className="btn-pill-primary">
+              Get Started <span>&rarr;</span>
+            </a>
+            <button
+              className="nav-menu-btn"
+              aria-label="Toggle menu"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Dropdown Sheet */}
+        <div className="mobile-nav-sheet">
+          <a href="#learners" onClick={() => setMenuOpen(false)}>For Learners</a>
+          <a href="#flash" onClick={() => setMenuOpen(false)}>Daily Flash</a>
+          <a href="#exams" onClick={() => setMenuOpen(false)}>TNPSC Exams</a>
+          <a href="#creators" onClick={() => setMenuOpen(false)}>For Creators</a>
+          <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
+          <a href="#signin" onClick={() => setMenuOpen(false)}>Sign in</a>
+          <a href="#start" className="btn-pill-primary" onClick={() => setMenuOpen(false)}>
+            Get Started <span>&rarr;</span>
+          </a>
+        </div>
+      </header>
+
+      {/* ====================================================================
+          2. HERO SECTION
+          ==================================================================== */}
+      <section className="hero-wrapper" id="home">
+        <video
+          ref={heroVideoRef}
+          className="hero-video"
+          aria-hidden="true"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/assets/images/sky.png"
+          src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4b73c700-3112-4c07-bd48-0af2893dff7c.mp4"
+        />
+        <div className="hero-veil" />
+
+        <div className="hero-content">
+
+
+          <h1 className="hero-title">
+            <div className="hero-title-row">
+              <span className="heymey-brand">
+                Hey<span className="mey-struck">Mey</span>
+              </span>
+              <span className="mey-tamil-badge">மெய்</span>
+            </div>
+            <span className="hero-title-sub">Truth beneath the noise.</span>
+          </h1>
+
+          <p className="hero-description">
+            Focused study tools, real exam practice, and clear progress.<br />
+            Everything you need to go further.
+          </p>
+
+          <div className="hero-cta-group">
+            <a href="#start" className="btn-pill-primary">
+              Get Started <span>&rarr;</span>
+            </a>
+            <a href="#explore" className="btn-pill-ghost">
+              Explore Platform <span style={{ fontSize: "0.75rem" }}>&#9658;</span>
+            </a>
+          </div>
+        </div>
+
+        
+      </section>
+
+      {/* ====================================================================
+          3. SECTION: WHY HEYமெய் (4 Pillars)
+          ==================================================================== */}
+      <section className="section-wrapper" id="learners">
+        <div className="sec-header centered">
+          <span className="sec-eyebrow">WHY HEYமெய்</span>
+          <h2 className="sec-title">
+            Clarity for a <span className="grad-cyan-purple">bigger</span> tomorrow.
+          </h2>
+          <p className="sec-desc">
+            A focused learning companion that helps you understand, practice, measure and move forward &mdash; with clarity at every step.
+          </p>
+        </div>
+
+        <div className="pillars-grid">
+          <div className="pillar-card">
+            <div className="pillar-icon-badge">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              </svg>
+            </div>
+            <h3 className="pillar-title">Concept First</h3>
+            <p className="pillar-desc">Build a strong foundation with clear explanations.</p>
+          </div>
+
+          <div className="pillar-card">
+            <div className="pillar-icon-badge">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+            </div>
+            <h3 className="pillar-title">Exam Ready</h3>
+            <p className="pillar-desc">Curated practice and real exam patterns.</p>
+          </div>
+
+          <div className="pillar-card">
+            <div className="pillar-icon-badge">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
+            </div>
+            <h3 className="pillar-title">Track Progress</h3>
+            <p className="pillar-desc">Know where you stand and what to improve.</p>
+          </div>
+
+          <div className="pillar-card">
+            <div className="pillar-icon-badge">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <h3 className="pillar-title">Learn Together</h3>
+            <p className="pillar-desc">Be part of a focused learner community.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          4. SECTION: A SMARTER WAY TO PREPARE (Split Grid + Mockup)
+          ==================================================================== */}
+      <section className="section-wrapper" id="exams">
+        <div className="split-grid">
+          <div>
+            <span className="sec-eyebrow">A SMARTER WAY TO PREPARE</span>
+            <h2 className="sec-title">
+              Everything you need,<br />
+              in <span className="grad-indigo-purple">one focused space.</span>
+            </h2>
+            <p className="sec-desc">
+              Structured study material, interactive practice, performance insights and more &mdash; designed to help you stay consistent and confident.
+            </p>
+
+            <div className="feature-list">
+              <div className="feature-item">
+                <div className="feature-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                  </svg>
+                </div>
+                <div className="feature-item-text">
+                  <h4>Structured Learning</h4>
+                  <p>Well-organized notes, topic-wise content and exam-focused resources.</p>
+                </div>
+              </div>
+
+              <div className="feature-item">
+                <div className="feature-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                </div>
+                <div className="feature-item-text">
+                  <h4>Practice &amp; Assess</h4>
+                  <p>Mock tests, previous year questions and adaptive practice.</p>
+                </div>
+              </div>
+
+              <div className="feature-item">
+                <div className="feature-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10" />
+                    <line x1="12" y1="20" x2="12" y2="4" />
+                    <line x1="6" y1="20" x2="6" y2="14" />
+                  </svg>
+                </div>
+                <div className="feature-item-text">
+                  <h4>Personalized Insights</h4>
+                  <p>Track performance, find weak areas and improve with guidance.</p>
+                </div>
+              </div>
+
+              <div className="feature-item">
+                <div className="feature-item-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div className="feature-item-text">
+                  <h4>A Focused Community</h4>
+                  <p>Learn, discuss and grow with fellow aspirants.</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="#explore" className="btn-pill-primary">
+              Explore Platform <span>&rarr;</span>
+            </a>
+          </div>
+
+          <div className="mockup-container">
+            <Image
+              src="/assets/images/dashboard_mockup.png"
+              alt="HeyMey App Interface Preview"
+              width={684}
+              height={740}
+              className="mockup-img"
+              priority
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          5. SECTION: TRUSTED BY LEARNERS (Stats Grid)
+          ==================================================================== */}
+      <section className="section-wrapper">
+        <div className="sec-header centered">
+          <span className="sec-eyebrow">TRUSTED BY LEARNERS</span>
+          <h2 className="sec-title">
+            A growing community of<br />
+            <span className="grad-cyan-mint">future changemakers.</span>
+          </h2>
+          <p className="sec-desc">
+            From first-time aspirants to working professionals, Heyமெய் supports learners at every stage of their journey.
+          </p>
+        </div>
+
+        <div className="stats-grid">
+          <div className="stat-item">
+            <h3 className="stat-learners">50K+</h3>
+            <p>Active Learners</p>
+          </div>
+          <div className="stat-item">
+            <h3 className="stat-questions">1M+</h3>
+            <p>Questions Practiced</p>
+          </div>
+          <div className="stat-item">
+            <h3 className="stat-rating">4.8/5</h3>
+            <p>Learner Rating</p>
+          </div>
+          <div className="stat-item">
+            <h3 className="stat-recommend">95%</h3>
+            <p>Would Recommend</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          6. SECTION: HOW IT WORKS (Curiosity to Confidence 3D Framer Motion)
+          ==================================================================== */}
+      <section className="curiosity-section" id="flash">
+        <div
+          ref={curiosityStageRef}
+          className="curiosity-3d-stage"
+          onMouseMove={handleMouseMoveCuriosity}
+          onMouseLeave={handleMouseLeaveCuriosity}
+        >
+          {/* Top-Left Overlay Text */}
+          <div className="curiosity-overlay-text">
+            <span className="sec-eyebrow">HOW IT WORKS</span>
+            <h2 className="sec-title">
+              From curiosity<br />
+              to <span className="grad-cyan-purple">confidence.</span>
+            </h2>
+            <p className="sec-desc">
+              A simple, focused learning journey designed to help you go further &mdash; one step at a time.
+            </p>
+            <a href="#start" className="btn-pill-primary">
+              Get Started <span>&rarr;</span>
+            </a>
+          </div>
+
+          {/* Interactive 3D Canvas Stage */}
+          <motion.div
+            style={!isMobile ? { rotateX, rotateY } : undefined}
+            className="curiosity-interactive-canvas"
+          >
+            {/* High-res Celestial Artwork */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/images/CuriosityToConfidence.png"
+              alt="From Curiosity to Confidence Orbital Journey"
+              className="curiosity-base-art"
+            />
+
+            {/* Glowing 3D Halos pulsing on the 4 planets */}
+            <motion.div
+              className="planet-halo halo-p1"
+              animate={{ scale: [1, 1.35, 1], opacity: [0.3, 0.75, 0.3] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="planet-halo halo-p2"
+              animate={{ scale: [1, 1.3, 1], opacity: [0.35, 0.8, 0.35] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+            />
+            <motion.div
+              className="planet-halo halo-p3"
+              animate={{ scale: [1, 1.35, 1], opacity: [0.3, 0.7, 0.3] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+            />
+            <motion.div
+              className="planet-halo halo-p4"
+              animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.85, 0.4] }}
+              transition={{ duration: 4.0, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
+            />
+
+            {/* Step Cards positioned at the planets on desktop */}
+            {!isMobile && (
+              <>
+                <motion.div
+                  className="orbit-step-card card-p1"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <div className="step-card-num">01</div>
+                  <div className="step-card-body">
+                    <h4>Understand</h4>
+                    <p>Learn concepts with clear, simple explanations.</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="orbit-step-card card-p2"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <div className="step-card-num">02</div>
+                  <div className="step-card-body">
+                    <h4>Practice</h4>
+                    <p>Attempt topic-wise questions and mock tests.</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="orbit-step-card card-p3"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <div className="step-card-num">03</div>
+                  <div className="step-card-body">
+                    <h4>Analyse</h4>
+                    <p>Track your progress and focus on what matters.</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="orbit-step-card card-p4"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <div className="step-card-num">04</div>
+                  <div className="step-card-body">
+                    <h4>Improve</h4>
+                    <p>Build consistency and move closer to your goals.</p>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </motion.div>
+
+          {/* Responsive Cards Grid for Mobile & Tablets */}
+          {isMobile && (
+            <div className="curiosity-mobile-cards-grid">
+              <div className="inner-glass-card">
+                <div className="step-card-num">01</div>
+                <h4>Understand</h4>
+                <p>Learn concepts with clear, simple explanations.</p>
+              </div>
+              <div className="inner-glass-card">
+                <div className="step-card-num">02</div>
+                <h4>Practice</h4>
+                <p>Attempt topic-wise questions and mock tests.</p>
+              </div>
+              <div className="inner-glass-card">
+                <div className="step-card-num">03</div>
+                <h4>Analyse</h4>
+                <p>Track your progress and focus on what matters.</p>
+              </div>
+              <div className="inner-glass-card">
+                <div className="step-card-num">04</div>
+                <h4>Improve</h4>
+                <p>Build consistency and move closer to your goals.</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ====================================================================
+          7. SECTION: BUILT FOR REAL LEARNERS (2x2 Grid inside Card)
+          ==================================================================== */}
+      <section className="section-wrapper" id="creators">
+        <div className="built-learners-card">
+          <div>
+            <span className="sec-eyebrow">BUILT FOR REAL LEARNERS</span>
+            <h2 className="sec-title">
+              More than<br />
+              just <span className="grad-mint-purple">practice.</span>
+            </h2>
+            <p className="sec-desc">
+              Everything you need to stay consistent, make better decisions, and keep improving.
+            </p>
+          </div>
+
+          <div className="cards-2x2-grid">
+            <div className="inner-glass-card">
+              <div className="inner-card-icon" style={{ color: "#a855f7" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+              </div>
+              <h4>Curated Content</h4>
+              <p>Clear, structured material aligned with your exam goals.</p>
+            </div>
+
+            <div className="inner-glass-card">
+              <div className="inner-card-icon" style={{ color: "#5df3be" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <h4>Adaptive Practice</h4>
+              <p>Questions that adjust to your level and highlight gaps.</p>
+            </div>
+
+            <div className="inner-glass-card">
+              <div className="inner-card-icon" style={{ color: "#38bdf8" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10" />
+                  <line x1="12" y1="20" x2="12" y2="4" />
+                  <line x1="6" y1="20" x2="6" y2="14" />
+                </svg>
+              </div>
+              <h4>Detailed Insights</h4>
+              <p>Understand your performance and track real progress.</p>
+            </div>
+
+            <div className="inner-glass-card">
+              <div className="inner-card-icon" style={{ color: "#818cf8" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                </svg>
+              </div>
+              <h4>Focused Community</h4>
+              <p>Learn, discuss and grow with fellow aspirants.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          8. COMBINED FINAL SECTION (Belief + Ready to Begin)
+          Powered by real-time 3D Three.js rotating Earth (earth.glb)
+          and cosmic artwork (footer_image.png).
+          ==================================================================== */}
+      <section className="final-universe-section">
+        {/* Cosmic Background Artwork (Thiruvalluvar sculpture & Purple Nebula) */}
+        <img
+          src="/assets/images/footer_image.png"
+          alt="HeyMey Universe Backdrop"
+          className="final-bg-backdrop"
+          loading="eager"
+        />
+
+        {/* Real-time 3D Rotating Earth (Three.js + earth.glb) */}
+        <EarthCanvas />
+
+        {/* Ambient Top Blend Veil */}
+        <div className="final-bg-veil" />
+
+        <div className="final-universe-content">
+          {/* Subsection: Our Belief (Thiruvalluvar Sculpture Area) */}
+          <div className="belief-universe-wrapper" id="pricing">
+            <motion.div className="belief-text-column">
+              <motion.span className="sec-eyebrow">OUR BELIEF</motion.span>
+              <motion.h2 className="belief-quote">
+                &ldquo;Clarity today,<br />
+                a <span className="grad-cyan-mint">bigger</span> tomorrow.&rdquo;
+              </motion.h2>
+
+              <motion.div className="belief-body">
+                <p>Education is not just about exams.</p>
+                <p>It&apos;s about clearer thinking, better opportunities, and a more confident you.</p>
+                <div className="belief-divider">&mdash;&mdash;</div>
+                <p>That&apos;s what we&apos;re building &mdash; a platform that stands with you, every step forward.</p>
+              </motion.div>
+            </motion.div>
+
+            {/* Spacer area allowing the glowing Thiruvalluvar sculpture in the video to shine */}
+            <div className="belief-sculpture-spacer" />
+          </div>
+
+          {/* Subsection: Ready to Begin (Centered over the glowing planet horizon) */}
+          <motion.div className="ready-begin-universe-wrapper">
+            <motion.span className="sec-eyebrow">READY TO BEGIN</motion.span>
+            <motion.h2 className="sec-title">
+              Your next step<br />
+              <span className="grad-cyan-purple">starts here.</span>
+            </motion.h2>
+            <motion.p className="sec-desc">
+              Join a focused community of learners and take control of your preparation journey.
+            </motion.p>
+            <motion.a
+              href="#start"
+              className="btn-pill-primary"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Get Started <span>&rarr;</span>
+            </motion.a>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}
