@@ -1,0 +1,22 @@
+name: hm_core
+description: "Auth/session, networking, error envelope handling, feature flags, app-version gate, realtime client."
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^3.4.3
+  flutter_secure_storage: ^11.2.0
+  hm_api:
+    path: ../hm_api
+  http: ^1.6.0
+  uuid: ^4.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

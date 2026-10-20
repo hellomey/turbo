@@ -1,0 +1,14 @@
+{
+  "name": "@heymey/dart",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Turbo wrapper for the Dart pub workspace (root pubspec.yaml). Runs format/analyze/test for mobile, desk and every hm_* package, and regenerates hm_api from the OpenAPI contract.",
+  "scripts": {
+    "codegen": "node ../tools/dart-api-codegen.mjs",
+    "lint": "cd .. && dart format --output=none --set-exit-if-changed apps/mobile/lib apps/mobile/test apps/desk/lib apps/desk/test dart/hm_design dart/hm_core dart/hm_data dart/hm_games dart/hm_features dart/hm_desk && flutter analyze && cd dart/hm_api && dart analyze --no-fatal-warnings .",
+    "test": "node ../tools/flutter-test-all.mjs"
+  },
+  "devDependencies": {
+    "@heymey/contracts": "workspace:*"
+  }
+}

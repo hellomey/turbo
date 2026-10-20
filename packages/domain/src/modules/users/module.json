@@ -1,0 +1,27 @@
+{
+  "name": "users",
+  "summary": "Profile, settings, privacy controls, DPDP consent, data export and deletion.",
+  "owns": [
+    "User",
+    "Consent",
+    "PrivacySettings"
+  ],
+  "responsibilities": [
+    "Profile + nickname",
+    "privacy controls",
+    "DPDP consent records",
+    "export and delete (7-day grace)",
+    "Calm/Lite mode preferences"
+  ],
+  "dependsOn": [
+    "audit"
+  ],
+  "publishes": [
+    "users.created",
+    "users.deletion_requested",
+    "users.deleted"
+  ],
+  "buildWeek": 1,
+  "coverageTarget": 70,
+  "founderApprovalRequired": true
+}

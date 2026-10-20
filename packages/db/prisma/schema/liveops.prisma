@@ -1,0 +1,20 @@
+// Tables owned by the `liveops` module. Configuration over code (§34.6).
+
+model FeatureFlag {
+  key       String   @id // "games.clue_poker" | "store.enabled" | ...
+  enabled   Boolean  @default(false)
+  rules     Json? // optional targeting (percent rollout, roles)
+  updatedBy String   @db.Uuid
+  updatedAt DateTime @updatedAt
+}
+
+/// Emergency switch: pause all games / pause the store within minutes (§32 "practice only").
+model EmergencySwitch {
+  key       String   @id // "pause_games" | "pause_store" | "games_practice_only"
+  on        Boolean  @default(false)
+  reason    String?
+  updatedBy String   @db.Uuid
+  updatedAt DateTime @updatedAt
+}
+
+// To model in week 4: LiveEvent (Notification Night, Answer Key Day, State Mock Sunday...).

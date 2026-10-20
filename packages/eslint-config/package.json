@@ -1,0 +1,14 @@
+{
+  "name": "@heymey/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./index.js" },
+  "dependencies": {
+    "@eslint/js": "^10.0.0",
+    "typescript-eslint": "^8.72.0"
+  },
+  "peerDependencies": {
+    "eslint": "^10.0.0"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "@heymey/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework-free business modules (blueprint §36). Shared by api, realtime and worker. Each module owns its tables and exposes only its index.ts.",
+  "exports": {
+    "./shared": {
+      "types": "./dist/shared/index.d.ts",
+      "default": "./dist/shared/index.js"
+    },
+    "./modules/*": {
+      "types": "./dist/modules/*/index.d.ts",
+      "default": "./dist/modules/*/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test",
+    "test": "vitest run",
+    "test:firewall": "vitest run test/firewall",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  },
+  "dependencies": {
+    "@heymey/contracts": "workspace:*",
+    "@heymey/db": "workspace:*",
+    "argon2": "^0.45.1",
+    "jose": "^6.2.12",
+    "otplib": "^13.5.0"
+  },
+  "devDependencies": {
+    "@heymey/eslint-config": "workspace:*",
+    "@heymey/testing": "workspace:*",
+    "@testcontainers/postgresql": "^12.2.1",
+    "@types/node": "^26.6.5",
+    "@vitest/coverage-v8": "^5.0.5",
+    "eslint": "^10.13.0",
+    "testcontainers": "^12.2.1",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.5"
+  }
+}

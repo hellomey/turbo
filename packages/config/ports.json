@@ -1,0 +1,33 @@
+{
+  "$comment": "Single source of truth for every port on the HeyMey VPS. Edit here, then run `pnpm ports:gen`. CI fails if generated files drift (`pnpm ports:check`). Rules: docs/adr/0002-port-allocation.md",
+  "base": 4567,
+  "stagingOffset": 100,
+  "blocks": {
+    "apps": { "from": 4567, "to": 4579, "note": "Our own deployable applications" },
+    "data": { "from": 4580, "to": 4589, "note": "Stateful services. Never published to the internet." },
+    "ops": { "from": 4590, "to": 4599, "note": "Monitoring and staff tools. Reachable only via ops.heymey.app (VPN / IP allowlist)." }
+  },
+  "services": [
+    { "key": "API", "service": "api", "port": 4567, "block": "apps", "host": "api.heymey.app", "description": "NestJS HTTP API (/v1)" },
+    { "key": "REALTIME", "service": "realtime", "port": 4568, "block": "apps", "host": "rt.heymey.app", "description": "Socket.IO gateway + game rooms" },
+    { "key": "DESK", "service": "desk", "port": 4569, "block": "apps", "host": "desk.heymey.app", "description": "HeyMey Desk (Flutter web, static)" },
+    { "key": "MARKETING", "service": "marketing", "port": 4570, "block": "apps", "host": "heymey.app", "description": "Marketing site + legal pages (Next.js)" },
+    { "key": "WORKER", "service": "worker", "port": 4571, "block": "apps", "host": null, "description": "BullMQ workers (health + metrics only)" },
+    { "key": "SCHEDULER", "service": "scheduler", "port": 4572, "block": "apps", "host": null, "description": "Repeatable-job scheduler, 1 replica (health + metrics only)" },
+
+    { "key": "POSTGRES", "service": "postgres", "port": 4580, "block": "data", "host": null, "description": "PostgreSQL 17" },
+    { "key": "PGBOUNCER", "service": "pgbouncer", "port": 4581, "block": "data", "host": null, "description": "Connection pooling in front of Postgres" },
+    { "key": "VALKEY", "service": "valkey", "port": 4582, "block": "data", "host": null, "description": "Valkey 8: cache, queues, leaderboards, rooms" },
+    { "key": "S3", "service": "seaweedfs", "port": 4583, "block": "data", "host": "cdn.heymey.app", "description": "SeaweedFS S3 endpoint (content packs, audio)" },
+    { "key": "MAIL_SMTP", "service": "mailpit", "port": 4584, "block": "data", "host": null, "description": "LOCAL ONLY: Mailpit SMTP sink for OTP emails" },
+    { "key": "MAIL_UI", "service": "mailpit", "port": 4585, "block": "data", "host": null, "description": "LOCAL ONLY: Mailpit inbox UI" },
+
+    { "key": "GRAFANA", "service": "grafana", "port": 4590, "block": "ops", "host": "ops.heymey.app/grafana", "description": "Dashboards (metrics + logs)" },
+    { "key": "PROMETHEUS", "service": "prometheus", "port": 4591, "block": "ops", "host": null, "description": "Metrics store" },
+    { "key": "LOKI", "service": "loki", "port": 4592, "block": "ops", "host": null, "description": "Log store" },
+    { "key": "GLITCHTIP", "service": "glitchtip", "port": 4593, "block": "ops", "host": "ops.heymey.app/errors", "description": "Error tracking (Sentry-compatible)" },
+    { "key": "METABASE", "service": "metabase", "port": 4594, "block": "ops", "host": "ops.heymey.app/metabase", "description": "Product analytics dashboards" },
+    { "key": "UPTIME_KUMA", "service": "uptime-kuma", "port": 4595, "block": "ops", "host": "ops.heymey.app/uptime", "description": "Internal uptime checks -> Telegram" },
+    { "key": "CHANGEDETECTION", "service": "changedetection", "port": 4596, "block": "ops", "host": "ops.heymey.app/watch", "description": "Official-site watcher -> webhook to api" }
+  ]
+}

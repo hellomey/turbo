@@ -1,0 +1,29 @@
+# The ONLY thing on the VPS that listens on the internet: Caddy on 80/443 (blueprint §21, §23).
+# Shared by production and staging via the external `heymey-edge` network.
+#   docker network create heymey-edge   (once, in provision.sh)
+#   docker compose -p heymey-edge --env-file images.env -f compose.edge.yml up -d
+name: heymey-edge
+
+services:
+  caddy:
+    image: ${CADDY_IMAGE}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    env_file: [../secrets/production.env] # CLOUDFLARE_API_TOKEN (DNS challenge), OPS_ALLOWLIST, STAGING_ACCESS_KEY
+    volumes:
+      - ../caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks: [edge]
+
+volumes:
+  caddy-data:
+  caddy-config:
+
+networks:
+  edge:
+    name: heymey-edge
+    external: true

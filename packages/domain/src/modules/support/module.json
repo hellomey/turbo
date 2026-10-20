@@ -1,0 +1,22 @@
+{
+  "name": "support",
+  "summary": "Help tickets and status tracking.",
+  "owns": [
+    "Ticket",
+    "TicketMessage"
+  ],
+  "responsibilities": [
+    "In-app Help -> ticket queue",
+    "account/purchase context (never card data)",
+    "payment issues first (4h target)"
+  ],
+  "dependsOn": [
+    "users",
+    "billing",
+    "audit"
+  ],
+  "publishes": [],
+  "buildWeek": 4,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

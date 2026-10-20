@@ -1,0 +1,23 @@
+{
+  "name": "syllabus",
+  "summary": "Subjects, topics (lamps), textbook mapping, glossary.",
+  "owns": [
+    "Syllabus",
+    "Subject",
+    "Topic",
+    "TopicExamTag",
+    "TextbookRef",
+    "Glossary"
+  ],
+  "responsibilities": [
+    "Official syllabus -> Study Map",
+    "shared lamps across exams",
+    "State Board textbook map",
+    "tap-to-see glossary"
+  ],
+  "dependsOn": [],
+  "publishes": [],
+  "buildWeek": 1,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

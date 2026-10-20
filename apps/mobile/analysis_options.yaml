@@ -1,0 +1,7 @@
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+include: ../../dart/analysis_options.yaml

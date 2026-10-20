@@ -1,0 +1,27 @@
+// Cross-cutting platform tables owned by the API platform layer (not a business module).
+
+/// Idempotency-Key store (§34.3, §37). Key + response kept 24 hours. Valkey is the fast path; this is the durable copy
+/// for money endpoints where a lost cache entry must not cause a double credit.
+model IdempotencyRecord {
+  scope       String // e.g. "POST /v1/billing/google/verify:<userId>"
+  key         String   @db.Uuid
+  requestHash String
+  status      Int
+  body        Json
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+
+  @@id([scope, key])
+  @@index([expiresAt])
+}
+
+/// Sync outbox acceptance log (§39): each client action UUID is accepted exactly once.
+model SyncReceipt {
+  clientActionId String   @id @db.Uuid
+  userId         String   @db.Uuid
+  kind           String
+  acceptedAt     DateTime @default(now())
+  clientAt       DateTime
+
+  @@index([userId, acceptedAt])
+}

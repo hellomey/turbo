@@ -1,0 +1,25 @@
+{
+  "name": "practice",
+  "summary": "Practice sessions, free daily limit, mistake loop.",
+  "owns": [
+    "PracticeAttempt",
+    "Answer"
+  ],
+  "responsibilities": [
+    "Practice + recall checks",
+    "30/day free limit (IST day)",
+    "mistake loop drills",
+    "offline answers accepted once by client UUID"
+  ],
+  "dependsOn": [
+    "content",
+    "mastery",
+    "billing"
+  ],
+  "publishes": [
+    "practice.answered"
+  ],
+  "buildWeek": 2,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

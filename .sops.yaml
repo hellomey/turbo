@@ -1,0 +1,11 @@
+# SOPS + age (blueprint §20.3). Encrypted files live in infra/secrets/*.enc.env
+# Replace the age recipients with the founder's and the VPS's public keys.
+creation_rules:
+  - path_regex: infra/secrets/production\.enc\.env$
+    age: >-
+      age1FOUNDER_PUBLIC_KEY_REPLACE_ME,
+      age1PRODUCTION_VPS_PUBLIC_KEY_REPLACE_ME
+  - path_regex: infra/secrets/staging\.enc\.env$
+    age: >-
+      age1FOUNDER_PUBLIC_KEY_REPLACE_ME,
+      age1PRODUCTION_VPS_PUBLIC_KEY_REPLACE_ME

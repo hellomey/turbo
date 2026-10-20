@@ -1,0 +1,22 @@
+{
+  "name": "roles",
+  "summary": "Role assignments and server-side permission checks.",
+  "owns": [
+    "RoleAssignment"
+  ],
+  "responsibilities": [
+    "Role guards for every request",
+    "Desk access by role",
+    "two-person approval records for money/data actions"
+  ],
+  "dependsOn": [
+    "audit"
+  ],
+  "publishes": [
+    "roles.granted",
+    "roles.revoked"
+  ],
+  "buildWeek": 1,
+  "coverageTarget": 90,
+  "founderApprovalRequired": true
+}

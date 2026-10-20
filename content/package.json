@@ -1,0 +1,10 @@
+{
+  "name": "@heymey/content",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Content pipeline: syllabus mapping YAML, PYQ import, AI drafting + independent verification, pack building. Nothing goes live without source + verifier + human check.",
+  "scripts": {
+    "validate": "node pipeline/validate.mjs"
+  }
+}

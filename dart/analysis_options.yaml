@@ -1,0 +1,22 @@
+include: package:lints/recommended.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "hm_api/**"
+  errors:
+    # Desk code must never reach the mobile build: apps/mobile has no dependency on hm_desk.
+    depend_on_referenced_packages: error
+
+linter:
+  rules:
+    - prefer_const_constructors
+    - prefer_final_locals
+    - avoid_print
+    - always_declare_return_types
+    - unawaited_futures

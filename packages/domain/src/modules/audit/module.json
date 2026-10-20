@@ -1,0 +1,16 @@
+{
+  "name": "audit",
+  "summary": "Append-only audit log of every staff and system action.",
+  "owns": [
+    "AuditLog"
+  ],
+  "responsibilities": [
+    "Record every staff action, approval and money/data change",
+    "never updated or deleted"
+  ],
+  "dependsOn": [],
+  "publishes": [],
+  "buildWeek": 1,
+  "coverageTarget": 90,
+  "founderApprovalRequired": true
+}

@@ -1,0 +1,56 @@
+# LOCAL development dependencies only (your machine / an agent's machine). Apps run on the host with
+# `pnpm dev`, on their series ports (4567...). Data services are published on 127.0.0.1 only.
+#   pnpm infra:up      (uses ports.env generated from packages/config/ports.json + the pinned images.env)
+name: heymey-dev
+
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE}
+    environment:
+      POSTGRES_USER: heymey
+      POSTGRES_PASSWORD: heymey
+      POSTGRES_DB: heymey
+    command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
+    ports: ["127.0.0.1:${POSTGRES_PORT}:5432"]
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ../postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U heymey"]
+      interval: 5s
+      retries: 10
+
+  valkey:
+    image: ${VALKEY_IMAGE}
+    # Password-less ON PURPOSE (dev only): bound to 127.0.0.1, holds only throwaway dev data, and the apps,
+    # integration tests and tools/dev-env.mjs use redis://localhost:4582. Staging/production require
+    # VALKEY_PASSWORD (compose.yml, SEC-M2) - never copy this command there.
+    command: ["valkey-server", "--appendonly", "yes"]
+    ports: ["127.0.0.1:${VALKEY_PORT}:6379"]
+    volumes: [valkey-data:/data]
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  seaweedfs:
+    image: ${SEAWEEDFS_IMAGE}
+    command: ["server", "-s3", "-s3.port=8333", "-dir=/data"]
+    ports: ["127.0.0.1:${S3_PORT}:8333"]
+    volumes: [seaweed-data:/data]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8333/healthz || exit 1"]
+      interval: 5s
+      retries: 20
+
+  # Catches OTP emails locally. Inbox UI on http://localhost:4585
+  mailpit:
+    image: ${MAILPIT_IMAGE}
+    ports:
+      - "127.0.0.1:${MAIL_SMTP_PORT}:1025"
+      - "127.0.0.1:${MAIL_UI_PORT}:8025"
+
+volumes:
+  pg-data:
+  valkey-data:
+  seaweed-data:

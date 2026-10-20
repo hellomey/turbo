@@ -1,0 +1,23 @@
+{
+  "name": "mastery",
+  "summary": "Lit/Steady/Gold rings, dimming schedule, relight, Career Ladder rank.",
+  "owns": [
+    "UserTopicState"
+  ],
+  "responsibilities": [
+    "Ring transitions (Lit -> Steady via 1/3/7/21-day recalls -> Gold at 80% timed)",
+    "dimming + relight scheduler",
+    "rank computed ONLY from lamps"
+  ],
+  "dependsOn": [
+    "syllabus",
+    "content"
+  ],
+  "publishes": [
+    "mastery.lamp_changed",
+    "mastery.rank_up"
+  ],
+  "buildWeek": 2,
+  "coverageTarget": 90,
+  "founderApprovalRequired": false
+}

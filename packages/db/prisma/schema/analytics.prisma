@@ -1,0 +1,2 @@
+// Tables owned by the `analytics` module. No other module may query these (blueprint §34.8).
+// To model: AnalyticsEvent (partitioned)

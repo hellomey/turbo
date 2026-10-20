@@ -1,0 +1,23 @@
+{
+  "name": "liveops",
+  "summary": "Events, seasons schedule, feature flags, emergency switch.",
+  "owns": [
+    "LiveEvent",
+    "FeatureFlag",
+    "EmergencySwitch"
+  ],
+  "responsibilities": [
+    "Event calendar (Notification Night, Answer Key Day, State Mock Sunday...)",
+    "feature flags",
+    "pause-games / pause-store switch (needs 2FA)"
+  ],
+  "dependsOn": [
+    "audit"
+  ],
+  "publishes": [
+    "liveops.switch_changed"
+  ],
+  "buildWeek": 4,
+  "coverageTarget": 70,
+  "founderApprovalRequired": true
+}

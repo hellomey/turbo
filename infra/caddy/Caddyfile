@@ -1,0 +1,156 @@
+# Caddy: the only public listener (80/443). Cloudflare sits in front (DNS, CDN cache, DDoS).
+# Upstreams are "<stack>-<service>:<series port>" on the heymey-edge network (see docs/architecture/ports.md).
+#
+# Client IP (BOLT-0007 SEC-H1, blueprint §38 per-IP limits): {client_ip} is the CF-Connecting-IP header, but ONLY
+# when the TCP peer is a Cloudflare edge (trusted_proxies below); a direct hit or any other peer gets its socket
+# address. Every reverse_proxy overwrites X-Forwarded-For with that single value, so the apps (TRUST_PROXY_HOPS=1
+# in compose.yml) read exactly one trusted hop and a client-supplied X-Forwarded-For is never forwarded.
+# Cloudflare ranges: https://www.cloudflare.com/ips-v4 and /ips-v6 (re-check when Cloudflare announces changes;
+# the same list is in infra/scripts/provision.sh for the optional origin firewall).
+{
+	email ops@heymey.app
+	servers {
+		trusted_proxies static 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+		client_ip_headers CF-Connecting-IP
+	}
+}
+
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}
+
+# Admin/Ops access layer (blueprint §15): only the VPN / allowlisted IPs. client_ip, not remote_ip: behind
+# Cloudflare remote_ip is the CF edge (SEC-L1); client_ip is CF-Connecting-IP from a trusted CF peer only.
+(ops_only) {
+	@notAllowed not client_ip {$OPS_ALLOWLIST}
+	respond @notAllowed 404
+}
+
+# Staging API + realtime hosts (blueprint §21, §42; SEC-L1): the ops allowlist, OR the deploy pipeline's smoke/k6 checks that
+# send X-HeyMey-Staging-Key = STAGING_ACCESS_KEY (edge secret, >= 32 chars, [A-Za-z0-9_-] only). Fail-closed:
+# an unset or short key never matches, so staging is then allowlist-only.
+(staging_only) {
+	@stagingDenied {
+		not client_ip {$OPS_ALLOWLIST}
+		not expression `size("{$STAGING_ACCESS_KEY}") >= 32 && {header.X-HeyMey-Staging-Key} == "{$STAGING_ACCESS_KEY}"`
+	}
+	respond @stagingDenied 404
+}
+
+# ---------------- production ----------------
+heymey.app, www.heymey.app {
+	import security_headers
+	reverse_proxy production-marketing:4570 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+api.heymey.app {
+	import security_headers
+	# Desk admin + ops APIs are reachable only from the protected access layer (bare path and sub-paths).
+	@deskAdmin path /v1/desk/admin /v1/desk/admin/* /v1/desk/ops /v1/desk/ops/*
+	handle @deskAdmin {
+		import ops_only
+		reverse_proxy production-api:4567 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+	reverse_proxy production-api:4567 {
+		lb_policy least_conn
+		health_uri /v1/health
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+rt.heymey.app {
+	import security_headers
+	reverse_proxy production-realtime:4568 {
+		# Socket.IO: sticky by client IP so the polling->websocket upgrade lands on the same replica.
+		# client_ip_hash (not ip_hash): behind Cloudflare the remote IP is the CF edge, which can change mid-session.
+		lb_policy client_ip_hash
+		health_uri /health
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+desk.heymey.app {
+	import security_headers
+	header Content-Security-Policy "frame-ancestors 'none'"
+	reverse_proxy production-desk:4569 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+cdn.heymey.app {
+	import security_headers
+	# Public read-only bucket for content packs (SHA-256 checked by the app). Writes never go through here.
+	@write method PUT POST DELETE PATCH
+	respond @write 405
+	reverse_proxy production-seaweedfs:8333 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+ops.heymey.app {
+	import security_headers
+	import ops_only
+	handle_path /grafana* {
+		reverse_proxy grafana:4590 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+	handle_path /errors* {
+		reverse_proxy glitchtip:4593 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+	handle_path /metabase* {
+		reverse_proxy metabase:4594 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+	handle_path /uptime* {
+		reverse_proxy uptime-kuma:4595 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+	handle_path /watch* {
+		reverse_proxy production-changedetection:4596 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+}
+
+# ---------------- staging (same VPS, separate compose project; never real personal data) ----------------
+staging.heymey.app {
+	import ops_only
+	reverse_proxy staging-marketing:4570 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+staging-api.heymey.app {
+	import staging_only
+	reverse_proxy staging-api:4567 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+staging-rt.heymey.app {
+	import staging_only
+	reverse_proxy staging-realtime:4568 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}
+
+staging-desk.heymey.app {
+	import ops_only
+	reverse_proxy staging-desk:4569 {
+		header_up X-Forwarded-For {client_ip}
+	}
+}

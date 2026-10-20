@@ -1,0 +1,1078 @@
+@charset "UTF-8";
+
+:root {
+  --bg-black: #000000;
+  --bg-card: rgba(14, 12, 22, 0.70);
+  --bg-card-hover: rgba(22, 18, 34, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-hover: rgba(93, 243, 190, 0.40);
+  --ink-primary: #ffffff;
+  --ink-secondary: rgba(255, 255, 255, 0.65);
+  --ink-muted: rgba(255, 255, 255, 0.45);
+  --cyan-mint: #5df3be;
+  --sky-blue: #38bdf8;
+  --violet-purple: #8b5cf6;
+  --electric-purple: #a855f7;
+  --radius-pill: 999px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-black);
+  color: var(--ink-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ==========================================================================
+   GRADIENT TEXT UTILITIES
+   ========================================================================== */
+.grad-cyan-purple {
+  background: linear-gradient(90deg, #5df3be 0%, #38bdf8 50%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grad-indigo-purple {
+  background: linear-gradient(90deg, #818cf8 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grad-cyan-mint {
+  background: linear-gradient(90deg, #38bdf8 0%, #5df3be 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grad-mint-purple {
+  background: linear-gradient(90deg, #5df3be 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   HEADER / NAVBAR
+   ========================================================================== */
+.nav-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.70);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+}
+
+.nav-header.nav-scrolled {
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.65);
+}
+
+.nav-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0.9rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+}
+
+.nav-links a {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.80);
+  transition: color 0.18s ease;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.nav-search-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.18s ease;
+}
+
+.nav-search-btn:hover {
+  color: #ffffff;
+}
+
+.nav-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.nav-signin {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.18s ease;
+}
+
+.nav-signin:hover {
+  color: #ffffff;
+}
+
+.btn-pill-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #ffffff;
+  color: #000000;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-pill-primary:hover {
+  background: #dbfcf3;
+  box-shadow: 0 0 20px rgba(93, 243, 190, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-pill-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(20, 20, 25, 0.80);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.btn-pill-ghost:hover {
+  background: rgba(30, 30, 42, 0.95);
+  border-color: rgba(93, 243, 190, 0.60);
+  box-shadow: 0 0 16px rgba(93, 243, 190, 0.25);
+  transform: translateY(-1px);
+}
+
+.nav-menu-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  padding: 0.4rem;
+  cursor: pointer;
+}
+
+/* Mobile Sheet */
+.mobile-nav-sheet {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(10, 10, 14, 0.96);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 2rem;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.nav-header[data-open="true"] .mobile-nav-sheet {
+  display: flex;
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.hero-wrapper {
+  position: relative;
+  min-height: calc(100vh - 65px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  overflow: hidden;
+  padding: 2.5rem 1.5rem 2rem;
+}
+
+.hero-video {
+  position: absolute;
+  top: -20%;  
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  object-fit: cover;
+  object-position: center top; 
+  pointer-events: none; 
+}
+
+
+.hero-veil {
+  position: absolute;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+/* Eyebrow Pill */
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 1.2rem;
+  border-radius: var(--radius-pill);
+  background: rgba(18, 14, 28, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.8rem;
+}
+
+.hero-pill-sparkle {
+  color: var(--violet-purple);
+  font-size: 0.75rem;
+}
+
+/* Headline */
+.hero-title {
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.6rem, 5.8vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+}
+
+.hero-title-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.heymey-brand {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.mey-struck {
+  position: relative;
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.40);
+}
+
+.mey-struck::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: 52%;
+  height: 4px;
+  background: linear-gradient(90deg, #5df3be 0%, #38bdf8 50%, #a855f7 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(93, 243, 190, 0.70);
+  pointer-events: none;
+}
+
+.mey-tamil-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Noto Sans Tamil", system-ui, sans-serif;
+  font-size: clamp(1.8rem, 3.8vw, 2.7rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  padding: 0.15rem 0.85rem 0.3rem;
+  border-radius: 12px;
+  background: rgba(14, 10, 24, 0.60);
+  border: 2px solid transparent;
+  background-image: linear-gradient(#0e0a18, #0e0a18), linear-gradient(135deg, #5df3be 0%, #38bdf8 50%, #a855f7 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 0 24px rgba(93, 243, 190, 0.35), 0 0 40px rgba(168, 85, 247, 0.25);
+  vertical-align: middle;
+}
+
+.hero-title-sub {
+  display: block;
+  font-size: clamp(2.3rem, 5.2vw, 3.8rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-top: 0.15rem;
+}
+
+.hero-description {
+  margin: 0 0 2.2rem;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.6;
+  max-width: 580px;
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+}
+
+.hero-cta-group .btn-pill-primary {
+  padding: 0.75rem 1.6rem;
+  font-size: 0.95rem;
+}
+
+.hero-cta-group .btn-pill-ghost {
+  padding: 0.75rem 1.6rem;
+  font-size: 0.95rem;
+}
+
+/* Four Feature Strip */
+.hero-features-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1.5rem;
+  margin-top: auto;
+  margin-bottom: 1.5rem;
+}
+
+.feature-strip-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.feature-strip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+}
+
+.feature-strip-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ==========================================================================
+   SECTION COMMON STYLES
+   ========================================================================== */
+.section-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6.5rem 1.5rem;
+  position: relative;
+}
+
+.sec-header {
+  margin-bottom: 3.8rem;
+}
+
+.sec-header.centered {
+  text-align: center;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sec-eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.85rem;
+}
+
+.sec-title {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.sec-desc {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink-secondary);
+}
+
+/* ==========================================================================
+   SECTION 2: WHY HEYமெய் (4 Pillars)
+   ========================================================================== */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.8rem;
+}
+
+.pillar-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.pillar-icon-badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(139, 92, 246, 0.10);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.25);
+  color: #a855f7;
+  margin-bottom: 1.25rem;
+  transition: all 0.25s ease;
+}
+
+.pillar-card:hover .pillar-icon-badge {
+  transform: scale(1.08);
+  box-shadow: 0 0 35px rgba(93, 243, 190, 0.35);
+  border-color: rgba(93, 243, 190, 0.6);
+  color: #5df3be;
+}
+
+.pillar-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.pillar-desc {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-secondary);
+}
+
+/* ==========================================================================
+   SECTION 3: A SMARTER WAY TO PREPARE (Split Grid)
+   ========================================================================== */
+.split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  margin: 2.2rem 0 2.5rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+}
+
+.feature-item-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.12);
+}
+
+.feature-item-text h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.feature-item-text p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+}
+
+.mockup-container {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 45px rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #090710;
+}
+
+.mockup-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   SECTION 4: TRUSTED BY LEARNERS (Stats Grid)
+   ========================================================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.stat-item h3 {
+  margin: 0 0 0.4rem;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.stat-item p {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--ink-secondary);
+}
+
+/* ==========================================================================
+   SECTION 5: CURIOSITY TO CONFIDENCE (Interactive 3D Stage)
+   ========================================================================== */
+.curiosity-section {
+  position: relative;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 6.5rem;
+}
+
+.curiosity-3d-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1770 / 889;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #000000;
+  perspective: 1200px;
+}
+
+.curiosity-interactive-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.curiosity-base-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Left overlay text block positioned on the dark space in the artwork */
+.curiosity-overlay-text {
+  position: absolute;
+  top: 7%;
+  left: 4.5%;
+  max-width: 440px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.curiosity-overlay-text .sec-title {
+  margin-bottom: 0.85rem;
+}
+
+.curiosity-overlay-text .sec-desc {
+  margin-bottom: 1.8rem;
+  max-width: 380px;
+}
+
+/* Glowing halos around the 4 planets */
+.planet-halo {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+}
+
+.halo-p1 {
+  left: 10.9%;
+  top: 79.4%;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(139, 92, 246, 0.1) 60%, transparent 80%);
+}
+
+.halo-p2 {
+  left: 30.5%;
+  top: 61.4%;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, rgba(93, 243, 190, 0.15) 60%, transparent 80%);
+}
+
+.halo-p3 {
+  left: 54.5%;
+  top: 39.3%;
+  width: 85px;
+  height: 85px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, rgba(139, 92, 246, 0.15) 60%, transparent 80%);
+}
+
+.halo-p4 {
+  left: 85.2%;
+  top: 21.1%;
+  width: 170px;
+  height: 170px;
+  background: radial-gradient(circle, rgba(93, 243, 190, 0.45) 0%, rgba(56, 189, 248, 0.2) 50%, transparent 75%);
+}
+
+/* Orbit Step Cards (3D Glass Cards) */
+.orbit-step-card {
+  position: absolute;
+  background: rgba(10, 8, 20, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 20px rgba(139, 92, 246, 0.15);
+  border-radius: 12px;
+  padding: 0.85rem 1.15rem;
+  z-index: 12;
+  width: 195px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
+}
+
+.orbit-step-card:hover {
+  border-color: rgba(93, 243, 190, 0.55);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(93, 243, 190, 0.35);
+}
+
+.card-p1 {
+  left: 17%;
+  top: 69%;
+}
+
+.card-p2 {
+  left: 36%;
+  top: 55%;
+}
+
+.card-p3 {
+  left: 60%;
+  top: 35%;
+}
+
+.card-p4 {
+  left: 77%;
+  top: 24%;
+}
+
+.step-card-num {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--sky-blue);
+  margin-bottom: 0.2rem;
+}
+
+.step-card-body h4 {
+  margin: 0 0 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.step-card-body p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   SECTION 6: BUILT FOR REAL LEARNERS (2x2 Cards inside Container)
+   ========================================================================== */
+.built-learners-card {
+  background: rgba(12, 10, 20, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 3.5rem 3rem;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.cards-2x2-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+.inner-glass-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 1.4rem;
+  transition: all 0.22s ease;
+}
+
+.inner-glass-card:hover {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(93, 243, 190, 0.35);
+  transform: translateY(-2px);
+}
+
+.inner-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+}
+
+.inner-glass-card h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.inner-glass-card p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   COMBINED FOOTER UNIVERSE (Belief + Ready to Begin + Footer in 1 Living Canvas)
+   ========================================================================== */
+.final-universe-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #000000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 3rem;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.final-bg-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.final-bg-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    #000000 0%,
+    rgba(0, 0, 0, 0.45) 15%,
+    transparent 35%,
+    transparent 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+.final-universe-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.belief-universe-wrapper,
+.ready-begin-universe-wrapper {
+  pointer-events: auto;
+}
+
+/* Upper subsection: Our Belief */
+.belief-universe-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 6rem 1.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.belief-text-column {
+  max-width: 520px;
+}
+
+.belief-quote {
+  font-size: clamp(2.1rem, 3.8vw, 3rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0 0 1.8rem;
+}
+
+.belief-body {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink-secondary);
+}
+
+.belief-body p {
+  margin: 0 0 0.9rem;
+}
+
+.belief-divider {
+  color: rgba(255, 255, 255, 0.3);
+  margin: 1.4rem 0;
+  letter-spacing: 0.2em;
+}
+
+.belief-sculpture-spacer {
+  /* Empty spacer so the video's glowing Thiruvalluvar sculpture shows through */
+  min-height: 280px;
+}
+
+/* Lower subsection: Ready to Begin (Centered over the glowing planet curve, end of page) */
+.ready-begin-universe-wrapper {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 2.5rem 1.5rem 4.5rem;
+}
+
+.ready-begin-universe-wrapper .sec-title {
+  margin-bottom: 0.85rem;
+}
+
+.ready-begin-universe-wrapper .sec-desc {
+  margin-bottom: 1.8rem;
+}
+
+.ready-begin-universe-wrapper .btn-pill-primary {
+  padding: 0.75rem 1.8rem;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .nav-links, .nav-actions .btn-pill-primary, .nav-signin, .nav-divider {
+    display: none;
+  }
+  .nav-menu-btn {
+    display: flex;
+  }
+  .pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .split-grid, .built-learners-card, .belief-universe-wrapper {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+  .built-learners-card {
+    padding: 2.5rem 1.8rem;
+  }
+  .final-universe-section {
+    min-height: auto;
+  }
+  .orbit-step-card {
+    width: 170px;
+    padding: 0.7rem 0.9rem;
+  }
+}
+
+@media (max-width: 900px) {
+  /* Curiosity to Confidence mobile responsive adaptation */
+  .curiosity-3d-stage {
+    aspect-ratio: auto;
+    overflow: visible;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  .curiosity-overlay-text {
+    position: relative;
+    top: auto;
+    left: auto;
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+  .curiosity-interactive-canvas {
+    position: relative;
+    aspect-ratio: 1770 / 889;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .orbit-step-card {
+    position: static;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .curiosity-mobile-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .pillars-grid {
+    grid-template-columns: 1fr;
+  }
+  .cards-2x2-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-features-bar {
+    gap: 1rem;
+    flex-direction: column;
+  }
+  .feature-strip-divider {
+    display: none;
+  }
+  .curiosity-mobile-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}

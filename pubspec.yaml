@@ -1,0 +1,21 @@
+# Dart pub workspace (one lockfile, one resolution) for every Flutter/Dart package in the monorepo.
+# Turbo drives it through dart/package.json (lint/test/codegen) and apps/{mobile,desk}/package.json (dev/build).
+name: heymey_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+workspace:
+  - apps/mobile
+  - apps/desk
+  - dart/hm_design
+  - dart/hm_api
+  - dart/hm_core
+  - dart/hm_data
+  - dart/hm_games
+  - dart/hm_features
+  - dart/hm_desk
+
+dev_dependencies:
+  lints: ^6.0.0

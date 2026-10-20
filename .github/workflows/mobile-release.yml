@@ -1,0 +1,38 @@
+# Mobile builds (blueprint §42): fastlane -> Play internal testing + TestFlight -> staged rollout 10% -> 50% -> 100%.
+# Manual trigger; store credentials live in GitHub environment secrets. Fastlane lanes are added in INT-004.
+name: mobile-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: "internal | production-10 | production-50 | production-100"
+        required: true
+        default: internal
+
+# Least privilege for GITHUB_TOKEN (SEC-L4); actions pinned to commit SHAs (tag in the trailing comment).
+permissions:
+  contents: read
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    environment: mobile
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with: { channel: stable, cache: true }
+      - run: flutter pub get
+      - run: cd apps/mobile && flutter build appbundle --release
+      - run: echo "fastlane android ${{ inputs.track }} (lane added in INT-004)"
+
+  ios:
+    runs-on: macos-latest
+    environment: mobile
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with: { channel: stable, cache: true }
+      - run: flutter pub get
+      - run: cd apps/mobile && flutter build ipa --release --no-codesign
+      - run: echo "fastlane ios ${{ inputs.track }} (lane added in INT-004)"

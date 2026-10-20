@@ -1,0 +1,42 @@
+{
+  "name": "heymey",
+  "private": true,
+  "description": "HeyMey monorepo: backend, Flutter app + Desk, marketing site, infra, content and the AIDLC workspace.",
+  "packageManager": "pnpm@12.14.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:server": "turbo run dev --filter=@heymey/api --filter=@heymey/realtime --filter=@heymey/worker",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:integration": "turbo run test:integration",
+    "codegen": "turbo run codegen",
+    "env:dev": "node tools/dev-env.mjs",
+    "db:migrate": "pnpm --filter @heymey/db migrate:deploy",
+    "db:migrate:dev": "pnpm --filter @heymey/db migrate:dev",
+    "db:seed": "pnpm --filter @heymey/db seed",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "infra:up": "docker compose -f infra/compose/compose.dev.yml --env-file infra/compose/ports.env --env-file infra/compose/images.env up -d --wait",
+    "infra:down": "docker compose -f infra/compose/compose.dev.yml --env-file infra/compose/ports.env --env-file infra/compose/images.env down",
+    "infra:ps": "docker compose -f infra/compose/compose.dev.yml --env-file infra/compose/ports.env --env-file infra/compose/images.env ps",
+    "ports:gen": "node tools/gen-ports.mjs",
+    "ports:check": "node tools/gen-ports.mjs --check",
+    "firewall:check": "node tools/check-firewall.mjs",
+    "boundaries": "depcruise apps packages --config .dependency-cruiser.cjs",
+    "gen:module": "node tools/gen-module.mjs",
+    "verify": "pnpm ports:check && pnpm docs:check && pnpm firewall:check && pnpm boundaries && turbo run lint typecheck test",
+    "docs:gen": "node tools/gen-module-docs.mjs",
+    "docs:check": "node tools/gen-module-docs.mjs --check"
+  },
+  "devDependencies": {
+    "dependency-cruiser": "^18.7.0",
+    "prettier": "^3.9.10",
+    "turbo": "^2.11.9",
+    "typescript": "~6.0.3"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "readiness",
+  "summary": "Readiness Meter, trends, Sunday Report (derived metrics).",
+  "owns": [
+    "ReadinessSnapshot"
+  ],
+  "responsibilities": [
+    "Four evidence bars (Coverage, Memory, Exam performance, Speed) - never one fake percentage",
+    "7/30/90-day trends",
+    "Sunday Report"
+  ],
+  "dependsOn": [
+    "mastery",
+    "practice",
+    "exam-hall"
+  ],
+  "publishes": [],
+  "buildWeek": 2,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

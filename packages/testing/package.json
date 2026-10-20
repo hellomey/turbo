@@ -1,0 +1,28 @@
+{
+  "name": "@heymey/testing",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Test-only helpers: fake clock, factories, fixtures, Testcontainers setup. Never imported by production code (dependency-cruiser enforces).",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@heymey/eslint-config": "workspace:*",
+    "@types/node": "^26.6.5",
+    "eslint": "^10.13.0",
+    "typescript": "~6.0.3"
+  },
+  "dependencies": {
+    "@testcontainers/postgresql": "^12.2.1",
+    "testcontainers": "^12.2.1"
+  }
+}

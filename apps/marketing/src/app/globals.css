@@ -1,0 +1,355 @@
+/* Cascade order. The hero's original stylesheet lives in its own layer
+   ("legacy") between Tailwind's base and the site layer, so:
+   - it still beats Tailwind preflight exactly as it did before (hero unchanged);
+   - new site styles and Tailwind utilities can never be overridden by it. */
+@layer theme, base, legacy, site, components, utilities;
+
+@import "tailwindcss";
+@import "../styles/hero-legacy.css" layer(legacy);
+@import "lenis/dist/lenis.css" layer(site);
+
+/* ── Design tokens (sampled from the hero assets) ─────────────────────────
+   mint-300  #B1F0CF  flame highlight in sky.png
+   mint-400  #5DF3BE  badge / strike-through gradient start (hero CSS)
+   cyan-400  #38BDF8  gradient midpoint (hero CSS)
+   violet-500 #A855F7 gradient end (hero CSS)
+   purple-900/700/500/300 cloud shadow → mid → light → highlight (sky.png)  */
+@theme {
+  --color-ink: #ffffff;
+  --color-ink-2: rgb(255 255 255 / 0.68);
+  --color-ink-3: rgb(255 255 255 / 0.5);
+  --color-line: rgb(255 255 255 / 0.1);
+  --color-mint-300: #b1f0cf;
+  --color-mint-400: #5df3be;
+  --color-cyan-400: #38bdf8;
+  --color-violet-500: #a855f7;
+  --color-purple-950: #120a2a;
+  --color-purple-900: #381c86;
+  --color-purple-700: #502dd9;
+  --color-purple-500: #6c42ef;
+  --color-purple-300: #bd6cfb;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-serif), Georgia, serif;
+  --font-tamil: var(--font-noto-tamil), "Noto Sans Tamil", system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer site {
+  /* NOTE: html/body keep the original overflow-x:hidden from the hero CSS.
+     That makes <body> an opaque scroll container, which is what lets Chrome
+     render the hero text with subpixel (LCD) anti-aliasing exactly as before
+     (changing it to overflow-x:clip measurably altered hero text: 0.2% of
+     pixels at 768px). Consequence: CSS position:sticky cannot work on this
+     site, so stacking/pinning is done with GSAP ScrollTrigger pins instead.
+     Font families are likewise inherited from the original stack ("Inter",
+     "Noto Sans Tamil"), which next/font registers under those exact names. */
+
+  :focus-visible {
+    outline: 2px solid var(--color-mint-400);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    background: #fff;
+    color: #000;
+    font-weight: 600;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Gradient border used by badges and key buttons (same stops as the hero badge). */
+  .grad-border {
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(var(--grad-fill, #0b0716), var(--grad-fill, #0b0716)) padding-box,
+      linear-gradient(135deg, var(--color-mint-400), var(--color-cyan-400) 50%, var(--color-violet-500)) border-box;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Fluid type scale */
+  .t-display {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 1.2rem + 5.2vw, 7rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.1rem + 3.6vw, 4.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+  }
+  .t-h3 {
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    line-height: 1.2;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  .t-lead {
+    font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.3rem);
+    line-height: 1.6;
+    color: var(--color-ink-2);
+  }
+  .t-eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-mint-300);
+    font-weight: 600;
+  }
+
+  /* CSS star field: the fallback when WebGL is skipped. */
+  .css-stars {
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 72%, #fff 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 44% 34%, #d9ccff 50%, transparent 51%),
+      radial-gradient(1px 1px at 63% 12%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 77% 58%, #fff 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 88% 26%, #b1f0cf 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 88%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 52% 90%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 93% 82%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 36% 50%, #fff 50%, transparent 51%);
+    background-size: 420px 420px;
+  }
+
+  /* Decorative loops inside panels pause entirely for reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .anim-loop,
+    .anim-loop * {
+      animation: none !important;
+    }
+  }
+}
+
+@keyframes hm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes hm-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+@keyframes hm-type {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes hm-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ── Home sections: progressive enhancement ───────────────────────────────
+   Default (no JS, reduced motion, small screens): everything stacked and
+   readable. The GSAP layer sets data-fx="pinned" / "on" to switch layouts. */
+@layer site {
+  /* Landscape (horizontal) section */
+  .ls-track {
+    display: grid;
+    gap: 1.25rem;
+    padding: 0 1.25rem;
+  }
+  .ls-panel {
+    position: relative;
+    display: grid;
+    gap: 1.75rem;
+    align-content: center;
+    border: 1px solid var(--color-line);
+    border-radius: 28px;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background: radial-gradient(120% 90% at 85% 0%, rgb(80 45 217 / 0.28), transparent 60%), #07050d;
+    overflow: hidden;
+  }
+  .ls-progress {
+    display: none;
+  }
+  [data-fx="pinned"] .ls-viewport {
+    height: 100svh;
+    /* clip, not hidden: a hidden box can still be scrolled sideways by the
+       browser when a link inside a translated panel takes focus. */
+    overflow: clip;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  [data-fx="pinned"] .ls-track {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    padding: 0;
+    width: max-content;
+  }
+  [data-fx="pinned"] .ls-panel {
+    width: 100vw;
+    height: 100svh;
+    border: 0;
+    border-radius: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    padding: 0 clamp(2rem, 6vw, 7rem);
+    background: transparent;
+  }
+  [data-fx="pinned"] .ls-progress {
+    display: block;
+    position: absolute;
+    left: clamp(2rem, 6vw, 7rem);
+    right: clamp(2rem, 6vw, 7rem);
+    bottom: clamp(1.5rem, 5svh, 3rem);
+    height: 2px;
+    background: var(--color-line);
+  }
+  .ls-progress > span {
+    display: block;
+    height: 100%;
+    transform-origin: left center;
+    transform: scaleX(0);
+    background: linear-gradient(90deg, var(--color-mint-400), var(--color-cyan-400), var(--color-violet-500));
+  }
+  @media (min-width: 768px) {
+    .ls-track {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 0 2rem;
+    }
+    .ls-panel:last-child {
+      grid-column: 1 / -1;
+    }
+    [data-fx="pinned"] .ls-panel:last-child {
+      grid-column: auto;
+    }
+  }
+
+  /* Card stack (pinned by GSAP; plain list without JS) */
+  .stack-card {
+    transform-origin: 50% 0%;
+  }
+
+  /* Pinned phone sequence */
+  .ph-steps {
+    display: grid;
+    gap: 3rem;
+  }
+  .ph-step-figure {
+    display: block;
+  }
+  .ph-screens {
+    display: none;
+  }
+  [data-fx="on"] .ph-stage {
+    height: 100svh;
+    display: grid;
+    align-items: center;
+    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    padding: 6rem 1.25rem 2rem;
+  }
+  [data-fx="on"] .ph-steps {
+    position: relative;
+    display: block;
+    min-height: 7.5rem;
+  }
+  [data-fx="on"] .ph-step {
+    position: absolute;
+    inset: 0;
+  }
+  [data-fx="on"] .ph-step-figure {
+    display: none;
+  }
+  [data-fx="on"] .ph-screens {
+    display: block;
+    position: relative;
+    height: 100%;
+    max-height: 72svh;
+    aspect-ratio: 390 / 844;
+    justify-self: center;
+  }
+  [data-fx="on"] .ph-screens img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (min-width: 768px) {
+    [data-fx="on"] .ph-stage {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: 1fr;
+      padding: 6rem clamp(2rem, 6vw, 7rem) 2rem;
+    }
+    [data-fx="on"] .ph-steps {
+      min-height: 14rem;
+    }
+  }
+
+  /* Phone frame */
+  .phone {
+    position: relative;
+    border-radius: 2.6rem;
+    padding: 0.55rem;
+    background: linear-gradient(160deg, #2a2440, #0b0816 60%);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.08),
+      0 40px 80px -30px rgb(108 66 239 / 0.55),
+      0 0 120px -40px rgb(93 243 190 / 0.35);
+  }
+  .phone-screen {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2.1rem;
+    background: #fbf7ef;
+  }
+}
+
+@keyframes hm-countdown {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 100; }
+}
+@keyframes hm-dot {
+  0%, 8% { background: rgb(255 255 255 / 0.15); }
+  10%, 100% { background: #5df3be; }
+}
+@keyframes hm-stage {
+  0%, 15% { transform: translateY(0); }
+  25%, 40% { transform: translateY(3.6rem); }
+  50%, 65% { transform: translateY(7.2rem); }
+  75%, 100% { transform: translateY(10.8rem); }
+}
+
+@layer site {
+  /* The Kural's மெய்ப்பொருள் wears the hero badge's border and glow. */
+  .mey-echo {
+    border: 2px solid transparent;
+    background-image: linear-gradient(#0e0a18, #0e0a18), linear-gradient(135deg, #5df3be 0%, #38bdf8 50%, #a855f7 100%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 0 24px rgba(93, 243, 190, 0.35), 0 0 40px rgba(168, 85, 247, 0.25);
+    line-height: 1.15;
+  }
+}

@@ -1,0 +1,18 @@
+# Founder approval required (blueprint §26.2 rule 4): money, personal data, game fairness, security, legal text.
+# Replace @heymey-founder with the founder's GitHub handle; enable "Require review from Code Owners" on main.
+*                                                   @heymey-founder
+
+/packages/domain/src/modules/economy/               @heymey-founder
+/packages/domain/src/modules/billing/               @heymey-founder
+/packages/domain/src/modules/games/                 @heymey-founder
+/packages/domain/src/modules/marketplace/           @heymey-founder
+/packages/domain/src/modules/auth/                  @heymey-founder
+/packages/domain/src/modules/users/                 @heymey-founder
+/packages/domain/src/modules/roles/                 @heymey-founder
+/packages/domain/test/firewall/                     @heymey-founder
+/packages/db/prisma/                                @heymey-founder
+/docs/adr/0008-firewall-enforcement.md              @heymey-founder
+/infra/secrets/                                     @heymey-founder
+/.sops.yaml                                         @heymey-founder
+/apps/marketing/src/content/legal.ts                @heymey-founder
+/.github/                                           @heymey-founder

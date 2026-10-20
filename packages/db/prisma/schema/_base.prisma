@@ -1,0 +1,19 @@
+// HeyMey database. PostgreSQL 17. One .prisma file per owning module (blueprint §34.8, §36).
+//
+// RULES (docs/adr/0004-modular-monolith.md):
+// - A model lives in the file of the module that owns it. Only that module's infrastructure/ queries it.
+// - No Prisma relations ACROSS module files. Reference other modules' rows by id (`userId String @db.Uuid`).
+//   Relations inside one module are fine. This keeps modules separable onto other servers later (§25).
+// - Migrations are expand -> migrate -> contract. Never break the live app version (§42).
+// - Money and ledger tables are append-only: no UPDATE/DELETE in application code.
+// - Extensions (pg_trgm, pgcrypto) and partitioning are created in raw SQL migrations.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}

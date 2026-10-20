@@ -1,0 +1,29 @@
+{
+  "name": "games",
+  "summary": "Spin, Slot, Duel, Clue Poker, District Quest, Memory Pits, Tiger Trap; odds; leagues.",
+  "owns": [
+    "GameRoom",
+    "GameResult",
+    "OddsConfig (versioned)",
+    "League",
+    "Trophy"
+  ],
+  "responsibilities": [
+    "Server-authoritative rooms",
+    "CSPRNG spin/slot with versioned odds stored per outcome",
+    "ranked cap 10/day for everyone",
+    "games sleep 12-5 AM IST",
+    "bots never give ranked trophies"
+  ],
+  "dependsOn": [
+    "content",
+    "economy",
+    "liveops"
+  ],
+  "publishes": [
+    "games.match_finished"
+  ],
+  "buildWeek": 3,
+  "coverageTarget": 90,
+  "founderApprovalRequired": true
+}

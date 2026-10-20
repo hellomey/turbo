@@ -1,0 +1,2 @@
+// Tables owned by the `squads` module. No other module may query these (blueprint §34.8).
+// To model: Squad, SquadMember, SquadBattle, BattleAttempt, HelpRequest, ChatMessage, SquadGoal

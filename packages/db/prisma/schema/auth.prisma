@@ -1,0 +1,73 @@
+// Tables owned by the `auth` module. No other module may query these (blueprint §34.8). §38.
+
+/// Codes are stored HASHED (argon2id + server pepper). 10-minute expiry, max 5 tries, then locked.
+model OtpCode {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  email     String
+  purpose   String    @default("login") // login | delete_account
+  codeHash  String
+  attempts  Int       @default(0)
+  expiresAt DateTime
+  usedAt    DateTime?
+  lockedAt  DateTime?
+  createdAt DateTime  @default(now())
+  requestIp String?
+
+  @@index([email, purpose, createdAt])
+  @@index([expiresAt])
+}
+
+model Device {
+  id          String   @id @db.Uuid // client-generated deviceId
+  userId      String   @db.Uuid
+  platform    String // android | ios | web
+  attestation String? // Play Integrity / App Attest verdict (Phase 3)
+  createdAt   DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+
+  sessions Session[]
+
+  @@index([userId])
+}
+
+/// One session per sign-in per device = one refresh-token FAMILY. Reuse of a rotated token revokes it.
+model Session {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  userId        String    @db.Uuid
+  deviceId      String    @db.Uuid
+  isDesk        Boolean   @default(false) // Desk sessions: TOTP verified, 12-hour refresh
+  createdAt     DateTime  @default(now())
+  lastUsedAt    DateTime  @default(now())
+  expiresAt     DateTime
+  revokedAt     DateTime?
+  revokedReason String? // logout | logout_all | token_reuse | deleted | expired
+
+  device        Device         @relation(fields: [deviceId], references: [id])
+  refreshTokens RefreshToken[]
+
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  sessionId String    @db.Uuid
+  tokenHash String    @unique // sha256 of the opaque token
+  expiresAt DateTime
+  usedAt    DateTime? // set on rotation; presenting a used token => revoke the session family
+  createdAt DateTime  @default(now())
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+}
+
+/// TOTP second factor for Desk users (staff + partners). Secret encrypted at rest (AES-256-GCM).
+model TwoFactor {
+  userId         String    @id @db.Uuid
+  secretEnc      String
+  confirmedAt    DateTime?
+  lastUsedStep   BigInt? // last accepted 30-s step: a code can be used once (replay protection)
+  failedAttempts Int       @default(0) // wrong TOTP codes since the last success (SEC-H2)
+  lockedUntil    DateTime? // 5 wrong codes => locked 15 minutes
+  createdAt      DateTime  @default(now())
+}

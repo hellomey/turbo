@@ -1,0 +1,30 @@
+name: hm_features
+description: "Aspirant-facing feature modules shared by mobile (+ staff quick actions)."
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  hm_design:
+    path: ../hm_design
+  hm_core:
+    path: ../hm_core
+  hm_data:
+    path: ../hm_data
+  hm_games:
+    path: ../hm_games
+  hm_api:
+    path: ../hm_api
+  flutter_riverpod: ^3.4.3
+  url_launcher: ^6.3.3
+  share_plus: ^13.3.1
+  flutter_tts: ^4.2.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

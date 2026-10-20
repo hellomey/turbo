@@ -1,0 +1,46 @@
+// Tables owned by the `users` module. No other module may query these (blueprint §34.8).
+
+model User {
+  id                   String    @id @default(uuid(7)) @db.Uuid
+  email                String    @unique // normalised (lower-case, trimmed)
+  nickname             String?
+  district             String? // one of the 38 TN districts; chosen by the user, we never collect location (§23)
+  calmMode             Boolean   @default(false)
+  liteMode             Boolean? // null = auto (<= 3 GB RAM)
+  hideFromLeaderboards Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  deletionRequestedAt  DateTime? // 7-day grace (§38.7); signing in clears it
+  deletedAt            DateTime? // personal data erased; row kept only as a tombstone for financial records
+
+  profile  UserProfile?
+  consents Consent[]
+}
+
+/// Onboarding eligibility answers (§17.1 step 2). Saved only after sign-in.
+model UserProfile {
+  userId            String   @id @db.Uuid
+  dateOfBirth       DateTime @db.Date // 18+ checked on write
+  qualification     String // sslc | hsc | iti | diploma | degree | pg
+  degreeSubject     String?
+  community         String // OC | BC | BCM | MBC_DNC | SC | SCA | ST
+  pstm              Boolean
+  specialCategories String[]
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/// DPDP consent records: one row per purpose per change (append-only). Nothing pre-ticked (§17.1 step 8).
+model Consent {
+  id            String   @id @default(uuid(7)) @db.Uuid
+  userId        String   @db.Uuid
+  purpose       String // core_service | offers_email | product_research | share_with_supporters | share_with_institution
+  granted       Boolean
+  noticeVersion String
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose, createdAt])
+}

@@ -1,0 +1,25 @@
+{
+  "name": "institutions",
+  "summary": "Institution licences, seats, batch analytics.",
+  "owns": [
+    "Institution",
+    "Seat",
+    "Batch"
+  ],
+  "responsibilities": [
+    "Seat activation after invoice",
+    "student invites",
+    "private institution league",
+    "batch-level analytics only (students opt in to individual visibility)"
+  ],
+  "dependsOn": [
+    "users",
+    "exam-hall",
+    "readiness",
+    "audit"
+  ],
+  "publishes": [],
+  "buildWeek": 4,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

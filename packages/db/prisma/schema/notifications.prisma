@@ -1,0 +1,2 @@
+// Tables owned by the `notifications` module. No other module may query these (blueprint §34.8).
+// To model: PushToken, AlertPreference, SendLog

@@ -1,0 +1,206 @@
+# Every pull request (blueprint §42). All jobs are required checks on `main`.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Least privilege for GITHUB_TOKEN (SEC-L4); jobs widen it only where needed. Third-party actions are pinned to
+# full commit SHAs (tag in the trailing comment); bump with `git ls-remote https://github.com/<owner>/<repo> refs/tags/<tag>`.
+permissions:
+  contents: read
+
+env:
+  CI: "true"
+  FIREWALL_BASE_REF: origin/main
+
+jobs:
+  guards:
+    name: guards (ports · module docs · firewall · boundaries)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with: { fetch-depth: 0 }
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm ports:check
+      - run: pnpm docs:check
+      - run: pnpm firewall:check
+      - run: pnpm boundaries
+
+  server:
+    name: server (lint · typecheck · unit · contract drift)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      # Prisma client (packages/db/src/generated, git-ignored) + OpenAPI BEFORE lint/typecheck/test.
+      - name: codegen (Prisma client + OpenAPI)
+        run: pnpm turbo run codegen --filter=@heymey/contracts --filter=@heymey/db
+      - name: OpenAPI must be committed and up to date
+        run: git diff --exit-code packages/contracts/openapi
+      - run: pnpm turbo run lint typecheck test --filter=./packages/* --filter=@heymey/api --filter=@heymey/realtime --filter=@heymey/worker
+      - name: Firewall suite (permanent)
+        run: pnpm --filter @heymey/domain test:firewall
+
+  integration:
+    name: integration (Testcontainers - real Postgres + Valkey)
+    runs-on: ubuntu-latest
+    # GitHub's ubuntu runners ship a Docker engine; Testcontainers uses /var/run/docker.sock directly.
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with: { node-version: 24, cache: pnpm }
+      - name: Docker is available
+        run: docker version
+      - run: pnpm install --frozen-lockfile
+      - name: codegen (Prisma client + OpenAPI)
+        run: pnpm turbo run codegen --filter=@heymey/contracts --filter=@heymey/db
+      # turbo.json: test:integration depends on ^build + codegen, cache disabled.
+      - run: pnpm turbo run test:integration
+
+  flutter:
+    name: flutter (format · analyze · tests · goldens · hm_api drift)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with: { channel: stable, cache: true }
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed apps/mobile/lib apps/mobile/test apps/desk/lib apps/desk/test dart
+      - run: flutter analyze
+      - run: node tools/flutter-test-all.mjs
+      - name: Regenerate hm_api from the contract and fail if stale
+        run: |
+          pnpm --filter @heymey/contracts codegen
+          node tools/dart-api-codegen.mjs
+          git diff --exit-code dart/hm_api
+
+  marketing:
+    name: marketing (lint · typecheck · build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run lint typecheck build --filter=@heymey/marketing
+
+  security:
+    name: security (semgrep · osv · gitleaks · audit)
+    runs-on: ubuntu-latest
+    permissions: { contents: read, pull-requests: read } # gitleaks-action lists the PR's commits
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with: { fetch-depth: 0 }
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: semgrep
+        run: pipx run semgrep scan --config p/default --config p/typescript --config p/secrets --error
+      - name: osv-scanner
+        uses: google/osv-scanner-action/osv-scanner-action@b1d267aea5211fa648d9d442fa64b90dbdcbdd36 # v2.7.0
+        with: { scan-args: "-r ./" }
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm audit --prod --audit-level high
+
+  infra:
+    name: infra (compose config · Caddyfile)
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: infra/compose } }
+    env: { APP_VERSION: ci, POSTGRES_PASSWORD: ci, VALKEY_PASSWORD: ci }
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: dummy secret files for validation only
+        run: touch ../secrets/production.env ../secrets/staging.env ../secrets/production.s3.json ../secrets/staging.s3.json
+      - run: docker network create heymey-edge
+      - run: |
+          E="--env-file ports.env --env-file images.env"
+          docker compose $E -f compose.dev.yml config -q
+          STACK=production docker compose $E -f compose.yml config -q
+          STACK=staging docker compose $E -f compose.yml -f compose.staging.yml config -q
+          docker compose $E -f compose.edge.yml config -q
+          docker compose $E -f compose.monitoring.yml config -q
+      - name: third-party images are pinned (tag + digest, never latest)
+        run: |
+          bad=$(grep -E '^[A-Z_]+_IMAGE=' images.env | grep -vE '^[A-Z_]+_IMAGE=[^@]+:[^:@/]+@sha256:[0-9a-f]{64}$' || true)
+          if [ -n "$bad" ]; then echo "unpinned images in images.env:"; echo "$bad"; exit 1; fi
+          if grep -nE '^[[:space:]]*image:[[:space:]]*[^$[:space:]]' compose.dev.yml compose.edge.yml compose.monitoring.yml; then
+            echo "use the *_IMAGE variables from images.env"; exit 1
+          fi
+          if grep -nE '^FROM ' ../docker/*.Dockerfile | grep -v '@sha256:' | grep -vE 'FROM (base|build) AS'; then
+            echo "Dockerfile FROM must be pinned by digest"; exit 1
+          fi
+      - name: caddy validate
+        run: |
+          set -a; . ./images.env; set +a
+          docker run --rm -e OPS_ALLOWLIST=10.0.0.0/8 -v "$PWD/../caddy/Caddyfile:/etc/caddy/Caddyfile:ro" "$CADDY_IMAGE" caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+          docker run --rm -v "$PWD/../docker/desk.Caddyfile:/etc/caddy/Caddyfile:ro" "$CADDY_IMAGE" caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+
+  images:
+    name: images (server runtime · migrator · marketing)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - name: server runtime
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          file: infra/docker/server.Dockerfile
+          target: runtime
+          load: true
+          tags: heymey/server:ci
+          cache-from: type=gha,scope=server
+          cache-to: type=gha,mode=max,scope=server
+      - name: migrator
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          file: infra/docker/server.Dockerfile
+          target: migrator
+          tags: heymey/migrator:ci
+          cache-from: type=gha,scope=server
+      - name: marketing
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          file: infra/docker/marketing.Dockerfile
+          tags: heymey/marketing:ci
+          cache-from: type=gha,scope=marketing
+          cache-to: type=gha,mode=max,scope=marketing
+      - name: server bundle resolves (stops only on the missing environment)
+        run: |
+          out=$(docker run --rm heymey/server:ci 2>&1 || true)
+          echo "$out" | tail -n 20
+          echo "$out" | grep -q "Invalid environment"
+
+  graph:
+    name: knowledge graph builds (graphify)
+    runs-on: ubuntu-latest
+    # Proves graphify-out/graph.json rebuilds from the tree (D-2026-10-20-15). The output is never committed by CI.
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with: { python-version: "3.12" }
+      - run: pip install "graphifyy==0.9.92"
+      - name: graphify update (AST only, no LLM)
+        env: { GRAPHIFY_FORCE: "1" }
+        run: |
+          graphify update .
+          test -s graphify-out/graph.json

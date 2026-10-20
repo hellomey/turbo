@@ -1,0 +1,64 @@
+// Tables owned by the `exams` module. No other module may query these (blueprint §34.8). §19.1.
+// Exam and eligibility data is published only after a HUMAN check (§26.2 rule 5): status draft -> published,
+// with verifiedBy / verifiedAt and the official source URL recorded.
+
+model Exam {
+  id               String    @id @default(uuid(7)) @db.Uuid
+  code             String    @unique // e.g. tnpsc-group-4
+  name             String
+  conductingBody   String // TNPSC | SSC | IBPS | RRB | ...
+  level            String // state | central
+  minQualification String // sslc | hsc | iti | diploma | degree | pg
+  fullPrep         Boolean   @default(false) // launch exams with full content (§1 decision 16)
+  description      String
+  stages           String[]
+  patternMode      String // omr | cbt
+  patternQuestions Int?
+  patternMinutes   Int?
+  negativeMarking  Boolean   @default(false)
+  officialUrl      String
+  notificationUrl  String?
+  status           String    @default("draft") // draft | published | archived
+  sourceUrl        String
+  verifiedBy       String?   @db.Uuid
+  verifiedAt       DateTime?
+  lastCheckedAt    DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  rules EligibilityRule[]
+}
+
+/// Versioned, data-driven eligibility (§19.1 Q1, Q4). The engine never hard-codes an exam.
+model EligibilityRule {
+  id                String    @id @default(uuid(7)) @db.Uuid
+  examId            String    @db.Uuid
+  version           Int
+  ageAsOf           DateTime  @db.Date // the notification's "age as on" date
+  minAge            Int
+  maxAgeByCommunity Json // { "OC": 32, "BC": 34, ... } ; null value = no upper limit
+  relaxationYears   Json // { "PWD": 10, "EX_SERVICEMAN": 5, "DESTITUTE_WIDOW": 5 }
+  qualifications    String[] // accepted qualification levels
+  degreeSubjects    String[] // empty = any subject
+  pstmNote          String?
+  status            String    @default("draft") // draft | published | superseded
+  sourceUrl         String
+  verifiedBy        String?   @db.Uuid
+  verifiedAt        DateTime?
+  createdAt         DateTime  @default(now())
+
+  exam Exam @relation(fields: [examId], references: [id])
+
+  @@unique([examId, version])
+}
+
+/// The user's main exam + up to 2 more (§17.1 step 4).
+model UserExamChoice {
+  userId    String   @db.Uuid
+  examCode  String
+  isMain    Boolean
+  createdAt DateTime @default(now())
+
+  @@id([userId, examCode])
+  @@index([userId])
+}

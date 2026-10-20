@@ -1,0 +1,17 @@
+name: hm_design
+description: "Design tokens (blueprint §10.3), themes (dark default, light, high-contrast), core widgets, Rive loader."
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

@@ -1,0 +1,30 @@
+// Tables owned by the `games` module. No other module may query these (blueprint §34.8). §40.
+// Game state lives in Valkey during a match; results (and turn-based District Quest turns) persist here.
+
+/// Spin/Slot odds are versioned. Every outcome stores the version it was drawn with (§18, §40).
+model OddsConfig {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  game        String // "daily_spin" | "lucky_slot"
+  version     Int
+  table       Json // [{ prize, weight }] - shown in the app verbatim
+  publishedBy String   @db.Uuid
+  publishedAt DateTime @default(now())
+
+  @@unique([game, version])
+}
+
+model GameResult {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  game        String
+  matchId     String?  @db.Uuid
+  userId      String   @db.Uuid
+  ranked      Boolean
+  vsBot       Boolean  @default(false) // bot matches never give ranked trophies
+  outcome     Json
+  oddsVersion Int? // for spin/slot
+  createdAt   DateTime @default(now())
+
+  @@index([userId, game, createdAt])
+}
+
+// To model in week 3: GameRoom (turn persistence for District Quest), League.

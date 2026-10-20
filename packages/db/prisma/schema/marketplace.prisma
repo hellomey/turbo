@@ -1,0 +1,2 @@
+// Tables owned by the `marketplace` module. No other module may query these (blueprint §34.8).
+// To model: Creator, CreatorItem, Payout, Publisher, Book, BookOrder

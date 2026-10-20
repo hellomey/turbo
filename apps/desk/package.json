@@ -1,0 +1,10 @@
+{
+  "name": "@heymey/desk",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Turbo wrapper for HeyMey Desk (Flutter web). Local port 4569. Lint/test run workspace-wide via @heymey/dart.",
+  "scripts": {
+    "dev": "flutter run -d web-server --web-hostname 127.0.0.1 --web-port 4569",
+    "build": "flutter build web --release --no-web-resources-cdn"
+  }
+}

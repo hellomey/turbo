@@ -1,0 +1,29 @@
+{
+  "name": "billing",
+  "summary": "Store receipts, server notifications, entitlements, refunds, gifts, Razorpay.",
+  "owns": [
+    "Product",
+    "Purchase",
+    "Entitlement",
+    "Refund",
+    "Gift",
+    "RazorpayOrder"
+  ],
+  "responsibilities": [
+    "Google Play + App Store verification and lifecycle notifications",
+    "Razorpay webhooks with signature check",
+    "entitlements read only from server",
+    "refunds reverse Sparks (balance may go negative)"
+  ],
+  "dependsOn": [
+    "economy",
+    "audit"
+  ],
+  "publishes": [
+    "billing.entitlement_changed",
+    "billing.refunded"
+  ],
+  "buildWeek": 3,
+  "coverageTarget": 90,
+  "founderApprovalRequired": true
+}

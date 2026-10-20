@@ -1,0 +1,2854 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "HeyMey API",
+    "version": "1.0.0",
+    "description": "Generated from @heymey/contracts. Do not edit."
+  },
+  "servers": [
+    {
+      "url": "https://api.heymey.app"
+    },
+    {
+      "url": "http://localhost:4567"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded"
+            ]
+          },
+          "service": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "checks": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "example": "ok"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "service",
+          "version",
+          "checks"
+        ]
+      },
+      "OtpRequestResponse": {
+        "type": "object",
+        "properties": {
+          "resendAfterSeconds": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "resendAfterSeconds"
+        ],
+        "description": "Always returned, whether or not the email has an account."
+      },
+      "ErrorEnvelope": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "VALIDATION_FAILED",
+                  "UNAUTHENTICATED",
+                  "FORBIDDEN",
+                  "NOT_FOUND",
+                  "RATE_LIMITED",
+                  "IDEMPOTENCY_KEY_REQUIRED",
+                  "IDEMPOTENCY_KEY_REUSED",
+                  "IDEMPOTENT_RESPONSE_UNAVAILABLE",
+                  "IDEMPOTENCY_IN_PROGRESS",
+                  "APP_UPDATE_REQUIRED",
+                  "FEATURE_PAUSED",
+                  "INTERNAL_ERROR",
+                  "OTP_INVALID",
+                  "OTP_EXPIRED",
+                  "OTP_LOCKED",
+                  "EMAIL_NOT_ALLOWED",
+                  "UNDER_18",
+                  "DESK_2FA_REQUIRED",
+                  "TOTP_INVALID",
+                  "TOTP_LOCKED",
+                  "CHALLENGE_EXPIRED",
+                  "DESK_NOT_ALLOWED",
+                  "SESSION_REVOKED",
+                  "CONSENT_REQUIRED",
+                  "EXAM_NOT_FOUND",
+                  "LESSON_NOT_FOUND",
+                  "PRACTICE_DAILY_LIMIT",
+                  "AI_LIMIT_REACHED",
+                  "AI_BUSY",
+                  "GAMES_SLEEPING",
+                  "RANKED_DAILY_CAP",
+                  "FIREWALL_VIOLATION",
+                  "PURCHASE_NOT_VERIFIED",
+                  "SPENDING_LIMIT_REACHED"
+                ]
+              },
+              "message": {
+                "type": "string"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "OtpRequestBody": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          },
+          "purpose": {
+            "$ref": "#/components/schemas/OtpPurpose"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "OtpPurpose": {
+        "type": "string",
+        "enum": [
+          "login",
+          "delete_account"
+        ],
+        "default": "login"
+      },
+      "OtpVerifyResponse": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SessionGranted"
+          },
+          {
+            "$ref": "#/components/schemas/DeskChallenge"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "kind",
+          "mapping": {
+            "session": "#/components/schemas/SessionGranted",
+            "desk_2fa": "#/components/schemas/DeskChallenge"
+          }
+        }
+      },
+      "SessionGranted": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "session"
+            ]
+          },
+          "tokens": {
+            "$ref": "#/components/schemas/TokenPair"
+          },
+          "isNewUser": {
+            "type": "boolean"
+          },
+          "deletionCancelled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "kind",
+          "tokens",
+          "isNewUser",
+          "deletionCancelled"
+        ]
+      },
+      "TokenPair": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "JWT (EdDSA), 15 minutes"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Opaque, rotates on every use. 60 days (app), 12 hours (Desk)"
+          },
+          "accessTokenExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken",
+          "accessTokenExpiresAt"
+        ]
+      },
+      "DeskChallenge": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "desk_2fa"
+            ]
+          },
+          "challengeToken": {
+            "type": "string"
+          },
+          "totpEnrolled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "kind",
+          "challengeToken",
+          "totpEnrolled"
+        ]
+      },
+      "OtpVerifyBody": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$"
+          },
+          "deviceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "android",
+              "ios",
+              "web"
+            ]
+          },
+          "client": {
+            "$ref": "#/components/schemas/ClientKind"
+          }
+        },
+        "required": [
+          "email",
+          "code",
+          "deviceId",
+          "platform"
+        ]
+      },
+      "ClientKind": {
+        "type": "string",
+        "enum": [
+          "app",
+          "desk"
+        ],
+        "default": "app"
+      },
+      "RefreshBody": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "minLength": 20
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "OkResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ]
+      },
+      "DeskTotpEnrollResponse": {
+        "type": "object",
+        "properties": {
+          "otpauthUri": {
+            "type": "string",
+            "description": "Show as a QR code. Shown only until the first successful verify."
+          },
+          "secret": {
+            "type": "string",
+            "description": "Base32, for manual entry"
+          }
+        },
+        "required": [
+          "otpauthUri",
+          "secret"
+        ]
+      },
+      "DeskTotpEnrollBody": {
+        "type": "object",
+        "properties": {
+          "challengeToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "challengeToken"
+        ]
+      },
+      "DeskTotpVerifyBody": {
+        "type": "object",
+        "properties": {
+          "challengeToken": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$"
+          }
+        },
+        "required": [
+          "challengeToken",
+          "code"
+        ]
+      },
+      "DeleteAccountResponse": {
+        "type": "object",
+        "properties": {
+          "deletionScheduledFor": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "deletionScheduledFor"
+        ],
+        "description": "Sign in before this time to cancel."
+      },
+      "DeleteAccountBody": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "Me": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "nickname": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "district": {
+            "$ref": "#/components/schemas/District"
+          },
+          "calmMode": {
+            "type": "boolean"
+          },
+          "liteMode": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "null = automatic (3 GB RAM or less)"
+          },
+          "hideFromLeaderboards": {
+            "type": "boolean"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/ProfileAnswers"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            }
+          },
+          "deletionScheduledFor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "nickname",
+          "district",
+          "calmMode",
+          "liteMode",
+          "hideFromLeaderboards",
+          "profile",
+          "roles",
+          "deletionScheduledFor",
+          "createdAt"
+        ]
+      },
+      "District": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "Ariyalur",
+          "Chengalpattu",
+          "Chennai",
+          "Coimbatore",
+          "Cuddalore",
+          "Dharmapuri",
+          "Dindigul",
+          "Erode",
+          "Kallakurichi",
+          "Kancheepuram",
+          "Kanyakumari",
+          "Karur",
+          "Krishnagiri",
+          "Madurai",
+          "Mayiladuthurai",
+          "Nagapattinam",
+          "Namakkal",
+          "Nilgiris",
+          "Perambalur",
+          "Pudukkottai",
+          "Ramanathapuram",
+          "Ranipet",
+          "Salem",
+          "Sivaganga",
+          "Tenkasi",
+          "Thanjavur",
+          "Theni",
+          "Thoothukudi",
+          "Tiruchirappalli",
+          "Tirunelveli",
+          "Tirupathur",
+          "Tiruppur",
+          "Tiruvallur",
+          "Tiruvannamalai",
+          "Tiruvarur",
+          "Vellore",
+          "Viluppuram",
+          "Virudhunagar",
+          null
+        ]
+      },
+      "ProfileAnswers": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "qualification": {
+            "$ref": "#/components/schemas/Qualification"
+          },
+          "degreeSubject": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "community": {
+            "$ref": "#/components/schemas/Community"
+          },
+          "pstm": {
+            "type": "boolean",
+            "description": "Studied in Tamil medium (PSTM)"
+          },
+          "specialCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpecialCategory"
+            },
+            "maxItems": 3,
+            "default": []
+          }
+        },
+        "required": [
+          "dateOfBirth",
+          "qualification",
+          "community",
+          "pstm"
+        ]
+      },
+      "Qualification": {
+        "type": "string",
+        "enum": [
+          "sslc",
+          "hsc",
+          "iti",
+          "diploma",
+          "degree",
+          "pg"
+        ]
+      },
+      "Community": {
+        "type": "string",
+        "enum": [
+          "OC",
+          "BC",
+          "BCM",
+          "MBC_DNC",
+          "SC",
+          "SCA",
+          "ST"
+        ]
+      },
+      "SpecialCategory": {
+        "type": "string",
+        "enum": [
+          "PWD",
+          "EX_SERVICEMAN",
+          "DESTITUTE_WIDOW"
+        ]
+      },
+      "Role": {
+        "type": "string",
+        "enum": [
+          "VISITOR",
+          "ASPIRANT",
+          "SUPPORTER",
+          "MENTOR",
+          "CREATOR",
+          "REVIEWER",
+          "PUBLISHER",
+          "INSTITUTION_ADMIN",
+          "SUPPORT_AGENT",
+          "MODERATOR",
+          "OPS",
+          "ADMIN",
+          "SYSTEM"
+        ]
+      },
+      "UpdateMeBody": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "pattern": "^[A-Za-z0-9 ._]+$"
+          },
+          "district": {
+            "$ref": "#/components/schemas/District"
+          },
+          "calmMode": {
+            "type": "boolean"
+          },
+          "liteMode": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "hideFromLeaderboards": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ConsentNotice": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "purposes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "purpose": {
+                  "$ref": "#/components/schemas/ConsentPurpose"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "purpose",
+                "required",
+                "title",
+                "description"
+              ]
+            }
+          }
+        },
+        "required": [
+          "version",
+          "purposes"
+        ]
+      },
+      "ConsentPurpose": {
+        "type": "string",
+        "enum": [
+          "core_service",
+          "offers_email",
+          "product_research",
+          "share_with_supporters",
+          "share_with_institution"
+        ]
+      },
+      "ConsentState": {
+        "type": "object",
+        "properties": {
+          "noticeVersion": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "purpose": {
+                  "$ref": "#/components/schemas/ConsentPurpose"
+                },
+                "granted": {
+                  "type": "boolean"
+                },
+                "at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "purpose",
+                "granted",
+                "at"
+              ]
+            }
+          }
+        },
+        "required": [
+          "noticeVersion",
+          "choices"
+        ]
+      },
+      "ConsentChoicesBody": {
+        "type": "object",
+        "properties": {
+          "noticeVersion": {
+            "type": "string"
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "purpose": {
+                  "$ref": "#/components/schemas/ConsentPurpose"
+                },
+                "granted": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "purpose",
+                "granted"
+              ]
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "noticeVersion",
+          "choices"
+        ]
+      },
+      "ExamList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamSummary"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "ExamSummary": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "name": {
+            "type": "string"
+          },
+          "conductingBody": {
+            "type": "string",
+            "example": "TNPSC"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "state",
+              "central"
+            ]
+          },
+          "minQualification": {
+            "$ref": "#/components/schemas/Qualification"
+          },
+          "fullPrep": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "conductingBody",
+          "level",
+          "minQualification",
+          "fullPrep"
+        ]
+      },
+      "ExamCode": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]{2,40}$"
+      },
+      "ExamDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExamSummary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "stages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "pattern": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "omr",
+                      "cbt"
+                    ]
+                  },
+                  "questions": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "durationMinutes": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "negativeMarking": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "mode",
+                  "questions",
+                  "durationMinutes",
+                  "negativeMarking"
+                ]
+              },
+              "officialUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "notificationUrl": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uri"
+              },
+              "lastCheckedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "disclaimer": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "description",
+              "stages",
+              "pattern",
+              "officialUrl",
+              "notificationUrl",
+              "lastCheckedAt",
+              "disclaimer"
+            ]
+          }
+        ]
+      },
+      "EligibilityResult": {
+        "type": "object",
+        "properties": {
+          "eligibleCount": {
+            "type": "integer"
+          },
+          "eligible": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamEligibility"
+            }
+          },
+          "notEligible": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamEligibility"
+            }
+          },
+          "disclaimer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "eligibleCount",
+          "eligible",
+          "notEligible",
+          "disclaimer"
+        ]
+      },
+      "ExamEligibility": {
+        "type": "object",
+        "properties": {
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "examName": {
+            "type": "string"
+          },
+          "conductingBody": {
+            "type": "string"
+          },
+          "eligible": {
+            "type": "boolean"
+          },
+          "fitRank": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EligibilityReason"
+            }
+          },
+          "ageLimit": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "integer"
+              },
+              "max": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "asOf": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            "required": [
+              "min",
+              "max",
+              "asOf"
+            ]
+          },
+          "officialNotificationUrl": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "examCode",
+          "examName",
+          "conductingBody",
+          "eligible",
+          "fitRank",
+          "reasons",
+          "ageLimit",
+          "officialNotificationUrl"
+        ]
+      },
+      "EligibilityReason": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "AGE_OK",
+              "AGE_RELAXATION_APPLIED",
+              "AGE_TOO_LOW",
+              "AGE_TOO_HIGH",
+              "QUALIFICATION_OK",
+              "QUALIFICATION_TOO_LOW",
+              "DEGREE_SUBJECT_REQUIRED",
+              "PSTM_PREFERENCE"
+            ]
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "text"
+        ]
+      },
+      "EligibilityCheckBody": {
+        "type": "object",
+        "properties": {
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "qualification": {
+            "$ref": "#/components/schemas/Qualification"
+          },
+          "degreeSubject": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "community": {
+            "$ref": "#/components/schemas/Community"
+          },
+          "pstm": {
+            "type": "boolean",
+            "description": "Studied in Tamil medium (PSTM)"
+          },
+          "specialCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpecialCategory"
+            },
+            "maxItems": 3,
+            "default": []
+          }
+        },
+        "required": [
+          "dateOfBirth",
+          "qualification",
+          "community",
+          "pstm"
+        ]
+      },
+      "UserExams": {
+        "type": "object",
+        "properties": {
+          "main": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExamSummary"
+              },
+              {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            ]
+          },
+          "others": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamSummary"
+            }
+          }
+        },
+        "required": [
+          "main",
+          "others"
+        ]
+      },
+      "UserExamsBody": {
+        "type": "object",
+        "properties": {
+          "mainExamCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "otherExamCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "maxItems": 2,
+            "default": []
+          }
+        },
+        "required": [
+          "mainExamCode"
+        ]
+      },
+      "StudyMap": {
+        "type": "object",
+        "properties": {
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "order": {
+                  "type": "integer"
+                },
+                "topics": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StudyMapTopic"
+                  }
+                }
+              },
+              "required": [
+                "code",
+                "name",
+                "order",
+                "topics"
+              ]
+            }
+          },
+          "totalTopics": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "examCode",
+          "subjects",
+          "totalTopics"
+        ]
+      },
+      "StudyMapTopic": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "examCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamCode"
+            }
+          },
+          "hasLesson": {
+            "type": "boolean"
+          },
+          "ring": {
+            "$ref": "#/components/schemas/LampRing"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "name",
+          "order",
+          "examCodes",
+          "hasLesson",
+          "ring"
+        ]
+      },
+      "LampRing": {
+        "type": "object",
+        "properties": {
+          "lit": {
+            "type": "boolean"
+          },
+          "steadyLevel": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4
+          },
+          "gold": {
+            "type": "boolean"
+          },
+          "dim": {
+            "type": "string",
+            "enum": [
+              "bright",
+              "dimming",
+              "dim"
+            ]
+          }
+        },
+        "required": [
+          "lit",
+          "steadyLevel",
+          "gold",
+          "dim"
+        ]
+      },
+      "Lesson": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "bodyMarkdown": {
+            "type": "string"
+          },
+          "readingMinutes": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "textbookRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TextbookRef"
+            }
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "citation": {
+                "type": "string"
+              },
+              "url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uri"
+              }
+            },
+            "required": [
+              "citation",
+              "url"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "topicId",
+          "title",
+          "bodyMarkdown",
+          "readingMinutes",
+          "textbookRefs",
+          "source",
+          "version",
+          "updatedAt"
+        ]
+      },
+      "TextbookRef": {
+        "type": "object",
+        "properties": {
+          "book": {
+            "type": "string"
+          },
+          "classLevel": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "chapter": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "pages": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          }
+        },
+        "required": [
+          "book",
+          "classLevel",
+          "chapter",
+          "pages",
+          "url"
+        ]
+      },
+      "GlossaryList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "term": {
+                  "type": "string"
+                },
+                "meaning": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "term",
+                "meaning"
+              ]
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "platform"
+        ],
+        "operationId": "getHealth",
+        "summary": "Liveness + dependency checks",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Degraded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/otp/request": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "requestOtp",
+        "summary": "Send a 6-digit code. Always 200: never reveals whether the email has an account.",
+        "x-heymey-auth": "optional",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "ip",
+            "limit": 10,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtpRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Queued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/otp/verify": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "verifyOtp",
+        "summary": "Exchange email + code for a session bound to this device (or a Desk 2FA challenge).",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "ip",
+            "limit": 30,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtpVerifyBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed in, or second factor needed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpVerifyResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/refresh": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "refreshSession",
+        "summary": "Rotate the refresh token. Re-using an old one revokes the whole session family.",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "ip",
+            "limit": 120,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New pair",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenPair"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "logout",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "End this session.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Signed out",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/logout-all": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "logoutAll",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Log out of all devices.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All sessions ended",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/desk/totp/enroll": {
+      "post": {
+        "tags": [
+          "auth",
+          "desk"
+        ],
+        "operationId": "enrollDeskTotp",
+        "summary": "First Desk sign-in: create the authenticator secret for this staff/partner account.",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "ip",
+            "limit": 10,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeskTotpEnrollBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scan this",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeskTotpEnrollResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/desk/totp/verify": {
+      "post": {
+        "tags": [
+          "auth",
+          "desk"
+        ],
+        "operationId": "verifyDeskTotp",
+        "summary": "Complete Desk sign-in with the authenticator code.",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "ip",
+            "limit": 20,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeskTotpVerifyBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Desk session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionGranted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/delete-account": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "deleteAccount",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Confirm account deletion with a `delete_account` code. 7-day grace period (§38.7).",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 5,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteAccountBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scheduled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "operationId": "getMe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "The signed-in user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "operationId": "updateMe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMeBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/profile": {
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "operationId": "putProfile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Save the onboarding eligibility answers. Under 18 is refused (UNDER_18).",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileAnswers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/consents/notice": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "operationId": "getConsentNotice",
+        "summary": "The current DPDP notice: purposes, which are required, nothing pre-ticked.",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Notice",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsentNotice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/consents": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "operationId": "getMyConsents",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Latest choice per purpose",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsentState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "operationId": "recordConsents",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsentChoicesBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsentState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/exams": {
+      "get": {
+        "tags": [
+          "exams"
+        ],
+        "operationId": "listExams",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Published exams",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/exams/{code}": {
+      "get": {
+        "tags": [
+          "exams"
+        ],
+        "operationId": "getExam",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "code",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exam page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such exam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/eligibility/check": {
+      "post": {
+        "tags": [
+          "exams"
+        ],
+        "operationId": "checkEligibility",
+        "summary": "Eligibility Checker. A pure computation: nothing is stored. Under 18 returns UNDER_18.",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "ip",
+            "limit": 60,
+            "windowSeconds": 600
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EligibilityCheckBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EligibilityResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Under 18",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/exams": {
+      "get": {
+        "tags": [
+          "exams"
+        ],
+        "operationId": "getMyExams",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Main exam + up to 2 more",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserExams"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "exams"
+        ],
+        "operationId": "putMyExams",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserExamsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserExams"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/exams/{code}/study-map": {
+      "get": {
+        "tags": [
+          "syllabus"
+        ],
+        "operationId": "getStudyMap",
+        "x-heymey-auth": "optional",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "code",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subjects and lamps",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudyMap"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such exam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/topics/{topicId}/lesson": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "operationId": "getLesson",
+        "x-heymey-auth": "optional",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "topicId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published lesson",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No lesson yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/glossary": {
+      "get": {
+        "tags": [
+          "syllabus"
+        ],
+        "operationId": "searchGlossary",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 60
+            },
+            "required": false,
+            "name": "q",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tap-to-see meanings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GlossaryList"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {}
+}

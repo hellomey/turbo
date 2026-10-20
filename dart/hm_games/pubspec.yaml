@@ -1,0 +1,20 @@
+name: hm_games
+description: "Flame game scenes: spin, slot, clue poker, district quest, memory pits, tiger trap. Display only; the server decides."
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  hm_design:
+    path: ../hm_design
+  hm_core:
+    path: ../hm_core
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

@@ -1,0 +1,97 @@
+# Observability + staff tools (blueprint §20.3). Reachable only through ops.heymey.app (VPN / IP allowlist).
+# Each tool listens on its series port (4590-4596) and is published on 127.0.0.1 only.
+#   docker compose -p heymey-ops --env-file ports.env --env-file images.env -f compose.monitoring.yml up -d
+name: heymey-ops
+
+x-ops: &ops
+  restart: unless-stopped
+  networks: [ops, edge]
+  logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
+
+services:
+  prometheus:
+    <<: *ops
+    image: ${PROMETHEUS_IMAGE}
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.retention.time=30d", "--web.listen-address=:${PROMETHEUS_PORT}"]
+    volumes: [../monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro, prom-data:/prometheus]
+    ports: ["127.0.0.1:${PROMETHEUS_PORT}:${PROMETHEUS_PORT}"]
+    deploy: { resources: { limits: { cpus: "0.5", memory: 2G } } }
+
+  loki:
+    <<: *ops
+    image: ${LOKI_IMAGE}
+    command: ["-config.file=/etc/loki/loki.yml", "-server.http-listen-port=${LOKI_PORT}"]
+    volumes: [../monitoring/loki.yml:/etc/loki/loki.yml:ro, loki-data:/loki]
+    ports: ["127.0.0.1:${LOKI_PORT}:${LOKI_PORT}"]
+    deploy: { resources: { limits: { cpus: "0.5", memory: 1G } } }
+
+  alloy:
+    <<: *ops
+    image: ${ALLOY_IMAGE}
+    command: ["run", "/etc/alloy/config.alloy"]
+    volumes:
+      - ../monitoring/config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy: { resources: { limits: { cpus: "0.25", memory: 512M } } }
+
+  grafana:
+    <<: *ops
+    image: ${GRAFANA_IMAGE}
+    environment:
+      GF_SERVER_HTTP_PORT: ${GRAFANA_PORT}
+      GF_SERVER_ROOT_URL: https://ops.heymey.app/grafana
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+    volumes: [grafana-data:/var/lib/grafana, ../monitoring/grafana:/etc/grafana/provisioning:ro]
+    ports: ["127.0.0.1:${GRAFANA_PORT}:${GRAFANA_PORT}"]
+
+  node-exporter:
+    <<: *ops
+    image: ${NODE_EXPORTER_IMAGE}
+    pid: host
+    volumes: [/:/host:ro,rslave]
+    command: ["--path.rootfs=/host"]
+
+  cadvisor:
+    <<: *ops
+    image: ${CADVISOR_IMAGE}
+    volumes: [/:/rootfs:ro, /var/run:/var/run:ro, /sys:/sys:ro, /var/lib/docker/:/var/lib/docker:ro]
+
+  postgres-exporter:
+    <<: *ops
+    image: ${POSTGRES_EXPORTER_IMAGE}
+    env_file: [../secrets/production.env] # DATA_SOURCE_NAME (read-only monitoring role)
+
+  glitchtip:
+    <<: *ops
+    image: ${GLITCHTIP_IMAGE}
+    env_file: [../secrets/production.env] # GLITCHTIP_DATABASE_URL (own database), SECRET_KEY
+    environment: { PORT: "${GLITCHTIP_PORT}", GLITCHTIP_DOMAIN: "https://ops.heymey.app/errors" }
+    ports: ["127.0.0.1:${GLITCHTIP_PORT}:${GLITCHTIP_PORT}"]
+    deploy: { resources: { limits: { cpus: "0.5", memory: 1G } } }
+
+  metabase:
+    <<: *ops
+    image: ${METABASE_IMAGE}
+    env_file: [../secrets/production.env] # MB_DB_* (own database), read-only analytics role
+    environment: { MB_JETTY_PORT: "${METABASE_PORT}", MB_SITE_URL: "https://ops.heymey.app/metabase" }
+    ports: ["127.0.0.1:${METABASE_PORT}:${METABASE_PORT}"]
+    deploy: { resources: { limits: { cpus: "0.5", memory: 1536M } } }
+
+  uptime-kuma:
+    <<: *ops
+    image: ${UPTIME_KUMA_IMAGE}
+    environment: { UPTIME_KUMA_PORT: "${UPTIME_KUMA_PORT}" }
+    volumes: [kuma-data:/app/data]
+    ports: ["127.0.0.1:${UPTIME_KUMA_PORT}:${UPTIME_KUMA_PORT}"]
+
+volumes:
+  prom-data:
+  loki-data:
+  grafana-data:
+  kuma-data:
+
+networks:
+  ops: {}
+  edge:
+    name: heymey-edge
+    external: true

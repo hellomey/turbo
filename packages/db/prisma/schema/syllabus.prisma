@@ -1,0 +1,59 @@
+// Tables owned by the `syllabus` module. No other module may query these (blueprint §34.8). §5.1.
+// Topic ids are STABLE: the app's lamps and every user's ring state point at them. Never reuse or renumber.
+
+model Subject {
+  id    String @id @default(uuid(7)) @db.Uuid
+  code  String @unique // e.g. polity
+  name  String
+  order Int
+
+  topics Topic[]
+}
+
+/// A topic is a lamp.
+model Topic {
+  id        String @id @db.Uuid // stable id from content/syllabus/*.yaml
+  subjectId String @db.Uuid
+  code      String @unique // e.g. polity.preamble
+  name      String
+  order     Int
+
+  subject      Subject        @relation(fields: [subjectId], references: [id])
+  examTags     TopicExamTag[]
+  textbookRefs TextbookRef[]
+
+  @@index([subjectId, order])
+}
+
+/// Which exams' syllabuses include this topic (one lamp, many exam colours).
+model TopicExamTag {
+  topicId  String @db.Uuid
+  examCode String
+
+  topic Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([topicId, examCode])
+  @@index([examCode])
+}
+
+/// State Board textbook map (§19.3 Q22).
+model TextbookRef {
+  id         String  @id @default(uuid(7)) @db.Uuid
+  topicId    String  @db.Uuid
+  book       String
+  classLevel Int?
+  chapter    String?
+  pages      String?
+  url        String?
+
+  topic Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@index([topicId])
+}
+
+/// Tap-to-see meaning glossary (§10.2).
+model GlossaryTerm {
+  id      String @id @default(uuid(7)) @db.Uuid
+  term    String @unique
+  meaning String
+}

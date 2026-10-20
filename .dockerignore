@@ -1,0 +1,54 @@
+# Build context for infra/docker/*.Dockerfile (built from the repo root). Keep the context small and free of
+# secrets: images are built from a clean `pnpm install` inside the container, never from host artefacts.
+
+# VCS + editor + agent state
+.git
+.gitattributes
+.github
+.idea
+.vscode
+.claude
+.agents
+graphify-out
+aidlc
+**/.DS_Store
+**/Thumbs.db
+
+# Secrets and local env: NEVER in an image (AGENTS.md non-negotiable 8)
+.env
+.env.*
+**/.env
+**/.env*
+!**/.env.example
+infra/secrets
+**/*.pem
+**/*.age
+**/*.key
+**/.age
+
+# Host dependencies and build output (rebuilt inside the image)
+**/node_modules
+.pnpm-store
+**/.turbo
+**/dist
+**/.next
+**/out
+**/coverage
+**/*.tsbuildinfo
+**/*.log
+**/.hero-check
+**/test-results
+**/playwright-report
+
+# Flutter / Dart: not needed by the Node images. desk.Dockerfile needs apps/desk/build/web, so keep that.
+**/.dart_tool
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+# pnpm workspace members must keep their package.json (frozen lockfile), the Flutter sources need not.
+apps/mobile/**
+!apps/mobile/package.json
+dart/**/build
+apps/desk/**
+!apps/desk/package.json
+!apps/desk/build
+!apps/desk/build/web/**

@@ -1,0 +1,28 @@
+{
+  "name": "exam-hall",
+  "summary": "OMR/CBT mocks, State Mock Sunday, scoring, reports.",
+  "owns": [
+    "Mock",
+    "MockAttempt",
+    "MockAnswer"
+  ],
+  "responsibilities": [
+    "Exam-accurate mocks (OMR + CBT)",
+    "resume exactly",
+    "negative marking",
+    "State Mock Sunday statewide rank",
+    "Retry Wrong Only",
+    "Custom Test Builder"
+  ],
+  "dependsOn": [
+    "content",
+    "mastery",
+    "billing"
+  ],
+  "publishes": [
+    "exam_hall.mock_submitted"
+  ],
+  "buildWeek": 2,
+  "coverageTarget": 90,
+  "founderApprovalRequired": false
+}

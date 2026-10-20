@@ -1,0 +1,28 @@
+{
+  "name": "marketplace",
+  "summary": "Creators, creator items, publishers, books, orders, payouts with TDS.",
+  "owns": [
+    "Creator",
+    "CreatorItem",
+    "Payout",
+    "Publisher",
+    "Book",
+    "BookOrder"
+  ],
+  "responsibilities": [
+    "Creator Studio listings (review before listing)",
+    "publisher catalogue + orders",
+    "70% net revenue share",
+    "monthly payouts with TDS",
+    "editorial-only Recommended tags"
+  ],
+  "dependsOn": [
+    "content",
+    "billing",
+    "audit"
+  ],
+  "publishes": [],
+  "buildWeek": 4,
+  "coverageTarget": 90,
+  "founderApprovalRequired": true
+}

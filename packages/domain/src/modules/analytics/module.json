@@ -1,0 +1,16 @@
+{
+  "name": "analytics",
+  "summary": "Product analytics event ingestion (partitioned table for Metabase).",
+  "owns": [
+    "AnalyticsEvent (partitioned)"
+  ],
+  "responsibilities": [
+    "Event ingestion",
+    "no personal data in event payloads"
+  ],
+  "dependsOn": [],
+  "publishes": [],
+  "buildWeek": 4,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

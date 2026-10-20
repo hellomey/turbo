@@ -1,0 +1,31 @@
+{
+  "name": "auth",
+  "summary": "Email OTP login, sessions, refresh-token rotation, device binding, Desk TOTP.",
+  "owns": [
+    "User credential link",
+    "OtpCode",
+    "Session",
+    "RefreshToken (family)",
+    "Device",
+    "TwoFactor"
+  ],
+  "responsibilities": [
+    "Email OTP request/verify with rate limits",
+    "JWT access tokens",
+    "rotating refresh tokens with family revocation",
+    "device binding",
+    "Desk TOTP second factor",
+    "account deletion grace period"
+  ],
+  "dependsOn": [
+    "users",
+    "audit"
+  ],
+  "publishes": [
+    "auth.signed_in",
+    "auth.session_revoked"
+  ],
+  "buildWeek": 1,
+  "coverageTarget": 90,
+  "founderApprovalRequired": true
+}

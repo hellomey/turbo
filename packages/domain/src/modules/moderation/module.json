@@ -1,0 +1,26 @@
+{
+  "name": "moderation",
+  "summary": "Reports, cases, sanctions, chat filter, self-harm protocol.",
+  "owns": [
+    "ModerationCase",
+    "Sanction",
+    "Appeal"
+  ],
+  "responsibilities": [
+    "Report queue",
+    "warn/mute/ban + appeals",
+    "self-harm alerts first (helpline + human follow-up)",
+    "AI pre-sorting, human decides"
+  ],
+  "dependsOn": [
+    "users",
+    "ai",
+    "audit"
+  ],
+  "publishes": [
+    "moderation.sanction_applied"
+  ],
+  "buildWeek": 4,
+  "coverageTarget": 70,
+  "founderApprovalRequired": true
+}

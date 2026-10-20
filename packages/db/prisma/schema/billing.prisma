@@ -1,0 +1,45 @@
+// Tables owned by the `billing` module. No other module may query these (blueprint §34.8). §41.
+// The app never unlocks anything on its own: entitlements come only from verified receipts / webhooks.
+
+enum EntitlementKind {
+  pro
+  exam_pass
+  season_pass
+}
+
+enum PurchaseStore {
+  google_play
+  app_store
+  razorpay
+  invoice
+}
+
+model Purchase {
+  id          String        @id @default(uuid(7)) @db.Uuid
+  userId      String        @db.Uuid
+  store       PurchaseStore
+  productId   String
+  storeTxnId  String        @unique // idempotency for duplicate store notifications
+  status      String // pending | verified | acknowledged | refunded | revoked
+  amountPaise Int? // integer paise, GST included
+  rawPayload  Json // recorded for audit + integration tests
+  verifiedAt  DateTime?
+  createdAt   DateTime      @default(now())
+
+  @@index([userId])
+}
+
+model Entitlement {
+  id        String          @id @default(uuid(7)) @db.Uuid
+  userId    String          @db.Uuid
+  kind      EntitlementKind
+  examId    String?         @db.Uuid // exam_pass follows the exam date if it changes (§18)
+  startsAt  DateTime
+  endsAt    DateTime?
+  source    String // purchase id / gift id / institution seat id
+  revokedAt DateTime?
+
+  @@index([userId, kind])
+}
+
+// To model in week 3: Product, Refund, Gift, RazorpayOrder.

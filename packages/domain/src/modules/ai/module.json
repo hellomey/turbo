@@ -1,0 +1,21 @@
+{
+  "name": "ai",
+  "summary": "AI tasks, model routes, usage and budgets (via @heymey/ai-gateway).",
+  "owns": [
+    "AiTask",
+    "AiModelRoute",
+    "AiUsage"
+  ],
+  "responsibilities": [
+    "Doubt help (Free 3/month, Pro 30/day)",
+    "explanation generation once per question",
+    "independent verification on a different model family",
+    "moderation",
+    "budget alerts 50/80/100%"
+  ],
+  "dependsOn": [],
+  "publishes": [],
+  "buildWeek": 3,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

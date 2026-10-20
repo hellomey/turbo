@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Read(./infra/secrets/*.env)",
+      "Read(./infra/secrets/*.s3.json)",
+      "Read(./**/.env)",
+      "Read(./**/.env.local)",
+      "Read(./**/.env.production)",
+      "Edit(./dart/hm_api/**)",
+      "Bash(git push --force:*)",
+      "Bash(git push origin main:*)"
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@heymey/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "BullMQ workers (2 replicas, health on 4571) and the repeatable-job scheduler (1 replica, health on 4572). Same image, two entrypoints.",
+  "scripts": {
+    "dev": "tsx watch src/main.worker.ts",
+    "dev:scheduler": "tsx watch src/main.scheduler.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/main.worker.js",
+    "start:scheduler": "node dist/main.scheduler.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@heymey/ai-gateway": "workspace:*",
+    "@heymey/config": "workspace:*",
+    "@heymey/db": "workspace:*",
+    "@heymey/domain": "workspace:*",
+    "bullmq": "^6.3.18",
+    "ioredis": "^6.0.0",
+    "nodemailer": "^10.1.7"
+  },
+  "devDependencies": {
+    "@heymey/eslint-config": "workspace:*",
+    "@types/node": "^26.6.5",
+    "@types/nodemailer": "^8.0.2",
+    "eslint": "^10.13.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.5"
+  }
+}

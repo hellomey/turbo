@@ -1,0 +1,23 @@
+{
+  "name": "notifications",
+  "summary": "Push tokens, alert preferences, daily alert budget, quiet hours.",
+  "owns": [
+    "PushToken",
+    "AlertPreference",
+    "SendLog"
+  ],
+  "responsibilities": [
+    "FCM/APNs sending",
+    "max 3 alerts/day (exam alerts separate)",
+    "quiet hours",
+    "offers opt-in only"
+  ],
+  "dependsOn": [
+    "users",
+    "liveops"
+  ],
+  "publishes": [],
+  "buildWeek": 2,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

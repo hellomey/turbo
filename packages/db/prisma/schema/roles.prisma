@@ -1,0 +1,41 @@
+// Tables owned by the `roles` module. No other module may query these (blueprint §34.8). §16.
+
+enum Role {
+  VISITOR
+  ASPIRANT
+  SUPPORTER
+  MENTOR
+  CREATOR
+  REVIEWER
+  PUBLISHER
+  INSTITUTION_ADMIN
+  SUPPORT_AGENT
+  MODERATOR
+  OPS
+  ADMIN
+  SYSTEM
+}
+
+model RoleAssignment {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  userId    String    @db.Uuid
+  role      Role
+  scopeId   String?   @db.Uuid // e.g. institutionId for INSTITUTION_ADMIN
+  grantedBy String    @db.Uuid
+  grantedAt DateTime  @default(now())
+  revokedAt DateTime?
+
+  @@index([userId, role])
+}
+
+/// Two-person approval for money and data actions (§15 Desk security).
+model ApprovalRequest {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  action      String // "price.change" | "payout.release" | "refund.override" | "data.delete" | ...
+  payload     Json
+  requestedBy String    @db.Uuid
+  approvedBy  String?   @db.Uuid // must differ from requestedBy
+  decidedAt   DateTime?
+  status      String    @default("pending") // pending | approved | rejected | expired
+  createdAt   DateTime  @default(now())
+}

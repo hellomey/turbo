@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "globalDependencies": ["packages/config/ports.json", "tsconfig.base.json"],
+  "globalEnv": ["NODE_ENV", "HEYMEY_ENV"],
+  "tasks": {
+    "codegen": {
+      "dependsOn": ["^codegen"],
+      "outputs": ["src/generated/**", "openapi/**", "lib/src/generated/**"]
+    },
+    "build": {
+      "dependsOn": ["^build", "codegen"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "build/web/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build", "codegen"]
+    },
+    "lint": {
+      "dependsOn": ["codegen"]
+    },
+    "test": {
+      "dependsOn": ["^build", "codegen"],
+      "outputs": []
+    },
+    "test:integration": {
+      "dependsOn": ["^build", "codegen"],
+      "cache": false
+    },
+    "dev": {
+      "dependsOn": ["^build", "codegen"],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@heymey/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Turbo wrapper for the Flutter mobile app. Lint/test run workspace-wide via @heymey/dart.",
+  "scripts": {
+    "dev": "flutter run",
+    "build:android": "flutter build appbundle --release",
+    "build:ios": "flutter build ipa --release"
+  }
+}

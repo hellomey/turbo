@@ -1,0 +1,31 @@
+{
+  "name": "content",
+  "summary": "Lessons, questions, versions, sources, explanations, corrections, reports.",
+  "owns": [
+    "Lesson",
+    "Question",
+    "QuestionVersion",
+    "Source",
+    "Explanation",
+    "Correction",
+    "Report"
+  ],
+  "responsibilities": [
+    "Content serving + versioned packs",
+    "every item cites a source",
+    "public Correction Log",
+    "report -> fix -> notify loop",
+    "pg_trgm duplicate detection"
+  ],
+  "dependsOn": [
+    "syllabus",
+    "ai"
+  ],
+  "publishes": [
+    "content.corrected",
+    "content.pack_published"
+  ],
+  "buildWeek": 1,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

@@ -1,0 +1,8 @@
+pnpm-lock.yaml
+**/generated/**
+docs/HEYMEY_PRODUCT_BLUEPRINT.md
+docs/business/
+apps/marketing/
+apps/mobile/
+apps/desk/
+dart/

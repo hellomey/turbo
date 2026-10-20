@@ -1,0 +1,26 @@
+{
+  "name": "plan",
+  "summary": "My Plan, Today Card, auto-rebalance, Final Stretch.",
+  "owns": [
+    "Plan",
+    "PlanItem",
+    "StudyLog"
+  ],
+  "responsibilities": [
+    "Plan from hours + exam date",
+    "Today Card (one clear next action)",
+    "kind auto-rebalance after missed days",
+    "90/60/30/7-day Final Stretch"
+  ],
+  "dependsOn": [
+    "syllabus",
+    "mastery",
+    "exams"
+  ],
+  "publishes": [
+    "plan.rebalanced"
+  ],
+  "buildWeek": 2,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

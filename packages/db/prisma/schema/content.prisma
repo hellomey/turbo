@@ -1,0 +1,23 @@
+// Tables owned by the `content` module. No other module may query these (blueprint §34.8).
+// Every item cites a source; nothing is served before status = published (§26.2 rule 5).
+
+model Lesson {
+  id             String    @id @default(uuid(7)) @db.Uuid
+  topicId        String    @db.Uuid // syllabus Topic id (reference by id, no cross-module relation)
+  version        Int
+  title          String
+  bodyMarkdown   String
+  readingMinutes Int
+  sourceCitation String
+  sourceUrl      String?
+  status         String    @default("draft") // draft | in_review | published | superseded
+  reviewedBy     String?   @db.Uuid
+  publishedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([topicId, version])
+  @@index([topicId, status])
+}
+
+// To model in Phase 2: Question, QuestionVersion, Source, Explanation, Correction, Report.

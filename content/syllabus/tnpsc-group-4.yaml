@@ -1,0 +1,213 @@
+# TNPSC Group 4 (incl. VAO) syllabus map.
+# SEED DATA for local/staging (BOLT-0003). The real map is authored and human-checked in the content track (blueprint §27 track B).
+# Every topic id is a STABLE UUID (hand-written, UUIDv7-shaped). Never reuse or renumber: the app's lamps point at them.
+# Topics shared with other exams keep ONE id (one lamp, many exam colours): list the other exam codes in `shared_with`.
+# Textbook refs: TN State Board books. Class levels and chapter numbers are PLAUSIBLE PLACEHOLDERS: TO BE VERIFIED
+# against the current editions by the content track before anything is published in production. Pages are left empty until then.
+exam:
+  code: tnpsc-group-4
+  name: TNPSC Group 4 (including VAO)
+  official_syllabus_url: https://www.tnpsc.gov.in/   # exact notification PDF link added by Ops, human-checked
+  textbook_site: https://textbooksonline.tn.nic.in/  # official free TN State Board textbooks (to be verified per book)
+  pattern:
+    mode: omr
+    questions: 200
+    negative_marking: false
+
+subjects:
+  - code: polity
+    name: Indian Polity
+    topics:
+      - id: 0199f5a0-0101-7000-8000-000000000101
+        code: polity.preamble
+        name: The Preamble
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl]
+        textbook_refs:
+          - { book: "TN State Board Political Science", class_level: 11, chapter: 1 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian Polity unit"
+      - id: 0199f5a0-0102-7000-8000-000000000102
+        code: polity.fundamental-rights
+        name: Fundamental Rights
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Civics)", class_level: 9, chapter: 2 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian Polity unit"
+      - id: 0199f5a0-0103-7000-8000-000000000103
+        code: polity.directive-principles
+        name: Directive Principles of State Policy
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Civics)", class_level: 10, chapter: 1 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian Polity unit"
+      - id: 0199f5a0-0104-7000-8000-000000000104
+        code: polity.parliament
+        name: Parliament
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Civics)", class_level: 10, chapter: 2 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian Polity unit"
+      - id: 0199f5a0-0105-7000-8000-000000000105
+        code: polity.local-government
+        name: Local government (Panchayati Raj)
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Civics)", class_level: 6, chapter: 3 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian Polity unit"
+
+  - code: history
+    name: History of India
+    topics:
+      - id: 0199f5a0-0201-7000-8000-000000000201
+        code: history.harappan-civilisation
+        name: Harappan (Indus Valley) Civilisation
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl, ssc-mts]
+        textbook_refs:
+          - { book: "TN State Board Social Science (History)", class_level: 6, chapter: 2 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, History and culture of India unit"
+      - id: 0199f5a0-0202-7000-8000-000000000202
+        code: history.mauryan-empire
+        name: The Mauryan Empire
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (History)", class_level: 6, chapter: 6 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, History and culture of India unit"
+      - id: 0199f5a0-0203-7000-8000-000000000203
+        code: history.delhi-sultanate
+        name: The Delhi Sultanate
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (History)", class_level: 7, chapter: 4 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, History and culture of India unit"
+      - id: 0199f5a0-0204-7000-8000-000000000204
+        code: history.national-movement
+        name: Indian National Movement (1885-1947)
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl]
+        textbook_refs:
+          - { book: "TN State Board Social Science (History)", class_level: 10, chapter: 6 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian national movement unit"
+
+  - code: geography
+    name: Geography of India
+    topics:
+      - id: 0199f5a0-0301-7000-8000-000000000301
+        code: geography.physical-features
+        name: Physical features of India
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Geography)", class_level: 10, chapter: 1 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Geography of India unit"
+      - id: 0199f5a0-0302-7000-8000-000000000302
+        code: geography.rivers
+        name: Rivers of India
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Geography)", class_level: 10, chapter: 1 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Geography of India unit"
+      - id: 0199f5a0-0303-7000-8000-000000000303
+        code: geography.climate-monsoon
+        name: Climate and the monsoon
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Geography)", class_level: 10, chapter: 2 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Geography of India unit"
+      - id: 0199f5a0-0304-7000-8000-000000000304
+        code: geography.tamil-nadu
+        name: Geography of Tamil Nadu
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Geography)", class_level: 10, chapter: 6 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Geography of India unit"
+
+  - code: economy
+    name: Indian Economy
+    topics:
+      - id: 0199f5a0-0401-7000-8000-000000000401
+        code: economy.planning
+        name: Five-Year Plans and NITI Aayog
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Economics", class_level: 11, chapter: 3 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian economy unit"
+      - id: 0199f5a0-0402-7000-8000-000000000402
+        code: economy.national-income
+        name: National income
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Economics)", class_level: 10, chapter: 1 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian economy unit"
+      - id: 0199f5a0-0403-7000-8000-000000000403
+        code: economy.gst
+        name: Goods and Services Tax (GST)
+        shared_with: [tnpsc-group-2, tnpsc-group-2a]
+        textbook_refs:
+          - { book: "TN State Board Social Science (Economics)", class_level: 10, chapter: 4 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Indian economy unit"
+
+  - code: science
+    name: General Science
+    topics:
+      - id: 0199f5a0-0501-7000-8000-000000000501
+        code: science.human-body
+        name: Human body systems
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl, ssc-mts]
+        textbook_refs:
+          - { book: "TN State Board Science", class_level: 10, chapter: 14 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, General science unit"
+      - id: 0199f5a0-0502-7000-8000-000000000502
+        code: science.light
+        name: Light
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl, ssc-mts]
+        textbook_refs:
+          - { book: "TN State Board Science", class_level: 10, chapter: 2 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, General science unit"
+      - id: 0199f5a0-0503-7000-8000-000000000503
+        code: science.electricity
+        name: Electricity
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl, ssc-mts]
+        textbook_refs:
+          - { book: "TN State Board Science", class_level: 10, chapter: 4 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, General science unit"
+      - id: 0199f5a0-0504-7000-8000-000000000504
+        code: science.nutrition-health
+        name: Nutrition and health
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-mts]
+        textbook_refs:
+          - { book: "TN State Board Science", class_level: 8, chapter: 18 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, General science unit"
+
+  - code: aptitude
+    name: Aptitude and Mental Ability
+    topics:
+      - id: 0199f5a0-0601-7000-8000-000000000601
+        code: aptitude.percentage
+        name: Percentage
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl, ssc-mts]
+        textbook_refs:
+          - { book: "TN State Board Mathematics", class_level: 8, chapter: 4 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Aptitude and mental ability unit"
+      - id: 0199f5a0-0602-7000-8000-000000000602
+        code: aptitude.ratio-proportion
+        name: Ratio and proportion
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl, ssc-mts]
+        textbook_refs:
+          - { book: "TN State Board Mathematics", class_level: 7, chapter: 3 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Aptitude and mental ability unit"
+      - id: 0199f5a0-0603-7000-8000-000000000603
+        code: aptitude.interest
+        name: Simple and compound interest
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl]
+        textbook_refs:
+          - { book: "TN State Board Mathematics", class_level: 8, chapter: 4 }   # chapter to be verified
+        source: "TNPSC Group 4 notification syllabus, Aptitude and mental ability unit"
+      - id: 0199f5a0-0604-7000-8000-000000000604
+        code: aptitude.number-series
+        name: Number series
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl, ssc-mts]
+        textbook_refs: []
+        source: "TNPSC Group 4 notification syllabus, Aptitude and mental ability unit"
+      - id: 0199f5a0-0605-7000-8000-000000000605
+        code: aptitude.time-work
+        name: Time and work
+        shared_with: [tnpsc-group-2, tnpsc-group-2a, ssc-chsl, ssc-mts]
+        textbook_refs: []
+        source: "TNPSC Group 4 notification syllabus, Aptitude and mental ability unit"

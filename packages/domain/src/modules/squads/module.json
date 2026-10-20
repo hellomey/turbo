@@ -1,0 +1,31 @@
+{
+  "name": "squads",
+  "summary": "Squads, members, Squad Battles, Help Requests, chat, Squad Goal.",
+  "owns": [
+    "Squad",
+    "SquadMember",
+    "SquadBattle",
+    "BattleAttempt",
+    "HelpRequest",
+    "ChatMessage",
+    "SquadGoal"
+  ],
+  "responsibilities": [
+    "Roles (Captain..Member)",
+    "battle matching + flags",
+    "Help Requests with reputation",
+    "chat with phone/link filter",
+    "captains never see private scores"
+  ],
+  "dependsOn": [
+    "content",
+    "economy",
+    "moderation"
+  ],
+  "publishes": [
+    "squads.battle_finished"
+  ],
+  "buildWeek": 3,
+  "coverageTarget": 70,
+  "founderApprovalRequired": false
+}

@@ -1,0 +1,32 @@
+{
+  "name": "economy",
+  "summary": "Currencies with the money/game FIREWALL, cosmetics, check-in, seasons, Season Pass.",
+  "owns": [
+    "SparksLedger",
+    "PointsLedger",
+    "TrophyLedger",
+    "Cosmetic",
+    "UserCosmetic",
+    "CheckInTrack",
+    "Season",
+    "SeasonPassProgress"
+  ],
+  "responsibilities": [
+    "Two append-only ledgers that never convert",
+    "earned-Sparks cap 50/month",
+    "check-in track that never resets",
+    "Season Pass (cosmetic only)",
+    "spending limits"
+  ],
+  "dependsOn": [
+    "audit",
+    "liveops"
+  ],
+  "publishes": [
+    "economy.sparks_credited",
+    "economy.points_awarded"
+  ],
+  "buildWeek": 3,
+  "coverageTarget": 90,
+  "founderApprovalRequired": true
+}

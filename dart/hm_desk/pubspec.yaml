@@ -1,0 +1,24 @@
+name: hm_desk
+description: "HeyMey Desk feature modules (Support, Moderation, Review, Ops, Admin, Institution, Studio, Partner). NEVER a dependency of apps/mobile."
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  hm_design:
+    path: ../hm_design
+  hm_core:
+    path: ../hm_core
+  hm_api:
+    path: ../hm_api
+  flutter_riverpod: ^3.4.3
+  qr_flutter: ^4.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

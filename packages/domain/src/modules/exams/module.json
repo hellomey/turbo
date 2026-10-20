@@ -1,0 +1,27 @@
+{
+  "name": "exams",
+  "summary": "Exams, notifications, eligibility rules, vacancies, cutoffs.",
+  "owns": [
+    "Exam",
+    "Notification",
+    "EligibilityRule",
+    "Vacancy",
+    "Cutoff"
+  ],
+  "responsibilities": [
+    "Eligibility engine (age relaxations, qualification, community, PSTM)",
+    "exam pages",
+    "Exam Alerts source data (human-checked)",
+    "changedetection webhook intake"
+  ],
+  "dependsOn": [
+    "syllabus"
+  ],
+  "publishes": [
+    "exams.notification_published",
+    "exams.date_changed"
+  ],
+  "buildWeek": 1,
+  "coverageTarget": 70,
+  "founderApprovalRequired": true
+}
