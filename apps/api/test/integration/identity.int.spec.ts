@@ -246,11 +246,19 @@ describe("identity API (integration)", () => {
     const wrongCode = code === "000000" ? "111111" : "000000";
     const bad = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken, code: wrongCode } });
     expect(bad.json().error.code).toBe("TOTP_INVALID");
-    const ok = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken, code } });
+    // SEC-H2: one guess per challenge. The burned challenge refuses even the right code; sign in again for a new one.
+    const burned = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken, code } });
+    expect(burned.json().error.code).toBe("CHALLENGE_EXPIRED");
+    await call("POST", "/v1/auth/otp/request", { body: { email: "ops@heymey.app" } });
+    const ch2 = await call("POST", "/v1/auth/otp/verify", {
+      body: { email: "ops@heymey.app", code: (await lastCode("ops@heymey.app")).code, deviceId: randomUUID(), platform: "web", client: "desk" },
+    });
+    expect(ch2.json()).toMatchObject({ kind: "desk_2fa", totpEnrolled: false });
+    const ok = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken: ch2.json().challengeToken, code } });
     expect(ok.statusCode).toBe(200);
     expect(ok.json()).toMatchObject({ kind: "session", isNewUser: false, deletionCancelled: false });
-    const replay = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken, code } });
-    expect(replay.json().error.code).toBe("TOTP_INVALID");
+    const replay = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken: ch2.json().challengeToken, code } });
+    expect(replay.statusCode).not.toBe(200);
     const me = await call("GET", "/v1/me", { token: ok.json().tokens.accessToken });
     expect(me.json().roles).toEqual(["OPS"]);
     expect((await call("POST", "/v1/auth/desk/totp/enroll", { body: { challengeToken } })).json().error.code).toBe("FORBIDDEN");

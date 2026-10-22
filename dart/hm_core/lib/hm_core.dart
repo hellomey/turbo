@@ -3,6 +3,7 @@ library;
 
 export 'src/config/api_config.dart';
 export 'src/net/app_version.dart';
+export 'src/net/connectivity.dart';
 export 'src/net/hm_api.dart';
 export 'src/net/hm_api_exception.dart';
 export 'src/net/hm_http_client.dart';

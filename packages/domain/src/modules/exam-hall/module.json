@@ -4,7 +4,9 @@
   "owns": [
     "Mock",
     "MockAttempt",
-    "MockAnswer"
+    "MockAnswer",
+    "MockAllowanceUse",
+    "MockRank"
   ],
   "responsibilities": [
     "Exam-accurate mocks (OMR + CBT)",
@@ -17,7 +19,8 @@
   "dependsOn": [
     "content",
     "mastery",
-    "billing"
+    "billing",
+    "exams"
   ],
   "publishes": [
     "exam_hall.mock_submitted"

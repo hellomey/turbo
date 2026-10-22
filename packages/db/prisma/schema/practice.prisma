@@ -1,2 +1,81 @@
-// Tables owned by the `practice` module. No other module may query these (blueprint §34.8).
-// To model: PracticeAttempt, Answer
+// Tables owned by the `practice` module. No other module may query these (blueprint §34.8). §10.6, §11, §19.4.
+
+enum PracticeMode {
+  practice
+  pyq
+  mistakes
+  drill
+}
+
+model PracticeSession {
+  id          String       @id @default(uuid(7)) @db.Uuid
+  userId      String       @db.Uuid
+  mode        PracticeMode
+  examCode    String
+  subjectCode String?
+  topicId     String?      @db.Uuid
+  drillId     String?      @db.Uuid
+  questionIds String[]     @db.Uuid
+  startedAt   DateTime
+  closedAt    DateTime?
+
+  @@index([userId, startedAt])
+}
+
+/// One graded answer ("PracticeAttempt" / "Answer" in §22). id = the client action UUID: accepted once (§39).
+model PracticeAnswer {
+  id              String       @id @db.Uuid
+  userId          String       @db.Uuid
+  sessionId       String?      @db.Uuid // null for offline-synced answers
+  questionId      String       @db.Uuid
+  questionVersion Int
+  topicId         String       @db.Uuid
+  mode            PracticeMode
+  chosenOptionIds String[]
+  correct         Boolean
+  timeMs          Int
+  confidence      String?
+  answeredAt      DateTime // server-judged time (clientAt clamped for offline, §39)
+  istDay          String // YYYY-MM-DD, Asia/Kolkata
+  countsToLimit   Boolean
+  studyLogOnly    Boolean      @default(false)
+  source          String       @default("online") // online | offline_sync
+  createdAt       DateTime     @default(now())
+
+  @@index([userId, istDay])
+  @@index([userId, correct, answeredAt])
+  @@index([userId, topicId])
+}
+
+/// Race-safe free-limit counter per user per IST day (§11, §37). Incremented under a row lock.
+model PracticeDayCounter {
+  userId          String  @db.Uuid
+  istDay          String
+  counted         Int     @default(0)
+  limitSheetShown Boolean @default(false)
+
+  @@id([userId, istDay])
+}
+
+/// Mistake loop (§36, §19.6 Q60): repeated wrong answers on one lamp inside a window.
+model MistakeTally {
+  userId      String   @db.Uuid
+  topicId     String   @db.Uuid
+  wrongCount  Int      @default(0)
+  windowStart DateTime
+  lastWrongAt DateTime
+
+  @@id([userId, topicId])
+}
+
+model ConceptDrill {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  userId      String   @db.Uuid
+  topicId     String   @db.Uuid
+  reason      String
+  questionIds String[] @db.Uuid
+  status      String   @default("open") // open | done
+  createdAt   DateTime @default(now())
+
+  @@index([userId, status])
+}

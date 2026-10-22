@@ -1,0 +1,12 @@
+{
+  "$comment": "Official TN exam sites watched by changedetection.io (BOLT-0015, blueprint §17.5, §20.2). URLs ONLY: changedetection fetches the page and diffs it; nothing is scraped, stored as content or shown to users. Every change becomes a PENDING row via POST /v1/webhooks/changedetection and needs a human check in HeyMey Desk. Apply with tools/changedetection-sync.mjs. URLs to be confirmed by content-verifier before go-live.",
+  "checkIntervalHours": 6,
+  "watches": [
+    { "tag": "tnpsc", "examHint": "tnpsc-group-4", "title": "TNPSC home", "url": "https://www.tnpsc.gov.in/" },
+    { "tag": "tnpsc", "examHint": "tnpsc-group-4", "title": "TNPSC notifications", "url": "https://www.tnpsc.gov.in/English/Notification.aspx" },
+    { "tag": "tnusrb", "examHint": null, "title": "TN Uniformed Services Recruitment Board", "url": "https://www.tnusrb.tn.gov.in/" },
+    { "tag": "trb", "examHint": null, "title": "Teachers Recruitment Board", "url": "https://trb.tn.gov.in/" },
+    { "tag": "mrb", "examHint": null, "title": "TN Medical Services Recruitment Board", "url": "https://www.mrb.tn.gov.in/" },
+    { "tag": "mhc", "examHint": null, "title": "Madras High Court recruitment", "url": "https://www.mhc.tn.gov.in/recruitment/" }
+  ]
+}

@@ -75,28 +75,87 @@ Class | Method | HTTP request | Description
 *AuthApi* | [**verifyDeskTotp**](doc//AuthApi.md#verifydesktotp) | **POST** /v1/auth/desk/totp/verify | Complete Desk sign-in with the authenticator code.
 *AuthApi* | [**verifyOtp**](doc//AuthApi.md#verifyotp) | **POST** /v1/auth/otp/verify | Exchange email + code for a session bound to this device (or a Desk 2FA challenge).
 *ContentApi* | [**getLesson**](doc//ContentApi.md#getlesson) | **GET** /v1/topics/{topicId}/lesson | 
+*ContentApi* | [**listContentPacks**](doc//ContentApi.md#listcontentpacks) | **GET** /v1/content/packs | Offline packs for an exam with SHA-256 checksums (§39). Free users: free packs only.
+*ContentApi* | [**reportQuestion**](doc//ContentApi.md#reportquestion) | **POST** /v1/questions/{questionId}/reports | Report a problem with a question (§19.4 Q34). Goes to the content fix loop.
+*DeskApi* | [**approveExamChange**](doc//DeskApi.md#approveexamchange) | **POST** /v1/desk/exam-changes/{changeId}/approve | Human-approved: publishes an Exam Alert (exams.notification_published) to followers. Audited.
 *DeskApi* | [**enrollDeskTotp**](doc//DeskApi.md#enrolldesktotp) | **POST** /v1/auth/desk/totp/enroll | First Desk sign-in: create the authenticator secret for this staff/partner account.
+*DeskApi* | [**listExamChanges**](doc//DeskApi.md#listexamchanges) | **GET** /v1/desk/exam-changes | Ops queue of official-site changes waiting for a human check. Role OPS or ADMIN (checked in the handler).
+*DeskApi* | [**rejectExamChange**](doc//DeskApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
 *DeskApi* | [**verifyDeskTotp**](doc//DeskApi.md#verifydesktotp) | **POST** /v1/auth/desk/totp/verify | Complete Desk sign-in with the authenticator code.
+*ExamHallApi* | [**getMockAttempt**](doc//ExamHallApi.md#getmockattempt) | **GET** /v1/mock-attempts/{attemptId} | Resume exactly where I left off, with server remaining time (§19.8 Q76).
+*ExamHallApi* | [**getMockReport**](doc//ExamHallApi.md#getmockreport) | **GET** /v1/mock-attempts/{attemptId}/report | 
+*ExamHallApi* | [**getMyStatewideRank**](doc//ExamHallApi.md#getmystatewiderank) | **GET** /v1/mocks/{mockId}/statewide-rank | My statewide rank. Only live, online, on-time attempts are ranked (§18, §39).
+*ExamHallApi* | [**getStateMockSunday**](doc//ExamHallApi.md#getstatemocksunday) | **GET** /v1/state-mock-sunday | The next State Mock Sunday for an exam (1st and 3rd Sunday, IST).
+*ExamHallApi* | [**listMocks**](doc//ExamHallApi.md#listmocks) | **GET** /v1/mocks | 
+*ExamHallApi* | [**listMyMockAttempts**](doc//ExamHallApi.md#listmymockattempts) | **GET** /v1/me/mock-attempts | 
+*ExamHallApi* | [**saveMockAnswers**](doc//ExamHallApi.md#savemockanswers) | **PUT** /v1/mock-attempts/{attemptId}/answers | Save answers (last write per question wins until the deadline). Late answers are ignored.
+*ExamHallApi* | [**startMockAttempt**](doc//ExamHallApi.md#startmockattempt) | **POST** /v1/mocks/{mockId}/attempts | Start (or return my in-progress) attempt. The server sets start time and deadline.
+*ExamHallApi* | [**submitMockAttempt**](doc//ExamHallApi.md#submitmockattempt) | **POST** /v1/mock-attempts/{attemptId}/submit | Submit and score on the server with the paper's marking scheme.
+*ExamsApi* | [**approveExamChange**](doc//ExamsApi.md#approveexamchange) | **POST** /v1/desk/exam-changes/{changeId}/approve | Human-approved: publishes an Exam Alert (exams.notification_published) to followers. Audited.
 *ExamsApi* | [**checkEligibility**](doc//ExamsApi.md#checkeligibility) | **POST** /v1/eligibility/check | Eligibility Checker. A pure computation: nothing is stored. Under 18 returns UNDER_18.
 *ExamsApi* | [**getExam**](doc//ExamsApi.md#getexam) | **GET** /v1/exams/{code} | 
+*ExamsApi* | [**getExamStructure**](doc//ExamsApi.md#getexamstructure) | **GET** /v1/exams/{code}/structure | Stages, papers and marking schemes (exam-agnostic, ADR-0013). Unverified schemes say so.
 *ExamsApi* | [**getMyExams**](doc//ExamsApi.md#getmyexams) | **GET** /v1/me/exams | 
+*ExamsApi* | [**listExamChanges**](doc//ExamsApi.md#listexamchanges) | **GET** /v1/desk/exam-changes | Ops queue of official-site changes waiting for a human check. Role OPS or ADMIN (checked in the handler).
 *ExamsApi* | [**listExams**](doc//ExamsApi.md#listexams) | **GET** /v1/exams | 
+*ExamsApi* | [**listMyExamAlerts**](doc//ExamsApi.md#listmyexamalerts) | **GET** /v1/me/exam-alerts | Human-checked Exam Alerts for the exams I follow, newest first.
 *ExamsApi* | [**putMyExams**](doc//ExamsApi.md#putmyexams) | **PUT** /v1/me/exams | 
+*ExamsApi* | [**receiveSiteChange**](doc//ExamsApi.md#receivesitechange) | **POST** /v1/webhooks/changedetection | changedetection.io site-change webhook. Stores a pending change; NOTHING is sent to users (§17.5).
+*ExamsApi* | [**rejectExamChange**](doc//ExamsApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
+*MasteryApi* | [**completeLesson**](doc//MasteryApi.md#completelesson) | **POST** /v1/topics/{topicId}/lesson-complete | I finished the lesson or the mapped textbook pages. Opens the 3-question Lit check.
+*MasteryApi* | [**getMyMastery**](doc//MasteryApi.md#getmymastery) | **GET** /v1/me/mastery | Rank (from lamps only), XP and ring counts across my exams.
+*MasteryApi* | [**getRelightQueue**](doc//MasteryApi.md#getrelightqueue) | **GET** /v1/me/relight-queue | Dimming lamps I can open, oldest first, with minutes (\"Relight 4 · 8 min\").
+*MasteryApi* | [**listMyTopicStates**](doc//MasteryApi.md#listmytopicstates) | **GET** /v1/me/topic-states | Authoritative lamp states for one exam's map; `since` for incremental Drift sync.
+*MasteryApi* | [**startTopicCheck**](doc//MasteryApi.md#starttopiccheck) | **POST** /v1/topics/{topicId}/checks | Start a Lit / recall / relight / Gold check. The server picks the questions and sets any deadline.
+*MasteryApi* | [**submitTopicCheck**](doc//MasteryApi.md#submittopiccheck) | **POST** /v1/checks/{checkId}/submit | Grade a check on the server and move the rings. Late Gold answers are not counted.
+*MasteryApi* | [**syncStudyActions**](doc//MasteryApi.md#syncstudyactions) | **POST** /v1/sync/study-actions | Offline outbox batch (§39). Each clientActionId is accepted once; returns authoritative lamp states.
+*NotificationsApi* | [**deletePushToken**](doc//NotificationsApi.md#deletepushtoken) | **DELETE** /v1/me/push-tokens/{deviceId} | 
+*NotificationsApi* | [**getAlertSettings**](doc//NotificationsApi.md#getalertsettings) | **GET** /v1/me/alert-settings | 
+*NotificationsApi* | [**putAlertSettings**](doc//NotificationsApi.md#putalertsettings) | **PUT** /v1/me/alert-settings | Offers can be on only with the offers consent; dailyLimit is capped at 3.
+*NotificationsApi* | [**registerPushToken**](doc//NotificationsApi.md#registerpushtoken) | **POST** /v1/me/push-tokens | 
+*PlanApi* | [**getMyPlan**](doc//PlanApi.md#getmyplan) | **GET** /v1/me/plan | 
+*PlanApi* | [**getPlanDays**](doc//PlanApi.md#getplandays) | **GET** /v1/me/plan/days | Calendar view (max 62 days per request).
+*PlanApi* | [**getToday**](doc//PlanApi.md#gettoday) | **GET** /v1/me/today | 
+*PlanApi* | [**putMyPlan**](doc//PlanApi.md#putmyplan) | **PUT** /v1/me/plan | Create or change My Plan from study hours; exam dates come from `exams` (§17.1 step 9).
+*PlanApi* | [**rebalanceMyPlan**](doc//PlanApi.md#rebalancemyplan) | **POST** /v1/me/plan/rebalance | 
+*PlanApi* | [**updatePlanItem**](doc//PlanApi.md#updateplanitem) | **POST** /v1/me/plan/items/{itemId}/status | 
 *PlatformApi* | [**getHealth**](doc//PlatformApi.md#gethealth) | **GET** /v1/health | Liveness + dependency checks
+*PracticeApi* | [**answerPracticeQuestion**](doc//PracticeApi.md#answerpracticequestion) | **POST** /v1/practice/sessions/{sessionId}/answers | Grade one answer. The 31st counted answer of the IST day returns PRACTICE_DAILY_LIMIT for free users.
+*PracticeApi* | [**getPracticeUsage**](doc//PracticeApi.md#getpracticeusage) | **GET** /v1/me/practice/usage | 
+*PracticeApi* | [**getPyqFacets**](doc//PracticeApi.md#getpyqfacets) | **GET** /v1/pyq/facets | 
+*PracticeApi* | [**listMyDrills**](doc//PracticeApi.md#listmydrills) | **GET** /v1/me/drills | Concept drills from repeated mistakes (Pro, §19.6 Q60). `locked` for free users.
+*PracticeApi* | [**listMyMistakes**](doc//PracticeApi.md#listmymistakes) | **GET** /v1/me/mistakes | Mistake review: why mine was wrong, why the answer is right, which lamp to relight (§19.4 Q38).
+*PracticeApi* | [**searchPyqs**](doc//PracticeApi.md#searchpyqs) | **GET** /v1/pyq | PYQ Vault. Free: latest 2 exam years held for the exam; older years come back `locked`.
+*PracticeApi* | [**startPracticeSession**](doc//PracticeApi.md#startpracticesession) | **POST** /v1/practice/sessions | Start practice, PYQ, mistakes or drill. Questions come without answers.
+*ReadinessApi* | [**getMyReadiness**](doc//ReadinessApi.md#getmyreadiness) | **GET** /v1/me/readiness | Four evidence bars + a plain label. Never one overall percentage.
+*ReadinessApi* | [**getMyReadinessTrend**](doc//ReadinessApi.md#getmyreadinesstrend) | **GET** /v1/me/readiness/trend | 7/30/90-day trends (Pro: PRO_REQUIRED for free users).
+*ReadinessApi* | [**getSundayReport**](doc//ReadinessApi.md#getsundayreport) | **GET** /v1/me/sunday-reports/{reportId} | 
+*ReadinessApi* | [**listMySundayReports**](doc//ReadinessApi.md#listmysundayreports) | **GET** /v1/me/sunday-reports | 
 *SyllabusApi* | [**getStudyMap**](doc//SyllabusApi.md#getstudymap) | **GET** /v1/exams/{code}/study-map | 
 *SyllabusApi* | [**searchGlossary**](doc//SyllabusApi.md#searchglossary) | **GET** /v1/glossary | 
+*SyncApi* | [**syncStudyActions**](doc//SyncApi.md#syncstudyactions) | **POST** /v1/sync/study-actions | Offline outbox batch (§39). Each clientActionId is accepted once; returns authoritative lamp states.
 *UsersApi* | [**getConsentNotice**](doc//UsersApi.md#getconsentnotice) | **GET** /v1/consents/notice | The current DPDP notice: purposes, which are required, nothing pre-ticked.
 *UsersApi* | [**getMe**](doc//UsersApi.md#getme) | **GET** /v1/me | 
 *UsersApi* | [**getMyConsents**](doc//UsersApi.md#getmyconsents) | **GET** /v1/me/consents | 
 *UsersApi* | [**putProfile**](doc//UsersApi.md#putprofile) | **PUT** /v1/me/profile | Save the onboarding eligibility answers. Under 18 is refused (UNDER_18).
 *UsersApi* | [**recordConsents**](doc//UsersApi.md#recordconsents) | **POST** /v1/me/consents | 
 *UsersApi* | [**updateMe**](doc//UsersApi.md#updateme) | **PATCH** /v1/me | 
+*WebhooksApi* | [**receiveSiteChange**](doc//WebhooksApi.md#receivesitechange) | **POST** /v1/webhooks/changedetection | changedetection.io site-change webhook. Stores a pending change; NOTHING is sent to users (§17.5).
 
 
 ## Documentation For Models
 
+ - [AlertSettings](doc//AlertSettings.md)
+ - [AlertSettingsQuietHours](doc//AlertSettingsQuietHours.md)
+ - [AnswerInput](doc//AnswerInput.md)
+ - [ApproveExamChangeBody](doc//ApproveExamChangeBody.md)
+ - [ApproveExamChangeBodyNewStageDate](doc//ApproveExamChangeBodyNewStageDate.md)
+ - [CheckKind](doc//CheckKind.md)
+ - [CheckResult](doc//CheckResult.md)
  - [ClientKind](doc//ClientKind.md)
  - [Community](doc//Community.md)
+ - [ConceptDrill](doc//ConceptDrill.md)
+ - [ConceptDrillList](doc//ConceptDrillList.md)
  - [ConsentChoicesBody](doc//ConsentChoicesBody.md)
  - [ConsentChoicesBodyChoicesInner](doc//ConsentChoicesBodyChoicesInner.md)
  - [ConsentNotice](doc//ConsentNotice.md)
@@ -104,6 +163,9 @@ Class | Method | HTTP request | Description
  - [ConsentPurpose](doc//ConsentPurpose.md)
  - [ConsentState](doc//ConsentState.md)
  - [ConsentStateChoicesInner](doc//ConsentStateChoicesInner.md)
+ - [ContentLanguage](doc//ContentLanguage.md)
+ - [ContentPack](doc//ContentPack.md)
+ - [ContentPackList](doc//ContentPackList.md)
  - [DeleteAccountBody](doc//DeleteAccountBody.md)
  - [DeleteAccountResponse](doc//DeleteAccountResponse.md)
  - [DeskChallenge](doc//DeskChallenge.md)
@@ -116,37 +178,140 @@ Class | Method | HTTP request | Description
  - [EligibilityResult](doc//EligibilityResult.md)
  - [ErrorEnvelope](doc//ErrorEnvelope.md)
  - [ErrorEnvelopeError](doc//ErrorEnvelopeError.md)
+ - [ExamAlert](doc//ExamAlert.md)
+ - [ExamAlertPage](doc//ExamAlertPage.md)
+ - [ExamAttemptCycle](doc//ExamAttemptCycle.md)
+ - [ExamAttemptCycleStageDatesInner](doc//ExamAttemptCycleStageDatesInner.md)
+ - [ExamChange](doc//ExamChange.md)
+ - [ExamChangePage](doc//ExamChangePage.md)
+ - [ExamChangeStatus](doc//ExamChangeStatus.md)
  - [ExamDetail](doc//ExamDetail.md)
  - [ExamDetailAllOfPattern](doc//ExamDetailAllOfPattern.md)
  - [ExamEligibility](doc//ExamEligibility.md)
  - [ExamEligibilityAgeLimit](doc//ExamEligibilityAgeLimit.md)
  - [ExamList](doc//ExamList.md)
+ - [ExamPaper](doc//ExamPaper.md)
+ - [ExamStage](doc//ExamStage.md)
+ - [ExamStructure](doc//ExamStructure.md)
+ - [ExamStructureFamily](doc//ExamStructureFamily.md)
  - [ExamSummary](doc//ExamSummary.md)
  - [GlossaryList](doc//GlossaryList.md)
  - [GlossaryListItemsInner](doc//GlossaryListItemsInner.md)
+ - [GradedAnswer](doc//GradedAnswer.md)
  - [HealthResponse](doc//HealthResponse.md)
  - [LampRing](doc//LampRing.md)
  - [Lesson](doc//Lesson.md)
+ - [LessonCompleteBody](doc//LessonCompleteBody.md)
  - [LessonSource](doc//LessonSource.md)
+ - [MarkingScheme](doc//MarkingScheme.md)
+ - [MarkingSection](doc//MarkingSection.md)
+ - [Marks](doc//Marks.md)
+ - [MasterySummary](doc//MasterySummary.md)
+ - [MasterySummaryByExamInner](doc//MasterySummaryByExamInner.md)
  - [Me](doc//Me.md)
+ - [Mistake](doc//Mistake.md)
+ - [MistakePage](doc//MistakePage.md)
+ - [MockAllowance](doc//MockAllowance.md)
+ - [MockAnswersSaved](doc//MockAnswersSaved.md)
+ - [MockAttemptListItem](doc//MockAttemptListItem.md)
+ - [MockAttemptPage](doc//MockAttemptPage.md)
+ - [MockAttemptState](doc//MockAttemptState.md)
+ - [MockKind](doc//MockKind.md)
+ - [MockList](doc//MockList.md)
+ - [MockMode](doc//MockMode.md)
+ - [MockReport](doc//MockReport.md)
+ - [MockSectionView](doc//MockSectionView.md)
+ - [MockSummary](doc//MockSummary.md)
  - [OkResponse](doc//OkResponse.md)
  - [OtpPurpose](doc//OtpPurpose.md)
  - [OtpRequestBody](doc//OtpRequestBody.md)
  - [OtpRequestResponse](doc//OtpRequestResponse.md)
  - [OtpVerifyBody](doc//OtpVerifyBody.md)
  - [OtpVerifyResponse](doc//OtpVerifyResponse.md)
+ - [PaperType](doc//PaperType.md)
+ - [Plan](doc//Plan.md)
+ - [PlanDays](doc//PlanDays.md)
+ - [PlanDaysDaysInner](doc//PlanDaysDaysInner.md)
+ - [PlanExam](doc//PlanExam.md)
+ - [PlanItem](doc//PlanItem.md)
+ - [PlanItemKind](doc//PlanItemKind.md)
+ - [PlanItemStatus](doc//PlanItemStatus.md)
+ - [PracticeAnswerBody](doc//PracticeAnswerBody.md)
+ - [PracticeAnswerResult](doc//PracticeAnswerResult.md)
+ - [PracticeMode](doc//PracticeMode.md)
+ - [PracticeSession](doc//PracticeSession.md)
+ - [PracticeUsage](doc//PracticeUsage.md)
  - [ProfileAnswers](doc//ProfileAnswers.md)
+ - [PushTokenAck](doc//PushTokenAck.md)
+ - [PutAlertSettingsBody](doc//PutAlertSettingsBody.md)
+ - [PutPlanBody](doc//PutPlanBody.md)
+ - [PyqFacets](doc//PyqFacets.md)
+ - [PyqFacetsSubjectsInner](doc//PyqFacetsSubjectsInner.md)
+ - [PyqFacetsYearsInner](doc//PyqFacetsYearsInner.md)
+ - [PyqItem](doc//PyqItem.md)
+ - [PyqPage](doc//PyqPage.md)
  - [Qualification](doc//Qualification.md)
+ - [Question](doc//Question.md)
+ - [QuestionKind](doc//QuestionKind.md)
+ - [QuestionOption](doc//QuestionOption.md)
+ - [QuestionReportAck](doc//QuestionReportAck.md)
+ - [QuestionReportBody](doc//QuestionReportBody.md)
+ - [QuestionSource](doc//QuestionSource.md)
+ - [QuestionSourcePyq](doc//QuestionSourcePyq.md)
+ - [Rank](doc//Rank.md)
+ - [RankChange](doc//RankChange.md)
+ - [ReadinessBar](doc//ReadinessBar.md)
+ - [ReadinessLabel](doc//ReadinessLabel.md)
+ - [ReadinessMeter](doc//ReadinessMeter.md)
+ - [ReadinessMeterCoverage](doc//ReadinessMeterCoverage.md)
+ - [ReadinessTrend](doc//ReadinessTrend.md)
+ - [ReadinessTrendPointsInner](doc//ReadinessTrendPointsInner.md)
  - [RefreshBody](doc//RefreshBody.md)
+ - [RegisterPushTokenBody](doc//RegisterPushTokenBody.md)
+ - [RejectExamChangeBody](doc//RejectExamChangeBody.md)
+ - [RelightItem](doc//RelightItem.md)
+ - [RelightQueue](doc//RelightQueue.md)
+ - [RingCounts](doc//RingCounts.md)
  - [Role](doc//Role.md)
+ - [SaveMockAnswersBody](doc//SaveMockAnswersBody.md)
+ - [SaveMockAnswersBodyAnswersInner](doc//SaveMockAnswersBodyAnswersInner.md)
+ - [SavedMockAnswer](doc//SavedMockAnswer.md)
+ - [SectionResult](doc//SectionResult.md)
  - [SessionGranted](doc//SessionGranted.md)
+ - [SiteChangeAck](doc//SiteChangeAck.md)
+ - [SiteChangeWebhookBody](doc//SiteChangeWebhookBody.md)
  - [SpecialCategory](doc//SpecialCategory.md)
+ - [StartCheckBody](doc//StartCheckBody.md)
+ - [StartMockBody](doc//StartMockBody.md)
+ - [StartPracticeBody](doc//StartPracticeBody.md)
+ - [StateMockInfo](doc//StateMockInfo.md)
+ - [StateMockInfoMock](doc//StateMockInfoMock.md)
+ - [StatewideRank](doc//StatewideRank.md)
+ - [StretchPhase](doc//StretchPhase.md)
  - [StudyMap](doc//StudyMap.md)
  - [StudyMapSubjectsInner](doc//StudyMapSubjectsInner.md)
  - [StudyMapTopic](doc//StudyMapTopic.md)
+ - [SubmitCheckBody](doc//SubmitCheckBody.md)
+ - [SundayReport](doc//SundayReport.md)
+ - [SundayReportPage](doc//SundayReportPage.md)
+ - [SundayReportSummary](doc//SundayReportSummary.md)
+ - [SyncAction](doc//SyncAction.md)
+ - [SyncActionOneOf](doc//SyncActionOneOf.md)
+ - [SyncActionOneOf1](doc//SyncActionOneOf1.md)
+ - [SyncActionOneOf2](doc//SyncActionOneOf2.md)
+ - [SyncActionOneOf3](doc//SyncActionOneOf3.md)
+ - [SyncActionResult](doc//SyncActionResult.md)
+ - [SyncBatchBody](doc//SyncBatchBody.md)
+ - [SyncBatchResult](doc//SyncBatchResult.md)
  - [TextbookRef](doc//TextbookRef.md)
+ - [TodayScreen](doc//TodayScreen.md)
+ - [TodayScreenRelight](doc//TodayScreenRelight.md)
  - [TokenPair](doc//TokenPair.md)
+ - [TopicCheck](doc//TopicCheck.md)
+ - [TopicState](doc//TopicState.md)
+ - [TopicStatePage](doc//TopicStatePage.md)
  - [UpdateMeBody](doc//UpdateMeBody.md)
+ - [UpdatePlanItemBody](doc//UpdatePlanItemBody.md)
  - [UserExams](doc//UserExams.md)
  - [UserExamsBody](doc//UserExamsBody.md)
  - [UserExamsMain](doc//UserExamsMain.md)

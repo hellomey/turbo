@@ -5,6 +5,8 @@ export interface UsersDeletionDeps {
   sessions: { revokeAllForUser(userId: string, reason: "deleted", actor: Actor): Promise<number> };
   /** auth's OTP retention API (SEC-M3): OTP rows keep the plain email and request IP. */
   otps: { purgeOtpCodesFor(email: string): Promise<number> };
+  /** notifications (BOLT-0014, INT-002-S16): no push token survives account deletion. Optional for older wiring. */
+  pushTokens?: { forgetUser(userId: string): Promise<number> };
 }
 
 const SYSTEM: Actor = { userId: null, role: "SYSTEM" };
@@ -24,7 +26,10 @@ export function createUsersDeletionProcessor(deps: UsersDeletionDeps) {
         otpRowsPurged += await deps.otps.purgeOtpCodesFor(user.email);
       },
     });
-    for (const id of ids) await deps.sessions.revokeAllForUser(id, "deleted", SYSTEM);
+    for (const id of ids) {
+      await deps.sessions.revokeAllForUser(id, "deleted", SYSTEM);
+      await deps.pushTokens?.forgetUser(id);
+    }
     return { erased: ids.length, otpRowsPurged };
   };
 }

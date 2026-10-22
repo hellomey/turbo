@@ -1,5 +1,5 @@
 /** Queues from ./queues/registry.ts that have a processor in this build. Only these get a BullMQ Worker. */
-export const IMPLEMENTED_QUEUES = ["email.otp", "users.deletion", "auth.otp-gc"] as const;
+export const IMPLEMENTED_QUEUES = ["email.otp", "users.deletion", "auth.otp-gc", "push.send", "notifications.exam-alert", "notifications.release-held"] as const;
 export type ImplementedQueue = (typeof IMPLEMENTED_QUEUES)[number];
 
 export function isImplemented(name: string): name is ImplementedQueue {

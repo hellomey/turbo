@@ -20,4 +20,107 @@ model Lesson {
   @@index([topicId, status])
 }
 
-// To model in Phase 2: Question, QuestionVersion, Source, Explanation, Correction, Report.
+// ---------------------------------------------------------------- questions (Phase 2, BOLT-0008; §19.4, §22)
+// R3: question kind is a field (descriptive later, no breaking migration). Explanations live on the version.
+
+enum QuestionKind {
+  single_choice
+  multi_choice
+  numeric
+  descriptive
+}
+
+model Source {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  citation  String
+  url       String?
+  kind      String // pyq | textbook | official | original
+  createdAt DateTime @default(now())
+}
+
+model Question {
+  id             String       @id @default(uuid(7)) @db.Uuid
+  topicId        String       @db.Uuid // syllabus Topic id
+  kind           QuestionKind @default(single_choice)
+  language       String       @default("en") // R5: per paper content language
+  difficulty     Int          @default(3) // 1..5
+  currentVersion Int          @default(1)
+  status         String       @default("draft") // draft | in_review | published | retired
+  // PYQ facts (null for original questions). Exam-agnostic: any family.
+  pyqExamCode    String?
+  pyqPaperCode   String?
+  pyqYear        Int?
+  pyqNumber      Int?
+  createdAt      DateTime     @default(now())
+
+  versions QuestionVersion[]
+
+  @@index([topicId, status, difficulty])
+  @@index([pyqExamCode, pyqYear, status])
+}
+
+model QuestionVersion {
+  id                  String    @id @default(uuid(7)) @db.Uuid
+  questionId          String    @db.Uuid
+  version             Int
+  stem                String
+  options             Json // [{ id, text }]
+  correctOptionIds    String[]
+  explanationMarkdown String
+  whyWrong            Json? // { optionId: "why this is wrong" }
+  affectedNote        String?
+  sourceId            String?   @db.Uuid
+  status              String    @default("draft") // draft | in_review | published | superseded
+  reviewedBy          String?   @db.Uuid
+  publishedAt         DateTime?
+  createdAt           DateTime  @default(now())
+
+  question Question @relation(fields: [questionId], references: [id])
+
+  @@unique([questionId, version])
+}
+
+/// Public Correction Log entry.
+model Correction {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  questionId  String   @db.Uuid
+  fromVersion Int
+  toVersion   Int
+  summary     String
+  publishedAt DateTime @default(now())
+
+  @@index([questionId])
+}
+
+/// "Report" on a question (§19.4 Q34). Note text never goes to an AI model with personal data.
+model QuestionReport {
+  id              String   @id @default(uuid(7)) @db.Uuid
+  userId          String   @db.Uuid
+  questionId      String   @db.Uuid
+  questionVersion Int
+  reason          String // wrong_answer | unclear | outdated | typo | other
+  note            String?
+  status          String   @default("received") // received | triaged | fixed | rejected
+  createdAt       DateTime @default(now())
+
+  @@index([questionId, status])
+  @@index([userId, createdAt])
+}
+
+/// Offline packs on cdn.heymey.app (§39).
+model ContentPack {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  code        String
+  examCode    String
+  subjectCode String?
+  version     Int
+  url         String
+  sha256      String
+  sizeBytes   Int
+  tier        String // free | pro
+  status      String    @default("draft") // draft | published | superseded
+  publishedAt DateTime?
+
+  @@unique([code, version])
+  @@index([examCode, status])
+}

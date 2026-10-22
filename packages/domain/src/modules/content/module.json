@@ -6,9 +6,9 @@
     "Question",
     "QuestionVersion",
     "Source",
-    "Explanation",
     "Correction",
-    "Report"
+    "QuestionReport",
+    "ContentPack"
   ],
   "responsibilities": [
     "Content serving + versioned packs",

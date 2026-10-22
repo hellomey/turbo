@@ -1,2 +1,33 @@
-// Tables owned by the `readiness` module. No other module may query these (blueprint §34.8).
-// To model: ReadinessSnapshot
+// Tables owned by the `readiness` module. No other module may query these (blueprint §34.8). §19.5.
+// Derived data only. There is never one overall percentage (§19.5 Q46).
+
+model ReadinessSnapshot {
+  userId          String   @db.Uuid
+  examCode        String
+  istDay          String
+  label           String // not_yet | building | close | mock_ready
+  coverage        Int? // whole percent, per bar
+  memory          Int?
+  examPerformance Int?
+  speed           Int?
+  litPct          Int
+  steadyPct       Int
+  goldPct         Int
+  configVersion   String
+  computedAt      DateTime
+
+  @@id([userId, examCode, istDay])
+}
+
+model SundayReport {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  userId    String    @db.Uuid
+  weekStart String // IST Monday, YYYY-MM-DD
+  tier      String // short | full
+  body      Json
+  createdAt DateTime  @default(now())
+  sentAt    DateTime?
+
+  @@unique([userId, weekStart])
+  @@index([userId, createdAt])
+}

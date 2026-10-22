@@ -26,7 +26,13 @@ model Exam {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
-  rules EligibilityRule[]
+  familyId String? @db.Uuid // ADR-0013; nullable while Phase 1 rows are backfilled (expand)
+
+  rules         EligibilityRule[]
+  family        ExamFamily?        @relation(fields: [familyId], references: [id])
+  examStages    ExamStage[]
+  attemptCycles ExamAttemptCycle[]
+  alerts        ExamAlert[]
 }
 
 /// Versioned, data-driven eligibility (§19.1 Q1, Q4). The engine never hard-codes an exam.
@@ -54,11 +60,175 @@ model EligibilityRule {
 
 /// The user's main exam + up to 2 more (§17.1 step 4).
 model UserExamChoice {
-  userId    String   @db.Uuid
-  examCode  String
-  isMain    Boolean
-  createdAt DateTime @default(now())
+  userId         String   @db.Uuid
+  examCode       String
+  isMain         Boolean
+  attemptCycleId String?  @db.Uuid // R2: the sitting I prepare for (Phase 2, nullable)
+  createdAt      DateTime @default(now())
 
   @@id([userId, examCode])
   @@index([userId])
+}
+
+// ---------------------------------------------------------------- exam-agnostic catalogue (ADR-0013, blueprint §1a, §22)
+// ExamFamily -> Exam -> ExamStage -> Paper -> PaperSection, with versioned MarkingScheme per paper and ExamAttemptCycle
+// per exam. Every row is DATA: seeded as "SEED - verify", published only after a human check (verifiedBy/verifiedAt).
+
+enum PaperAnswerMode {
+  objective_omr
+  objective_cbt
+  descriptive // R4: listed, refused by the Exam Hall in Phase 2 (PAPER_TYPE_NOT_SUPPORTED)
+}
+
+enum DateStatus {
+  unknown
+  tentative
+  confirmed
+}
+
+/// TNPSC, SSC, UPSC, ICAI-CA, ICSI-CS ... Rank titles and event scope are per family (R6).
+model ExamFamily {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  code       String    @unique // tnpsc | ssc | upsc | icai-ca | icsi-cs ...
+  name       String
+  rankScope  String // label for "rank among takers", e.g. "statewide" (R6)
+  /// Career Ladder titles, levels 1..11 (R6, §5.2). JSON array of 11 strings.
+  rankTitles Json
+  status     String    @default("draft") // draft | published
+  sourceUrl  String
+  verifiedBy String?   @db.Uuid
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  exams Exam[]
+}
+
+model ExamStage {
+  id     String @id @default(uuid(7)) @db.Uuid
+  examId String @db.Uuid
+  code   String // prelims | mains | interview | foundation ...
+  name   String
+  order  Int
+
+  exam   Exam    @relation(fields: [examId], references: [id])
+  papers Paper[]
+
+  @@unique([examId, code])
+}
+
+model Paper {
+  id              String          @id @default(uuid(7)) @db.Uuid
+  stageId         String          @db.Uuid
+  code            String
+  name            String
+  order           Int
+  answerMode      PaperAnswerMode
+  /// R5: per-paper content language: en | ta | hi | bilingual.
+  contentLanguage String          @default("en")
+  qualifyingOnly  Boolean         @default(false)
+  status          String          @default("draft") // draft | published
+  sourceUrl       String
+  verifiedBy      String?         @db.Uuid
+  verifiedAt      DateTime?
+
+  stage   ExamStage       @relation(fields: [stageId], references: [id])
+  schemes MarkingScheme[]
+
+  @@unique([stageId, code])
+}
+
+/// Versioned: a mock attempt records the version it was scored with; a new version never rescoring old attempts.
+model MarkingScheme {
+  id              String    @id @default(uuid(7)) @db.Uuid
+  paperId         String    @db.Uuid
+  version         Int
+  durationMinutes Int
+  totalQuestions  Int
+  status          String    @default("draft") // draft | published | superseded
+  sourceUrl       String
+  verifiedBy      String?   @db.Uuid
+  verifiedAt      DateTime?
+  createdAt       DateTime  @default(now())
+
+  paper    Paper          @relation(fields: [paperId], references: [id])
+  sections PaperSection[]
+
+  @@unique([paperId, version])
+}
+
+/// Marks are exact fractions (numerator/denominator): no floats in scoring.
+model PaperSection {
+  id              String @id @default(uuid(7)) @db.Uuid
+  schemeId        String @db.Uuid
+  code            String
+  name            String
+  order           Int
+  questionCount   Int
+  attemptLimit    Int? // "answer any N" papers
+  correctMarksNum Int
+  correctMarksDen Int    @default(1)
+  wrongPenaltyNum Int    @default(0)
+  wrongPenaltyDen Int    @default(1)
+  sectionMinutes  Int? // sectional time limit, if any
+
+  scheme MarkingScheme @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+
+  @@unique([schemeId, code])
+}
+
+/// A specific sitting with its own dates (R2). Plans and Final Stretch hang off this, not "the exam date".
+model ExamAttemptCycle {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  examId     String    @db.Uuid
+  code       String // "2027", "may-2027" ...
+  name       String
+  status     String    @default("expected") // announced | expected | closed
+  /// [{ stageCode, date: "YYYY-MM-DD" | null, dateStatus }]
+  stageDates Json
+  sourceUrl  String
+  verifiedBy String?   @db.Uuid
+  verifiedAt DateTime?
+  updatedAt  DateTime  @updatedAt
+
+  exam Exam @relation(fields: [examId], references: [id])
+
+  @@unique([examId, code])
+}
+
+// ---------------------------------------------------------------- Exam Alerts (§19.1 Q7, §17.5, §20.2)
+
+/// changedetection.io webhook intake. NOTHING reaches users until a human approves (S17).
+model ExamWatchChange {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  watchUuid   String    @db.Uuid
+  changeId    String
+  watchUrl    String
+  title       String?
+  diffSummary String?
+  receivedAt  DateTime  @default(now())
+  status      String    @default("pending") // pending | approved | rejected
+  reviewedBy  String?   @db.Uuid
+  reviewedAt  DateTime?
+  reviewNote  String?
+  alertId     String?   @db.Uuid
+
+  @@unique([watchUuid, changeId]) // replay -> 409 WEBHOOK_REPLAYED
+  @@index([status, receivedAt])
+}
+
+/// A published, human-checked Exam Alert ("Notification" in §22).
+model ExamAlert {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  examId      String   @db.Uuid
+  changeId    String?  @unique @db.Uuid
+  kind        String // notification | date_change | admit_card | result | answer_key | other
+  title       String
+  summary     String
+  officialUrl String
+  publishedBy String   @db.Uuid
+  publishedAt DateTime @default(now())
+
+  exam Exam @relation(fields: [examId], references: [id])
+
+  @@index([examId, publishedAt])
 }

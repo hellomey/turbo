@@ -29,6 +29,8 @@ model Topic {
 model TopicExamTag {
   topicId  String @db.Uuid
   examCode String
+  /// Final Stretch (§17.3): 2 = critical for this exam (set by the content track). Phase 2, default 0.
+  priority Int    @default(0)
 
   topic Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
 

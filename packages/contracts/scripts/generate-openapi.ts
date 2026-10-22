@@ -6,8 +6,8 @@ import { routes } from "../src/http/routes.js";
 const registry = new OpenAPIRegistry();
 registry.registerComponent("securitySchemes", "bearerAuth", { type: "http", scheme: "bearer", bearerFormat: "JWT" });
 // HeyMey-only metadata (auth, idempotent, rateLimit) stays out of the OpenAPI document but is exported as x- extensions.
-for (const { auth, idempotent, rateLimit, sensitiveResponse: _sensitive, ...route } of routes) {
-  registry.registerPath({ ...route, "x-heymey-auth": auth, "x-heymey-idempotent": idempotent, ...(rateLimit ? { "x-heymey-rate-limit": rateLimit } : {}) } as typeof route);
+for (const { auth, idempotent, rateLimit, sensitiveResponse, ...route } of routes) {
+  registry.registerPath({ ...route, "x-heymey-auth": auth, "x-heymey-idempotent": idempotent, ...(rateLimit ? { "x-heymey-rate-limit": rateLimit } : {}), ...(sensitiveResponse ? { "x-heymey-sensitive-response": true } : {}) } as typeof route);
 }
 
 const doc = new OpenApiGeneratorV31(registry.definitions).generateDocument({

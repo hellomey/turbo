@@ -52,3 +52,53 @@ Default request logs only. Date of birth is never logged.
 
 ## Bolts
 - BOLT-0003: everything above, with U-syllabus and U-content.
+
+
+---
+
+## Phase 2 extension (BOLT-0008) · draft, awaiting G-D · BOLT-0011 (structure + SEED catalogue), BOLT-0012 (attempt-cycle choice), BOLT-0014 (alerts)
+
+### Use cases
+| Use case | Trigger | Ports | Idempotency | Auth |
+|---|---|---|---|---|
+| examStructure | `GET /v1/exams/{code}/structure` | ExamsRepository | — | public |
+| paperForMock (public API) | exam-hall | ExamsRepository (cached) | — | — |
+| setMyExams + cycles | `PUT /v1/me/exams` (optional `attemptCycles`) | ExamsRepository | Idempotency-Key | user |
+| receiveSiteChange | `POST /v1/webhooks/changedetection` | ChangeRepo, secret from env | (watchUuid, changeId) unique; no Idempotency-Key (machine caller) | public + shared secret, 60/min/IP |
+| listChanges | `GET /v1/desk/exam-changes` | ChangeRepo | — | desk + OPS/ADMIN |
+| approve / reject | `POST /v1/desk/exam-changes/{id}/approve|reject` | ChangeRepo, AlertRepo, AuditApi, EventPublisher (tx + outbox) | Idempotency-Key + status guard | desk + OPS/ADMIN |
+| myExamAlerts | `GET /v1/me/exam-alerts` | AlertRepo + my exam choices | — | user |
+| followersOf(examCode) | worker composition | ExamsRepository | — | — |
+
+Approvals are audited, but `audit` is **not** added to `exams.dependsOn`: the API
+composition root writes the audit entry around approve/reject (as `roles` does for grants) — no new dependency.
+
+### Contract
+`src/http/exams.ts` additions: `Marks`, `PaperType`, `MarkingSection`, `MarkingScheme`, `ExamPaper`, `ExamStage`,
+`ExamAttemptCycle`, `ExamStructure`, `ExamAlert(Page)`, `SiteChangeWebhookBody`, `SiteChangeAck`, `ExamChange(Page)`,
+`ApproveExamChangeBody`, `RejectExamChangeBody`, `UserExamsBody.attemptCycles` (optional). Errors: WEBHOOK_UNAUTHORIZED,
+WEBHOOK_REPLAYED, EXAM_CHANGE_ALREADY_REVIEWED. The webhook is the second `idempotent: false` write: BOLT-0014 adds
+`/v1/webhooks/changedetection` to the allow-list in `apps/api/test/contract.spec.ts` (dedupe is by payload key).
+Non-breaking: Phase 1 `ExamDetail.pattern` stays.
+
+### Data
+`exams.prisma` (ADR-0013) + `ExamWatchChange`, `ExamAlert`; `Exam.familyId`, `UserExamChoice.attemptCycleId` nullable.
+Backfill (BOLT-0011 seed, local/staging): families `tnpsc`, `ssc`; one stage/paper/scheme per seed exam from the Phase 1
+flat columns, all `SEED - verify`. Contract step (drop flat columns) not before a later /v1-safe window.
+
+### Background work
+`exams.watch-change` (exists) is not needed for intake (synchronous store); repurposed in BOLT-0014 to notify Ops of new pending changes (email).
+
+### Failure modes
+| Failure | Behaviour | Ops/user sees |
+|---|---|---|
+| Bad secret | 401, logged with IP hash | — |
+| Replay | 409 | — |
+| Approve twice | 409 EXAM_CHANGE_ALREADY_REVIEWED | "This change was already reviewed." |
+
+### Security / compliance (T2)
+Security review: secret length ≥ 32, constant-time compare, rate limit, no URL fetch from webhook body (SSRF), body size cap 64 KB.
+Compliance: alert copy includes the confirm line; no alert without human approval.
+
+### Test plan
+Unit: invariants 1–10 (Phase 2 list in domain model). Integration: webhook 202/401/409, approve → one alert + event + audit, reject, desk role 403 for REVIEWER.

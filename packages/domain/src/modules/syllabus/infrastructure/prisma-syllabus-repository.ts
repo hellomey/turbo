@@ -38,4 +38,17 @@ export class PrismaSyllabusRepository implements SyllabusRepository {
     });
     return rows.map((r) => ({ book: r.book, classLevel: r.classLevel, chapter: r.chapter, pages: r.pages, url: r.url }));
   }
+
+  async topicById(topicId: string): Promise<TopicRow | null> {
+    const t = await this.prisma.topic.findUnique({ where: { id: topicId }, include: { subject: true, examTags: true } });
+    if (!t) return null;
+    return {
+      id: t.id,
+      code: t.code,
+      name: t.name,
+      order: t.order,
+      subject: { code: t.subject.code, name: t.subject.name, order: t.subject.order },
+      examCodes: t.examTags.map((tag) => tag.examCode),
+    };
+  }
 }

@@ -96,3 +96,160 @@ categories use the LARGEST single relaxation (not the sum); a community missing 
 `test:hero` diffs (390×844: 48%) are identical with and without BOLT-0005's domain change, so they predate Phase 1
 (likely font/rendering differences vs the 2026-10-18 baseline). Hero files untouched. Owner: flutter-ui (web) to
 re-baseline on the CI renderer or fix. `pnpm test:hero` also needs a Windows-safe script.
+
+---
+
+## 2026-10-22: Scope decisions from the founder
+
+### D-2026-10-22-01 · HeyMey covers all Indian competitive and professional exams (multi-exam scope)
+Decided by: **founder**. Founder's words: "we are not only doing this for TNPSC, we are doing this for all exams, even
+for UPSC, CA and CS exams".
+- Positioning changes from "Tamil Nadu government-job aspirants" to **Indian competitive and professional exams**.
+- **The launch wedge stays Tamil Nadu** (TNPSC Group 4 + Group 2/2A full content, as blueprint §1 decision 16), so the
+  2 Dec 2026 launch target is not put at risk. New exam families come in **waves** after launch (proposed order in
+  blueprint §1a; the founder confirms the order: INT-006 Q1).
+- From Phase 2 on, the catalogue, syllabus, mock and plan models are built **exam-agnostic** (exam family → exam →
+  stage → paper → section, marking scheme as data, attempt cycles of months or years, objective and descriptive papers).
+- Language: **English-first** interface. The "Tamil only in the Tamil Language paper" rule becomes a per-paper content
+  language rule (blueprint §1 decision 3, changed).
+- Exam facts for UPSC, CA and CS are **not** written into the blueprint; every pattern/syllabus detail is
+  "to verify from official source (upsc.gov.in, icai.org, icsi.edu)".
+Links: blueprint §1, §1a, §2, §5.1, §5.2, §22, §36, §43 (all marked "changed 2026-10-22, D-2026-10-22-01");
+`aidlc/inception/intents/INT-006-multi-exam-expansion.md`; INT-002 "Exam-agnostic build rules".
+Needs: architect ADR for the exam-family data model before INT-002 BOLT-0008 (Phase 2 schema).
+
+### D-2026-10-22-02 · Study Rooms: live group study with server-timed focus hours
+Decided by: **founder**. Pain point the founder found: CA and CS students study alone for years, often without an
+academy; many use a group study app where everyone preparing for the same exam joins a group and sees "this person
+studied 12 hours today, that person 15 hours", and they say it motivates them and makes them compete. The founder wants
+this in HeyMey's gamification.
+- New feature **Study Rooms** (blueprint §9.11): live rooms per exam or paper (public) and per squad (private), a
+  server-timed **focus session**, live "studying now" counts, daily/weekly study-hours boards in IST days, focus-hour
+  streaks, anti-cheat, wellbeing guardrails (capped hours on boards, nudges, Calm Mode hides boards), privacy (display
+  name only, opt-in), moderation, and the money/game firewall.
+- Proposed placement: **MVP in Phase 3**, next to `squads` and the realtime gateway (blueprint §43, reasoning there).
+- Proposed ownership: a new `focus` module + `squads` (private rooms) + `apps/realtime` (presence) → **needs an
+  architect ADR** (new module, new `module.json` dependencies).
+Links: blueprint §9.11, §5.3, §18, §36, §40, §43; `aidlc/inception/intents/INT-007-study-rooms.md`.
+Open: the numbers (heartbeat, caps, nudges), streak rules vs §7 "no streak lost", and how hours relate to lamps (INT-007 Q1–Q15).
+
+
+---
+
+## 2026-10-22: INT-002 provisional defaults (architect, BOLT-0008)
+
+The founder asked development to proceed with sensible, blueprint-grounded defaults for INT-002 Q1-Q27. Each value
+lives in one versioned config (`packages/domain/src/modules/<module>/domain/config.ts`, `version` stored on results)
+or in data rows, so a change is a config edit, not a redesign. **All entries below are PROVISIONAL (founder to confirm).**
+No real exam fact is decided here: patterns and marks come from data marked SEED/verify (ADR-0013).
+
+### D-2026-10-22-10 PROVISIONAL (founder to confirm) · Q1 Lit check
+3 questions, pass = 2 of 3; retry at once with a new question set. `MASTERY_CONFIG.litCheck`. [§5.1]
+
+### D-2026-10-22-11 PROVISIONAL (founder to confirm) · Q2 Steady and the recall ladder
+Steady is earned at the first passed recall (day 1). `steady_level` 1..4 = passed recalls at +1, +3, +7, +21 IST days.
+After level 4, a maintenance recall every 30 days (level stays 4). A failed recall steps back one level and is due again
+in 1 day; at level 0 the lamp stays Lit. A recall before `next_due_at` never advances the ladder. `MASTERY_CONFIG.recall`.
+
+### D-2026-10-22-12 PROVISIONAL (founder to confirm) · Q3 Dimming
+One "dimming" stage starts at `next_due_at`; after 7 more days overdue the lamp is "dim" and the Steady ring is lost
+(history kept in `RingEvent`). Gold is not removed by dimming (§5.1 only says Steady is lost). `MASTERY_CONFIG.dimming`.
+
+### D-2026-10-22-13 PROVISIONAL (founder to confirm) · Q4 Gold set
+15 exam-level questions (difficulty 3 or more, PYQs preferred), 15 minutes on the server timer (60 s each), pass at 80%
+(12 of 15), needs Lit (not Steady), max 2 attempts per lamp per IST day, answers later than deadline + 5 s are ignored.
+Gold is never lost.
+
+### D-2026-10-22-14 PROVISIONAL (founder to confirm) · Q5 Relight
+5 questions, pass 4 of 5 (about 3 minutes). A passed relight counts as a passed recall (a dim lamp returns to Steady level 1).
+
+### D-2026-10-22-15 PROVISIONAL (founder to confirm) · Q6 Career Ladder thresholds
+Rank = lamp points as a percent of the maximum over the user's syllabus (union of followed exams, shared lamps once),
+so it is fair across exam families of different size. Levels 1-11 at 0, 2, 5, 10, 18, 27, 37, 48, 60, 75, 90 %.
+Rank is recomputed (it may go down quietly; never "rank lost" copy). Titles are per-family data (`ExamFamily.rankTitles`, R6).
+
+### D-2026-10-22-16 PROVISIONAL (founder to confirm) · Q7 XP
+XP is not a currency and has no ledger: XP = lamp points (Lit 10, each Steady step 5, Gold 20; max 50 per lamp),
+owned by `mastery`. "XP for rank progress" (§5.3) and "rank only from lamps" (§5.2) are then the same number.
+Firewall: the rank/XP functions take ring counts only (new FW tests in BOLT-0009).
+
+### D-2026-10-22-17 PROVISIONAL (founder to confirm) · Q8 What counts toward 30 a day
+Only `practice` and `pyq` answers count. Lit checks, recalls, relights, Gold sets, mocks, drills and onboarding do not.
+Offline answers count on the IST day of their client time, clamped to [server now - 7 days, server now]; answers over
+that day's limit are kept as study log only (no error, no ring effect). `PRACTICE_CONFIG`.
+
+### D-2026-10-22-18 PROVISIONAL (founder to confirm) · Q9 Mistake loop
+Mistake review ("why mine was wrong") is free for everyone. Concept drills are built now behind the Pro entitlement (the
+Phase 2 billing stub says free, so drills show `locked`): 3 wrong answers on one lamp within 14 days create an 8-question drill.
+
+### D-2026-10-22-19 PROVISIONAL (founder to confirm) · Q10 Limit sheet before Pro can be bought
+Limit message + "Not now" only; no price line until Pro can be bought (Phase 3). At most once per IST day (§13).
+Offer text still needs compliance review and founder approval.
+
+### D-2026-10-22-20 PROVISIONAL (founder to confirm) · Q23 PYQ Vault "latest 2 years"
+The 2 most recent exam years for which that exam has published PYQs (not calendar years).
+
+### D-2026-10-22-21 PROVISIONAL (founder to confirm) · Q11 Exam patterns
+Patterns live in `exams` (Paper, PaperSection, MarkingScheme; ADR-0013), seeded as "SEED - verify" for local and staging
+only. Production rows are entered and human-checked by Track B before `published`. Verified Group 4 / 2 / 2A patterns
+are NOT ready; unverified schemes are served with `verified: false` and never in production.
+
+### D-2026-10-22-22 PROVISIONAL (founder to confirm) · Q12 Monthly mock and Pro-only scope
+"1 full mock a month" = IST calendar month. Week 2 builds entitlement checks only where cheap: PYQ older years locked,
+Readiness Exam performance + Speed bars locked, trends return PRO_REQUIRED, drills locked, blurred full mock report.
+Retry Wrong Only, Custom Test Builder, life profiles and pace forecast move to Phase 3 with `billing`.
+
+### D-2026-10-22-23 PROVISIONAL (founder to confirm) · Q13 State Mock Sunday
+1st and 3rd Sunday IST, opens 10:00, late join until 10:30, the paper's own duration. It can be taken later the same day
+(until 23:59) as an unranked practice attempt. Rank is published at 20:00 IST by a worker job. Before `liveops`
+(Phase 4) Ops schedules it as `Mock` rows (kind `state_mock_sunday`) with an ops script. Rank scope is per family (R6).
+
+### D-2026-10-22-24 PROVISIONAL (founder to confirm) · Q25 Mocks on a weak connection
+Starting a mock needs a connection (the server issues start and deadline). During the attempt answers are saved on the
+phone and sent when possible; the server keeps answers that arrive by deadline + 2 minutes and ignores later ones.
+Any answer that arrives after the deadline makes the attempt unranked. There is no fully offline mock.
+
+### D-2026-10-22-25 PROVISIONAL (founder to confirm) · Q19 Rebalance and balance dial
+Rebalance after 2 missed plan days (nightly job and on next app open). Mix by days left to the next stage date of the
+attempt cycle (R2): over 90: new 60 / relight 20 / PYQ 15 / mocks 5; 61-90: 45/25/20/10; 31-60: 30/30/20/20;
+8-30: 5/40/25/30; 0-7: 0/50/30/20. The balance dial (-2..+2) moves 10 points per step between new topics and relight.
+
+### D-2026-10-22-26 PROVISIONAL (founder to confirm) · Q18 Final Stretch "critical" topics
+Critical = `TopicExamTag.priority` of 2 or more, set by the content track per exam. The hall-ticket checklist and
+exam-centre tips are content items written by content-writer and checked by content-verifier.
+
+### D-2026-10-22-27 PROVISIONAL (founder to confirm) · Q24 Multi-exam plans
+One daily minutes budget: main exam 60%, the others share 40%; within 60 days of an exam's next stage date that exam
+gets +15 points. Shared lamps are planned once.
+
+### D-2026-10-22-28 PROVISIONAL (founder to confirm) · Q22 Today tiles not built yet
+Check-in, lucky-game and featured-game tiles are absent in Phase 2 (no placeholders).
+
+### D-2026-10-22-29 PROVISIONAL (founder to confirm) · Q14 + Q27 Readiness labels
+Checked top-down: Mock-ready = coverage 80+, memory 70+, exam performance 60+ (last 3 mocks); Close = coverage 60+,
+memory 50+; Building = coverage 20+; otherwise Not yet. "Ready for full mocks" badge = coverage 60+ and memory 50+.
+Labels use all server evidence; free users see only the Coverage and Memory bars. Q27: these rules and cutoff history
+are TN-only in Phase 2, per-family rules per wave. `READINESS_CONFIG`.
+
+### D-2026-10-22-30 PROVISIONAL (founder to confirm) · Q15 Sunday Report
+Built Sunday 08:00 IST (cron `0 8 * * 0`; the worker registry entry moves from 06:00 in BOLT-0013), template text only.
+AI notes arrive with `ai` (Phase 3). Never promises selection.
+
+### D-2026-10-22-31 PROVISIONAL (founder to confirm) · Q16 Quiet hours
+Default quiet hours 22:00-07:00 IST, on. Exam Alerts inside quiet hours are held until they end (not dropped).
+Morning alert at 07:30 IST, only when lamps are really dimming. `NOTIFICATIONS_CONFIG`.
+
+### D-2026-10-22-32 PROVISIONAL (founder to confirm) · Q17 Exam Alert approval before Desk
+A minimal Desk API (`/v1/desk/exam-changes`: Desk session + role OPS or ADMIN, audited). No alert without a human
+approval. The Desk screen arrives in Phase 4; until then Ops calls the API from an internal tool.
+
+### D-2026-10-22-33 OPEN (founder action) · Q21 Firebase / APNs accounts
+The founder creates the Firebase project and the APNs key in the company accounts (free; no new paid service).
+Until then the push sender runs `log_only`.
+
+### D-2026-10-22-34 PROVISIONAL (founder to confirm) · Q20 Content packs
+One pack per exam per subject (zip of JSON + images + audio), max 25 MB each, `free` and `pro` tiers; free users get
+free packs only. Packs contain answers (study only; ranked play never runs offline).
+
+### D-2026-10-22-35 PROVISIONAL (founder to confirm) · Q26 Exam-family model now
+Yes: BOLT-0008 adds the exam-family schema (ADR-0013) with TN data only, plus ADR-0012 (`exam-hall` depends on `exams`).

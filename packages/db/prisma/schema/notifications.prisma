@@ -1,2 +1,43 @@
-// Tables owned by the `notifications` module. No other module may query these (blueprint §34.8).
-// To model: PushToken, AlertPreference, SendLog
+// Tables owned by the `notifications` module. No other module may query these (blueprint §34.8). §19.8 Q78.
+
+model PushToken {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  userId     String    @db.Uuid
+  deviceId   String
+  platform   String // android | ios
+  token      String    @unique
+  createdAt  DateTime  @default(now())
+  lastSeenAt DateTime
+  revokedAt  DateTime?
+
+  @@unique([userId, deviceId])
+}
+
+model AlertPreference {
+  userId             String   @id @db.Uuid
+  studyReminders     Boolean  @default(true)
+  examAlerts         Boolean  @default(true)
+  offers             Boolean  @default(false) // opt-in only
+  quietEnabled       Boolean  @default(true)
+  quietStartMinute   Int // IST minutes after midnight; defaults come from config
+  quietEndMinute     Int
+  morningAlertMinute Int
+  dailyLimit         Int      @default(3)
+  updatedAt          DateTime @updatedAt
+}
+
+/// Every send decision, including drops. dedupeKey makes send jobs idempotent.
+model SendLog {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  userId      String    @db.Uuid
+  category    String // study | exam | offer | system
+  templateKey String
+  dedupeKey   String    @unique
+  istDay      String
+  /// queued | sent | held_quiet | dropped_budget | dropped_exam_hall | dropped_no_consent | failed
+  status      String
+  createdAt   DateTime  @default(now())
+  sentAt      DateTime?
+
+  @@index([userId, istDay, category])
+}

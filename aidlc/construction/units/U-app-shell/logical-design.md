@@ -69,3 +69,54 @@ Cold start ≤ 2.5 s (no network before first frame), install ≤ 40 MB (only sm
 
 ## Bolts
 - BOLT-0004: everything above (Phase 1).
+
+
+---
+
+## Phase 2 extension: offline outbox, packs, Calm/Lite (BOLT-0008 design) · draft, awaiting G-D · built in BOLT-0016 (flutter-ui)
+
+Blueprint: §10.7, §10.8, §19.3 Q28, §19.8 Q72–Q73, §24, §34.2, §39. INT-002 S18–S20.
+
+### Domain model (client side)
+| Entity (Drift table) | Source of truth | Conflict rule (§39) |
+|---|---|---|
+| `topic_states` | server (`/v1/me/topic-states`, sync results) | server wins, replaced wholesale per topic |
+| `outbox` (id = clientActionId, kind, payload JSON, clientAt, attempts, lastError) | client until accepted | removed on `accepted`/`duplicate`/`study_log_only`; kept + shown on `rejected` |
+| `plan_items`, `today` cache | server | server wins |
+| `packs` (code, version, sha256, path, tier) | `/v1/content/packs` | newer version replaces after checksum passes |
+| `mock_answers_pending` (attemptId, questionId, choice, clientAt) | client until saved | last write per question; dropped after server says deadline passed |
+| notes / bookmarks | client | last write wins |
+
+Invariants (tests):
+1. Every study action (answer, lesson complete, Lit/recall/relight check, plan item status) is written to Drift first, then to the outbox with a UUID v4/v7 + client timestamp.
+2. Outbox is sent in batches of ≤ `SYNC_BATCH_MAX` (100) in creation order when online; one batch in flight at a time.
+3. Batch requests carry an `Idempotency-Key`; each action keeps its own `clientActionId` across retries.
+4. After a batch, every `topicStates` entry replaces the local lamp; local optimistic rings are never kept over the server's.
+5. Gold and mock start never go through the outbox (online only).
+6. Packs: Wi-Fi only by default (user can allow mobile data), SHA-256 verified before use; mismatch → delete + retry later; free users only request `free` packs.
+7. Overnight downloads wait for Wi-Fi + charging (WorkManager / BGTaskScheduler).
+8. Calm Mode: Today shows Today Card, Study, Relight only; switching off restores the full Today with no data change.
+9. Lite Mode: auto on ≤ 3 GB RAM unless the user chose; static map, simple animations, compressed images.
+
+### Logical design
+- Packages: `hm_data` (Drift schema v2 migration, `OutboxRepository`, `SyncEngine`, `PackDownloader`), `hm_core`
+  (connectivity + Wi-Fi state, Calm/Lite providers already exist), generated `hm_api` (`syncStudyActions`, `listMyTopicStates`, `listContentPacks`).
+- Contract used: `POST /v1/sync/study-actions`, `GET /v1/me/topic-states?since`, `GET /v1/content/packs`, `PUT /v1/mock-attempts/{id}/answers`.
+- Drift migration: additive tables only; schema version bump with a step migration test.
+- Retry: exponential backoff 5 s → 10 min; `rejected` actions surface in a small "Couldn't save" list (simple English) with the server message.
+- Observability: client analytics event counts for outbox size and sync failures (no personal data).
+
+### Failure modes
+| Failure | Behaviour | User sees |
+|---|---|---|
+| Offline | queue grows; study continues | small "Will sync when online" note |
+| Action older than 7 days | `study_log_only` | "Saved as study history. Rings only change for the last 7 days." |
+| Pack checksum mismatch | discard, retry on Wi-Fi | "Download didn't finish. We'll try again on Wi-Fi." |
+| Server rejects action | kept, shown once | server message |
+
+### NFR
+Answer save ≤ 16 ms on the UI thread (Drift write async); Lite Mode 60 fps on the 3 GB reference phone; install ≤ 40 MB (content in packs).
+
+### Test plan
+Unit: outbox ordering, batching, idempotency key reuse on retry, server-wins replacement, pack checksum. Integration
+(fake HTTP): offline week replay → server states applied. Golden: sync note, Calm Today in dark/light/high-contrast/200 % text.

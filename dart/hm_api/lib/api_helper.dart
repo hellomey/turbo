@@ -55,6 +55,9 @@ String parameterToString(dynamic value) {
   if (value is DateTime) {
     return value.toUtc().toIso8601String();
   }
+  if (value is CheckKind) {
+    return CheckKindTypeTransformer().encode(value).toString();
+  }
   if (value is ClientKind) {
     return ClientKindTypeTransformer().encode(value).toString();
   }
@@ -64,20 +67,53 @@ String parameterToString(dynamic value) {
   if (value is ConsentPurpose) {
     return ConsentPurposeTypeTransformer().encode(value).toString();
   }
+  if (value is ContentLanguage) {
+    return ContentLanguageTypeTransformer().encode(value).toString();
+  }
   if (value is District) {
     return DistrictTypeTransformer().encode(value).toString();
+  }
+  if (value is ExamChangeStatus) {
+    return ExamChangeStatusTypeTransformer().encode(value).toString();
+  }
+  if (value is MockKind) {
+    return MockKindTypeTransformer().encode(value).toString();
+  }
+  if (value is MockMode) {
+    return MockModeTypeTransformer().encode(value).toString();
   }
   if (value is OtpPurpose) {
     return OtpPurposeTypeTransformer().encode(value).toString();
   }
+  if (value is PaperType) {
+    return PaperTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is PlanItemKind) {
+    return PlanItemKindTypeTransformer().encode(value).toString();
+  }
+  if (value is PlanItemStatus) {
+    return PlanItemStatusTypeTransformer().encode(value).toString();
+  }
+  if (value is PracticeMode) {
+    return PracticeModeTypeTransformer().encode(value).toString();
+  }
   if (value is Qualification) {
     return QualificationTypeTransformer().encode(value).toString();
+  }
+  if (value is QuestionKind) {
+    return QuestionKindTypeTransformer().encode(value).toString();
+  }
+  if (value is ReadinessLabel) {
+    return ReadinessLabelTypeTransformer().encode(value).toString();
   }
   if (value is Role) {
     return RoleTypeTransformer().encode(value).toString();
   }
   if (value is SpecialCategory) {
     return SpecialCategoryTypeTransformer().encode(value).toString();
+  }
+  if (value is StretchPhase) {
+    return StretchPhaseTypeTransformer().encode(value).toString();
   }
   return value.toString();
 }

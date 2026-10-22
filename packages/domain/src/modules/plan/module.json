@@ -3,6 +3,7 @@
   "summary": "My Plan, Today Card, auto-rebalance, Final Stretch.",
   "owns": [
     "Plan",
+    "PlanExam",
     "PlanItem",
     "StudyLog"
   ],

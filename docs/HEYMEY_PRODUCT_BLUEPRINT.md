@@ -1,8 +1,12 @@
 # HeyMey — Master Document v1.2
 
-**Company:** HeyMey Technologies Pvt Ltd (to be incorporated) · **Domain:** heymey.app · **Product:** one Flutter codebase → mobile app (Android + iOS) for everyone, plus a web "Desk" for partners and staff · **Market:** Tamil Nadu government-job aspirants, 18–35 first (Calm Mode for 35+) · **Language:** English only, in simple English · **Hosting:** one VPS, everything in Docker, open source first · **Login:** email OTP over SMTP · **Payments:** app stores + Razorpay · **AI:** OpenRouter (one API, many fallback models) · **Built by:** AI agents, with the founder as product owner
+**Company:** HeyMey Technologies Pvt Ltd (to be incorporated) · **Domain:** heymey.app · **Product:** one Flutter codebase → mobile app (Android + iOS) for everyone, plus a web "Desk" for partners and staff · **Market:** Indian competitive and professional exam aspirants; **launch wedge: Tamil Nadu government-job aspirants**, 18–35 first (Calm Mode for 35+), then more exam families in waves (§1a) *(changed 2026-10-22, D-2026-10-22-01)* · **Language:** English-first interface, in simple English (exam content follows the paper's language, §1 decision 3) · **Hosting:** one VPS, everything in Docker, open source first · **Login:** email OTP over SMTP · **Payments:** app stores + Razorpay · **AI:** OpenRouter (one API, many fallback models) · **Built by:** AI agents, with the founder as product owner
 
 > This is the master document for the product, the business, and the engineering. Older documents are in `docs-archive/` for reference only and do not override anything here.
+
+**What changed on 2026-10-22 (founder decisions, see `aidlc/decisions.md`):**
+- **D-2026-10-22-01 Multi-exam scope:** HeyMey is for Indian competitive and professional exams (UPSC, SSC, Banking, Railways, CA, CS and more), launched with a Tamil Nadu wedge. New §1a. Every paragraph changed for this is marked *(changed 2026-10-22, D-2026-10-22-01)*.
+- **D-2026-10-22-02 Study Rooms:** live group study with server-timed focus hours and study-hours boards. New §9.11. Marked *(changed 2026-10-22, D-2026-10-22-02)*.
 
 **What changed in v1.2:**
 - **One VPS:** the whole stack runs in Docker Compose on a single server.
@@ -24,9 +28,9 @@
 
 | # | Topic | Decision |
 |---|---|---|
-| 1 | What we are | A **product company**. HeyMey is a gamified preparation app. Preparing for a government job feels like progressing in a game. We are not a coaching or course-selling company. |
+| 1 | What we are | A **product company**. HeyMey is a gamified preparation app **for Indian competitive and professional exams** (government jobs, UPSC, and professional courses such as CA and CS). Preparing for an exam feels like progressing in a game. We are not a coaching or course-selling company. *(changed 2026-10-22, D-2026-10-22-01)* |
 | 2 | Platform | **One Flutter codebase.** It builds (a) the **HeyMey mobile app** for Android + iOS, used by every aspirant and everyone else, and (b) the **HeyMey Desk** web build, used **only** by partners and staff for heavy desk work (Section 15). **There is no web version for aspirants.** |
-| 3 | Language | **English only, written in simple English.** No Tamil words or Tamil letters in the interface. **One exception:** the **Tamil Language paper** content (for example, the Tamil eligibility paper in Group 4) stays in Tamil, because that exam paper *tests* Tamil. This is study content, never interface text. |
+| 3 | Language | **English-first, written in simple English.** The **interface** is English only: no Tamil (or other Indian-language) words or letters in interface text. **Study content follows the language of the exam paper**, set per paper in the exam data: a paper that *tests* a language (for example, the **Tamil Language paper** in TNPSC Group 4) keeps its content in that language; every other paper's content is in English in version 1. Other languages for other exam families (for example, a language paper in another family, or Hindi-medium content) are decided per family before that wave starts (INT-006). This is study content, never interface text. *(changed 2026-10-22, D-2026-10-22-01)* |
 | 4 | Backend | **TypeScript** (the founder's strength), on Node.js. |
 | 5 | Hosting | **One VPS in an Indian data centre, with every service in Docker Compose.** Everything we can self-host is open source. We pay only for what can't be replaced: app stores, the SMTP email service, Razorpay, and OpenRouter. |
 | 5a | Login | **Email + 6-digit OTP** sent over SMTP. No passwords and no SMS. |
@@ -40,10 +44,56 @@
 | 13 | Money and games | **Money never touches a game.** There are no paid entries, plays, chips, or stakes, and no game pays out anything bought with money or worth money (Section 30). |
 | 14 | Ads | **No third-party ads.** |
 | 15 | Profit | **Target: profitable from month 1** (Section 14). |
-| 16 | Launch exams | **TNPSC Group 4 (including VAO) and Group 2/2A** get full preparation content. **Exam Alerts and the Eligibility Checker** cover all major Tamil Nadu and central exams from day one. |
+| 16 | Launch exams | **TNPSC Group 4 (including VAO) and Group 2/2A** get full preparation content. **Exam Alerts and the Eligibility Checker** cover all major Tamil Nadu and central exams from day one. **This is the launch wedge, not the whole market:** other exam families are added in waves after launch (§1a). *(changed 2026-10-22, D-2026-10-22-01)* |
+| 17 | Exam families | **Every exam-shaped part of the product is data, not code** (exam family → exam → stage → paper → section, marking scheme, attempt cycles). Adding an exam family is a content and data job, plus only the paper types it needs. *(changed 2026-10-22, D-2026-10-22-01)* |
+| 18 | Study Rooms | **Live group study is part of the game layer** (§9.11): focus hours are timed by the server, boards show capped hours, and study hours never touch money. *(changed 2026-10-22, D-2026-10-22-02)* |
+
+## 1a. Exam families and expansion waves *(changed 2026-10-22, D-2026-10-22-01)*
+
+**Why:** the founder's scope is "all exams, even UPSC, CA and CS". Students preparing for professional exams like CA and CS often study alone for years without an academy, so the long-preparation game loop (lamps, Relight, squads, Study Rooms) fits them as well as it fits TNPSC aspirants.
+
+**Rule for launch:** the Tamil Nadu wedge (decision 16) is unchanged, so the launch date is not put at risk. Nothing in a later wave blocks launch. What changes **now** is that Phase 2 onward is built exam-agnostic, so a new family needs data and content, not a rewrite.
+
+**Proposed wave order (the founder confirms; INT-006 Q1):**
+
+| Wave | Exam family | Stages / papers (names only; details **to verify from official source**) | Why this position |
+|---|---|---|---|
+| 0 (launch) | **TNPSC** Group 4 (incl. VAO), Group 2/2A; Exam Alerts + Eligibility Checker for major TN and central exams | As today (Track B content) | Unchanged launch scope |
+| 1 | **SSC, Banking, Railways** (central objective exams; TN-relevant ones first) | Objective MCQ stages; exact tiers, sections and marking **to verify from the official notifications** | Large overlap with TNPSC Aptitude, English and General Studies lamps; uses the objective Exam Hall that launch already has; no new paper type |
+| 2 | **CA** (ICAI: Foundation, Intermediate, Final) and **CS** (ICSI: CSEET, Executive, Professional) | Papers, objective/descriptive split, marking, attempt windows and exemptions **to verify from official source (icai.org, icsi.edu)** | The founder's pain point (students alone for years); Study Rooms carry most of the value; needs the **descriptive paper** type (see below) |
+| 3 | **UPSC Civil Services** (Prelims, Mains, Interview) | Paper list, optional subjects, qualifying papers and marking **to verify from official source (upsc.gov.in)** | Largest content effort (Mains descriptive, essay, optional subjects); reuses the descriptive paper type from wave 2 |
+
+The blueprint's earlier post-launch list (§27: Group 1, Police, TRB, then Bank, Railway, SSC) stays as the order **inside** the TN and central objective waves.
+
+**What "exam-agnostic" means (the model every phase builds to):**
+- **Exam family** (TNPSC, SSC, UPSC, ICAI-CA, ICSI-CS …) → **exam** (Group 4, CA Intermediate …) → **stage** (Prelims, Mains, Interview; Foundation, Intermediate, Final) → **paper** → **section**.
+- Each paper carries its own **marking scheme** (marks per question, negative marking or none, qualifying-only or counted, sectional limits), **time**, **answer mode** (objective OMR, objective CBT, descriptive) and **content language** (decision 3). Nothing about marks or time is hard-coded.
+- **Attempt cycles:** an aspirant prepares for an **attempt** (a specific sitting of an exam), which has its own dates. Some families have yearly cycles, some have more than one sitting a year, some have multi-year journeys across stages, and some count attempts. All of these are data on the attempt, **to verify per family**. Plans, Final Stretch, Exam Pass validity and Attempt Review hang off the attempt, not off "the exam date".
+- **Descriptive papers** (CA/CS and UPSC Mains): written answers cannot be scored the way MCQs are. How they are practised and checked (self-check against a model answer, peer review, mentor review, AI-assisted feedback without personal data) is an **open question for wave 2** (INT-006 Q4). The Exam Hall keeps "looks like the real exam" as its rule.
+- **Eligibility** stays a data-driven rule engine. Professional courses have registration and stage-progression rules instead of age and community rules; the rule shape for them is **to verify** and is designed before wave 2.
+
+**Places in this document that still assume Tamil Nadu only (each must be generalised or scoped to the TN family before its wave):**
+
+| § | Assumption | Proposed handling |
+|---|---|---|
+| Header, §2, §28.7 | "Tamil Nadu government-job aspirants" | Wedge wording kept for launch marketing; product wording is all exams |
+| §1 dec. 3, §10.4, §19.3 Q24/Q26/Q27, §19.4 Q35, §26.1 content agents, §26.3 | Tamil is the only non-English content language | Per-paper content language (decision 3) |
+| §3 / §5.2 | Career Ladder titles are TN government posts (Typist … Chief Secretary) | Rank titles become per-family data; TN titles stay for TN; other families' titles are an open question (INT-006 Q5) |
+| §9.6, §10.6 | District Quest board = Tamil Nadu's 38 districts; seasonal boards are TN history | Stays a TN board; other families get other boards or none (INT-006 Q6) |
+| §9.5, §17.1 step 10, §17.5 Captain | Squads searched by district | District becomes optional; "exam + paper + study hours" works for all |
+| §9.9 | State Mock Sunday, "statewide rank", Pongal Fest, Literature Week, Education Development Day | Scoped per exam family ("all-takers rank for this exam"); events tagged by family |
+| §12 | Map themes are TN places | Cosmetic only, keep; add others later |
+| §11, §19.3 Q22 | "State Board textbook map" | Becomes "official study material map" per family (State Board books for TN, NCERT for UPSC, institute study material for CA/CS: **to verify** licence and links) |
+| §17.1 step 2, §19.1 Q1 | Community categories and Tamil-medium (PSTM) | Asked only when the chosen family uses them |
+| §19.4 Q37, §10.6 Exam Hall | OMR ("pen-and-paper exams like TNPSC") or CBT only | Add the descriptive answer mode as a paper type (wave 2) |
+| §9.9 Answer Key Day, §19.5 Q49 cutoffs | Official answer keys and cutoffs exist | True only for some families; per-family flag (**to verify**) |
+| §14, §28, §29 | Month-1 targets, launch channels and press story are TN | Unchanged for launch; new targets per wave |
+| §16 Mentor, §17.3 "Cleared" | "Proof of selection" | "Proof of selection or qualification" per family |
+| §17.1 step 1, §18 under-18 row, §30 DPDP | 18+ only | Under 18 matters more for CA Foundation and CSEET aspirants; **open question** (INT-006 Q3), no change until the founder decides |
 
 ## 2. HeyMey in one paragraph
 
+*(changed 2026-10-22, D-2026-10-22-01 and -02: HeyMey now serves Indian competitive and professional exams, starting with Tamil Nadu; this paragraph describes the launch wedge, and the same loop applies to every exam family. Study Rooms (§9.11) let aspirants who study alone study "together" with people preparing for the same exam.)*
 HeyMey turns a 1–3 year government-exam preparation into a game you want to come back to. Your syllabus becomes the **Study Map**, a glowing map where every topic is a **lamp**. A lamp **lights** when you learn the topic, burns **steady** when you remember it, and turns **gold** when you can answer it under exam conditions. When you stop revising, the lamp slowly dims, so you can see your real memory. As your lamps grow, you climb the **Career Ladder**, a rank system named after real government posts, from Aspirant to Typist, Village Officer, Tahsildar, Collector, and up to Chief Secretary. You join a **Squad** of other aspirants and win **Squad Battles** with real exam questions. Every day there's a different game: Daily Spin or Lucky Slot, Clue Poker, Confidence Duels, and a weekend board game across Tamil Nadu's 38 districts. Underneath all of it is a serious, honest preparation tool: eligibility, alerts, a plan, previous-year questions, mocks, revision, and a readiness meter. That combination is what makes people stay and pay.
 
 ## 3. Names used in the app (all plain English)
@@ -73,6 +123,11 @@ HeyMey turns a 1–3 year government-exam preparation into a game you want to co
 | Group battle | **Squad Battle** |
 | Monthly group goal | **Squad Goal** |
 | Asking the squad for help | **Help Requests** |
+| Live group study *(changed 2026-10-22, D-2026-10-22-02)* | **Study Room** (public, per exam or paper) · **Squad Room** (private, per squad) |
+| A timed study block *(changed 2026-10-22, D-2026-10-22-02)* | **Focus session** ("Start focus", "Pause", "End") |
+| Count of people studying | **Studying now** |
+| Study-hours board | **Hours Board** (Today · This week) |
+| Days with focused study *(changed 2026-10-22, D-2026-10-22-02)* | **Focus days** (name to confirm, INT-007 Q6) |
 | Free in-app currency | **Points** |
 | Paid currency | **Sparks** |
 | Rank-up XP | **XP** |
@@ -120,6 +175,8 @@ HeyMey turns a 1–3 year government-exam preparation into a game you want to co
 
 - **Dimming:** when a topic is due for revision, its lamp fades. If it stays overdue, the Steady ring is lost (your history stays). **Relighting** takes 2–5 minutes.
 - If you prepare for more than one exam, topics they share use one lamp, tagged with each exam's colour.
+- *(changed 2026-10-22, D-2026-10-22-01)* The map is built the same way for **every exam family**: family → exam → stage → paper → subject → topic (§1a). A stage or paper can be shared (for example, a prelims paper and a mains paper may share topics) and shared topics still use one lamp. For **descriptive papers** (CA/CS, UPSC Mains), how a lamp turns Steady and Gold is an open question (INT-006 Q4); Lit/Steady/Gold keep their meaning (learned / remembered / exam-ready).
+- *(changed 2026-10-22, D-2026-10-22-02)* **Study hours never light a lamp by themselves.** Time in a Focus session (§9.11) is shown next to the topics you worked on, and lamps you light, keep or turn Gold during that session are credited to it, but every ring is still earned only by the checks in the table above.
 
 ### 5.2 Career Ladder (your rank)
 
@@ -141,6 +198,8 @@ Your rank comes **only from your lamps**: how many are Lit, Steady, and Gold acr
 
 Every rank-up gets a celebration and a shareable **Rank Card**, which carries a small note: *"Game title. Not an official designation."*
 
+*(changed 2026-10-22, D-2026-10-22-01)* The titles above are the **Tamil Nadu family's** ladder. Rank titles are data per exam family; the titles for UPSC, SSC/Banking/Railways, CA and CS are an open question (INT-006 Q5). Study hours (§9.11) **never** change rank: rank still comes only from lamps.
+
 ### 5.3 Currencies and the firewall
 
 | Item | How you get it | What it's for | Buyable with money? | Transferable or cashable? |
@@ -156,6 +215,7 @@ Every rank-up gets a celebration and a shareable **Rank Card**, which carries a 
 2. Nothing bought with money can be used to enter or play any game.
 3. No game rewards Sparks, subscriptions, books, or anything worth money outside the app.
 4. **Pro and the Season Pass give no game advantage.** Everyone gets the same plays, limits, odds, and rewards.
+5. *(changed 2026-10-22, D-2026-10-22-02)* **Study hours are not money and money does not make study hours.** Focus hours (§9.11) never convert to Sparks, money or anything worth money; no study-hours milestone earns Sparks; nothing bought (Pro, Exam Pass, Season Pass, Sparks, cosmetics) adds, multiplies, protects or restores hours, streaks or board places; Study Rooms are the same for free and paid users.
 
 ## 6. Daily loop (15–60 minutes, your choice)
 
@@ -221,7 +281,7 @@ Confidence Duels are open every day. Live events sit on top of this calendar.
 - **Ranked duels are capped at 10 a day for everyone, and the cap can't be bought.** Practice duels are unlimited.
 
 ### 9.5 Squad and Squad Battles
-- **Squad:** 10–40 members. Roles are **Captain, Vice-Captain, Senior Member, and Member**. Search squads by exam, district, and daily study hours.
+- **Squad:** 10–40 members. Roles are **Captain, Vice-Captain, Senior Member, and Member**. Search squads by exam, district, and daily study hours. *(changed 2026-10-22, D-2026-10-22-01 and -02: district is optional and used only where the exam family has districts; every squad gets a private **Squad Room** for live study, §9.11.)*
 - **Help Requests:** members post doubts, and others answer them. Helpful answers earn Points + reputation. Reported answers go to review.
 - **Squad Battle (twice a week):**
   - Two squads of similar strength are matched.
@@ -258,11 +318,67 @@ Daily current affairs are **read-only cards** with a date, a source, and an exam
 | **New Year Season** | April | New season celebration |
 | **Literature Week** | January | Literature-themed event |
 
+*(changed 2026-10-22, D-2026-10-22-01)* "Statewide" events (State Mock Sunday rank, Answer Key Day score spread, First Lamp Fest) belong to the **Tamil Nadu family**. Each event is tagged with the exam family it serves; other families get their own mock days and ranks ("all takers of this exam on HeyMey"), and Answer Key Day runs only where the family publishes official keys (**to verify per family**).
+
 ### 9.10 Healthy-play guardrails
 - After 1 hour of continuous play, a playtime reminder appears, and then every 30 minutes.
 - **Games sleep from 12 AM to 5 AM.** Study stays open.
 - During **Exam Hall** mocks there are no game sounds, no animations, and no alerts.
 - In the last 7 days before your exam, games become quiet and optional.
+
+### 9.11 Study Rooms *(changed 2026-10-22, D-2026-10-22-02)*
+
+**Why:** many aspirants (especially CA and CS students) study alone for years. Seeing other people preparing for the same exam study at the same time ("this person studied 12 hours today") motivates them. Study Rooms bring that into HeyMey, honestly: hours are timed by the server, boards reward steady effort rather than extreme days, and nothing touches money.
+
+**Rooms**
+- **Study Room (public):** one per exam, and optionally per paper (for example, one per exam stage or paper). Large rooms are split into **room groups** of a fixed size so each board stays personal (size: INT-007 Q2).
+- **Squad Room (private):** one per squad (§9.5). Only squad members can see it.
+- A user can be in one room at a time while a focus session runs. Rooms are free for everyone (§11 "same for everyone").
+
+**Focus session (server-timed)**
+- **Start focus → Pause → Resume → End.** Every one of these is a server call with an `Idempotency-Key`; the **server records the times** (§34.1, §37). The phone clock is never used (§18 clock row).
+- While a session runs, the app sends a **presence heartbeat** over the realtime connection (interval: INT-007 Q1). The server credits time **only between heartbeats it received**. If heartbeats stop (no connection, app killed), the session is **auto-paused at the last heartbeat**; nothing after that is credited.
+- **App in the background / phone idle:** a session pauses when the app has been in the background longer than a short grace period (so a quick look at a calculator or a notes app is fine). The grace period, and whether reading a PDF in another app counts, is INT-007 Q3. Exam Hall mocks and HeyMey lessons/practice in the foreground always count.
+- **"Still studying?" check:** after a long stretch without any app interaction, a simple tap check appears; no answer within the window pauses the session. This is a plain check, never a trick or a timed penalty.
+- **One active session per account**, across all devices.
+- Optional **topic tag**: pick the subject/topic you are studying, or link the Today Card. Lamps you light or relight during the session are shown on the session summary. **Hours never light a lamp by themselves** (§5.1) and **never change rank** (§5.2). Focus hours are written to My Plan's study log so the plan sees real hours (§19.2).
+- **Offline:** a focus session needs a connection to count for boards (§34.2, §18 offline row). Study done offline still counts for lamps as today (§39). Whether offline study time shows in your **private** totals is INT-007 Q9.
+
+**Live counts and boards**
+- Each room shows **Studying now** (a live count) and member tiles: display name, avatar, the subject tag if the user shares it, and today's hours.
+- **Hours Board:** **Today** and **This week**, per room, using **IST days** (Asia/Kolkata, §37) and IST weeks (week start: INT-007 Q5).
+- **Boards show capped hours.** Each day's hours count on the board only up to a **daily board cap** (value: INT-007 Q4); anything above shows as "cap reached", never as a bigger number. A board can never be won by studying 18 hours.
+- Boards follow the **kind leaderboard** rule (§19.7 Q70): you see the top places and your own place; you can hide yourself anytime.
+
+**Personal record**
+- **Focus days:** days with at least a minimum amount of focused study (minimum: INT-007 Q6). Following §7, **missing a day never resets anything to zero and the app never says "streak lost"**. The exact streak shape (longest run, this month's count, a weekly target that waits for you) is INT-007 Q6.
+- Personal totals (today, week, month, all time) are always visible to the user, including above the cap.
+- Rewards for focus days, if any, are fixed, listed, and limited to cosmetics or Points with the same rules as check-in (§7); **never Sparks**. Whether there are any rewards at all is INT-007 Q7.
+
+**Wellbeing guardrails** (same spirit as §9.10)
+- After a long continuous session, a **break nudge** ("You've studied 2 hours. Take a 10-minute break?"; values: INT-007 Q8). The nudge repeats on a fixed interval. The user can keep going; no penalty.
+- After a long day, a **rest nudge**, and the board stops adding hours (the cap).
+- Late-night study (12 AM–5 AM): study stays open (§9.10), but those hours show a sleep reminder; whether they count on boards is INT-007 Q8.
+- **Calm Mode hides boards and live counts** (§10.7). The room shows only your own timer and "Studying now: on".
+- Nothing celebrates very long days: no badge, title or message for hours above the cap.
+- Wellbeing Corner and Tele-MANAS 14416 are one tap away from every room (§19.10 Q98).
+
+**Privacy**
+- Rooms show a **display name** (nickname, §19.9 Q89) and avatar only: never email, real name, district (unless the user adds it), exam result or private scores.
+- **Visibility is opt-in:** a user can study in a room with their timer only and not appear on public boards or member tiles. Squad Room visibility to squad members is a separate choice. Defaults are INT-007 Q10 (proposed: hidden on public boards until the user turns it on).
+- Supporters (§17.5) see focus hours only if the aspirant allows it.
+- **Under 18:** HeyMey is 18+ (§17.1). Accounts reported as under 18 are paused (§18). Wider multi-exam scope raises this question (INT-006 Q3).
+
+**Moderation**
+- MVP rooms have **no free-text chat**. Interaction is limited to a fixed set of positive reactions ("Keep going", "Well done"). Squad chat (§9.5) stays where it is.
+- Users can **report** a display name or avatar and **block** a user (blocked users disappear from your room view). Reports go to the moderation queue (§17.5 Moderator). Repeat offenders are hidden from public boards.
+- Accounts flagged for faking hours (see anti-cheat) are removed from boards pending review.
+
+**Anti-cheat**
+- Server-credited time only (heartbeats + server start/pause/end). One session per account. Device integrity check (§18, §20.1). Duplicate devices and impossible patterns (for example, sessions that never pause for many days) are flagged for review (§17.5 System "cheat detection").
+- Boards only use **capped, server-credited, online** hours.
+
+**Money/game firewall** (§5.3 rule 5): hours never become Sparks or money; nothing paid boosts, protects or restores hours, focus days or board places; Pro gives no Study Room advantage. Firewall tests are added for this (INT-007).
 
 ---
 
@@ -321,7 +437,7 @@ The app comes with a dark theme (the default), a light theme, and a high-contras
 | **Today** | Check-in, Today Card, relight queue, today's lucky game, featured game, rank bar |
 | **Study Map** | Subjects and lamps, lessons, practice, PYQ Vault, Exam Hall, Current Affairs, Aptitude Path |
 | **Play** | Confidence Duel, Clue Poker, District Quest, Memory Pits, Tiger Trap, events |
-| **Squad** | Chat, Help Requests, Squad Battles, Squad Goal, leaderboards |
+| **Squad** | Chat, Help Requests, Squad Battles, Squad Goal, leaderboards, **Study Rooms** (Squad Room + public Study Room) *(changed 2026-10-22, D-2026-10-22-02; tab placement and a "Start focus" shortcut on Today: INT-007 Q11)* |
 | **Profile** | Readiness Meter, reports, Eligibility Checker, Exam Alerts, Store, Pro, settings, Help, **role switcher** (for creators, partners, and staff) |
 
 ### 10.6 Key screens
@@ -343,7 +459,7 @@ The app comes with a dark theme (the default), a light theme, and a high-contras
 | **Store** | Premium cards with clear prices (GST included), a "what's inside" list, a sample, and ratings. |
 
 ### 10.7 Calm Mode (for 35+, or anyone)
-A simpler Today screen (Today Card, Study, Relight) with bigger text, voice guidance, fewer animations, and competitive games hidden until you switch them back on. **Same account, same progress.**
+A simpler Today screen (Today Card, Study, Relight) with bigger text, voice guidance, fewer animations, and competitive games hidden until you switch them back on. **Same account, same progress.** *(changed 2026-10-22, D-2026-10-22-02)* Calm Mode also **hides Study Room boards and live counts**; the focus timer still works.
 
 ### 10.8 Lite Mode (low-end phones)
 It switches on automatically on phones with 3 GB of RAM or less. It uses a static map, simple animations, and compressed images. Every core feature still works.
@@ -381,6 +497,7 @@ It switches on automatically on phones with 3 GB of RAM or less. It uses a stati
 | Cutoff history | Last year | **Full history** |
 | Sunday Report | Short | **Full**, with next week's plan |
 | **Games, squads, check-ins, events** | ✅ **Same for everyone** | ✅ **Same for everyone** |
+| **Study Rooms, focus sessions, Hours Boards** *(changed 2026-10-22, D-2026-10-22-02)* | ✅ **Same for everyone** | ✅ **Same for everyone** |
 
 Accessibility is never behind a paywall. Listen Mode and screen-reader support work on everything you can open.
 
@@ -666,6 +783,11 @@ App stores take **15%** from developers earning under $1M a year (Google Play, a
 | Fake urgency or guilt text in offers | Every offer and paywall text is checked against the Dark Patterns list before release, and the founder approves it. |
 | Changing the spin or slot odds secretly | Odds live on the server, are shown in the app, and every change is versioned and logged. |
 | Exam postponed after buying an Exam Pass | The pass automatically follows the new exam date. |
+| Faking study hours in Study Rooms (leaving the timer running, phone clock, scripts, two phones) *(changed 2026-10-22, D-2026-10-22-02)* | Server-timed sessions, presence heartbeats, auto-pause on missed heartbeats and background, "Still studying?" check, one session per account, device integrity, cheat flags, boards use only capped online hours (§9.11). |
+| Unhealthy competition on hours (18-hour days) *(changed 2026-10-22, D-2026-10-22-02)* | Daily board cap, break and rest nudges, nothing celebrates hours above the cap, Calm Mode hides boards (§9.11). |
+| Buying an advantage on Hours Boards *(changed 2026-10-22, D-2026-10-22-02)* | Firewall rule 5 (§5.3): nothing paid adds, protects or restores hours; permanent tests. |
+| Abuse in public Study Rooms (names, avatars) *(changed 2026-10-22, D-2026-10-22-02)* | No free-text chat in rooms; report + block; moderation queue; offenders hidden from boards. |
+| Exam-specific facts for new families entered wrongly *(changed 2026-10-22, D-2026-10-22-01)* | Same rule as eligibility data: cited official source (upsc.gov.in, icai.org, icsi.edu, …) + human check before publishing. |
 
 ---
 
@@ -959,7 +1081,9 @@ Everything left over is headroom for State Mock Sunday spikes.
 
 ```
 User, Device, Session, Consent, RoleAssignment, TwoFactor
-Exam, Notification, EligibilityRule, Syllabus, Subject, Topic(Lamp), TopicExamTag
+ExamFamily, Exam, ExamStage, Paper, PaperSection, MarkingScheme, ExamAttemptCycle   (changed 2026-10-22, D-2026-10-22-01; names for the architect ADR)
+Notification, EligibilityRule, Syllabus, Subject, Topic(Lamp), TopicExamTag (tags a topic to exam/stage/paper)
+StudyRoom, RoomMembership, FocusSession, FocusSegment, FocusDayTotal   (changed 2026-10-22, D-2026-10-22-02; names for the architect ADR)
 Lesson, Question, QuestionVersion, Source, Explanation, Correction, Report, Glossary
 UserTopicState (lit_at, steady_level, gold_at, next_due_at, dim_state)
 PracticeAttempt, Answer, Mock, MockAttempt, MockAnswer
@@ -1071,6 +1195,7 @@ The AI agents build the **complete application in about 4 weeks** (the detailed 
 - **Month 4 onward:**
   - Memory Pits, Tiger Trap, Dice Relay
   - New exams: Group 1, Police, TRB, then Bank, Railway, and SSC
+  - *(changed 2026-10-22, D-2026-10-22-01)* Then the national and professional waves in §1a: CA and CS, then UPSC CSE (order to be confirmed by the founder). Track B content for a wave starts only after its official patterns are verified.
   - A new season every month and an event every week
 
 *(If the agents finish features early, District Quest, Memory Pits, and Tiger Trap can ship at launch. They're kept for later only so the launch has fewer risks and each new game becomes a reason to come back.)*
@@ -1243,7 +1368,7 @@ heymey/                               (single Git repository)
 | `auth` | User credentials, OTP codes, sessions, refresh tokens, TOTP | Email OTP, JWT, refresh rotation, device binding, Desk 2FA |
 | `users` | Profile, settings, privacy, consent | Profile, nickname, privacy controls, DPDP consent records, deletion and export |
 | `roles` | Role assignments | Role checks (guards), Desk access |
-| `exams` | Exams, notifications, eligibility rules, vacancies, cutoffs | Eligibility engine, Exam Alerts, exam pages |
+| `exams` | Exams, notifications, eligibility rules, vacancies, cutoffs. *(changed 2026-10-22, D-2026-10-22-01)* Also exam families, stages, papers, sections, marking schemes, attempt cycles | Eligibility engine, Exam Alerts, exam pages, the exam-family catalogue |
 | `syllabus` | Subjects, topics (lamps), mappings | Syllabus → Study Map, textbook mapping, glossary |
 | `content` | Lessons, questions, versions, sources, explanations, corrections, reports | Content serving, versioning, Correction Log |
 | `mastery` | UserTopicState | Lit/Steady/Gold rings, dimming schedule, relight, rank calculation |
@@ -1253,6 +1378,7 @@ heymey/                               (single Git repository)
 | `readiness` | Derived metrics | Readiness Meter, trends, Sunday Report |
 | `games` | Game rooms, results, odds config, leagues, trophies | Spin, Slot, Duel, Clue Poker, District Quest, Memory Pits, Tiger Trap |
 | `squads` | Squads, members, battles, help requests, chat | Squads, Squad Battles, Squad Goal, chat, Help Requests |
+| `focus` *(proposed, changed 2026-10-22, D-2026-10-22-02; needs an architect ADR)* | Study rooms, room membership, focus sessions and segments, IST day/week totals | Start/pause/end, heartbeat crediting, auto-pause, caps, Hours Boards (Valkey sorted sets), focus days, cheat flags. Squad Rooms check membership through `squads`' public API; hours go to `plan` study log through its public API; presence runs in `apps/realtime` |
 | `economy` | SparksLedger, PointsLedger, cosmetics, seasons, pass progress | Currencies (with the firewall), cosmetics, Season Pass, check-in |
 | `billing` | Products, purchases, entitlements, refunds, gifts | Store receipt verification, server notifications, entitlements, Razorpay |
 | `marketplace` | Creators, creator items, payouts, publishers, books, orders | Creator Studio, publishers, book orders, payouts with TDS |
@@ -1315,6 +1441,7 @@ heymey/                               (single Git repository)
 - **The server is authoritative.** The server holds the game state in Valkey (with a time limit), sends **one question at a time**, receives answers with timestamps, and scores everything itself. The client only displays.
 - **Events** are typed in `contracts/`, for example `match.question`, `match.answer`, `match.result`, `poker.clue_revealed`, `poker.bet`, `battle.flag_captured`, `chat.message`.
 - **Reconnect:** a 60-second window to rejoin with the full state restored. After that, the match is forfeited.
+- *(changed 2026-10-22, D-2026-10-22-02)* **Study Rooms:** rooms `study:{roomId}` (public room group) and `squadstudy:{squadId}` (Squad Room). Start, pause, resume and end are **REST writes** with `Idempotency-Key` (`POST /v1/focus/sessions`, `…/{id}/pause`, `…/{id}/resume`, `…/{id}/end`; names for the architect). Socket events (to define in `contracts/`): client → server `study.join`, `study.leave`, `study.heartbeat` (session id + app state: foreground/background), `study.react`; server → client `study.presence` (studying-now count + member tiles), `study.session_state` (running / auto-paused with reason / ended, credited seconds), `study.board` (today/week top places + your place, capped), `study.check` ("Still studying?"), `study.nudge` (break / rest / sleep). Presence lives in Valkey with a time limit; credited time is written to PostgreSQL by `focus` on pause/end and at least every few minutes, so a server restart loses no credited time. A dropped connection is not a forfeit: the session auto-pauses at the last heartbeat and the user can resume.
 - **Turn-based games** (District Quest) also save each turn in PostgreSQL, so a match survives server restarts and players can take turns hours apart.
 - **Matchmaking:** Valkey sorted sets by trophy range. The range widens every 10 seconds. If no human is found within 30 seconds, the player is offered a **practice bot** (bot matches never give ranked trophies).
 - **Spin/Slot outcomes** come from a server-side cryptographically secure random generator, using the **current versioned odds table**. The result + odds version are stored for audit.
@@ -1383,7 +1510,13 @@ Desk web: built in CI → static files deployed to the desk container
 | **1: Foundation** | Monorepo, Compose stack (local + staging + prod), Caddy, CI/CD, backups, monitoring. Prisma schema v1. `auth` (email OTP), `users`, `roles`, `exams` + eligibility engine, `syllabus`, `content` serving | `hm_design` (tokens, theme, all core components, dark/light/high-contrast), app shell + 5 tabs, onboarding, eligibility result + share card, email OTP login, Study Map rendering, lessons, Listen Mode | A new user can install, check eligibility, sign in by email, and see their Study Map on staging |
 | **2: Core study** | `mastery` (rings, dimming, relight scheduler), `practice`, `exam-hall` (OMR + CBT + scoring), `plan` (Today Card, rebalance), `readiness`, `notifications`, changedetection webhook → Exam Alerts | Today screen, practice/recall, PYQ Vault, Exam Hall, Readiness Meter, My Plan, Exam Alerts, offline packs + outbox sync, Calm Mode, Lite Mode | A user can study for a week offline/online, and lamps light, dim, and relight correctly |
 | **3: Games, squads, money** | `economy` (ledgers, check-in, cosmetics, Season Pass), `games` (Spin, Slot, Duel, Clue Poker rooms, odds), `squads` (chat, Help Requests, Squad Battles), `billing` (Google, Apple, Razorpay, entitlements), `ai` gateway | Check-in, Daily Spin, Lucky Slot, Confidence Duel, Clue Poker, Squad screens + battles, Store, Pro/Exam Pass/Sparks purchase flows, paywalls (with the Dark Patterns checklist), AI doubt help | Purchases work end to end in the store sandboxes, and games run server-authoritatively with the firewall tests passing |
+| **3b: Study Rooms MVP** *(changed 2026-10-22, D-2026-10-22-02)* | `focus` module (sessions, heartbeat crediting, auto-pause, caps, IST boards, focus days), `study.*` socket events in `realtime`, Squad Room via `squads`, firewall tests for rule 5 | Study Room + Squad Room screens, focus timer, Studying now, Hours Board, nudges, privacy toggles, Calm Mode hiding | A user can run a server-timed focus session in a room, faked time is not credited, boards show capped IST-day hours, and the firewall tests pass |
 | **4: Desk, safety, polish** | `support`, `moderation`, `institutions`, `marketplace`, `liveops` (events, flags, emergency switch), `audit`, `analytics`, Desk APIs. Security hardening, k6 load test (State Mock Sunday scenario) | **HeyMey Desk** (Support, Moderation, Review, Ops, Admin, Institution, Creator Studio, Partner), staff quick actions in the app, accessibility pass, low-end phone performance pass, store listing assets | All "Definition of done" items (Section 45) pass on staging, and the build goes to closed beta |
+
+**Where the 2026-10-22 decisions land** *(changed 2026-10-22, D-2026-10-22-01 and -02)*:
+- **Exam-agnostic model (D-…-01): Phase 2.** It costs little now and a lot later. The `exams`/`syllabus` schema gets families, stages, papers, marking schemes and attempt cycles in Phase 2's schema bolt, and `exam-hall`, `plan`, `mastery` and `readiness` read them as data (INT-002 "Exam-agnostic build rules"). Only TN data is loaded. The descriptive paper type is **designed for but not built** in Phase 2.
+- **Exam waves 1–3 (D-…-01): after launch** (§1a, §27), each as its own intent with Track B content. None blocks launch.
+- **Study Rooms MVP (D-…-02): Phase 3, as row 3b**, after the `squads` and realtime bolts of week 3. Why Phase 3: it needs the realtime gateway and presence (built for games in week 3), the Squad Room needs `squads` (week 3), and it is a squad-style social loop, so it is tested with the same socket harness. Nothing in the blueprint argues for earlier: Phase 2 has no realtime gateway. Risks to watch, which could push it to Phase 4: (1) week 3 is already the heaviest, T2 week (money, games, billing), so Study Rooms goes **after** the week-3 money and game bolts and behind a feature flag, and it must never delay them; (2) the moderation queue and Desk arrive in week 4, which is why the MVP has no free-text chat and only reports + block (a report can be stored in Phase 3 and worked in the Desk in Phase 4); (3) the "studying now" fan-out adds realtime load, so the week-4 k6 run includes a Study Rooms scenario.
 
 ## 44. Testing strategy
 

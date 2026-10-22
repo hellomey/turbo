@@ -114,14 +114,15 @@ describe("security review BOLT-0006 (open findings; it.fails = still vulnerable)
     const cloudflareEdge = "162.158.1.1";
     const statuses: number[] = [];
     for (let i = 0; i < 12; i++) {
-      const xff = `10.66.${i}.1, ${realClient}, ${cloudflareEdge}`; // "<spoofed>, <real client>, <CF edge>"
+      const xff = `10.66.${i}.1, ${cloudflareEdge}, ${realClient}`; // client-spoofed entries, then the hop Caddy appends
       statuses.push((await call("POST", "/v1/auth/otp/request", { body: { email: `xff${i}@example.com` }, xff })).statusCode);
     }
     expect(statuses.slice(10)).toEqual([429, 429]);
   });
 
   // SEC-H2: Desk TOTP verify has no per-user / per-challenge failure counter; only 20/IP/hour (spoofable, SEC-H1).
-  it.fails("SEC-H2: Desk TOTP verify locks after repeated wrong codes on one challenge", async () => {
+  // Fixed in BOLT-0007: single-use challenge (jti), per-user lock after 5 wrong codes (TOTP_LOCKED, 429).
+  it("SEC-H2: Desk TOTP verify locks after repeated wrong codes on one challenge", async () => {
     const email = "ops-bruteforce@heymey.app";
     await opsUser(email);
     const first = await deskChallenge(email);
@@ -134,16 +135,41 @@ describe("security review BOLT-0006 (open findings; it.fails = still vulnerable)
     const valid = [-30_000, 0, 30_000, 60_000].map((d) => totp(secret, now + d));
     for (let i = 0; i < 40; i++) {
       const r = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken, code: wrongCode(i * 104_729, valid) } });
-      expect(r.json().error.code).toBe("TOTP_INVALID");
+      expect(r.statusCode).not.toBe(200);
+      // The first wrong code burns the challenge (BOLT-0007): every later guess on it is never even evaluated.
+      expect(r.json().error.code).toBe(i === 0 ? "TOTP_INVALID" : "CHALLENGE_EXPIRED");
     }
     // The 41st guess is right (stands in for a successful brute force): it must NOT open a Desk session.
     const hit = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken, code: totp(secret, Date.now() + 30_000) } });
     expect(hit.statusCode).not.toBe(200);
   });
 
+  it("SEC-H2: 5 wrong codes on fresh challenges lock the user's TOTP (429 TOTP_LOCKED), even for the right code", async () => {
+    const email = "ops-lockout@heymey.app";
+    await opsUser(email);
+    const fresh = async () => {
+      for (const k of await redis.keys("otp:email:*")) await redis.del(k); // the attacker owns the mailbox; skip the 3/10 min mail limit
+      return deskChallenge(email);
+    };
+    const first = await fresh();
+    const { secret } = (await call("POST", "/v1/auth/desk/totp/enroll", { body: { challengeToken: first } })).json();
+    expect((await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken: first, code: totp(secret) } })).statusCode).toBe(200);
+    const valid = [-30_000, 0, 30_000, 60_000].map((d) => totp(secret, Date.now() + d));
+    const codes: string[] = [];
+    for (let i = 0; i < 5; i++) {
+      const r = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken: await fresh(), code: wrongCode(7 + i * 13, valid) } });
+      codes.push(r.json().error.code);
+    }
+    expect(codes).toEqual(["TOTP_INVALID", "TOTP_INVALID", "TOTP_INVALID", "TOTP_INVALID", "TOTP_LOCKED"]);
+    const right = await call("POST", "/v1/auth/desk/totp/verify", { body: { challengeToken: await fresh(), code: totp(secret, Date.now() + 30_000) } });
+    expect(right.statusCode).toBe(429);
+    expect(right.json().error.code).toBe("TOTP_LOCKED");
+  });
+
   // SEC-M1: the attempt counter is read BEFORE the slow argon2 compare and incremented after it, with no atomic
   // "reserve an attempt" step, so concurrent guesses on one code are all evaluated.
-  it.fails("SEC-M1: at most 5 guesses are evaluated per OTP code, even when sent concurrently", async () => {
+  // Fixed in BOLT-0007: atomic attempt reservation (UPDATE ... RETURNING) before the argon2 compare.
+  it("SEC-M1: at most 5 guesses are evaluated per OTP code, even when sent concurrently", async () => {
     const email = "race@example.com";
     expect((await call("POST", "/v1/auth/otp/request", { body: { email } })).statusCode).toBe(200);
     const real = await lastCode(email);

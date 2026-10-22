@@ -169,10 +169,27 @@ services:
     image: ${CHANGEDETECTION_IMAGE}
     restart: unless-stopped
     volumes: [changedetection-data:/datastore]
-    environment: { PORT: "${CHANGEDETECTION_PORT}" }
+    # BOLT-0015 (blueprint §17.5, §20.2): watches official exam sites (infra/changedetection/watches.json, applied by
+    # tools/changedetection-sync.mjs) and POSTs to http://api:${API_PORT}/v1/webhooks/changedetection on the
+    # internal network with header x-heymey-webhook-secret = CHANGEDETECTION_WEBHOOK_SECRET (stored in the watch).
+    environment:
+      PORT: "${CHANGEDETECTION_PORT}"
+      BASE_URL: https://ops.heymey.app/watch
+      HIDE_REFERER: "true"
+    # Loopback only, for tools/changedetection-sync.mjs on the server. UI is ops.heymey.app/watch.
+    ports: ["127.0.0.1:${CHANGEDETECTION_PORT}:${CHANGEDETECTION_PORT}"]
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import os,urllib.request; urllib.request.urlopen('http://127.0.0.1:%s/' % os.environ['PORT'], timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options: { max-size: "20m", max-file: "5" }
     networks:
       internal: {}
       edge: { aliases: ["${STACK}-changedetection"] }
+    deploy: { resources: { limits: { cpus: "0.5", memory: 512M } } }
 
 volumes:
   pg-data:

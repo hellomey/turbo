@@ -2,9 +2,17 @@
   "name": "exams",
   "summary": "Exams, notifications, eligibility rules, vacancies, cutoffs.",
   "owns": [
+    "ExamFamily",
     "Exam",
-    "Notification",
+    "ExamStage",
+    "Paper",
+    "PaperSection",
+    "MarkingScheme",
+    "ExamAttemptCycle",
     "EligibilityRule",
+    "UserExamChoice",
+    "ExamWatchChange",
+    "ExamAlert",
     "Vacancy",
     "Cutoff"
   ],
@@ -12,7 +20,8 @@
     "Eligibility engine (age relaxations, qualification, community, PSTM)",
     "exam pages",
     "Exam Alerts source data (human-checked)",
-    "changedetection webhook intake"
+    "changedetection webhook intake",
+    "Exam-agnostic catalogue: family -> exam -> stage -> paper -> section, versioned marking schemes, attempt cycles (ADR-0013)"
   ],
   "dependsOn": [
     "syllabus"

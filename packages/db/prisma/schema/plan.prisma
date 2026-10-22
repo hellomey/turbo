@@ -1,2 +1,67 @@
-// Tables owned by the `plan` module. No other module may query these (blueprint §34.8).
-// To model: Plan, PlanItem, StudyLog
+// Tables owned by the `plan` module. No other module may query these (blueprint §34.8). §17.3, §19.2, §10.6 Today.
+
+model Plan {
+  id               String    @id @default(uuid(7)) @db.Uuid
+  userId           String    @unique @db.Uuid
+  weekdayMinutes   Int
+  weekendMinutes   Int
+  pocketMinutes    Int       @default(10)
+  balance          Int       @default(0) // -2..+2
+  starterPathUntil String? // YYYY-MM-DD (IST)
+  stretch          String    @default("normal") // normal | d90 | d60 | d30 | d7
+  lastActiveIstDay String?
+  lastRebalancedAt DateTime?
+  configVersion    String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  exams PlanExam[]
+  items PlanItem[]
+}
+
+/// Up to 3 exams, each targeting an attempt cycle (R2).
+model PlanExam {
+  planId         String    @db.Uuid
+  examCode       String
+  attemptCycleId String?   @db.Uuid
+  examDate       DateTime? @db.Date // cached next stage date; refreshed on exams.date_changed
+  priority       Int
+
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@id([planId, examCode])
+}
+
+model PlanItem {
+  id       String    @id @default(uuid(7)) @db.Uuid
+  planId   String    @db.Uuid
+  istDay   String // YYYY-MM-DD
+  kind     String // lesson | lit_check | relight | practice | pyq | gold | mock | mistake_review | checklist
+  examCode String?
+  topicId  String?   @db.Uuid
+  title    String
+  minutes  Int
+  order    Int
+  status   String    @default("pending") // pending | done | skipped | moved
+  doneAt   DateTime?
+
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId, istDay])
+}
+
+/// Append-only study history, incl. offline actions older than 7 days (§39).
+model StudyLog {
+  id             String   @id @default(uuid(7)) @db.Uuid
+  userId         String   @db.Uuid
+  kind           String
+  topicId        String?  @db.Uuid
+  minutes        Int      @default(0)
+  at             DateTime
+  istDay         String
+  source         String // online | offline_sync
+  clientActionId String?  @unique @db.Uuid
+  details        Json?
+
+  @@index([userId, istDay])
+}

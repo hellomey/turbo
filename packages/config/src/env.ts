@@ -69,6 +69,11 @@ export const httpEnv = z.object({
   TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(3).default(0),
 });
 
+/** changedetection.io -> POST /v1/webhooks/changedetection (header x-heymey-webhook-secret). Never logged. BOLT-0014. */
+export const webhookEnv = z.object({
+  CHANGEDETECTION_WEBHOOK_SECRET: z.string().min(32),
+});
+
 export const openRouterEnv = z.object({
   OPENROUTER_API_KEY: z.string().min(1),
   OPENROUTER_BASE_URL: z.url().default("https://openrouter.ai/api/v1"),

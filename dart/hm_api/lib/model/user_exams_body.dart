@@ -14,30 +14,36 @@ class UserExamsBody {
   /// Returns a new [UserExamsBody] instance.
   UserExamsBody({
     required this.mainExamCode,
+    this.attemptCycles = const {},
     this.otherExamCodes = const [],
   });
 
   String mainExamCode;
+
+  Map<String, String> attemptCycles;
 
   List<String> otherExamCodes;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UserExamsBody &&
     other.mainExamCode == mainExamCode &&
+    _deepEquality.equals(other.attemptCycles, attemptCycles) &&
     _deepEquality.equals(other.otherExamCodes, otherExamCodes);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (mainExamCode.hashCode) +
+    (attemptCycles.hashCode) +
     (otherExamCodes.hashCode);
 
   @override
-  String toString() => 'UserExamsBody[mainExamCode=$mainExamCode, otherExamCodes=$otherExamCodes]';
+  String toString() => 'UserExamsBody[mainExamCode=$mainExamCode, attemptCycles=$attemptCycles, otherExamCodes=$otherExamCodes]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'mainExamCode'] = this.mainExamCode;
+      json[r'attemptCycles'] = this.attemptCycles;
       json[r'otherExamCodes'] = this.otherExamCodes;
     return json;
   }
@@ -62,6 +68,7 @@ class UserExamsBody {
 
       return UserExamsBody(
         mainExamCode: mapValueOfType<String>(json, r'mainExamCode')!,
+        attemptCycles: mapCastOfType<String, String>(json, r'attemptCycles') ?? const {},
         otherExamCodes: json[r'otherExamCodes'] is Iterable
             ? (json[r'otherExamCodes'] as Iterable).cast<String>().toList(growable: false)
             : const [],

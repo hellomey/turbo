@@ -52,3 +52,35 @@ export function createExamsModule(
     setMyExams: (userId, input) => setMyExams(repo, userId, input),
   };
 }
+
+// ---------------------------------------------------------------- Exam Alerts (BOLT-0014, §19.1 Q7, §17.5, §20.2)
+export { createExamAlertsModule, type ExamAlertsApi } from "./application/exam-alerts-module.js";
+export type { ExamAlertsRepository, Page } from "./application/exam-alerts.js";
+export {
+  EXAM_CHANGE_REVIEW_ROLES,
+  applyStageDate,
+  assertPending,
+  canReviewExamChanges,
+  toExamAlertDto,
+  toExamChangeDto,
+  type ExamAlertDto,
+  type ExamAlertRecord,
+  type ExamChangeDto,
+  type ExamChangeRecord,
+  type ExamChangeStatus,
+} from "./domain/exam-alerts.js";
+
+// ---------------------------------------------------------------- Exam structure catalogue (BOLT-0011, ADR-0012, ADR-0013)
+export { createExamCatalogueModule, type ExamCatalogueApi } from "./application/catalogue-module.js";
+export type { CatalogueRepository } from "./application/catalogue.js";
+export {
+  currentCycle,
+  marks,
+  toStructure,
+  totalMarks,
+  type CatalogueExam,
+  type CatalogueScheme,
+  type CatalogueSection,
+  type ExamStructureDto,
+  type PaperForMockDto,
+} from "./domain/structure.js";

@@ -1,2 +1,102 @@
-// Tables owned by the `exam-hall` module. No other module may query these (blueprint §34.8).
-// To model: Mock, MockAttempt, MockAnswer
+// Tables owned by the `exam-hall` module. No other module may query these (blueprint §34.8). §9.9, §9.10, §10.6.
+// Paper and marking scheme come from `exams` by id (ADR-0012, ADR-0013); no cross-module relations.
+
+enum MockKind {
+  full
+  sectional
+  state_mock_sunday
+}
+
+enum MockAttemptStatus {
+  in_progress
+  submitted
+  expired
+}
+
+model Mock {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  code          String    @unique
+  examCode      String
+  paperId       String    @db.Uuid // exams.Paper
+  schemeVersion Int // exams.MarkingScheme version this mock is built for
+  title         String
+  kind          MockKind
+  /// [{ sectionCode, questionIds: [uuid] }] in paper order.
+  sections      Json
+  opensAt       DateTime?
+  lateJoinUntil DateTime?
+  closesAt      DateTime?
+  rankPublishAt DateTime?
+  free          Boolean   @default(false)
+  status        String    @default("draft") // draft | published | archived
+  createdAt     DateTime  @default(now())
+
+  attempts MockAttempt[]
+
+  @@index([examCode, status])
+  @@index([kind, opensAt])
+}
+
+model MockAttempt {
+  id             String            @id @default(uuid(7)) @db.Uuid
+  userId         String            @db.Uuid
+  mockId         String            @db.Uuid
+  mode           String // omr | cbt, from the paper's answer mode
+  status         MockAttemptStatus @default(in_progress)
+  startedAt      DateTime
+  deadlineAt     DateTime
+  submittedAt    DateTime?
+  ranked         Boolean           @default(false)
+  schemeVersion  Int
+  istMonth       String // YYYY-MM, for the free allowance
+  // Exact score as a fraction (no floats).
+  scoreNum       Int?
+  scoreDen       Int?
+  correct        Int?
+  wrong          Int?
+  unanswered     Int?
+  sectionResults Json?
+
+  mock    Mock         @relation(fields: [mockId], references: [id])
+  answers MockAnswer[]
+
+  @@index([userId, startedAt])
+  @@index([mockId, ranked, status])
+}
+
+/// Last write per question wins until the deadline.
+model MockAnswer {
+  attemptId       String   @db.Uuid
+  questionId      String   @db.Uuid
+  chosenOptionIds String[]
+  markedForReview Boolean  @default(false)
+  savedAt         DateTime // server time
+  clientAt        DateTime
+
+  attempt MockAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@id([attemptId, questionId])
+}
+
+/// Free users: 1 full mock per IST calendar month (§11). The primary key is the race guard.
+model MockAllowanceUse {
+  userId    String   @db.Uuid
+  istMonth  String
+  attemptId String   @unique @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@id([userId, istMonth])
+}
+
+/// Rank among takers of this exam, scoped per family (R6). Written once by the publish job.
+model MockRank {
+  mockId      String   @db.Uuid
+  userId      String   @db.Uuid
+  rank        Int
+  percentile  Int
+  candidates  Int
+  publishedAt DateTime
+
+  @@id([mockId, userId])
+  @@index([mockId, rank])
+}

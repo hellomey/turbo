@@ -182,10 +182,28 @@ class ApiClient {
           return valueString == 'true' || valueString == '1';
         case 'DateTime':
           return value is DateTime ? value : DateTime.tryParse(value);
+        case 'AlertSettings':
+          return AlertSettings.fromJson(value);
+        case 'AlertSettingsQuietHours':
+          return AlertSettingsQuietHours.fromJson(value);
+        case 'AnswerInput':
+          return AnswerInput.fromJson(value);
+        case 'ApproveExamChangeBody':
+          return ApproveExamChangeBody.fromJson(value);
+        case 'ApproveExamChangeBodyNewStageDate':
+          return ApproveExamChangeBodyNewStageDate.fromJson(value);
+        case 'CheckKind':
+          return CheckKindTypeTransformer().decode(value);
+        case 'CheckResult':
+          return CheckResult.fromJson(value);
         case 'ClientKind':
           return ClientKindTypeTransformer().decode(value);
         case 'Community':
           return CommunityTypeTransformer().decode(value);
+        case 'ConceptDrill':
+          return ConceptDrill.fromJson(value);
+        case 'ConceptDrillList':
+          return ConceptDrillList.fromJson(value);
         case 'ConsentChoicesBody':
           return ConsentChoicesBody.fromJson(value);
         case 'ConsentChoicesBodyChoicesInner':
@@ -200,6 +218,12 @@ class ApiClient {
           return ConsentState.fromJson(value);
         case 'ConsentStateChoicesInner':
           return ConsentStateChoicesInner.fromJson(value);
+        case 'ContentLanguage':
+          return ContentLanguageTypeTransformer().decode(value);
+        case 'ContentPack':
+          return ContentPack.fromJson(value);
+        case 'ContentPackList':
+          return ContentPackList.fromJson(value);
         case 'DeleteAccountBody':
           return DeleteAccountBody.fromJson(value);
         case 'DeleteAccountResponse':
@@ -224,6 +248,20 @@ class ApiClient {
           return ErrorEnvelope.fromJson(value);
         case 'ErrorEnvelopeError':
           return ErrorEnvelopeError.fromJson(value);
+        case 'ExamAlert':
+          return ExamAlert.fromJson(value);
+        case 'ExamAlertPage':
+          return ExamAlertPage.fromJson(value);
+        case 'ExamAttemptCycle':
+          return ExamAttemptCycle.fromJson(value);
+        case 'ExamAttemptCycleStageDatesInner':
+          return ExamAttemptCycleStageDatesInner.fromJson(value);
+        case 'ExamChange':
+          return ExamChange.fromJson(value);
+        case 'ExamChangePage':
+          return ExamChangePage.fromJson(value);
+        case 'ExamChangeStatus':
+          return ExamChangeStatusTypeTransformer().decode(value);
         case 'ExamDetail':
           return ExamDetail.fromJson(value);
         case 'ExamDetailAllOfPattern':
@@ -234,22 +272,70 @@ class ApiClient {
           return ExamEligibilityAgeLimit.fromJson(value);
         case 'ExamList':
           return ExamList.fromJson(value);
+        case 'ExamPaper':
+          return ExamPaper.fromJson(value);
+        case 'ExamStage':
+          return ExamStage.fromJson(value);
+        case 'ExamStructure':
+          return ExamStructure.fromJson(value);
+        case 'ExamStructureFamily':
+          return ExamStructureFamily.fromJson(value);
         case 'ExamSummary':
           return ExamSummary.fromJson(value);
         case 'GlossaryList':
           return GlossaryList.fromJson(value);
         case 'GlossaryListItemsInner':
           return GlossaryListItemsInner.fromJson(value);
+        case 'GradedAnswer':
+          return GradedAnswer.fromJson(value);
         case 'HealthResponse':
           return HealthResponse.fromJson(value);
         case 'LampRing':
           return LampRing.fromJson(value);
         case 'Lesson':
           return Lesson.fromJson(value);
+        case 'LessonCompleteBody':
+          return LessonCompleteBody.fromJson(value);
         case 'LessonSource':
           return LessonSource.fromJson(value);
+        case 'MarkingScheme':
+          return MarkingScheme.fromJson(value);
+        case 'MarkingSection':
+          return MarkingSection.fromJson(value);
+        case 'Marks':
+          return Marks.fromJson(value);
+        case 'MasterySummary':
+          return MasterySummary.fromJson(value);
+        case 'MasterySummaryByExamInner':
+          return MasterySummaryByExamInner.fromJson(value);
         case 'Me':
           return Me.fromJson(value);
+        case 'Mistake':
+          return Mistake.fromJson(value);
+        case 'MistakePage':
+          return MistakePage.fromJson(value);
+        case 'MockAllowance':
+          return MockAllowance.fromJson(value);
+        case 'MockAnswersSaved':
+          return MockAnswersSaved.fromJson(value);
+        case 'MockAttemptListItem':
+          return MockAttemptListItem.fromJson(value);
+        case 'MockAttemptPage':
+          return MockAttemptPage.fromJson(value);
+        case 'MockAttemptState':
+          return MockAttemptState.fromJson(value);
+        case 'MockKind':
+          return MockKindTypeTransformer().decode(value);
+        case 'MockList':
+          return MockList.fromJson(value);
+        case 'MockMode':
+          return MockModeTypeTransformer().decode(value);
+        case 'MockReport':
+          return MockReport.fromJson(value);
+        case 'MockSectionView':
+          return MockSectionView.fromJson(value);
+        case 'MockSummary':
+          return MockSummary.fromJson(value);
         case 'OkResponse':
           return OkResponse.fromJson(value);
         case 'OtpPurpose':
@@ -262,30 +348,174 @@ class ApiClient {
           return OtpVerifyBody.fromJson(value);
         case 'OtpVerifyResponse':
           return OtpVerifyResponse.fromJson(value);
+        case 'PaperType':
+          return PaperTypeTypeTransformer().decode(value);
+        case 'Plan':
+          return Plan.fromJson(value);
+        case 'PlanDays':
+          return PlanDays.fromJson(value);
+        case 'PlanDaysDaysInner':
+          return PlanDaysDaysInner.fromJson(value);
+        case 'PlanExam':
+          return PlanExam.fromJson(value);
+        case 'PlanItem':
+          return PlanItem.fromJson(value);
+        case 'PlanItemKind':
+          return PlanItemKindTypeTransformer().decode(value);
+        case 'PlanItemStatus':
+          return PlanItemStatusTypeTransformer().decode(value);
+        case 'PracticeAnswerBody':
+          return PracticeAnswerBody.fromJson(value);
+        case 'PracticeAnswerResult':
+          return PracticeAnswerResult.fromJson(value);
+        case 'PracticeMode':
+          return PracticeModeTypeTransformer().decode(value);
+        case 'PracticeSession':
+          return PracticeSession.fromJson(value);
+        case 'PracticeUsage':
+          return PracticeUsage.fromJson(value);
         case 'ProfileAnswers':
           return ProfileAnswers.fromJson(value);
+        case 'PushTokenAck':
+          return PushTokenAck.fromJson(value);
+        case 'PutAlertSettingsBody':
+          return PutAlertSettingsBody.fromJson(value);
+        case 'PutPlanBody':
+          return PutPlanBody.fromJson(value);
+        case 'PyqFacets':
+          return PyqFacets.fromJson(value);
+        case 'PyqFacetsSubjectsInner':
+          return PyqFacetsSubjectsInner.fromJson(value);
+        case 'PyqFacetsYearsInner':
+          return PyqFacetsYearsInner.fromJson(value);
+        case 'PyqItem':
+          return PyqItem.fromJson(value);
+        case 'PyqPage':
+          return PyqPage.fromJson(value);
         case 'Qualification':
           return QualificationTypeTransformer().decode(value);
+        case 'Question':
+          return Question.fromJson(value);
+        case 'QuestionKind':
+          return QuestionKindTypeTransformer().decode(value);
+        case 'QuestionOption':
+          return QuestionOption.fromJson(value);
+        case 'QuestionReportAck':
+          return QuestionReportAck.fromJson(value);
+        case 'QuestionReportBody':
+          return QuestionReportBody.fromJson(value);
+        case 'QuestionSource':
+          return QuestionSource.fromJson(value);
+        case 'QuestionSourcePyq':
+          return QuestionSourcePyq.fromJson(value);
+        case 'Rank':
+          return Rank.fromJson(value);
+        case 'RankChange':
+          return RankChange.fromJson(value);
+        case 'ReadinessBar':
+          return ReadinessBar.fromJson(value);
+        case 'ReadinessLabel':
+          return ReadinessLabelTypeTransformer().decode(value);
+        case 'ReadinessMeter':
+          return ReadinessMeter.fromJson(value);
+        case 'ReadinessMeterCoverage':
+          return ReadinessMeterCoverage.fromJson(value);
+        case 'ReadinessTrend':
+          return ReadinessTrend.fromJson(value);
+        case 'ReadinessTrendPointsInner':
+          return ReadinessTrendPointsInner.fromJson(value);
         case 'RefreshBody':
           return RefreshBody.fromJson(value);
+        case 'RegisterPushTokenBody':
+          return RegisterPushTokenBody.fromJson(value);
+        case 'RejectExamChangeBody':
+          return RejectExamChangeBody.fromJson(value);
+        case 'RelightItem':
+          return RelightItem.fromJson(value);
+        case 'RelightQueue':
+          return RelightQueue.fromJson(value);
+        case 'RingCounts':
+          return RingCounts.fromJson(value);
         case 'Role':
           return RoleTypeTransformer().decode(value);
+        case 'SaveMockAnswersBody':
+          return SaveMockAnswersBody.fromJson(value);
+        case 'SaveMockAnswersBodyAnswersInner':
+          return SaveMockAnswersBodyAnswersInner.fromJson(value);
+        case 'SavedMockAnswer':
+          return SavedMockAnswer.fromJson(value);
+        case 'SectionResult':
+          return SectionResult.fromJson(value);
         case 'SessionGranted':
           return SessionGranted.fromJson(value);
+        case 'SiteChangeAck':
+          return SiteChangeAck.fromJson(value);
+        case 'SiteChangeWebhookBody':
+          return SiteChangeWebhookBody.fromJson(value);
         case 'SpecialCategory':
           return SpecialCategoryTypeTransformer().decode(value);
+        case 'StartCheckBody':
+          return StartCheckBody.fromJson(value);
+        case 'StartMockBody':
+          return StartMockBody.fromJson(value);
+        case 'StartPracticeBody':
+          return StartPracticeBody.fromJson(value);
+        case 'StateMockInfo':
+          return StateMockInfo.fromJson(value);
+        case 'StateMockInfoMock':
+          return StateMockInfoMock.fromJson(value);
+        case 'StatewideRank':
+          return StatewideRank.fromJson(value);
+        case 'StretchPhase':
+          return StretchPhaseTypeTransformer().decode(value);
         case 'StudyMap':
           return StudyMap.fromJson(value);
         case 'StudyMapSubjectsInner':
           return StudyMapSubjectsInner.fromJson(value);
         case 'StudyMapTopic':
           return StudyMapTopic.fromJson(value);
+        case 'SubmitCheckBody':
+          return SubmitCheckBody.fromJson(value);
+        case 'SundayReport':
+          return SundayReport.fromJson(value);
+        case 'SundayReportPage':
+          return SundayReportPage.fromJson(value);
+        case 'SundayReportSummary':
+          return SundayReportSummary.fromJson(value);
+        case 'SyncAction':
+          return SyncAction.fromJson(value);
+        case 'SyncActionOneOf':
+          return SyncActionOneOf.fromJson(value);
+        case 'SyncActionOneOf1':
+          return SyncActionOneOf1.fromJson(value);
+        case 'SyncActionOneOf2':
+          return SyncActionOneOf2.fromJson(value);
+        case 'SyncActionOneOf3':
+          return SyncActionOneOf3.fromJson(value);
+        case 'SyncActionResult':
+          return SyncActionResult.fromJson(value);
+        case 'SyncBatchBody':
+          return SyncBatchBody.fromJson(value);
+        case 'SyncBatchResult':
+          return SyncBatchResult.fromJson(value);
         case 'TextbookRef':
           return TextbookRef.fromJson(value);
+        case 'TodayScreen':
+          return TodayScreen.fromJson(value);
+        case 'TodayScreenRelight':
+          return TodayScreenRelight.fromJson(value);
         case 'TokenPair':
           return TokenPair.fromJson(value);
+        case 'TopicCheck':
+          return TopicCheck.fromJson(value);
+        case 'TopicState':
+          return TopicState.fromJson(value);
+        case 'TopicStatePage':
+          return TopicStatePage.fromJson(value);
         case 'UpdateMeBody':
           return UpdateMeBody.fromJson(value);
+        case 'UpdatePlanItemBody':
+          return UpdatePlanItemBody.fromJson(value);
         case 'UserExams':
           return UserExams.fromJson(value);
         case 'UserExamsBody':

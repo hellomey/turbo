@@ -9,7 +9,7 @@ import { getStudyMap } from "./application/get-study-map.js";
 import type { StudyMapPorts, SyllabusRepository, TextbookRefDto } from "./application/ports.js";
 import { searchGlossary } from "./application/search-glossary.js";
 import type { GlossaryListDto } from "./domain/glossary.js";
-import type { StudyMapDto } from "./domain/study-map.js";
+import type { StudyMapDto, TopicRow } from "./domain/study-map.js";
 import { PrismaSyllabusRepository } from "./infrastructure/prisma-syllabus-repository.js";
 
 export const SyllabusModule = { name: "syllabus" } as const;
@@ -24,6 +24,9 @@ export interface SyllabusApi {
   studyMap(examCode: string, ports: StudyMapPorts): Promise<StudyMapDto>;
   glossary(q?: string | null): Promise<GlossaryListDto>;
   textbookRefs(topicId: string): Promise<TextbookRefDto[]>;
+  /** BOLT-0009 (mastery): lamps of one exam, and one lamp by id (null if unknown). */
+  topicsForExam(examCode: string): Promise<TopicRow[]>;
+  topic(topicId: string): Promise<TopicRow | null>;
 }
 
 export function createSyllabusModule(deps: { prisma: PrismaClient } | { repository: SyllabusRepository }): SyllabusApi {
@@ -32,5 +35,7 @@ export function createSyllabusModule(deps: { prisma: PrismaClient } | { reposito
     studyMap: (examCode, ports) => getStudyMap(repo, ports, examCode),
     glossary: (q) => searchGlossary(repo, q),
     textbookRefs: (topicId) => repo.textbookRefs(topicId),
+    topicsForExam: (examCode) => repo.topicsForExam(examCode),
+    topic: (topicId) => repo.topicById(topicId),
   };
 }

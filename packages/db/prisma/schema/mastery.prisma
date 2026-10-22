@@ -8,16 +8,82 @@ enum DimState {
 
 /// One row per user per topic (lamp). The server is the source of truth for rings (§39 conflicts).
 model UserTopicState {
-  userId      String    @db.Uuid
-  topicId     String    @db.Uuid
-  litAt       DateTime?
-  steadyLevel Int       @default(0) // 0..4 for the 1 -> 3 -> 7 -> 21 day recall ladder
-  goldAt      DateTime?
-  nextDueAt   DateTime?
-  dimState    DimState  @default(bright)
-  shieldUntil DateTime? // Revision Shield (48h) from Daily Spin
-  updatedAt   DateTime  @updatedAt
+  userId            String    @db.Uuid
+  topicId           String    @db.Uuid
+  litAt             DateTime?
+  steadyLevel       Int       @default(0) // 0..4 for the 1 -> 3 -> 7 -> 21 day recall ladder
+  goldAt            DateTime?
+  nextDueAt         DateTime?
+  dimState          DimState  @default(bright)
+  shieldUntil       DateTime? // Revision Shield (48h) from Daily Spin
+  updatedAt         DateTime  @updatedAt
+  // Phase 2 (BOLT-0008), nullable or defaulted (expand-only):
+  lessonCompletedAt DateTime? // opens the Lit check
+  steadyEarnedAt    DateTime?
+  dimSince          DateTime? // when dimState left bright; Steady is lost after the configured limit
+  lastCheckAt       DateTime?
+  rowVersion        Int       @default(0) // optimistic concurrency: scheduler vs user writes
 
   @@id([userId, topicId])
   @@index([nextDueAt])
+  @@index([userId, updatedAt])
+  @@index([dimState, dimSince])
+}
+
+enum CheckKind {
+  lit
+  recall
+  relight
+  gold
+}
+
+enum ActionSource {
+  online
+  offline_sync
+}
+
+/// A server-issued check (Lit, recall, relight, timed Gold). The server picks the questions and owns the deadline.
+model TopicCheck {
+  id            String       @id @default(uuid(7)) @db.Uuid
+  userId        String       @db.Uuid
+  topicId       String       @db.Uuid
+  kind          CheckKind
+  questionIds   String[]     @db.Uuid
+  passMark      Int
+  issuedAt      DateTime
+  deadlineAt    DateTime?
+  submittedAt   DateTime?
+  correct       Int?
+  passed        Boolean?
+  source        ActionSource @default(online)
+  configVersion String
+
+  @@index([userId, topicId, issuedAt])
+}
+
+/// Append-only ring history (S03 "history stays stored"). Never updated or deleted.
+model RingEvent {
+  id             String       @id @default(uuid(7)) @db.Uuid
+  userId         String       @db.Uuid
+  topicId        String       @db.Uuid
+  /// lesson_done | lit | lit_fail | recall_pass | recall_fail | dimming | dim | steady_lost | relight | gold | gold_fail | study_log_only
+  kind           String
+  at             DateTime
+  source         ActionSource
+  clientActionId String?      @unique @db.Uuid
+  checkId        String?      @db.Uuid
+  details        Json?
+
+  @@index([userId, at])
+  @@index([userId, topicId, at])
+}
+
+/// Cached Career Ladder position, derived from ring counts only (§5.2, §5.3 rule 4). Recomputed, never bought.
+model UserRank {
+  userId        String   @id @db.Uuid
+  familyCode    String?
+  level         Int
+  xp            Int
+  configVersion String
+  updatedAt     DateTime @updatedAt
 }

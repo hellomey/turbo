@@ -88,11 +88,34 @@ desk.heymey.app {
 
 cdn.heymey.app {
 	import security_headers
-	# Public read-only bucket for content packs (SHA-256 checked by the app). Writes never go through here.
-	@write method PUT POST DELETE PATCH
+	# Content-pack CDN (BOLT-0015, blueprint §39 offline packs, §21). Cloudflare caches in front; this origin serves
+	# ONLY immutable, checksum-named FREE pack files from bucket heymey-content (layout: infra/content-cdn/README.md):
+	#   GET /packs/free/<exam>/<pack-code>/v<version>.<sha256>.pack  ->  s3://heymey-content/packs/free/...
+	# Anything else (bucket listing, other buckets, pro packs, writes) -> 404/405. Pro packs are never public.
+	@write not method GET HEAD
 	respond @write 405
-	reverse_proxy production-seaweedfs:8333 {
-		header_up X-Forwarded-For {client_ip}
+	@pack {
+		method GET HEAD
+		path_regexp pack ^/packs/free/[a-z0-9-]+/[a-z0-9.-]+/v[0-9]+\.[a-f0-9]{64}\.pack$
+	}
+	handle @pack {
+		rewrite * /heymey-content{path}
+		reverse_proxy production-seaweedfs:8333 {
+			header_up X-Forwarded-For {client_ip}
+			header_up -Authorization
+			header_up -Cookie
+			header_down -Set-Cookie
+			header_down -X-Amz-*
+			header_down -Server
+			# The name contains the checksum: the bytes behind a URL never change.
+			header_down Cache-Control "public, max-age=31536000, immutable"
+			header_down Content-Type "application/octet-stream"
+			header_down Access-Control-Allow-Origin "*"
+		}
+	}
+	handle {
+		header Cache-Control "public, max-age=60"
+		respond 404
 	}
 }
 

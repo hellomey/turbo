@@ -2,7 +2,8 @@
   "name": "readiness",
   "summary": "Readiness Meter, trends, Sunday Report (derived metrics).",
   "owns": [
-    "ReadinessSnapshot"
+    "ReadinessSnapshot",
+    "SundayReport"
   ],
   "responsibilities": [
     "Four evidence bars (Coverage, Memory, Exam performance, Speed) - never one fake percentage",

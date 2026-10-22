@@ -105,6 +105,28 @@
                   "AI_BUSY",
                   "GAMES_SLEEPING",
                   "RANKED_DAILY_CAP",
+                  "TOPIC_NOT_FOUND",
+                  "QUESTION_NOT_FOUND",
+                  "CHECK_NOT_AVAILABLE",
+                  "CHECK_EXPIRED",
+                  "CHECK_ALREADY_SUBMITTED",
+                  "GOLD_DAILY_LIMIT",
+                  "PRO_REQUIRED",
+                  "PRACTICE_SESSION_CLOSED",
+                  "MOCK_NOT_FOUND",
+                  "MOCK_NOT_OPEN",
+                  "MOCK_CLOSED",
+                  "MOCK_MONTHLY_LIMIT",
+                  "MOCK_DEADLINE_PASSED",
+                  "MOCK_ALREADY_SUBMITTED",
+                  "PAPER_TYPE_NOT_SUPPORTED",
+                  "RANK_NOT_READY",
+                  "PLAN_NOT_FOUND",
+                  "REPORT_NOT_FOUND",
+                  "WEBHOOK_UNAUTHORIZED",
+                  "WEBHOOK_REPLAYED",
+                  "EXAM_CHANGE_ALREADY_REVIEWED",
+                  "SYNC_ACTION_TOO_OLD",
                   "FIREWALL_VIOLATION",
                   "PURCHASE_NOT_VERIFIED",
                   "SPENDING_LIMIT_REACHED"
@@ -1048,6 +1070,13 @@
           "mainExamCode": {
             "$ref": "#/components/schemas/ExamCode"
           },
+          "attemptCycles": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
           "otherExamCodes": {
             "type": "array",
             "items": {
@@ -1307,6 +1336,3443 @@
         "required": [
           "items"
         ]
+      },
+      "ExamStructure": {
+        "type": "object",
+        "properties": {
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "family": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "name"
+            ]
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamStage"
+            }
+          },
+          "attemptCycles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamAttemptCycle"
+            }
+          },
+          "disclaimer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "examCode",
+          "family",
+          "stages",
+          "attemptCycles",
+          "disclaimer"
+        ]
+      },
+      "ExamStage": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "scheduledDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "dateStatus": {
+            "type": "string",
+            "enum": [
+              "unknown",
+              "tentative",
+              "confirmed"
+            ]
+          },
+          "papers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamPaper"
+            }
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "order",
+          "scheduledDate",
+          "dateStatus",
+          "papers"
+        ]
+      },
+      "ExamPaper": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "type": {
+            "$ref": "#/components/schemas/PaperType"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "omr",
+              "cbt",
+              "written"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "ta",
+              "hi",
+              "bilingual"
+            ]
+          },
+          "qualifyingOnly": {
+            "type": "boolean"
+          },
+          "scheme": {
+            "$ref": "#/components/schemas/MarkingScheme"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "order",
+          "type",
+          "mode",
+          "language",
+          "qualifyingOnly",
+          "scheme"
+        ]
+      },
+      "PaperType": {
+        "type": "string",
+        "enum": [
+          "objective",
+          "descriptive"
+        ],
+        "description": "`descriptive` papers are listed but cannot be taken in the Exam Hall yet."
+      },
+      "MarkingScheme": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "version": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "durationMinutes": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "totalQuestions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "totalMarks": {
+            "$ref": "#/components/schemas/Marks"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarkingSection"
+            }
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "version",
+          "durationMinutes",
+          "totalQuestions",
+          "totalMarks",
+          "sections",
+          "verified",
+          "sourceUrl"
+        ]
+      },
+      "Marks": {
+        "type": "object",
+        "properties": {
+          "numerator": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "denominator": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "numerator",
+          "denominator"
+        ]
+      },
+      "MarkingSection": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "questionCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "attemptLimit": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "exclusiveMinimum": 0
+          },
+          "marksPerCorrect": {
+            "$ref": "#/components/schemas/Marks"
+          },
+          "penaltyPerWrong": {
+            "$ref": "#/components/schemas/Marks"
+          },
+          "minutes": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "order",
+          "questionCount",
+          "attemptLimit",
+          "marksPerCorrect",
+          "penaltyPerWrong",
+          "minutes"
+        ]
+      },
+      "ExamAttemptCycle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string",
+            "example": "2027"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "announced",
+              "expected",
+              "closed"
+            ]
+          },
+          "stageDates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "stageCode": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date"
+                },
+                "dateStatus": {
+                  "type": "string",
+                  "enum": [
+                    "unknown",
+                    "tentative",
+                    "confirmed"
+                  ]
+                }
+              },
+              "required": [
+                "stageCode",
+                "date",
+                "dateStatus"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "name",
+          "status",
+          "stageDates"
+        ]
+      },
+      "ExamAlertPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamAlert"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "ExamAlert": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "notification",
+              "date_change",
+              "admit_card",
+              "result",
+              "answer_key",
+              "other"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "officialUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "confirmLine": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "examCode",
+          "kind",
+          "title",
+          "summary",
+          "officialUrl",
+          "publishedAt",
+          "confirmLine"
+        ]
+      },
+      "SiteChangeAck": {
+        "type": "object",
+        "properties": {
+          "received": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "received"
+        ]
+      },
+      "SiteChangeWebhookBody": {
+        "type": "object",
+        "properties": {
+          "watchUuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "watchUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "changeId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "diffSummary": {
+            "type": "string",
+            "maxLength": 20000
+          }
+        },
+        "required": [
+          "watchUuid",
+          "watchUrl",
+          "changeId"
+        ]
+      },
+      "ExamChangePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamChange"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "ExamChange": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "watchUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "examCode": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExamCode"
+              },
+              {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            ]
+          },
+          "title": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "diffSummary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "receivedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExamChangeStatus"
+          },
+          "reviewedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "alertId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id",
+          "watchUrl",
+          "examCode",
+          "title",
+          "diffSummary",
+          "receivedAt",
+          "status",
+          "reviewedAt",
+          "alertId"
+        ]
+      },
+      "ExamChangeStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "approved",
+          "rejected"
+        ]
+      },
+      "ApproveExamChangeBody": {
+        "type": "object",
+        "properties": {
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "notification",
+              "date_change",
+              "admit_card",
+              "result",
+              "answer_key",
+              "other"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 120
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 500
+          },
+          "officialUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "newStageDate": {
+            "type": "object",
+            "properties": {
+              "stageCode": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            "required": [
+              "stageCode",
+              "date"
+            ]
+          }
+        },
+        "required": [
+          "examCode",
+          "kind",
+          "title",
+          "summary",
+          "officialUrl"
+        ]
+      },
+      "RejectExamChangeBody": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "MasterySummary": {
+        "type": "object",
+        "properties": {
+          "rank": {
+            "$ref": "#/components/schemas/Rank"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/RingCounts"
+          },
+          "byExam": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "examCode": {
+                  "$ref": "#/components/schemas/ExamCode"
+                },
+                "counts": {
+                  "$ref": "#/components/schemas/RingCounts"
+                }
+              },
+              "required": [
+                "examCode",
+                "counts"
+              ]
+            }
+          },
+          "serverNow": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "rank",
+          "counts",
+          "byExam",
+          "serverNow"
+        ]
+      },
+      "Rank": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 11
+          },
+          "title": {
+            "type": "string"
+          },
+          "familyCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "xp": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "xpForThisLevel": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "xpForNextLevel": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "level",
+          "title",
+          "familyCode",
+          "xp",
+          "xpForThisLevel",
+          "xpForNextLevel",
+          "note"
+        ]
+      },
+      "RingCounts": {
+        "type": "object",
+        "properties": {
+          "totalLamps": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "lit": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "steady": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "gold": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "dimming": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "dim": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "totalLamps",
+          "lit",
+          "steady",
+          "gold",
+          "dimming",
+          "dim"
+        ]
+      },
+      "TopicStatePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopicState"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "serverNow": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "serverNow"
+        ]
+      },
+      "TopicState": {
+        "type": "object",
+        "properties": {
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ring": {
+            "$ref": "#/components/schemas/LampRing"
+          },
+          "litAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "goldAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "lessonCompletedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "nextDueAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "nextCheck": {
+            "type": "string",
+            "enum": [
+              "lesson",
+              "lit",
+              "recall",
+              "relight",
+              "gold",
+              "none"
+            ]
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "topicId",
+          "ring",
+          "litAt",
+          "goldAt",
+          "lessonCompletedAt",
+          "nextDueAt",
+          "nextCheck",
+          "updatedAt"
+        ]
+      },
+      "RelightQueue": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RelightItem"
+            }
+          },
+          "totalMinutes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "items",
+          "totalMinutes"
+        ]
+      },
+      "RelightItem": {
+        "type": "object",
+        "properties": {
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "topicName": {
+            "type": "string"
+          },
+          "subjectCode": {
+            "type": "string"
+          },
+          "dim": {
+            "type": "string",
+            "enum": [
+              "dimming",
+              "dim"
+            ]
+          },
+          "overdueSince": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "minutes": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "topicId",
+          "topicName",
+          "subjectCode",
+          "dim",
+          "overdueSince",
+          "minutes"
+        ]
+      },
+      "LessonCompleteBody": {
+        "type": "object",
+        "properties": {
+          "via": {
+            "type": "string",
+            "enum": [
+              "lesson",
+              "textbook"
+            ]
+          }
+        },
+        "required": [
+          "via"
+        ]
+      },
+      "TopicCheck": {
+        "type": "object",
+        "properties": {
+          "checkId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/CheckKind"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            }
+          },
+          "passMark": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deadlineAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "serverNow": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "checkId",
+          "topicId",
+          "kind",
+          "questions",
+          "passMark",
+          "issuedAt",
+          "deadlineAt",
+          "serverNow"
+        ]
+      },
+      "CheckKind": {
+        "type": "string",
+        "enum": [
+          "lit",
+          "recall",
+          "relight",
+          "gold"
+        ]
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/QuestionKind"
+          },
+          "language": {
+            "$ref": "#/components/schemas/ContentLanguage"
+          },
+          "stem": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionOption"
+            }
+          },
+          "difficulty": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "source": {
+            "$ref": "#/components/schemas/QuestionSource"
+          },
+          "affectedNote": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "topicId",
+          "kind",
+          "language",
+          "stem",
+          "options",
+          "difficulty",
+          "source",
+          "affectedNote"
+        ]
+      },
+      "QuestionKind": {
+        "type": "string",
+        "enum": [
+          "single_choice",
+          "multi_choice",
+          "numeric",
+          "descriptive"
+        ],
+        "description": "`descriptive` is a future type: stored and listed, not yet answerable (ADR-0013)."
+      },
+      "ContentLanguage": {
+        "type": "string",
+        "enum": [
+          "en",
+          "ta",
+          "hi"
+        ]
+      },
+      "QuestionOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ]
+      },
+      "QuestionSource": {
+        "type": "object",
+        "properties": {
+          "citation": {
+            "type": "string"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "pyq": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "examCode": {
+                "$ref": "#/components/schemas/ExamCode"
+              },
+              "paperCode": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "year": {
+                "type": "integer"
+              },
+              "questionNumber": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "examCode",
+              "paperCode",
+              "year",
+              "questionNumber"
+            ]
+          }
+        },
+        "required": [
+          "citation",
+          "url",
+          "pyq"
+        ]
+      },
+      "StartCheckBody": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/CheckKind"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "CheckResult": {
+        "type": "object",
+        "properties": {
+          "checkId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/CheckKind"
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "correct": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "lateAnswersIgnored": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "graded": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GradedAnswer"
+            }
+          },
+          "topicState": {
+            "$ref": "#/components/schemas/TopicState"
+          },
+          "rankUp": {
+            "$ref": "#/components/schemas/RankChange"
+          }
+        },
+        "required": [
+          "checkId",
+          "kind",
+          "passed",
+          "correct",
+          "total",
+          "lateAnswersIgnored",
+          "graded",
+          "topicState",
+          "rankUp"
+        ]
+      },
+      "GradedAnswer": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correct": {
+            "type": "boolean"
+          },
+          "correctOptionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "chosenOptionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "explanationMarkdown": {
+            "type": "string"
+          },
+          "whyChosenIsWrong": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "$ref": "#/components/schemas/QuestionSource"
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "questionId",
+          "correct",
+          "correctOptionIds",
+          "chosenOptionIds",
+          "explanationMarkdown",
+          "whyChosenIsWrong",
+          "source",
+          "topicId"
+        ]
+      },
+      "RankChange": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "from": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 11
+          },
+          "to": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 11
+          },
+          "title": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "title",
+          "note"
+        ]
+      },
+      "SubmitCheckBody": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnswerInput"
+            },
+            "minItems": 1,
+            "maxItems": 50
+          }
+        },
+        "required": [
+          "answers"
+        ]
+      },
+      "AnswerInput": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "chosenOptionIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8
+            },
+            "maxItems": 8
+          }
+        },
+        "required": [
+          "questionId",
+          "chosenOptionIds"
+        ]
+      },
+      "SyncBatchResult": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SyncActionResult"
+            }
+          },
+          "topicStates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopicState"
+            }
+          },
+          "serverNow": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "results",
+          "topicStates",
+          "serverNow"
+        ]
+      },
+      "SyncActionResult": {
+        "type": "object",
+        "properties": {
+          "clientActionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "duplicate",
+              "study_log_only",
+              "rejected"
+            ]
+          },
+          "errorCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "clientActionId",
+          "status",
+          "errorCode"
+        ]
+      },
+      "SyncBatchBody": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SyncAction"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "deviceId",
+          "actions"
+        ]
+      },
+      "SyncAction": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "clientActionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "clientAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "practice_answer"
+                ]
+              },
+              "questionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "questionVersion": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "chosenOptionIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8
+                },
+                "maxItems": 8
+              },
+              "timeMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3600000
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "practice",
+                  "pyq",
+                  "mistakes",
+                  "drill"
+                ]
+              }
+            },
+            "required": [
+              "clientActionId",
+              "clientAt",
+              "kind",
+              "questionId",
+              "questionVersion",
+              "chosenOptionIds",
+              "timeMs",
+              "mode"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "clientActionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "clientAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "lesson_complete"
+                ]
+              },
+              "topicId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "via": {
+                "type": "string",
+                "enum": [
+                  "lesson",
+                  "textbook"
+                ]
+              }
+            },
+            "required": [
+              "clientActionId",
+              "clientAt",
+              "kind",
+              "topicId",
+              "via"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "clientActionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "clientAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "topic_check"
+                ]
+              },
+              "topicId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "checkKind": {
+                "type": "string",
+                "enum": [
+                  "lit",
+                  "recall",
+                  "relight"
+                ]
+              },
+              "answers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AnswerInput"
+                },
+                "minItems": 1,
+                "maxItems": 10
+              }
+            },
+            "required": [
+              "clientActionId",
+              "clientAt",
+              "kind",
+              "topicId",
+              "checkKind",
+              "answers"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "clientActionId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "clientAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "plan_item_status"
+                ]
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "done",
+                  "skipped"
+                ]
+              }
+            },
+            "required": [
+              "clientActionId",
+              "clientAt",
+              "kind",
+              "itemId",
+              "status"
+            ]
+          }
+        ]
+      },
+      "PracticeSession": {
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/PracticeMode"
+          },
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            }
+          },
+          "usage": {
+            "$ref": "#/components/schemas/PracticeUsage"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "sessionId",
+          "mode",
+          "examCode",
+          "questions",
+          "usage",
+          "startedAt"
+        ]
+      },
+      "PracticeMode": {
+        "type": "string",
+        "enum": [
+          "practice",
+          "pyq",
+          "mistakes",
+          "drill"
+        ]
+      },
+      "PracticeUsage": {
+        "type": "object",
+        "properties": {
+          "istDay": {
+            "type": "string",
+            "format": "date"
+          },
+          "used": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "limit": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "exclusiveMinimum": 0
+          },
+          "resetsAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "limitSheetShownToday": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "istDay",
+          "used",
+          "limit",
+          "resetsAt",
+          "limitSheetShownToday"
+        ]
+      },
+      "StartPracticeBody": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "$ref": "#/components/schemas/PracticeMode"
+          },
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "subjectCode": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "drillId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 10
+          }
+        },
+        "required": [
+          "mode",
+          "examCode"
+        ]
+      },
+      "PracticeAnswerResult": {
+        "type": "object",
+        "properties": {
+          "graded": {
+            "$ref": "#/components/schemas/GradedAnswer"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/PracticeUsage"
+          },
+          "weakTopicIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "required": [
+          "graded",
+          "usage",
+          "weakTopicIds"
+        ]
+      },
+      "PracticeAnswerBody": {
+        "type": "object",
+        "properties": {
+          "clientActionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "questionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "questionVersion": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "chosenOptionIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8
+            },
+            "maxItems": 8
+          },
+          "timeMs": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3600000
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "sure",
+              "think_so",
+              "guessing"
+            ]
+          }
+        },
+        "required": [
+          "clientActionId",
+          "questionId",
+          "questionVersion",
+          "chosenOptionIds",
+          "timeMs"
+        ]
+      },
+      "MistakePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Mistake"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "Mistake": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "stem": {
+            "type": "string"
+          },
+          "wrongCount": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "lastWrongAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "graded": {
+            "$ref": "#/components/schemas/GradedAnswer"
+          }
+        },
+        "required": [
+          "questionId",
+          "topicId",
+          "stem",
+          "wrongCount",
+          "lastWrongAt",
+          "graded"
+        ]
+      },
+      "ConceptDrillList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConceptDrill"
+            }
+          },
+          "locked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "locked"
+        ]
+      },
+      "ConceptDrill": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "questionCount": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "done"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "topicId",
+          "reason",
+          "questionCount",
+          "createdAt",
+          "status"
+        ]
+      },
+      "PyqPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PyqItem"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "PyqItem": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "$ref": "#/components/schemas/Question"
+          },
+          "locked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "question",
+          "locked"
+        ]
+      },
+      "PyqFacets": {
+        "type": "object",
+        "properties": {
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "years": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "year": {
+                  "type": "integer"
+                },
+                "count": {
+                  "type": "integer"
+                },
+                "locked": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "year",
+                "count",
+                "locked"
+              ]
+            }
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "count": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "code",
+                "name",
+                "count"
+              ]
+            }
+          }
+        },
+        "required": [
+          "examCode",
+          "years",
+          "subjects"
+        ]
+      },
+      "QuestionReportAck": {
+        "type": "object",
+        "properties": {
+          "reportId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "received"
+            ]
+          }
+        },
+        "required": [
+          "reportId",
+          "status"
+        ]
+      },
+      "QuestionReportBody": {
+        "type": "object",
+        "properties": {
+          "questionVersion": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "wrong_answer",
+              "unclear",
+              "outdated",
+              "typo",
+              "other"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "questionVersion",
+          "reason"
+        ]
+      },
+      "ContentPackList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentPack"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "ContentPack": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string",
+            "example": "tnpsc-group-4.polity"
+          },
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "subjectCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "tier": {
+            "type": "string",
+            "enum": [
+              "free",
+              "pro"
+            ]
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "examCode",
+          "subjectCode",
+          "version",
+          "url",
+          "sha256",
+          "sizeBytes",
+          "tier",
+          "locked",
+          "publishedAt"
+        ]
+      },
+      "MockList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MockSummary"
+            }
+          },
+          "allowance": {
+            "$ref": "#/components/schemas/MockAllowance"
+          }
+        },
+        "required": [
+          "items",
+          "allowance"
+        ]
+      },
+      "MockSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string"
+          },
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "paperCode": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/MockKind"
+          },
+          "questionCount": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "durationMinutes": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "negativeMarking": {
+            "type": "boolean"
+          },
+          "opensAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "lateJoinUntil": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "closesAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "free": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "myLastAttemptId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "examCode",
+          "paperCode",
+          "title",
+          "kind",
+          "questionCount",
+          "durationMinutes",
+          "negativeMarking",
+          "opensAt",
+          "lateJoinUntil",
+          "closesAt",
+          "free",
+          "locked",
+          "myLastAttemptId"
+        ]
+      },
+      "MockKind": {
+        "type": "string",
+        "enum": [
+          "full",
+          "sectional",
+          "state_mock_sunday"
+        ]
+      },
+      "MockAllowance": {
+        "type": "object",
+        "properties": {
+          "istMonth": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}$"
+          },
+          "freeFullMocksUsed": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "freeFullMocksLimit": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        },
+        "required": [
+          "istMonth",
+          "freeFullMocksUsed",
+          "freeFullMocksLimit"
+        ]
+      },
+      "MockAttemptState": {
+        "type": "object",
+        "properties": {
+          "attemptId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "mock": {
+            "$ref": "#/components/schemas/MockSummary"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/MockMode"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "in_progress",
+              "submitted",
+              "expired"
+            ]
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deadlineAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "serverNow": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MockSectionView"
+            }
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            }
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SavedMockAnswer"
+            }
+          },
+          "ranked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "attemptId",
+          "mock",
+          "mode",
+          "status",
+          "startedAt",
+          "deadlineAt",
+          "serverNow",
+          "sections",
+          "questions",
+          "answers",
+          "ranked"
+        ]
+      },
+      "MockMode": {
+        "type": "string",
+        "enum": [
+          "omr",
+          "cbt"
+        ]
+      },
+      "MockSectionView": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "questionIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "minutes": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "questionIds",
+          "minutes"
+        ]
+      },
+      "SavedMockAnswer": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "chosenOptionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "markedForReview": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "questionId",
+          "chosenOptionIds",
+          "markedForReview"
+        ]
+      },
+      "StartMockBody": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "$ref": "#/components/schemas/MockMode"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "MockAnswersSaved": {
+        "type": "object",
+        "properties": {
+          "saved": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "ignoredAfterDeadline": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "serverNow": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "remainingSeconds": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "saved",
+          "ignoredAfterDeadline",
+          "serverNow",
+          "remainingSeconds"
+        ]
+      },
+      "SaveMockAnswersBody": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SavedMockAnswer"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "clientAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "clientAt"
+                  ]
+                }
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 200
+          }
+        },
+        "required": [
+          "answers"
+        ]
+      },
+      "MockReport": {
+        "type": "object",
+        "properties": {
+          "attemptId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "mockId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "submittedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "score": {
+            "$ref": "#/components/schemas/Marks"
+          },
+          "maxScore": {
+            "$ref": "#/components/schemas/Marks"
+          },
+          "scoreDisplay": {
+            "type": "string"
+          },
+          "markingSchemeVersion": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "correct": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "wrong": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unanswered": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SectionResult"
+            }
+          },
+          "mistakes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GradedAnswer"
+            }
+          },
+          "weakTopicIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "ranked": {
+            "type": "boolean"
+          },
+          "fullReportLocked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "attemptId",
+          "mockId",
+          "examCode",
+          "submittedAt",
+          "score",
+          "maxScore",
+          "scoreDisplay",
+          "markingSchemeVersion",
+          "correct",
+          "wrong",
+          "unanswered",
+          "sections",
+          "mistakes",
+          "weakTopicIds",
+          "ranked",
+          "fullReportLocked"
+        ]
+      },
+      "SectionResult": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "correct": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "wrong": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unanswered": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "score": {
+            "$ref": "#/components/schemas/Marks"
+          },
+          "maxScore": {
+            "$ref": "#/components/schemas/Marks"
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "correct",
+          "wrong",
+          "unanswered",
+          "score",
+          "maxScore"
+        ]
+      },
+      "MockAttemptPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MockAttemptListItem"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "MockAttemptListItem": {
+        "type": "object",
+        "properties": {
+          "attemptId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "mockId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/MockKind"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "in_progress",
+              "submitted",
+              "expired"
+            ]
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scoreDisplay": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "attemptId",
+          "mockId",
+          "title",
+          "kind",
+          "status",
+          "startedAt",
+          "scoreDisplay"
+        ]
+      },
+      "StateMockInfo": {
+        "type": "object",
+        "properties": {
+          "mock": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MockSummary"
+              },
+              {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            ]
+          },
+          "nextSunday": {
+            "type": "string",
+            "format": "date"
+          },
+          "rankPublishAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "mock",
+          "nextSunday",
+          "rankPublishAt"
+        ]
+      },
+      "StatewideRank": {
+        "type": "object",
+        "properties": {
+          "mockId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "scopeLabel": {
+            "type": "string"
+          },
+          "rank": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "rankedCandidates": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "percentile": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "score": {
+            "$ref": "#/components/schemas/Marks"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "mockId",
+          "scopeLabel",
+          "rank",
+          "rankedCandidates",
+          "percentile",
+          "score",
+          "publishedAt"
+        ]
+      },
+      "TodayScreen": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string",
+            "format": "date"
+          },
+          "rank": {
+            "$ref": "#/components/schemas/Rank"
+          },
+          "todayCard": {
+            "$ref": "#/components/schemas/PlanItem"
+          },
+          "relight": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "minutes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "count",
+              "minutes"
+            ]
+          },
+          "pocketSessions": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 15
+            }
+          },
+          "stretch": {
+            "$ref": "#/components/schemas/StretchPhase"
+          },
+          "welcomeBack": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "hasPlan": {
+            "type": "boolean"
+          },
+          "serverNow": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "day",
+          "rank",
+          "todayCard",
+          "relight",
+          "pocketSessions",
+          "stretch",
+          "welcomeBack",
+          "hasPlan",
+          "serverNow"
+        ]
+      },
+      "PlanItem": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "day": {
+            "type": "string",
+            "format": "date"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/PlanItemKind"
+          },
+          "examCode": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExamCode"
+              },
+              {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            ]
+          },
+          "topicId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "minutes": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "order": {
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PlanItemStatus"
+          }
+        },
+        "required": [
+          "id",
+          "day",
+          "kind",
+          "examCode",
+          "topicId",
+          "title",
+          "minutes",
+          "order",
+          "status"
+        ]
+      },
+      "PlanItemKind": {
+        "type": "string",
+        "enum": [
+          "lesson",
+          "lit_check",
+          "relight",
+          "practice",
+          "pyq",
+          "gold",
+          "mock",
+          "mistake_review",
+          "checklist"
+        ]
+      },
+      "PlanItemStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "done",
+          "skipped",
+          "moved"
+        ]
+      },
+      "StretchPhase": {
+        "type": "string",
+        "enum": [
+          "normal",
+          "d90",
+          "d60",
+          "d30",
+          "d7"
+        ],
+        "description": "Final Stretch phase from days left to the nearest exam (§17.3)."
+      },
+      "Plan": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "weekdayMinutes": {
+            "type": "integer"
+          },
+          "weekendMinutes": {
+            "type": "integer"
+          },
+          "pocketMinutes": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 15
+          },
+          "balance": {
+            "type": "integer",
+            "minimum": -2,
+            "maximum": 2
+          },
+          "exams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlanExam"
+            }
+          },
+          "stretch": {
+            "$ref": "#/components/schemas/StretchPhase"
+          },
+          "starterPathUntil": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "lastRebalancedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "configVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "weekdayMinutes",
+          "weekendMinutes",
+          "pocketMinutes",
+          "balance",
+          "exams",
+          "stretch",
+          "starterPathUntil",
+          "lastRebalancedAt",
+          "configVersion"
+        ]
+      },
+      "PlanExam": {
+        "type": "object",
+        "properties": {
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "attemptCycleId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "examDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "daysLeft": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "examCode",
+          "attemptCycleId",
+          "examDate",
+          "priority",
+          "daysLeft"
+        ]
+      },
+      "PutPlanBody": {
+        "type": "object",
+        "properties": {
+          "weekdayMinutes": {
+            "type": "integer",
+            "minimum": 15,
+            "maximum": 720
+          },
+          "weekendMinutes": {
+            "type": "integer",
+            "minimum": 15,
+            "maximum": 720
+          },
+          "pocketMinutes": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 15,
+            "default": 10
+          },
+          "balance": {
+            "type": "integer",
+            "minimum": -2,
+            "maximum": 2,
+            "default": 0
+          }
+        },
+        "required": [
+          "weekdayMinutes",
+          "weekendMinutes"
+        ]
+      },
+      "PlanDays": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "day": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "minutes": {
+                  "type": "integer"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanItem"
+                  }
+                }
+              },
+              "required": [
+                "day",
+                "minutes",
+                "items"
+              ]
+            }
+          }
+        },
+        "required": [
+          "days"
+        ]
+      },
+      "UpdatePlanItemBody": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "done",
+              "skipped"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "ReadinessMeter": {
+        "type": "object",
+        "properties": {
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "label": {
+            "$ref": "#/components/schemas/ReadinessLabel"
+          },
+          "bars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadinessBar"
+            }
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "litPct": {
+                "type": "integer"
+              },
+              "steadyPct": {
+                "type": "integer"
+              },
+              "goldPct": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "litPct",
+              "steadyPct",
+              "goldPct"
+            ]
+          },
+          "readyForFullMocks": {
+            "type": "boolean"
+          },
+          "suggestion": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "computedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "examCode",
+          "label",
+          "bars",
+          "coverage",
+          "readyForFullMocks",
+          "suggestion",
+          "computedAt"
+        ]
+      },
+      "ReadinessLabel": {
+        "type": "string",
+        "enum": [
+          "not_yet",
+          "building",
+          "close",
+          "mock_ready"
+        ]
+      },
+      "ReadinessBar": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "enum": [
+              "coverage",
+              "memory",
+              "exam_performance",
+              "speed"
+            ]
+          },
+          "value": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "value",
+          "locked",
+          "evidence"
+        ]
+      },
+      "ReadinessTrend": {
+        "type": "object",
+        "properties": {
+          "examCode": {
+            "$ref": "#/components/schemas/ExamCode"
+          },
+          "days": {
+            "type": "integer"
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "day": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "label": {
+                  "$ref": "#/components/schemas/ReadinessLabel"
+                },
+                "coverage": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "memory": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "examPerformance": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "speed": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "day",
+                "label",
+                "coverage",
+                "memory",
+                "examPerformance",
+                "speed"
+              ]
+            }
+          }
+        },
+        "required": [
+          "examCode",
+          "days",
+          "points"
+        ]
+      },
+      "SundayReportPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SundayReportSummary"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "SundayReportSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "weekStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "tier": {
+            "type": "string",
+            "enum": [
+              "short",
+              "full"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "weekStart",
+          "tier",
+          "createdAt"
+        ]
+      },
+      "SundayReport": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SundayReportSummary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "lampsLit": {
+                "type": "integer"
+              },
+              "steadyEarned": {
+                "type": "integer"
+              },
+              "goldEarned": {
+                "type": "integer"
+              },
+              "relit": {
+                "type": "integer"
+              },
+              "dimmedNow": {
+                "type": "integer"
+              },
+              "questionsAnswered": {
+                "type": "integer"
+              },
+              "accuracyPct": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 100
+              },
+              "mocksTaken": {
+                "type": "integer"
+              },
+              "studyMinutes": {
+                "type": "integer"
+              },
+              "lines": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "nextWeek": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "lampsLit",
+              "steadyEarned",
+              "goldEarned",
+              "relit",
+              "dimmedNow",
+              "questionsAnswered",
+              "accuracyPct",
+              "mocksTaken",
+              "studyMinutes",
+              "lines",
+              "nextWeek"
+            ]
+          }
+        ]
+      },
+      "PushTokenAck": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string"
+          },
+          "registeredAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "deviceId",
+          "registeredAt"
+        ]
+      },
+      "RegisterPushTokenBody": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 128
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "android",
+              "ios"
+            ]
+          },
+          "token": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "deviceId",
+          "platform",
+          "token"
+        ]
+      },
+      "AlertSettings": {
+        "type": "object",
+        "properties": {
+          "studyReminders": {
+            "type": "boolean"
+          },
+          "examAlerts": {
+            "type": "boolean"
+          },
+          "offers": {
+            "type": "boolean"
+          },
+          "quietHours": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "startMinute": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1439
+              },
+              "endMinute": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1439
+              }
+            },
+            "required": [
+              "enabled",
+              "startMinute",
+              "endMinute"
+            ]
+          },
+          "morningAlertMinute": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1439
+          },
+          "dailyLimit": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          }
+        },
+        "required": [
+          "studyReminders",
+          "examAlerts",
+          "offers",
+          "quietHours",
+          "morningAlertMinute",
+          "dailyLimit"
+        ]
+      },
+      "PutAlertSettingsBody": {
+        "type": "object",
+        "properties": {
+          "studyReminders": {
+            "type": "boolean"
+          },
+          "examAlerts": {
+            "type": "boolean"
+          },
+          "offers": {
+            "type": "boolean"
+          },
+          "quietHours": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "startMinute": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1439
+              },
+              "endMinute": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1439
+              }
+            },
+            "required": [
+              "enabled",
+              "startMinute",
+              "endMinute"
+            ]
+          },
+          "morningAlertMinute": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1439
+          },
+          "dailyLimit": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          }
+        },
+        "required": [
+          "studyReminders",
+          "examAlerts",
+          "offers",
+          "quietHours",
+          "morningAlertMinute",
+          "dailyLimit"
+        ]
       }
     },
     "parameters": {}
@@ -1431,6 +4897,7 @@
             "windowSeconds": 3600
           }
         ],
+        "x-heymey-sensitive-response": true,
         "parameters": [
           {
             "schema": {
@@ -1521,6 +4988,7 @@
             "windowSeconds": 3600
           }
         ],
+        "x-heymey-sensitive-response": true,
         "parameters": [
           {
             "schema": {
@@ -1770,6 +5238,7 @@
             "windowSeconds": 3600
           }
         ],
+        "x-heymey-sensitive-response": true,
         "parameters": [
           {
             "schema": {
@@ -1861,6 +5330,7 @@
             "windowSeconds": 3600
           }
         ],
+        "x-heymey-sensitive-response": true,
         "parameters": [
           {
             "schema": {
@@ -2842,6 +6312,4253 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GlossaryList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/exams/{code}/structure": {
+      "get": {
+        "tags": [
+          "exams"
+        ],
+        "operationId": "getExamStructure",
+        "summary": "Stages, papers and marking schemes (exam-agnostic, ADR-0013). Unverified schemes say so.",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "code",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Structure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamStructure"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such exam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/exam-alerts": {
+      "get": {
+        "tags": [
+          "exams"
+        ],
+        "operationId": "listMyExamAlerts",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Human-checked Exam Alerts for the exams I follow, newest first.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alerts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamAlertPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/webhooks/changedetection": {
+      "post": {
+        "tags": [
+          "exams",
+          "webhooks"
+        ],
+        "operationId": "receiveSiteChange",
+        "summary": "changedetection.io site-change webhook. Stores a pending change; NOTHING is sent to users (§17.5).",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "ip",
+            "limit": 60,
+            "windowSeconds": 60
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 32
+            },
+            "required": true,
+            "name": "x-heymey-webhook-secret",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SiteChangeWebhookBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Stored for human check",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteChangeAck"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad secret",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/desk/exam-changes": {
+      "get": {
+        "tags": [
+          "exams",
+          "desk"
+        ],
+        "operationId": "listExamChanges",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Ops queue of official-site changes waiting for a human check. Role OPS or ADMIN (checked in the handler).",
+        "x-heymey-auth": "desk",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamChangeStatus"
+            },
+            "required": false,
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamChangePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/desk/exam-changes/{changeId}/approve": {
+      "post": {
+        "tags": [
+          "exams",
+          "desk"
+        ],
+        "operationId": "approveExamChange",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Human-approved: publishes an Exam Alert (exams.notification_published) to followers. Audited.",
+        "x-heymey-auth": "desk",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 60,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "changeId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveExamChangeBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Published",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already reviewed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/desk/exam-changes/{changeId}/reject": {
+      "post": {
+        "tags": [
+          "exams",
+          "desk"
+        ],
+        "operationId": "rejectExamChange",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "desk",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 120,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "changeId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectExamChangeBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rejected",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamChange"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already reviewed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/mastery": {
+      "get": {
+        "tags": [
+          "mastery"
+        ],
+        "operationId": "getMyMastery",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Rank (from lamps only), XP and ring counts across my exams.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MasterySummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/topic-states": {
+      "get": {
+        "tags": [
+          "mastery"
+        ],
+        "operationId": "listMyTopicStates",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Authoritative lamp states for one exam's map; `since` for incremental Drift sync.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "required": false,
+            "name": "since",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 200
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "States",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopicStatePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such exam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/relight-queue": {
+      "get": {
+        "tags": [
+          "mastery"
+        ],
+        "operationId": "getRelightQueue",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Dimming lamps I can open, oldest first, with minutes (\"Relight 4 · 8 min\").",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Queue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelightQueue"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/topics/{topicId}/lesson-complete": {
+      "post": {
+        "tags": [
+          "mastery"
+        ],
+        "operationId": "completeLesson",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "I finished the lesson or the mapped textbook pages. Opens the 3-question Lit check.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 300,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "topicId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LessonCompleteBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lamp state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopicState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such topic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/topics/{topicId}/checks": {
+      "post": {
+        "tags": [
+          "mastery"
+        ],
+        "operationId": "startTopicCheck",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Start a Lit / recall / relight / Gold check. The server picks the questions and sets any deadline.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 120,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "topicId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartCheckBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Check issued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopicCheck"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such topic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Check not available now",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/checks/{checkId}/submit": {
+      "post": {
+        "tags": [
+          "mastery"
+        ],
+        "operationId": "submitTopicCheck",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Grade a check on the server and move the rings. Late Gold answers are not counted.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 120,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "checkId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitCheckBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result + authoritative lamp state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such check",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already submitted or expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sync/study-actions": {
+      "post": {
+        "tags": [
+          "mastery",
+          "sync"
+        ],
+        "operationId": "syncStudyActions",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Offline outbox batch (§39). Each clientActionId is accepted once; returns authoritative lamp states.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 120,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyncBatchBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Per-action results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncBatchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/practice/sessions": {
+      "post": {
+        "tags": [
+          "practice"
+        ],
+        "operationId": "startPracticeSession",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Start practice, PYQ, mistakes or drill. Questions come without answers.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 120,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartPracticeBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeSession"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such exam/topic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/practice/sessions/{sessionId}/answers": {
+      "post": {
+        "tags": [
+          "practice"
+        ],
+        "operationId": "answerPracticeQuestion",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Grade one answer. The 31st counted answer of the IST day returns PRACTICE_DAILY_LIMIT for free users.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 600,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "sessionId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PracticeAnswerBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Graded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeAnswerResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such session/question",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Session closed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/practice/usage": {
+      "get": {
+        "tags": [
+          "practice"
+        ],
+        "operationId": "getPracticeUsage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Today's usage (IST)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PracticeUsage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/mistakes": {
+      "get": {
+        "tags": [
+          "practice"
+        ],
+        "operationId": "listMyMistakes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Mistake review: why mine was wrong, why the answer is right, which lamp to relight (§19.4 Q38).",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mistakes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MistakePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/drills": {
+      "get": {
+        "tags": [
+          "practice"
+        ],
+        "operationId": "listMyDrills",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Concept drills from repeated mistakes (Pro, §19.6 Q60). `locked` for free users.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Drills",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConceptDrillList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/pyq": {
+      "get": {
+        "tags": [
+          "practice"
+        ],
+        "operationId": "searchPyqs",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "PYQ Vault. Free: latest 2 exam years held for the exam; older years come back `locked`.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 600,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1950,
+              "maximum": 2100
+            },
+            "required": false,
+            "name": "year",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "required": false,
+            "name": "subjectCode",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": false,
+            "name": "topicId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "required": false,
+            "name": "difficulty",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PyqPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such exam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/pyq/facets": {
+      "get": {
+        "tags": [
+          "practice"
+        ],
+        "operationId": "getPyqFacets",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Years and subjects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PyqFacets"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such exam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/questions/{questionId}/reports": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "operationId": "reportQuestion",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Report a problem with a question (§19.4 Q34). Goes to the content fix loop.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 30,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "questionId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuestionReportBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionReportAck"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such question",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/content/packs": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "operationId": "listContentPacks",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Offline packs for an exam with SHA-256 checksums (§39). Free users: free packs only.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Packs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentPackList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mocks": {
+      "get": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "listMocks",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mocks + my free allowance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mocks/{mockId}/attempts": {
+      "post": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "startMockAttempt",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Start (or return my in-progress) attempt. The server sets start time and deadline.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 20,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "mockId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartMockBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Attempt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockAttemptState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such mock",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Not open / closed / monthly limit / paper type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mock-attempts/{attemptId}": {
+      "get": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "getMockAttempt",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Resume exactly where I left off, with server remaining time (§19.8 Q76).",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "attemptId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attempt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockAttemptState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such attempt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mock-attempts/{attemptId}/answers": {
+      "put": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "saveMockAnswers",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Save answers (last write per question wins until the deadline). Late answers are ignored.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 1200,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "attemptId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveMockAnswersBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockAnswersSaved"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such attempt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Submitted or deadline passed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mock-attempts/{attemptId}/submit": {
+      "post": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "submitMockAttempt",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Submit and score on the server with the paper's marking scheme.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 20,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "attemptId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such attempt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mock-attempts/{attemptId}/report": {
+      "get": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "getMockReport",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "attemptId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such attempt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Not submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/mock-attempts": {
+      "get": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "listMyMockAttempts",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "History",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockAttemptPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/state-mock-sunday": {
+      "get": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "getStateMockSunday",
+        "summary": "The next State Mock Sunday for an exam (1st and 3rd Sunday, IST).",
+        "x-heymey-auth": "optional",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Next",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StateMockInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mocks/{mockId}/statewide-rank": {
+      "get": {
+        "tags": [
+          "exam-hall"
+        ],
+        "operationId": "getMyStatewideRank",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "My statewide rank. Only live, online, on-time attempts are ranked (§18, §39).",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "mockId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rank",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatewideRank"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not ranked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Not ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/today": {
+      "get": {
+        "tags": [
+          "plan"
+        ],
+        "operationId": "getToday",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Today screen",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodayScreen"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/plan": {
+      "get": {
+        "tags": [
+          "plan"
+        ],
+        "operationId": "getMyPlan",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "My Plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No plan yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "plan"
+        ],
+        "operationId": "putMyPlan",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create or change My Plan from study hours; exam dates come from `exams` (§17.1 step 9).",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 30,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutPlanBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/plan/days": {
+      "get": {
+        "tags": [
+          "plan"
+        ],
+        "operationId": "getPlanDays",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Calendar view (max 62 days per request).",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": true,
+            "name": "from",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": true,
+            "name": "to",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Days",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanDays"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No plan yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/plan/items/{itemId}/status": {
+      "post": {
+        "tags": [
+          "plan"
+        ],
+        "operationId": "updatePlanItem",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 300,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "itemId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlanItemBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/plan/rebalance": {
+      "post": {
+        "tags": [
+          "plan"
+        ],
+        "operationId": "rebalanceMyPlan",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 10,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rebalanced plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No plan yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/readiness": {
+      "get": {
+        "tags": [
+          "readiness"
+        ],
+        "operationId": "getMyReadiness",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Four evidence bars + a plain label. Never one overall percentage.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Meter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessMeter"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/readiness/trend": {
+      "get": {
+        "tags": [
+          "readiness"
+        ],
+        "operationId": "getMyReadinessTrend",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "7/30/90-day trends (Pro: PRO_REQUIRED for free users).",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "default": 30
+            },
+            "required": false,
+            "name": "days",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trend",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessTrend"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/sunday-reports": {
+      "get": {
+        "tags": [
+          "readiness"
+        ],
+        "operationId": "listMySundayReports",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reports",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SundayReportPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/sunday-reports/{reportId}": {
+      "get": {
+        "tags": [
+          "readiness"
+        ],
+        "operationId": "getSundayReport",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "reportId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SundayReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/push-tokens": {
+      "post": {
+        "tags": [
+          "notifications"
+        ],
+        "operationId": "registerPushToken",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 20,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPushTokenBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PushTokenAck"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/push-tokens/{deviceId}": {
+      "delete": {
+        "tags": [
+          "notifications"
+        ],
+        "operationId": "deletePushToken",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            },
+            "required": true,
+            "name": "deviceId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/alert-settings": {
+      "get": {
+        "tags": [
+          "notifications"
+        ],
+        "operationId": "getAlertSettings",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Settings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertSettings"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "notifications"
+        ],
+        "operationId": "putAlertSettings",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Offers can be on only with the offers consent; dailyLimit is capped at 3.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 30,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutAlertSettingsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertSettings"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
                 }
               }
             }

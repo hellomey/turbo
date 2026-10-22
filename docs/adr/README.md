@@ -15,3 +15,5 @@ Lasting decisions. Template: `aidlc/templates/adr.md`. Small decisions go to `ai
 | [0009](0009-typescript-6-swc.md) | TypeScript 6.0 for type-checking, SWC for Nest builds |
 | [0010](0010-compose-stacks.md) | Compose stacks: app (prod + staging), edge, monitoring |
 | [0011](0011-graphify-knowledge-graph.md) | Graphify knowledge graph for agent navigation |
+| [0012](0012-exam-hall-depends-on-exams.md) | `exam-hall` depends on `exams` for papers and marking schemes |
+| [0013](0013-exam-agnostic-catalogue.md) | Exam-agnostic catalogue: family, stage, paper, section, marking scheme, attempt cycle |

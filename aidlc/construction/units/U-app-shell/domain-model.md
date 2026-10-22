@@ -45,3 +45,10 @@ None (no money, no games).
 
 ## Open questions
 - Fonts (Plus Jakarta Sans, Sora) are named in the theme but not yet bundled: bundle them with licences in a later bolt (§10.4).
+
+
+---
+
+## Phase 2 extension
+The offline outbox, Drift tables, pack downloader and Calm/Lite rules (domain model + invariants) are in
+[logical-design.md, "Phase 2 extension"](logical-design.md). Designed in BOLT-0008, built in BOLT-0016.

@@ -11,6 +11,8 @@ export interface SyllabusRepository {
   /** Ordered by term ascending. */
   searchGlossary(spec: GlossaryQuerySpec): Promise<GlossaryListDto["items"]>;
   textbookRefs(topicId: string): Promise<TextbookRefDto[]>;
+  /** BOLT-0009: one topic with its subject and exam tags, or null. */
+  topicById(topicId: string): Promise<TopicRow | null>;
 }
 
 /**

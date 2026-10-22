@@ -2,8 +2,11 @@
   "name": "practice",
   "summary": "Practice sessions, free daily limit, mistake loop.",
   "owns": [
-    "PracticeAttempt",
-    "Answer"
+    "PracticeSession",
+    "PracticeAnswer",
+    "PracticeDayCounter",
+    "MistakeTally",
+    "ConceptDrill"
   ],
   "responsibilities": [
     "Practice + recall checks",

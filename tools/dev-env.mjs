@@ -40,6 +40,7 @@ const env = {
   JWT_PUBLIC_KEY: `"${oneLine(publicKey.export({ type: "spki", format: "pem" }))}"`,
   OTP_PEPPER: randomBytes(32).toString("hex"),
   TOTP_ENC_KEY: randomBytes(32).toString("base64"),
+  CHANGEDETECTION_WEBHOOK_SECRET: randomBytes(32).toString("hex"),
   CORS_ORIGINS: `http://localhost:${ports.DESK_PORT},http://127.0.0.1:${ports.DESK_PORT},http://localhost:${ports.MARKETING_PORT}`,
   MIN_APP_VERSION: "1.0.0",
 };

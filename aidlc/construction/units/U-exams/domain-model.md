@@ -50,3 +50,39 @@ None. T2 here is eligibility correctness, not money.
   decision for Ops. The seed maps BC/BCM/MBC_DNC → OBC limits and SC/SCA → SC.
 - Q-E2: Relaxations: max (chosen) vs sum. Some notifications allow combined relaxations (e.g. PwD + community).
   Ops to confirm per notification; the engine can switch with one line.
+
+
+---
+
+## Phase 2 extension (BOLT-0008, architect) · draft, awaiting G-D (T2: S17 official data)
+
+Blueprint: §1a, §17.5 Ops + System, §18 wrong-data row, §19.1 Q7, §20.2, §22. INT-002 S17, R1, R2, R6. ADR-0013.
+
+### New language
+- **Exam family → exam → stage → paper → section**, **marking scheme** (versioned), **attempt cycle** (a sitting with stage dates).
+- **Site change**: a changedetection.io webhook record; **Exam Alert**: a human-approved, published alert.
+
+### New aggregates
+| Aggregate | Tables |
+|---|---|
+| Catalogue | `ExamFamily`, `Exam`, `ExamStage`, `Paper`, `MarkingScheme`, `PaperSection`, `ExamAttemptCycle` |
+| SiteChange | `ExamWatchChange` |
+| ExamAlert | `ExamAlert` |
+
+### Invariants (tests)
+1. Only `published` + human-verified catalogue rows are served in production; SEED rows say `verified: false`.
+2. Marks are fractions with denominator > 0; penalty 0/1 = no negative marking.
+3. A scheme version is immutable once published; corrections create a new version.
+4. Webhook with a wrong/missing secret → 401 WEBHOOK_UNAUTHORIZED (constant-time compare); nothing stored.
+5. Same (watchUuid, changeId) twice → 409 WEBHOOK_REPLAYED; one row.
+6. A webhook never sends anything to users; status starts `pending`.
+7. Approve needs a Desk session with role OPS or ADMIN, is audited (`audit` API), and is single-use (409 EXAM_CHANGE_ALREADY_REVIEWED).
+8. Approve creates exactly one `ExamAlert` and publishes `exams.notification_published`; with `newStageDate` it also updates the attempt cycle and publishes `exams.date_changed`.
+9. Every alert carries the official URL and "Always confirm with the official notification."
+10. Reject never publishes.
+
+### Events
+| Event | Payload | Consumed by |
+|---|---|---|
+| `exams.notification_published` | alertId, examCode | worker → notifications (followers from `exams.followersOf`) |
+| `exams.date_changed` | examCode, cycleId, stageCode, date | worker → plan |

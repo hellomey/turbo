@@ -15,6 +15,12 @@ if (!existsSync(spec)) {
   process.exit(1);
 }
 
+// Never delete the package unless the generator can actually run (a stopped Docker used to wipe hm_api).
+if (spawnSync("docker", ["info"], { stdio: "ignore" }).status !== 0) {
+  console.error("dart-api-codegen: Docker is not running; dart/hm_api left unchanged. Start Docker and run pnpm codegen.");
+  process.exit(1);
+}
+
 // Fully regenerate: start from an empty package so renamed/removed schemas never leave stale files.
 rmSync(join(root, "dart/hm_api"), { recursive: true, force: true });
 

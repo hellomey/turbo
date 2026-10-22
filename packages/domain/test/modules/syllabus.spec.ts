@@ -54,6 +54,7 @@ describe("study map use case (with fakes)", () => {
     topicsForExam: async (code) => topics.filter((t) => t.examCodes.includes(code)),
     searchGlossary: async () => [],
     textbookRefs: async () => [],
+    topicById: async (id) => topics.find((t) => t.id === id) ?? null,
   };
   const lessonCalls: string[][] = [];
   const ports: StudyMapPorts = {
@@ -93,6 +94,7 @@ describe("glossary query building", () => {
       repository: {
         topicsForExam: async () => [],
         textbookRefs: async () => [],
+        topicById: async () => null,
         searchGlossary: async (spec) => {
           seen.push(spec);
           return [{ term: "OMR", meaning: "m" }];

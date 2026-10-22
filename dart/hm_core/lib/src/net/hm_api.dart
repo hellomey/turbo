@@ -404,6 +404,29 @@ class HmApi {
   Future<Map<String, dynamic>> getLesson(String topicId) async =>
       _map(await _get('/v1/topics/${Uri.encodeComponent(topicId)}/lesson'));
 
+  // ------------------------------------------------------------------ offline sync (§39)
+
+  /// `POST /v1/sync/study-actions` (contract `SyncBatchBody` → `SyncBatchResult` JSON). The caller owns the
+  /// [idempotencyKey] so a retried batch reuses it (§34.3).
+  Future<Map<String, dynamic>> syncStudyActions(
+    Map<String, Object> body, {
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/sync/study-actions',
+      body: body,
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `GET /v1/content/packs?examCode=` (contract `ContentPackList` JSON).
+  Future<Map<String, dynamic>> listContentPacks(String examCode) async => _map(
+    await _get(
+      '/v1/content/packs?examCode=${Uri.encodeQueryComponent(examCode)}',
+    ),
+  );
+
   void dispose() {
     _http.close();
     updateRequired.dispose();
@@ -435,10 +458,13 @@ class HmApi {
     String path, {
     Map<String, Object>? body,
     bool idempotent = false,
+    String? idempotencyKey,
   }) async {
     final request = http.Request(method, Uri.parse('${config.baseUrl}$path'))
       ..headers['accept'] = 'application/json';
-    if (idempotent) {
+    if (idempotencyKey != null) {
+      request.headers[HmHttpClient.idempotencyHeader] = idempotencyKey;
+    } else if (idempotent) {
       request.headers[HmHttpClient.idempotencyHeader] = _newKey();
     }
     if (body != null) {

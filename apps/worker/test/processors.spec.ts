@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createEmailOtpProcessor } from "../src/processors/email-otp.js";
 import { IMPLEMENTED_QUEUES, bullConnection, isImplemented } from "../src/processors/index.js";
+import { createOtpGcProcessor } from "../src/processors/auth-otp-gc.js";
 import { createUsersDeletionProcessor } from "../src/processors/users-deletion.js";
 import { QUEUES } from "../src/queues/registry.js";
 
@@ -39,11 +40,20 @@ describe("email.otp processor", () => {
 describe("users.deletion processor", () => {
   it("erases due accounts then revokes their sessions as the system", async () => {
     const revoked: [string, string, unknown][] = [];
+    const purged: string[] = [];
     const run = createUsersDeletionProcessor({
-      users: { eraseDueAccounts: async () => ["u1", "u2"] },
+      users: {
+        eraseDueAccounts: async (hooks) => {
+          await hooks.beforeErase({ id: "u1", email: "a@example.com" });
+          await hooks.beforeErase({ id: "u2", email: "b@example.com" });
+          return ["u1", "u2"];
+        },
+      },
       sessions: { revokeAllForUser: async (id, reason, actor) => (revoked.push([id, reason, actor]), 1) },
+      otps: { purgeOtpCodesFor: async (email) => (purged.push(email), 2) },
     });
-    expect(await run()).toEqual({ erased: 2 });
+    expect(await run()).toEqual({ erased: 2, otpRowsPurged: 4 });
+    expect(purged).toEqual(["a@example.com", "b@example.com"]);
     expect(revoked).toEqual([
       ["u1", "deleted", { userId: null, role: "SYSTEM" }],
       ["u2", "deleted", { userId: null, role: "SYSTEM" }],
@@ -55,8 +65,9 @@ describe("users.deletion processor", () => {
     const run = createUsersDeletionProcessor({
       users: { eraseDueAccounts: async () => [] },
       sessions: { revokeAllForUser: async () => ++calls },
+      otps: { purgeOtpCodesFor: async () => 0 },
     });
-    expect(await run()).toEqual({ erased: 0 });
+    expect(await run()).toEqual({ erased: 0, otpRowsPurged: 0 });
     expect(calls).toBe(0);
   });
 });
@@ -73,5 +84,17 @@ describe("queue wiring", () => {
   it("builds BullMQ connection options from the Valkey URL", () => {
     expect(bullConnection("redis://127.0.0.1:4582")).toEqual({ host: "127.0.0.1", port: 4582, maxRetriesPerRequest: null });
     expect(bullConnection("redis://:s%40cret@valkey")).toEqual({ host: "valkey", port: 6379, password: "s@cret", maxRetriesPerRequest: null });
+  });
+});
+
+describe("auth.otp-gc processor (SEC-M3)", () => {
+  it("deletes OTP rows older than 24 hours, hourly, owned by auth", async () => {
+    const seen: Date[] = [];
+    const now = new Date("2026-10-22T10:00:00.000Z");
+    const run = createOtpGcProcessor({ otps: { purgeExpiredOtpCodes: async (d) => (seen.push(d), 3) }, clock: { now: () => now } });
+    expect(await run()).toEqual({ deleted: 3 });
+    expect(seen[0]!.toISOString()).toBe("2026-10-21T10:00:00.000Z"); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+    expect(isImplemented("auth.otp-gc")).toBe(true);
+    expect(QUEUES.find((q) => q.name === "auth.otp-gc")).toMatchObject({ owner: "auth", repeat: "45 * * * *" });
   });
 });

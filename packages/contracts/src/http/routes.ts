@@ -20,6 +20,7 @@ import {
 import { ConsentChoicesBody, ConsentNotice, ConsentState, Me, ProfileAnswers, UpdateMeBody } from "./users.js";
 import { EligibilityCheckBody, EligibilityResult, ExamCode, ExamDetail, ExamList, UserExams, UserExamsBody } from "./exams.js";
 import { GlossaryList, GlossaryQuery, Lesson, StudyMap } from "./study.js";
+import { studyRoutes } from "./routes-study.js";
 
 const json = <T extends z.ZodType>(schema: T) => ({ content: { "application/json": { schema } } });
 const err = (description: string) => ({ description, ...json(ErrorEnvelope) });
@@ -194,4 +195,7 @@ export const routes: HmRoute[] = [
     request: { query: GlossaryQuery },
     responses: { 200: { description: "Tap-to-see meanings", ...json(GlossaryList) } },
   },
+
+  // ---------------------------------------------------------------- Phase 2 core study (BOLT-0008)
+  ...studyRoutes,
 ];

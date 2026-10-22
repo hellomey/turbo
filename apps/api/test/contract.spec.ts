@@ -38,6 +38,11 @@ describe("contract", () => {
 
   it("every state-changing route requires an Idempotency-Key, and only read-only POSTs opt out", () => {
     const writes = routes.filter((r) => r.method !== "get" && !r.idempotent).map((r) => r.path);
-    expect(writes).toEqual(["/v1/eligibility/check"]);
+    expect(writes).toEqual([
+      "/v1/eligibility/check",
+      // BOLT-0014: machine caller (changedetection.io) cannot send an Idempotency-Key; each (watchUuid, changeId)
+      // is stored once and a replay gets 409 WEBHOOK_REPLAYED (U-exams logical design, Contract).
+      "/v1/webhooks/changedetection",
+    ]);
   });
 });

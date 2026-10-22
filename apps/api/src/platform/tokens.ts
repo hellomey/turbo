@@ -21,3 +21,5 @@ export const AUTH_API = Symbol("AUTH_API");
 export const EXAMS_API = Symbol("EXAMS_API");
 export const SYLLABUS_API = Symbol("SYLLABUS_API");
 export const CONTENT_API = Symbol("CONTENT_API");
+export const NOTIFICATIONS_API = Symbol("NOTIFICATIONS_API"); // BOLT-0014
+export const EXAM_ALERTS_API = Symbol("EXAM_ALERTS_API"); // BOLT-0014

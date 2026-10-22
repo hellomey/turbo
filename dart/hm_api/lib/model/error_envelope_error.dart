@@ -142,6 +142,7 @@ class ErrorEnvelopeErrorCodeEnum {
   static const RATE_LIMITED = ErrorEnvelopeErrorCodeEnum._(r'RATE_LIMITED');
   static const IDEMPOTENCY_KEY_REQUIRED = ErrorEnvelopeErrorCodeEnum._(r'IDEMPOTENCY_KEY_REQUIRED');
   static const IDEMPOTENCY_KEY_REUSED = ErrorEnvelopeErrorCodeEnum._(r'IDEMPOTENCY_KEY_REUSED');
+  static const IDEMPOTENT_RESPONSE_UNAVAILABLE = ErrorEnvelopeErrorCodeEnum._(r'IDEMPOTENT_RESPONSE_UNAVAILABLE');
   static const IDEMPOTENCY_IN_PROGRESS = ErrorEnvelopeErrorCodeEnum._(r'IDEMPOTENCY_IN_PROGRESS');
   static const APP_UPDATE_REQUIRED = ErrorEnvelopeErrorCodeEnum._(r'APP_UPDATE_REQUIRED');
   static const FEATURE_PAUSED = ErrorEnvelopeErrorCodeEnum._(r'FEATURE_PAUSED');
@@ -165,6 +166,28 @@ class ErrorEnvelopeErrorCodeEnum {
   static const AI_BUSY = ErrorEnvelopeErrorCodeEnum._(r'AI_BUSY');
   static const GAMES_SLEEPING = ErrorEnvelopeErrorCodeEnum._(r'GAMES_SLEEPING');
   static const RANKED_DAILY_CAP = ErrorEnvelopeErrorCodeEnum._(r'RANKED_DAILY_CAP');
+  static const TOPIC_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'TOPIC_NOT_FOUND');
+  static const QUESTION_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'QUESTION_NOT_FOUND');
+  static const CHECK_NOT_AVAILABLE = ErrorEnvelopeErrorCodeEnum._(r'CHECK_NOT_AVAILABLE');
+  static const CHECK_EXPIRED = ErrorEnvelopeErrorCodeEnum._(r'CHECK_EXPIRED');
+  static const CHECK_ALREADY_SUBMITTED = ErrorEnvelopeErrorCodeEnum._(r'CHECK_ALREADY_SUBMITTED');
+  static const GOLD_DAILY_LIMIT = ErrorEnvelopeErrorCodeEnum._(r'GOLD_DAILY_LIMIT');
+  static const PRO_REQUIRED = ErrorEnvelopeErrorCodeEnum._(r'PRO_REQUIRED');
+  static const PRACTICE_SESSION_CLOSED = ErrorEnvelopeErrorCodeEnum._(r'PRACTICE_SESSION_CLOSED');
+  static const MOCK_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'MOCK_NOT_FOUND');
+  static const MOCK_NOT_OPEN = ErrorEnvelopeErrorCodeEnum._(r'MOCK_NOT_OPEN');
+  static const MOCK_CLOSED = ErrorEnvelopeErrorCodeEnum._(r'MOCK_CLOSED');
+  static const MOCK_MONTHLY_LIMIT = ErrorEnvelopeErrorCodeEnum._(r'MOCK_MONTHLY_LIMIT');
+  static const MOCK_DEADLINE_PASSED = ErrorEnvelopeErrorCodeEnum._(r'MOCK_DEADLINE_PASSED');
+  static const MOCK_ALREADY_SUBMITTED = ErrorEnvelopeErrorCodeEnum._(r'MOCK_ALREADY_SUBMITTED');
+  static const PAPER_TYPE_NOT_SUPPORTED = ErrorEnvelopeErrorCodeEnum._(r'PAPER_TYPE_NOT_SUPPORTED');
+  static const RANK_NOT_READY = ErrorEnvelopeErrorCodeEnum._(r'RANK_NOT_READY');
+  static const PLAN_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'PLAN_NOT_FOUND');
+  static const REPORT_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'REPORT_NOT_FOUND');
+  static const WEBHOOK_UNAUTHORIZED = ErrorEnvelopeErrorCodeEnum._(r'WEBHOOK_UNAUTHORIZED');
+  static const WEBHOOK_REPLAYED = ErrorEnvelopeErrorCodeEnum._(r'WEBHOOK_REPLAYED');
+  static const EXAM_CHANGE_ALREADY_REVIEWED = ErrorEnvelopeErrorCodeEnum._(r'EXAM_CHANGE_ALREADY_REVIEWED');
+  static const SYNC_ACTION_TOO_OLD = ErrorEnvelopeErrorCodeEnum._(r'SYNC_ACTION_TOO_OLD');
   static const FIREWALL_VIOLATION = ErrorEnvelopeErrorCodeEnum._(r'FIREWALL_VIOLATION');
   static const PURCHASE_NOT_VERIFIED = ErrorEnvelopeErrorCodeEnum._(r'PURCHASE_NOT_VERIFIED');
   static const SPENDING_LIMIT_REACHED = ErrorEnvelopeErrorCodeEnum._(r'SPENDING_LIMIT_REACHED');
@@ -178,6 +201,7 @@ class ErrorEnvelopeErrorCodeEnum {
     RATE_LIMITED,
     IDEMPOTENCY_KEY_REQUIRED,
     IDEMPOTENCY_KEY_REUSED,
+    IDEMPOTENT_RESPONSE_UNAVAILABLE,
     IDEMPOTENCY_IN_PROGRESS,
     APP_UPDATE_REQUIRED,
     FEATURE_PAUSED,
@@ -201,6 +225,28 @@ class ErrorEnvelopeErrorCodeEnum {
     AI_BUSY,
     GAMES_SLEEPING,
     RANKED_DAILY_CAP,
+    TOPIC_NOT_FOUND,
+    QUESTION_NOT_FOUND,
+    CHECK_NOT_AVAILABLE,
+    CHECK_EXPIRED,
+    CHECK_ALREADY_SUBMITTED,
+    GOLD_DAILY_LIMIT,
+    PRO_REQUIRED,
+    PRACTICE_SESSION_CLOSED,
+    MOCK_NOT_FOUND,
+    MOCK_NOT_OPEN,
+    MOCK_CLOSED,
+    MOCK_MONTHLY_LIMIT,
+    MOCK_DEADLINE_PASSED,
+    MOCK_ALREADY_SUBMITTED,
+    PAPER_TYPE_NOT_SUPPORTED,
+    RANK_NOT_READY,
+    PLAN_NOT_FOUND,
+    REPORT_NOT_FOUND,
+    WEBHOOK_UNAUTHORIZED,
+    WEBHOOK_REPLAYED,
+    EXAM_CHANGE_ALREADY_REVIEWED,
+    SYNC_ACTION_TOO_OLD,
     FIREWALL_VIOLATION,
     PURCHASE_NOT_VERIFIED,
     SPENDING_LIMIT_REACHED,
@@ -249,6 +295,7 @@ class ErrorEnvelopeErrorCodeEnumTypeTransformer {
         case r'RATE_LIMITED': return ErrorEnvelopeErrorCodeEnum.RATE_LIMITED;
         case r'IDEMPOTENCY_KEY_REQUIRED': return ErrorEnvelopeErrorCodeEnum.IDEMPOTENCY_KEY_REQUIRED;
         case r'IDEMPOTENCY_KEY_REUSED': return ErrorEnvelopeErrorCodeEnum.IDEMPOTENCY_KEY_REUSED;
+        case r'IDEMPOTENT_RESPONSE_UNAVAILABLE': return ErrorEnvelopeErrorCodeEnum.IDEMPOTENT_RESPONSE_UNAVAILABLE;
         case r'IDEMPOTENCY_IN_PROGRESS': return ErrorEnvelopeErrorCodeEnum.IDEMPOTENCY_IN_PROGRESS;
         case r'APP_UPDATE_REQUIRED': return ErrorEnvelopeErrorCodeEnum.APP_UPDATE_REQUIRED;
         case r'FEATURE_PAUSED': return ErrorEnvelopeErrorCodeEnum.FEATURE_PAUSED;
@@ -272,6 +319,28 @@ class ErrorEnvelopeErrorCodeEnumTypeTransformer {
         case r'AI_BUSY': return ErrorEnvelopeErrorCodeEnum.AI_BUSY;
         case r'GAMES_SLEEPING': return ErrorEnvelopeErrorCodeEnum.GAMES_SLEEPING;
         case r'RANKED_DAILY_CAP': return ErrorEnvelopeErrorCodeEnum.RANKED_DAILY_CAP;
+        case r'TOPIC_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.TOPIC_NOT_FOUND;
+        case r'QUESTION_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.QUESTION_NOT_FOUND;
+        case r'CHECK_NOT_AVAILABLE': return ErrorEnvelopeErrorCodeEnum.CHECK_NOT_AVAILABLE;
+        case r'CHECK_EXPIRED': return ErrorEnvelopeErrorCodeEnum.CHECK_EXPIRED;
+        case r'CHECK_ALREADY_SUBMITTED': return ErrorEnvelopeErrorCodeEnum.CHECK_ALREADY_SUBMITTED;
+        case r'GOLD_DAILY_LIMIT': return ErrorEnvelopeErrorCodeEnum.GOLD_DAILY_LIMIT;
+        case r'PRO_REQUIRED': return ErrorEnvelopeErrorCodeEnum.PRO_REQUIRED;
+        case r'PRACTICE_SESSION_CLOSED': return ErrorEnvelopeErrorCodeEnum.PRACTICE_SESSION_CLOSED;
+        case r'MOCK_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.MOCK_NOT_FOUND;
+        case r'MOCK_NOT_OPEN': return ErrorEnvelopeErrorCodeEnum.MOCK_NOT_OPEN;
+        case r'MOCK_CLOSED': return ErrorEnvelopeErrorCodeEnum.MOCK_CLOSED;
+        case r'MOCK_MONTHLY_LIMIT': return ErrorEnvelopeErrorCodeEnum.MOCK_MONTHLY_LIMIT;
+        case r'MOCK_DEADLINE_PASSED': return ErrorEnvelopeErrorCodeEnum.MOCK_DEADLINE_PASSED;
+        case r'MOCK_ALREADY_SUBMITTED': return ErrorEnvelopeErrorCodeEnum.MOCK_ALREADY_SUBMITTED;
+        case r'PAPER_TYPE_NOT_SUPPORTED': return ErrorEnvelopeErrorCodeEnum.PAPER_TYPE_NOT_SUPPORTED;
+        case r'RANK_NOT_READY': return ErrorEnvelopeErrorCodeEnum.RANK_NOT_READY;
+        case r'PLAN_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.PLAN_NOT_FOUND;
+        case r'REPORT_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.REPORT_NOT_FOUND;
+        case r'WEBHOOK_UNAUTHORIZED': return ErrorEnvelopeErrorCodeEnum.WEBHOOK_UNAUTHORIZED;
+        case r'WEBHOOK_REPLAYED': return ErrorEnvelopeErrorCodeEnum.WEBHOOK_REPLAYED;
+        case r'EXAM_CHANGE_ALREADY_REVIEWED': return ErrorEnvelopeErrorCodeEnum.EXAM_CHANGE_ALREADY_REVIEWED;
+        case r'SYNC_ACTION_TOO_OLD': return ErrorEnvelopeErrorCodeEnum.SYNC_ACTION_TOO_OLD;
         case r'FIREWALL_VIOLATION': return ErrorEnvelopeErrorCodeEnum.FIREWALL_VIOLATION;
         case r'PURCHASE_NOT_VERIFIED': return ErrorEnvelopeErrorCodeEnum.PURCHASE_NOT_VERIFIED;
         case r'SPENDING_LIMIT_REACHED': return ErrorEnvelopeErrorCodeEnum.SPENDING_LIMIT_REACHED;

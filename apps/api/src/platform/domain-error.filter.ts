@@ -29,6 +29,10 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   PRACTICE_DAILY_LIMIT: 429,
   AI_LIMIT_REACHED: 429,
   RANKED_DAILY_CAP: 429,
+  // BOLT-0014: Exam Alerts webhook + Desk review (U-exams logical design, failure modes)
+  WEBHOOK_UNAUTHORIZED: 401,
+  WEBHOOK_REPLAYED: 409,
+  EXAM_CHANGE_ALREADY_REVIEWED: 409,
   INTERNAL_ERROR: 500,
   FEATURE_PAUSED: 503,
   AI_BUSY: 503,

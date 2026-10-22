@@ -17,6 +17,9 @@ export const QUEUES: readonly QueueDef[] = [
   { name: "auth.otp-gc", owner: "auth", concurrency: 1, repeat: "45 * * * *", description: "Delete OTP rows (email, request IP) older than 24 hours (SEC-M3)" },
   { name: "email.transactional", owner: "notifications", concurrency: 10, description: "Invoices, partner mail" },
   { name: "push.send", owner: "notifications", concurrency: 50, description: "FCM / APNs, respecting the 3-a-day budget and quiet hours" },
+  // BOLT-0014: Exam Alert fan-out (from exams.notification_published) and held-alert release after quiet hours (D-2026-10-22-31).
+  { name: "notifications.exam-alert", owner: "notifications", concurrency: 4, description: "exams.notification_published -> one Exam Alert per follower (budget-free, held in quiet hours)" },
+  { name: "notifications.release-held", owner: "notifications", concurrency: 1, repeat: "*/15 * * * *", description: "Send Exam Alerts held during quiet hours once they end" },
   { name: "mastery.dimming", owner: "mastery", concurrency: 4, repeat: "*/15 * * * *", description: "Dim overdue lamps, drop Steady rings that stay overdue" },
   { name: "plan.rebalance", owner: "plan", concurrency: 4, repeat: "30 2 * * *", description: "Nightly kind rebalance after missed days" },
   { name: "readiness.sunday-report", owner: "readiness", concurrency: 4, repeat: "0 6 * * 0", description: "Sunday Report" },
@@ -25,6 +28,7 @@ export const QUEUES: readonly QueueDef[] = [
   { name: "billing.receipt-recheck", owner: "billing", concurrency: 4, repeat: "0 * * * *", description: "Re-verify pending purchases, acknowledge Google purchases within 3 days" },
   { name: "billing.store-notification", owner: "billing", concurrency: 8, description: "Process Google RTDN / Apple ASN V2 payloads" },
   { name: "exams.watch-change", owner: "exams", concurrency: 2, description: "changedetection.io change -> human-check task in Ops Desk" },
+  { name: "exams.date-changed", owner: "plan", concurrency: 2, description: "exams.date_changed (approved Exam Alert moved a stage date) -> plan re-plans (processor arrives with plan)" },
   { name: "content.ai-explain", owner: "content", concurrency: 4, description: "Generate explanation once per question version (ai-gateway)" },
   { name: "content.ai-verify", owner: "content", concurrency: 4, description: "Independent answer check on a different model family" },
   { name: "moderation.scan", owner: "moderation", concurrency: 8, description: "AI pre-sort of reports and chat; self-harm alerts first" },

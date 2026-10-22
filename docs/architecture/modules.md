@@ -18,6 +18,7 @@ graph LR
   exam_hall --> content
   exam_hall --> mastery
   exam_hall --> billing
+  exam_hall --> exams
   mastery --> syllabus
   mastery --> content
   notifications --> users
@@ -76,17 +77,17 @@ Thick border = founder approval on every change (money, personal data, game fair
 |---|---|---|---|---|---|
 | [`audit`](../../packages/domain/src/modules/audit/MODULE.md) | 1 | 90% | yes | AuditLog | — |
 | [`auth`](../../packages/domain/src/modules/auth/MODULE.md) | 1 | 90% | yes | User credential link, OtpCode, Session, RefreshToken (family), Device, TwoFactor | users, audit |
-| [`content`](../../packages/domain/src/modules/content/MODULE.md) | 1 | 70% | — | Lesson, Question, QuestionVersion, Source, Explanation, Correction, Report | syllabus, ai |
-| [`exams`](../../packages/domain/src/modules/exams/MODULE.md) | 1 | 70% | yes | Exam, Notification, EligibilityRule, Vacancy, Cutoff | syllabus |
+| [`content`](../../packages/domain/src/modules/content/MODULE.md) | 1 | 70% | — | Lesson, Question, QuestionVersion, Source, Correction, QuestionReport, ContentPack | syllabus, ai |
+| [`exams`](../../packages/domain/src/modules/exams/MODULE.md) | 1 | 70% | yes | ExamFamily, Exam, ExamStage, Paper, PaperSection, MarkingScheme, ExamAttemptCycle, EligibilityRule, UserExamChoice, ExamWatchChange, ExamAlert, Vacancy, Cutoff | syllabus |
 | [`roles`](../../packages/domain/src/modules/roles/MODULE.md) | 1 | 90% | yes | RoleAssignment | audit |
 | [`syllabus`](../../packages/domain/src/modules/syllabus/MODULE.md) | 1 | 70% | — | Syllabus, Subject, Topic, TopicExamTag, TextbookRef, Glossary | — |
 | [`users`](../../packages/domain/src/modules/users/MODULE.md) | 1 | 70% | yes | User, Consent, PrivacySettings | audit |
-| [`exam-hall`](../../packages/domain/src/modules/exam-hall/MODULE.md) | 2 | 90% | — | Mock, MockAttempt, MockAnswer | content, mastery, billing |
-| [`mastery`](../../packages/domain/src/modules/mastery/MODULE.md) | 2 | 90% | — | UserTopicState | syllabus, content |
+| [`exam-hall`](../../packages/domain/src/modules/exam-hall/MODULE.md) | 2 | 90% | — | Mock, MockAttempt, MockAnswer, MockAllowanceUse, MockRank | content, mastery, billing, exams |
+| [`mastery`](../../packages/domain/src/modules/mastery/MODULE.md) | 2 | 90% | — | UserTopicState, TopicCheck, RingEvent, UserRank | syllabus, content |
 | [`notifications`](../../packages/domain/src/modules/notifications/MODULE.md) | 2 | 70% | — | PushToken, AlertPreference, SendLog | users, liveops |
-| [`plan`](../../packages/domain/src/modules/plan/MODULE.md) | 2 | 70% | — | Plan, PlanItem, StudyLog | syllabus, mastery, exams |
-| [`practice`](../../packages/domain/src/modules/practice/MODULE.md) | 2 | 70% | — | PracticeAttempt, Answer | content, mastery, billing |
-| [`readiness`](../../packages/domain/src/modules/readiness/MODULE.md) | 2 | 70% | — | ReadinessSnapshot | mastery, practice, exam-hall |
+| [`plan`](../../packages/domain/src/modules/plan/MODULE.md) | 2 | 70% | — | Plan, PlanExam, PlanItem, StudyLog | syllabus, mastery, exams |
+| [`practice`](../../packages/domain/src/modules/practice/MODULE.md) | 2 | 70% | — | PracticeSession, PracticeAnswer, PracticeDayCounter, MistakeTally, ConceptDrill | content, mastery, billing |
+| [`readiness`](../../packages/domain/src/modules/readiness/MODULE.md) | 2 | 70% | — | ReadinessSnapshot, SundayReport | mastery, practice, exam-hall |
 | [`ai`](../../packages/domain/src/modules/ai/MODULE.md) | 3 | 70% | — | AiTask, AiModelRoute, AiUsage | — |
 | [`billing`](../../packages/domain/src/modules/billing/MODULE.md) | 3 | 90% | yes | Product, Purchase, Entitlement, Refund, Gift, RazorpayOrder | economy, audit |
 | [`economy`](../../packages/domain/src/modules/economy/MODULE.md) | 3 | 90% | yes | SparksLedger, PointsLedger, TrophyLedger, Cosmetic, UserCosmetic, CheckInTrack, Season, SeasonPassProgress | audit, liveops |

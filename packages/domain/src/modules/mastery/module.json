@@ -2,7 +2,10 @@
   "name": "mastery",
   "summary": "Lit/Steady/Gold rings, dimming schedule, relight, Career Ladder rank.",
   "owns": [
-    "UserTopicState"
+    "UserTopicState",
+    "TopicCheck",
+    "RingEvent",
+    "UserRank"
   ],
   "responsibilities": [
     "Ring transitions (Lit -> Steady via 1/3/7/21-day recalls -> Gold at 80% timed)",
