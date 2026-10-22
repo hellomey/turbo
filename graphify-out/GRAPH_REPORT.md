@@ -1,17 +1,17 @@
 # Graph Report - turbo  (2026-10-22)
 
 ## Corpus Check
-- 557 files · ~202,088 words
+- 619 files · ~232,606 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 123 file(s) not represented in the graph (top: (none) 81, .prisma 26, .Dockerfile 4)
 
 ## Summary
-- 4622 nodes · 7148 edges · 354 communities (252 shown, 102 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 103 edges (avg confidence: 0.91)
+- 5570 nodes · 9408 edges · 399 communities (289 shown, 110 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 120 edges (avg confidence: 0.91)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c63db1a8`
+- Built from commit: `f947401b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -45,7 +45,7 @@
 - LegalPage.tsx
 - events.ts
 - runbooks/README.md
-- ref_node_path
+- application/exam-alerts.ts
 - dependencies
 - Logical design: U-<name>
 - dependencies
@@ -58,7 +58,7 @@
 - tests
 - HeyMey AIDLC: the AI-Driven Development Lifecycle
 - INT-xxx: <short name>
-- domain-error.filter.ts
+- exam-alerts.controller.ts
 - PART F — THE 100 ASPIRANT QUESTIONS, ANSWERED
 - 9. The games
 - audit/index.ts
@@ -78,11 +78,11 @@
 - hm_api.dart
 - mobile/package.json
 - desk_auth_repository.dart
-- parse
+- HmRequest
 - state.md
 - api/nest-cli.json
 - scripts
-- contracts/src/index.ts
+- ExamHallRepository
 - desk/package.json
 - prisma-auth-repositories.ts
 - realtime/nest-cli.json
@@ -122,9 +122,9 @@
 - 20261022061048_phase2_core_study/migration.sql
 - 20261020091922_phase1_init/migration.sql
 - scripts
-- dependency-cruiser
+- declaredDependencyRules
 - deploy.sh
-- AuthModuleDeps
+- Content-pack hosting (BOLT-0015)
 - domain/tsconfig.json
 - gen-module-docs.mjs
 - INT-003: Week 3 Games, squads, money
@@ -145,12 +145,12 @@
 - AIDLC status board
 - routes-study.ts
 - token_store.dart
-- package:flutter/material.dart
+- package:hm_core/hm_core.dart
 - exams/index.ts
 - src/env.ts
 - idempotency.interceptor.ts
 - lesson_view.dart
-- onboarding_repository.dart
+- structure.ts
 - auth-service.ts
 - ADR-0008: How the money/game firewall is enforced
 - HealthController
@@ -166,7 +166,7 @@
 - 26. How the AI agents build HeyMey
 - 5. Core systems
 - .prettierrc.json
-- main.scheduler.ts
+- prisma-mastery-repository.ts
 - marketing/AGENTS.md
 - CLAUDE.md
 - compliance.md
@@ -225,7 +225,7 @@
 - syllabus/index.ts
 - email-otp.ts
 - Logical design: U-plan
-- profile_repository.dart
+- application/study.ts
 - users-deletion.ts
 - later_steps.dart
 - profile_controller.dart
@@ -255,11 +255,11 @@
 - UserRecord
 - hm_api_exception.dart
 - Logical design: U-exam-hall
-- study_map_body.dart
+- study_repository.dart
 - listen_controller.dart
 - Logical design: U-practice
-- SyllabusController
-- catalog.ts
+- ContentApi
+- db/src/index.ts
 - Logical design: U-exams
 - Logical design: U-notifications
 - FinalCta.tsx
@@ -268,20 +268,20 @@
 - Logical design: U-users
 - ports.dart
 - Logical design: U-readiness
-- ExamsController
+- content/index.ts
 - LeadForm.tsx
-- app_version.dart
+- pack_and_store_test.dart
 - Domain model: U-app-shell (+ U-design-system)
 - INT-005: Align the marketing site with the app-only product
 - BOLT-0000: Architecture scaffold
 - Domain model: U-app-onboarding
-- INT-002: Phase 2 (Week 2) Core study loop
+- prisma-exam-hall-repository.ts
 - Domain model: U-auth
 - Domain model: U-content
 - Domain model: U-exams
 - UserRepository
 - Domain model: U-users
-- desk_sign_in_test.dart
+- sync_engine.dart
 - Landscape.tsx
 - Domain model: U-exam-hall
 - operations/README.md
@@ -303,7 +303,7 @@
 - ADR-0009: TypeScript 6.0 for type-checking, SWC for Nest builds
 - ADR-0010: Compose stacks: app (prod + staging), edge, monitoring
 - ADR-0011: Graphify knowledge graph for agent navigation
-- Domain model: U-practice
+- mastery.fakes.ts
 - Security review
 - Result
 - Result
@@ -320,59 +320,105 @@
 - ADR-0012: `exam-hall` depends on `exams` for papers and marking schemes
 - ADR-0013: Exam-agnostic catalogue (family → exam → stage → paper → section, marking schemes, attempt cycles)
 - ADR-0006: Contract-first: Zod → OpenAPI 3.1 → Dart client
-- exam-hall/domain/config.ts
-- mastery/domain/config.ts
-- notifications/domain/config.ts
+- attempts.ts
+- eligibility.ts
+- hm_database.dart
 - plan/domain/config.ts
 - practice/domain/config.ts
 - adr/README.md
 - readiness/domain/config.ts
 - PrismaTwoFactorRepository
-- study.ts
+- local_stores.dart
 - changedetection-sync.mjs
-- realtime.module.ts
+- study_action.dart
 - BOLT-0015: changedetection.io -> api webhook wiring, and the content-pack CDN
 - BOLT-0011: Exam Hall (OMR/CBT mocks, State Mock Sunday) + exam-structure catalogue
-- local-dev.md
+- application/providers.dart
 - identity.ts
-- HeyMey
+- outbox_test.dart
+- DomainError
+- get-lesson.ts
+- auth/domain/policy.ts
+- outbox_entry.dart
+- Purpose
+- dob_step.dart
+- gateways.dart
+- prisma-exams-repository.ts
+- SendStatus
+- study_map_body.dart
+- sync_triggers.dart
+- createMasteryModule
+- notifications-service.ts
+- notifications.spec.ts
+- sync_report.dart
+- mastery/application/ports.ts
+- hm_api_test.dart
+- content_pack.dart
+- data/wire.dart
+- PushTokenRepository
+- MemoryMasteryRepo
+- createNotificationsModule
+- Domain model: U-syllabus
+- JoseTokenService
+- syllabus.spec.ts
+- ref_node_fs
+- theme.dart
+- ExamsHttpModule
+- InfraModule
+- MdBlock
+- PrismaPushTokenRepository
+- NotificationsDeps
+- BOLT-0009: mastery: rings, recall ladder, dimming + relight, Career Ladder, offline sync
+- lcp.mjs
+- AuditHttpModule
+- AuthHttpModule
+- ContentHttpModule
+- ExamAlertsHttpModule
+- RolesHttpModule
+- SyllabusHttpModule
+- UsersHttpModule
+- LampPainter
+- fs
+- modules
+- MODULES_DIR
+- path
 
 ## God Nodes (most connected - your core abstractions)
-1. `HeyMey — Master Document v1.2` - 58 edges
-2. `DomainError` - 44 edges
-3. `2026-10-22: INT-002 provisional defaults (architect, BOLT-0008)` - 27 edges
-4. `scripts` - 26 edges
-5. `Role` - 25 edges
-6. `createAuthModule()` - 23 edges
-7. `parse()` - 22 edges
-8. `next` - 22 edges
-9. `Stories` - 22 edges
-10. `UsersApi` - 21 edges
+1. `DomainError` - 81 edges
+2. `HeyMey — Master Document v1.2` - 58 edges
+3. `HmRequest` - 32 edges
+4. `parse()` - 32 edges
+5. `Clock` - 29 edges
+6. `2026-10-22: INT-002 provisional defaults (architect, BOLT-0008)` - 27 edges
+7. `scripts` - 26 edges
+8. `Role` - 25 edges
+9. `ExamHallRepository` - 23 edges
+10. `PrismaExamHallRepository` - 23 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Result` --references--> `DomainErrorFilter`  [INFERRED]
-  aidlc/construction/bolts/BOLT-0008-phase2-designs-contract-schema.md → apps/api/src/platform/domain-error.filter.ts
-- `Use cases (application layer)` --references--> `RoleDirectory`  [INFERRED]
-  aidlc/construction/units/U-auth/logical-design.md → packages/domain/src/modules/auth/application/ports.ts
-- `Medium` --references--> `otpStatus()`  [INFERRED]
-  aidlc/construction/bolts/BOLT-0006-reviews.md → packages/domain/src/modules/auth/domain/policy.ts
+- `Invariants (each becomes a unit test)` --references--> `Clock`  [INFERRED]
+  aidlc/construction/units/U-mastery/domain-model.md → packages/domain/src/shared/clock.ts
+- `How you build (each bolt)` --references--> `FakeClock`  [INFERRED]
+  .claude/agents/backend.md → packages/testing/src/index.ts
 - `3. Non-negotiables` --references--> `Clock`  [INFERRED]
   AGENTS.md → packages/domain/src/shared/clock.ts
+- `Medium` --references--> `otpStatus()`  [INFERRED]
+  aidlc/construction/bolts/BOLT-0006-reviews.md → packages/domain/src/modules/auth/domain/policy.ts
 - `Rules` --references--> `istDayKey()`  [INFERRED]
   .claude/agents/backend.md → packages/domain/src/shared/clock.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (354 total, 102 thin omitted)
+## Communities (399 total, 110 thin omitted)
 
 ### Community 0 - "app/page.tsx"
 Cohesion: 0.16
 Nodes (19): Home(), ease, Hero(), HERO_POSTER, HeroFx, rise(), whenIdle(), CARDS (+11 more)
 
 ### Community 1 - "main.worker.ts"
-Cohesion: 0.12
-Nodes (15): startHealthServer(), audit, connection, env, otps, prisma, processors, roles (+7 more)
+Cohesion: 0.07
+Nodes (20): audit, connection, env, examAlerts, notifications, otps, prisma, processors (+12 more)
 
 ### Community 2 - "tokens.dart"
 Cohesion: 0.09
@@ -419,8 +465,8 @@ Cohesion: 0.08
 Nodes (23): description, eslint, @heymey/config, @heymey/contracts, @heymey/domain, @heymey/eslint-config, @nestjs/cli, @nestjs/common (+15 more)
 
 ### Community 13 - "firewall.ts"
-Cohesion: 0.15
-Nodes (22): assertConversionAllowed(), assertGameEntry(), assertGameReward(), assertSparksSource(), CURRENCIES, Currency, EARNED_SPARKS_MONTHLY_CAP, GAME_REWARD_CURRENCIES (+14 more)
+Cohesion: 0.21
+Nodes (18): assertConversionAllowed(), assertGameEntry(), assertGameReward(), assertSparksSource(), CURRENCIES, Currency, EARNED_SPARKS_MONTHLY_CAP, GAME_REWARD_CURRENCIES (+10 more)
 
 ### Community 14 - "index.js"
 Cohesion: 0.09
@@ -435,8 +481,8 @@ Cohesion: 0.03
 Nodes (61): app, calls, checkedDraft, checkEligibility, consentNotice, consents, container, controller (+53 more)
 
 ### Community 17 - "routes.ts"
-Cohesion: 0.10
-Nodes (30): ClientKind, DeleteAccountBody, DeleteAccountResponse, DeskChallenge, DeskTotpEnrollBody, DeskTotpEnrollResponse, DeskTotpVerifyBody, OkResponse (+22 more)
+Cohesion: 0.08
+Nodes (36): AUTH_API, ClientKind, DeleteAccountBody, DeleteAccountResponse, DeskChallenge, DeskTotpEnrollBody, DeskTotpEnrollResponse, DeskTotpVerifyBody (+28 more)
 
 ### Community 19 - "testing/package.json"
 Cohesion: 0.08
@@ -479,12 +525,12 @@ Cohesion: 0.16
 Nodes (12): HmServer, HmSocket, ChatMessage, ClientToServerEvents, MatchAnswer, MatchQuestion, MatchResult, RECONNECT_WINDOW_SECONDS (+4 more)
 
 ### Community 29 - "runbooks/README.md"
-Cohesion: 0.14
-Nodes (8): Event day: State Mock Sunday (and other live events), Incident response, Runbooks, Mobile, Release, Server, Desk, marketing (blueprint §42), Restore PostgreSQL, Rebuild the VPS (single-VPS failure plan, blueprint §25)
+Cohesion: 0.11
+Nodes (11): Event day: State Mock Sunday (and other live events), Incident response, Local development, Port collision with the old `heymey-app` containers (D-2026-10-20-16, OPEN), Troubleshooting, Runbooks, Mobile, Release (+3 more)
 
-### Community 30 - "ref_node_path"
-Cohesion: 0.20
-Nodes (7): pubspec, pubspecPath, r, root, spec, members, root
+### Community 30 - "application/exam-alerts.ts"
+Cohesion: 0.08
+Nodes (26): ApproveExamChangeBody, SiteChangeWebhookBody, approveChange(), ExamAlertsRepository, listChanges(), createExamAlertsModule(), ExamAlertsApi, myExamAlerts() (+18 more)
 
 ### Community 31 - "dependencies"
 Cohesion: 0.15
@@ -503,8 +549,8 @@ Cohesion: 0.14
 Nodes (14): devDependencies, eslint, @heymey/eslint-config, @heymey/testing, @nestjs/cli, @nestjs/testing, @swc/cli, @swc/core (+6 more)
 
 ### Community 35 - "site.spec.ts"
-Cohesion: 0.13
-Nodes (9): [base = "http://localhost:4570", outDir = "e2e/baseline"], SIZES, results, sorted, [url = "http://localhost:4570/", runsArg = "3"], ROUTES, WIDTHS, nextConfig (+1 more)
+Cohesion: 0.12
+Nodes (11): ROUTES, WIDTHS, nextConfig, @playwright/test, pubspec, pubspecPath, r, root (+3 more)
 
 ### Community 36 - "dependencies"
 Cohesion: 0.17
@@ -534,9 +580,9 @@ Nodes (11): 1. Principles, 2. Vocabulary, 3. The lifecycle, 4. Agents and respon
 Cohesion: 0.18
 Nodes (10): INT-xxx-S01: <title>, INT-xxx-S02: …, INT-xxx: <short name>, Open questions, Outcome (filled at G-O), Scope, Stories, Success metrics (Operations) (+2 more)
 
-### Community 43 - "domain-error.filter.ts"
-Cohesion: 0.08
-Nodes (13): Result, 3. Findings (for owning agents; not fixed by qa), AGENTS.md: apps/api (NestJS HTTP API, port 4567), DomainErrorFilter, isFastifyClientError(), redactForLog(), STATUS, InfraModule (+5 more)
+### Community 43 - "exam-alerts.controller.ts"
+Cohesion: 0.10
+Nodes (13): AGENTS.md: apps/api (NestJS HTTP API, port 4567), ChangeId, DomainErrorFilter, isFastifyClientError(), redactForLog(), STATUS, ERROR_CODES, ErrorCode (+5 more)
 
 ### Community 44 - "PART F — THE 100 ASPIRANT QUESTIONS, ANSWERED"
 Cohesion: 0.18
@@ -547,24 +593,24 @@ Cohesion: 0.17
 Nodes (12): 9.10 Healthy-play guardrails, 9.11 Study Rooms *(changed 2026-10-22, D-2026-10-22-02)*, 9.1 Daily Spin (odd days), 9.2 Lucky Slot (even days), 9.3 Clue Poker, 9.4 Confidence Duel, 9.5 Squad and Squad Battles, 9.6 District Quest (Monopoly-style board, weekends) (+4 more)
 
 ### Community 46 - "audit/index.ts"
-Cohesion: 0.25
-Nodes (10): AuditRepository, recordAudit(), AuditEntry, findForbiddenKey(), validateAuditEntry(), AuditModule, createAuditModule(), json() (+2 more)
+Cohesion: 0.16
+Nodes (16): AuditRepository, recordAudit(), AuditEntry, findForbiddenKey(), validateAuditEntry(), AuditModule, createAuditModule(), json() (+8 more)
 
 ### Community 47 - "gen-module.mjs"
 Cohesion: 0.18
 Nodes (6): dir, meta, pascal, prismaFile, root, { values, positionals }
 
 ### Community 48 - "contracts/src/index.ts"
-Cohesion: 0.08
-Nodes (26): AuditHttpModule, AuthHttpModule, ContentController, TopicId, ContentHttpModule, ExamsHttpModule, RolesHttpModule, SyllabusHttpModule (+18 more)
+Cohesion: 0.11
+Nodes (24): ContentController, TopicId, DeviceId, SyllabusController, ApiEnv, apiEnvSchema, loadApiEnv(), JobQueue (+16 more)
 
 ### Community 49 - "compilerOptions"
 Cohesion: 0.20
 Nodes (9): compilerOptions, emitDecoratorMetadata, experimentalDecorators, outDir, rootDir, types, extends, include (+1 more)
 
 ### Community 50 - "onboarding_controller.dart"
-Cohesion: 0.05
-Nodes (40): acceptConsents, back, build, busy, checkEligibility, chooseMainExam, consents, continueToMapPreview (+32 more)
+Cohesion: 0.03
+Nodes (54): acceptConsents, back, build, busy, checkEligibility, chooseMainExam, consents, continueToMapPreview (+46 more)
 
 ### Community 51 - "devDependencies"
 Cohesion: 0.20
@@ -614,9 +660,13 @@ Nodes (8): description, name, private, scripts, build:android, build:ios, dev, v
 Cohesion: 0.15
 Nodes (13): DeviceIdStore, _api, ApiDeskAuthRepository, DeskAuthRepository, _deviceIds, enroll, hasSession, logout (+5 more)
 
-### Community 64 - "parse"
-Cohesion: 0.16
-Nodes (6): AuthController, UsersController, actorOf(), HmRequest, requireAuth(), parse()
+### Community 64 - "HmRequest"
+Cohesion: 0.05
+Nodes (9): AuthController, ExamAlertsController, ExamsController, NotificationsController, UsersController, actorOf(), HmRequest, requireAuth() (+1 more)
+
+### Community 65 - "state.md"
+Cohesion: 0.21
+Nodes (6): Port map, api(), HeyMey, Layout, Quick start, Services and ports (one VPS)
 
 ### Community 66 - "api/nest-cli.json"
 Cohesion: 0.25
@@ -626,17 +676,17 @@ Nodes (7): collection, compilerOptions, builder, deleteOutDir, typeCheck, $schem
 Cohesion: 0.25
 Nodes (8): scripts, build, dev, lint, start, test, test:integration, typecheck
 
-### Community 68 - "contracts/src/index.ts"
-Cohesion: 0.18
-Nodes (10): codes, ERROR_CODES, ErrorEnvelope, HealthResponse, LeadBody, AlertSettings, MinuteOfDay, PushTokenAck (+2 more)
+### Community 68 - "ExamHallRepository"
+Cohesion: 0.07
+Nodes (11): ExamHallRepository, RankRow, AttemptRecord, MockRecord, SavedAnswer, decodeCursor(), encodeCursor(), parseSections() (+3 more)
 
 ### Community 69 - "desk/package.json"
 Cohesion: 0.25
 Nodes (7): description, name, private, scripts, build, dev, version
 
 ### Community 70 - "prisma-auth-repositories.ts"
-Cohesion: 0.05
-Nodes (14): AuthRepositories, DeviceRepository, OtpRecord, OtpRepository, RefreshTokenRepository, RevokeReason, SessionRecord, SessionRepository (+6 more)
+Cohesion: 0.08
+Nodes (9): DeviceRepository, RefreshTokenRepository, RevokeReason, SessionRecord, SessionRepository, PrismaDeviceRepository, PrismaRefreshTokenRepository, PrismaSessionRepository (+1 more)
 
 ### Community 71 - "realtime/nest-cli.json"
 Cohesion: 0.25
@@ -786,17 +836,13 @@ Nodes (55): "ApprovalRequest", "AuditLog", AuditLog_action_at_idx, AuditLog_acto
 Cohesion: 0.29
 Nodes (7): scripts, build, dev, lint, start, test, typecheck
 
-### Community 108 - "dependency-cruiser"
-Cohesion: 0.33
-Nodes (6): declaredDependencyRules, esc(), fs, modules, MODULES_DIR, path
-
 ### Community 109 - "deploy.sh"
 Cohesion: 0.43
 Nodes (6): APP_VERSION, DATABASE_URL, dc(), rollback(), deploy.sh script, SOPS_AGE_KEY_FILE
 
-### Community 110 - "AuthModuleDeps"
-Cohesion: 0.08
-Nodes (13): Bucket and path layout (SeaweedFS S3, bucket `S3_BUCKET_CONTENT` = `heymey-content`), Content-pack hosting (BOLT-0015), Edge behaviour (`infra/caddy/Caddyfile`, host `cdn.heymey.app`), SeaweedFS access (`infra/secrets/<stack>.s3.json`, decrypted on the server only), AuthDeps, AuthCrypto, OtpHasher, OtpMailer (+5 more)
+### Community 110 - "Content-pack hosting (BOLT-0015)"
+Cohesion: 0.33
+Nodes (4): Bucket and path layout (SeaweedFS S3, bucket `S3_BUCKET_CONTENT` = `heymey-content`), Content-pack hosting (BOLT-0015), Edge behaviour (`infra/caddy/Caddyfile`, host `cdn.heymey.app`), SeaweedFS access (`infra/secrets/<stack>.s3.json`, decrypted on the server only)
 
 ### Community 111 - "domain/tsconfig.json"
 Cohesion: 0.29
@@ -824,11 +870,11 @@ Nodes (5): G-C: Change approved (per PR), G-D: Design approved (architect; + fou
 
 ### Community 117 - "markdown.dart"
 Cohesion: 0.11
-Nodes (23): blocks, bold, _bullet, _clean, flush, hashCode, _heading, last (+15 more)
+Nodes (18): blocks, bold, _bullet, _clean, hashCode, _heading, last, level (+10 more)
 
 ### Community 118 - "desk_sign_in_flow.dart"
-Cohesion: 0.05
-Nodes (41): clockProvider, build, deskAreas, DeskHome, deskRoleLabels, deskSignInProvider, autoStart, body (+33 more)
+Cohesion: 0.08
+Nodes (25): build, deskAreas, DeskHome, deskRoleLabels, deskSignInProvider, autoStart, body, build (+17 more)
 
 ### Community 119 - "settings.json"
 Cohesion: 0.33
@@ -852,63 +898,67 @@ Nodes (5): Definition of done (blueprint §45), Evidence, Reviews, Traceability,
 
 ### Community 124 - "eligibility_view.dart"
 Cohesion: 0.06
-Nodes (26): code, conductingBody, disclaimer, EligibilityView, eligible, eligibleCount, ExamFit, fitRank (+18 more)
+Nodes (27): code, conductingBody, disclaimer, EligibilityView, eligible, eligibleCount, ExamFit, fitRank (+19 more)
 
 ### Community 125 - "Stories"
-Cohesion: 0.10
-Nodes (21): INT-002-S01: Light a lamp (Lit ring) — T1, INT-002-S02: Remember a lamp (Steady ring via the recall ladder) — T1, INT-002-S03: Dimming and Relight — T1, INT-002-S04: Gold ring — T1, INT-002-S05: Career Ladder rank from lamps only — T1, INT-002-S06: Practice and recall sessions — T1, INT-002-S07: Free practice limit (30 a day, IST) — **T2 (paywall copy)**, INT-002-S08: Mistake loop — T1 (+13 more)
+Cohesion: 0.06
+Nodes (33): Dependencies on INT-001 deliverables, Exam-agnostic build rules (changed 2026-10-22, D-2026-10-22-01), G-I checklist (founder), INT-002: Phase 2 (Week 2) Core study loop, INT-002-S01: Light a lamp (Lit ring) — T1, INT-002-S02: Remember a lamp (Steady ring via the recall ladder) — T1, INT-002-S03: Dimming and Relight — T1, INT-002-S04: Gold ring — T1 (+25 more)
 
 ### Community 126 - "contracts/src/index.ts"
-Cohesion: 0.12
-Nodes (13): doc, registry, API_VERSION_PREFIX, CursorQuery, DEFAULT_RATE_LIMIT, IDEMPOTENCY_HEADER, IdempotencyKey, MIN_APP_VERSION_HEADER (+5 more)
+Cohesion: 0.09
+Nodes (23): doc, registry, codes, API_VERSION_PREFIX, CalendarDate, CursorQuery, DEFAULT_RATE_LIMIT, IDEMPOTENCY_HEADER (+15 more)
 
 ### Community 127 - "hm_http_client.dart"
 Cohesion: 0.07
-Nodes (21): appVersion, baseUrl, _checkMinVersion, close, _copy, _freshAccessToken, HmHttpClient, idempotencyHeader (+13 more)
+Nodes (24): appVersion, baseUrl, _checkMinVersion, close, _copy, _freshAccessToken, HmHttpClient, idempotencyHeader (+16 more)
 
 ### Community 128 - "AIDLC status board"
 Cohesion: 0.33
 Nodes (6): AIDLC status board, Intents, Parallel tracks (blueprint §27), Phase 1 bolts (INT-001), Phase 2 bolts (INT-002), Units in design
 
 ### Community 129 - "routes-study.ts"
-Cohesion: 0.07
-Nodes (41): Rank, Plan, PlanDays, PlanDaysQuery, PlanExam, PlanItem, PlanItemKind, PlanItemStatus (+33 more)
+Cohesion: 0.06
+Nodes (46): Rank, AlertSettings, MinuteOfDay, PushTokenAck, PutAlertSettingsBody, RegisterPushTokenBody, Plan, PlanDays (+38 more)
 
 ### Community 130 - "token_store.dart"
 Cohesion: 0.08
 Nodes (26): accessToken, accessTokenExpiresAt, _cached, CachedTokenStore, clear, delete, deviceId, FlutterSecureKeyValue (+18 more)
 
-### Community 131 - "package:flutter/material.dart"
-Cohesion: 0.07
-Nodes (26): Lamp, HmCard, main, _wrap, build, PlayTab, build, SquadTab (+18 more)
+### Community 131 - "package:hm_core/hm_core.dart"
+Cohesion: 0.05
+Nodes (34): appVersion, build, deskRouter, HeyMeyDesk, main, appVersion, build, HeyMeyApp (+26 more)
 
 ### Community 132 - "exams/index.ts"
-Cohesion: 0.05
-Nodes (61): ErrorCode, OFFICIAL_CONFIRM_LINE, COMMUNITIES, Community, DESK_ROLES, Qualification, QUALIFICATIONS, ROLES (+53 more)
+Cohesion: 0.12
+Nodes (26): OFFICIAL_CONFIRM_LINE, Page, getExam(), listExams(), publishedExamCodes(), getMyExams(), setMyExams(), UserExamsDto (+18 more)
 
 ### Community 133 - "src/env.ts"
-Cohesion: 0.13
-Nodes (14): apiEnvSchema, loadApiEnv(), bootstrap(), authEnv, baseEnv, databaseEnv, HeyMeyEnv, httpEnv (+6 more)
+Cohesion: 0.09
+Nodes (18): main(), bootstrap(), authEnv, baseEnv, databaseEnv, HeyMeyEnv, httpEnv, loadEnv() (+10 more)
 
 ### Community 134 - "idempotency.interceptor.ts"
-Cohesion: 0.12
-Nodes (9): IdempotencyInterceptor, byKey, successStatus(), toFastifyPath(), BeginResult, Stored, ValkeyIdempotencyStore, ValkeyRateLimiter (+1 more)
+Cohesion: 0.08
+Nodes (16): 3. Findings (for owning agents; not fixed by qa), IdempotencyInterceptor, PlatformGuard, rateLimitIpKey(), AccessTokenVerifier, byKey, policyFor(), successStatus() (+8 more)
 
 ### Community 135 - "lesson_view.dart"
 Cohesion: 0.06
 Nodes (27): blocks, book, chapter, citation, citationUrl, classLevel, id, LessonView (+19 more)
 
-### Community 136 - "onboarding_repository.dart"
-Cohesion: 0.13
-Nodes (14): _api, ApiOnboardingRepository, checkEligibility, consentNotice, _deviceIds, eligibilityFromJson, eligible, OnboardingRepository (+6 more)
+### Community 136 - "structure.ts"
+Cohesion: 0.08
+Nodes (37): Result, CatalogueRepository, getExamStructure(), createExamCatalogueModule(), ExamCatalogueApi, ADR-0012, ADR-0013, ADR-0013 (+29 more)
 
 ### Community 137 - "auth-service.ts"
-Cohesion: 0.13
-Nodes (32): OtpPurpose, checkCode(), consume(), consumeChallenge(), deleteAccount(), deskUser(), enrollDeskTotp(), issueSession() (+24 more)
+Cohesion: 0.12
+Nodes (26): checkCode(), consume(), consumeChallenge(), deleteAccount(), deskUser(), enrollDeskTotp(), issueSession(), issueTokens() (+18 more)
 
 ### Community 138 - "ADR-0008: How the money/game firewall is enforced"
 Cohesion: 0.40
 Nodes (4): ADR-0008: How the money/game firewall is enforced, Consequences, Context, Decision
+
+### Community 139 - "HealthController"
+Cohesion: 0.22
+Nodes (3): HealthController, withTimeout(), HealthResponse
 
 ### Community 140 - "desk_sign_in_controller.dart"
 Cohesion: 0.08
@@ -919,20 +969,20 @@ Cohesion: 0.40
 Nodes (5): 14.1 Monthly running costs (estimate), 14.2 What we keep from each sale, 14.3 Month-1 target, 14.4 How month-1 numbers become real, 14. Profit from month 1
 
 ### Community 142 - "@immutable"
-Cohesion: 0.09
-Nodes (23): NetworkState, ConsentNoticeInfo, ConsentPurposeInfo, DeskEnrolment, MyExams, ProfileAnswersInput, StoredTokens, HmLampState (+15 more)
+Cohesion: 0.08
+Nodes (24): ConsentNoticeInfo, ConsentPurposeInfo, DeskEnrolment, MyExams, ProfileAnswersInput, StoredTokens, NewOutboxEntry, TopicStateRecord (+16 more)
 
 ### Community 143 - "BOLT-xxxx: <goal in one line>"
 Cohesion: 0.50
 Nodes (3): BOLT-xxxx: <goal in one line>, Plan, Result (filled when the PR is ready)
 
 ### Community 144 - "ref_node_fs"
-Cohesion: 0.18
-Nodes (7): rootEnv, prisma, env, file, ports, { privateKey, publicKey }, root
+Cohesion: 0.29
+Nodes (5): env, file, ports, { privateKey, publicKey }, root
 
 ### Community 145 - "db/src/index.ts"
-Cohesion: 0.07
-Nodes (30): AppModule, createApiApp(), trustHops(), registered, adult, inject(), call(), lastCode() (+22 more)
+Cohesion: 0.09
+Nodes (17): AppModule, createApiApp(), trustHops(), registered, adult, inject(), call(), lastCode() (+9 more)
 
 ### Community 146 - "architect.md"
 Cohesion: 0.50
@@ -958,45 +1008,57 @@ Nodes (4): 5.1 Study Map and lamps, 5.2 Career Ladder (your rank), 5.3 Currencie
 Cohesion: 0.50
 Nodes (3): printWidth, singleQuote, trailingComma
 
-### Community 152 - "main.scheduler.ts"
-Cohesion: 0.28
-Nodes (6): main(), loadLocalEnv(), BUSINESS_TIMEZONE, PortKey, PORTS, STAGING_PORT_OFFSET
+### Community 152 - "prisma-mastery-repository.ts"
+Cohesion: 0.08
+Nodes (16): Data, CheckRecord, CommitResult, MasteryRepository, NewCheck, StatePageQuery, LampWriteResult, CheckKind (+8 more)
 
 ### Community 166 - "mastery.ts"
 Cohesion: 0.07
 Nodes (32): CheckKind, CheckResult, LessonCompleteBody, MasterySummary, RankChange, RelightItem, RelightQueue, RingCounts (+24 more)
 
 ### Community 175 - "code_entry.dart"
-Cohesion: 0.07
-Nodes (23): build, busy, clean, _controller, createState, DigitsOnlyFormatter, dispose, errorText (+15 more)
+Cohesion: 0.06
+Nodes (25): build, busy, clean, _controller, createState, DigitsOnlyFormatter, dispose, errorText (+17 more)
+
+### Community 183 - "MatchGateway"
+Cohesion: 0.13
+Nodes (3): MatchGateway, HealthController, RealtimeModule
 
 ### Community 184 - "2026-10-22: INT-002 provisional defaults (architect, BOLT-0008)"
 Cohesion: 0.07
 Nodes (27): 2026-10-22: INT-002 provisional defaults (architect, BOLT-0008), D-2026-10-22-10 PROVISIONAL (founder to confirm) · Q1 Lit check, D-2026-10-22-11 PROVISIONAL (founder to confirm) · Q2 Steady and the recall ladder, D-2026-10-22-12 PROVISIONAL (founder to confirm) · Q3 Dimming, D-2026-10-22-13 PROVISIONAL (founder to confirm) · Q4 Gold set, D-2026-10-22-14 PROVISIONAL (founder to confirm) · Q5 Relight, D-2026-10-22-15 PROVISIONAL (founder to confirm) · Q6 Career Ladder thresholds, D-2026-10-22-16 PROVISIONAL (founder to confirm) · Q7 XP (+19 more)
 
 ### Community 191 - "lamp.dart"
-Cohesion: 0.06
-Nodes (27): _build, dark, highContrast, HmTheme, light, build, dim, faint (+19 more)
+Cohesion: 0.08
+Nodes (21): build, dim, faint, gold, hashCode, HmLampDim, isOn, label (+13 more)
 
 ### Community 192 - "auth/index.ts"
-Cohesion: 0.07
-Nodes (28): OtpVerifyView, RequestOtpInput, SessionGrantedView, TokenPairView, VerifyOtpInput, AccessContext, ChallengeClaims, DeviceRecord (+20 more)
+Cohesion: 0.08
+Nodes (25): ROLES, AuthDeps, AuthCrypto, AuthRepositories, ChallengeClaims, DeviceRecord, OneTimeTokenStore, OtpHasher (+17 more)
 
 ### Community 194 - "exams.ts"
-Cohesion: 0.07
-Nodes (26): ApproveExamChangeBody, EligibilityCheckBody, EligibilityReason, EligibilityResult, ExamAlert, ExamAlertPage, ExamAttemptCycle, ExamChange (+18 more)
+Cohesion: 0.10
+Nodes (19): EligibilityReason, ExamAlert, ExamAlertPage, ExamAttemptCycle, ExamChange, ExamChangePage, ExamChangeStatus, ExamDetail (+11 more)
 
 ### Community 196 - "Architecture overview"
 Cohesion: 0.22
 Nodes (9): 1. System context, 2. Containers and ports (one VPS), 3. Repository → runtime, 4. Backend: a modular monolith, 5. Request lifecycle (api), 6. The money/game firewall, 7. Client architecture (Flutter), 8. Environments (+1 more)
+
+### Community 200 - "mastery/index.ts"
+Cohesion: 0.16
+Nodes (25): counts(), decodeCursor(), encodeCursor(), getSummary(), learnerScope(), listStates(), MasterySummaryDto, RankChangeDto (+17 more)
+
+### Community 202 - "notifications/index.ts"
+Cohesion: 0.21
+Nodes (11): PushSender, PushTokenRow, NOTIFICATIONS_CONFIG, AlertCategory, COUNTED_STATUSES, SendInput, createLogOnlyPushSender(), NotificationsModule (+3 more)
 
 ### Community 206 - "Role"
 Cohesion: 0.14
 Nodes (16): AuthContext, Role, AuditApi, grantRole(), GrantRoleInput, RoleRepository, rolesOf(), userCanUseDesk() (+8 more)
 
 ### Community 209 - "syllabus/index.ts"
-Cohesion: 0.06
-Nodes (45): Result, Aggregates and entities, Domain events, Domain model: U-syllabus, Invariants (unit tests in `packages/domain/test/modules/syllabus.spec.ts`), Open questions, Rules that touch the money/game firewall (T2), State machines (+37 more)
+Cohesion: 0.12
+Nodes (20): getStudyMap(), StudyMapPorts, SyllabusRepository, TextbookRefDto, searchGlossary(), GLOSSARY_BROWSE_LIMIT, GLOSSARY_SEARCH_LIMIT, GlossaryListDto (+12 more)
 
 ### Community 210 - "email-otp.ts"
 Cohesion: 0.36
@@ -1006,33 +1068,33 @@ Nodes (6): Background work, createEmailOtpProcessor(), EmailOtpJob, isEmailOtpJo
 Cohesion: 0.10
 Nodes (20): Aggregates, Domain events, Domain model: U-plan, Firewall, Invariants, Open questions, State machine, Ubiquitous language (+12 more)
 
-### Community 226 - "profile_repository.dart"
+### Community 226 - "application/study.ts"
 Cohesion: 0.14
-Nodes (14): HmApi, _api, ApiProfileRepository, consentNotice, deleteAccount, logout, logoutAll, me (+6 more)
+Nodes (34): answersFor(), completeLesson(), requireTopic(), startCheck(), submitCheck(), MasterySyncAction, result(), SyncActionResultDto (+26 more)
 
 ### Community 228 - "users-deletion.ts"
-Cohesion: 0.43
-Nodes (6): createUsersDeletionProcessor(), eraseDueAccounts(), purgeOtpCodesFor(), revokeAllForUser(), SYSTEM, UsersDeletionDeps
+Cohesion: 0.33
+Nodes (7): createUsersDeletionProcessor(), eraseDueAccounts(), forgetUser(), purgeOtpCodesFor(), revokeAllForUser(), SYSTEM, UsersDeletionDeps
 
 ### Community 232 - "later_steps.dart"
-Cohesion: 0.05
-Nodes (35): main, sessionProvider, linkOpenerProvider, shareServiceProvider, listenControllerProvider, build, LessonBody, LessonScreen (+27 more)
+Cohesion: 0.11
+Nodes (27): linkOpenerProvider, listenControllerProvider, build, LessonBody, LessonScreen, onboardingControllerProvider, AnswersStep, build (+19 more)
 
 ### Community 238 - "profile_controller.dart"
-Cohesion: 0.10
-Nodes (24): MeInfo, build, busy, choices, confirm, DataChoices, DataChoicesController, DeleteAccountController (+16 more)
+Cohesion: 0.06
+Nodes (37): main, MeInfo, sessionProvider, build, build, busy, choices, confirm (+29 more)
 
 ### Community 243 - "users-service.ts"
-Cohesion: 0.11
-Nodes (29): ConsentChoicesBody, ConsentNotice, ErasureHooks, ConsentStateView, eraseDueAccounts(), getConsents(), getMe(), load() (+21 more)
+Cohesion: 0.10
+Nodes (31): ConsentChoicesBody, ConsentNotice, ConsentPurpose, ConsentState, Me, ErasureHooks, ConsentStateView, eraseDueAccounts() (+23 more)
 
 ### Community 244 - ""RefreshToken""
 Cohesion: 0.29
 Nodes (7): "Device", Device_userId_idx, "RefreshToken", RefreshToken_sessionId_idx, RefreshToken_tokenHash_key, "Session", Session_userId_idx
 
 ### Community 245 - "prisma-users.ts"
-Cohesion: 0.12
-Nodes (14): Use cases, District, ConsentPurpose, ConsentRepository, ConsentRow, Profile, Purpose, RolesReader (+6 more)
+Cohesion: 0.13
+Nodes (12): District, ProfileAnswers, ConsentRepository, ConsentRow, Profile, Purpose, SettingsPatch, PrismaConsentRepository (+4 more)
 
 ### Community 246 - "Stories"
 Cohesion: 0.12
@@ -1043,12 +1105,12 @@ Cohesion: 0.18
 Nodes (11): "EligibilityRule", EligibilityRule_examId_version_key, "Exam", Exam_code_key, "ExamAlert", ExamAlert_changeId_key, ExamAlert_examId_publishedAt_idx, "ExamAttemptCycle" (+3 more)
 
 ### Community 248 - "exam-hall.ts"
-Cohesion: 0.09
-Nodes (21): MockAllowance, MockAnswersSaved, MockAttemptListItem, MockAttemptPage, MockAttemptState, MockKind, MockList, MockListQuery (+13 more)
+Cohesion: 0.07
+Nodes (36): MockAllowance, MockAnswersSaved, MockAttemptListItem, MockAttemptPage, MockAttemptState, MockKind, MockList, MockListQuery (+28 more)
 
 ### Community 249 - "desk_sign_in_test.dart"
-Cohesion: 0.10
-Nodes (20): calls, deskNotAllowed, enroll, enterText, hasSession, logout, main, me (+12 more)
+Cohesion: 0.09
+Nodes (21): HmApiException, calls, deskNotAllowed, enroll, enterText, hasSession, logout, main (+13 more)
 
 ### Community 251 - "Stories"
 Cohesion: 0.15
@@ -1056,11 +1118,11 @@ Nodes (13): INT-007-S01: Join a Study Room — T1, INT-007-S02: Server-timed foc
 
 ### Community 252 - "connectivity.dart"
 Cohesion: 0.11
-Nodes (15): changes, _connectivity, ConnectivityPlusNetworkSource, current, fromResults, hashCode, NetworkSource, networkSourceProvider (+7 more)
+Nodes (16): changes, _connectivity, ConnectivityPlusNetworkSource, current, fromResults, hashCode, NetworkSource, networkSourceProvider (+8 more)
 
 ### Community 253 - "Logical design: U-mastery"
-Cohesion: 0.17
-Nodes (11): Background work, Client (Flutter), Contract changes (@heymey/contracts) — `src/http/mastery.ts`, `sync.ts`, `routes-study.ts`, Data, Failure modes, Flags and LiveOps, Logical design: U-mastery, Non-functional budget (+3 more)
+Cohesion: 0.15
+Nodes (11): Domain model (client side), Background work, Client (Flutter), Contract changes (@heymey/contracts) — `src/http/mastery.ts`, `sync.ts`, `routes-study.ts`, Failure modes, Flags and LiveOps, Logical design: U-mastery, Non-functional budget (+3 more)
 
 ### Community 254 - "Decision log"
 Cohesion: 0.17
@@ -1072,63 +1134,63 @@ Nodes (4): "UserTopicState", UserTopicState_nextDueAt_idx, UserTopicState_dimSta
 
 ### Community 257 - "views.dart"
 Cohesion: 0.05
-Nodes (36): AppShell, build, shell, tabs, UpdateRequiredView, build, busy, expand (+28 more)
+Nodes (38): AppShell, build, shell, tabs, UpdateRequiredView, build, busy, expand (+30 more)
 
 ### Community 260 - "providers.dart"
-Cohesion: 0.10
-Nodes (18): main, asJsonList, asJsonMap, tokensFromJson, api, apiConfigProvider, build, deviceIdStoreProvider (+10 more)
+Cohesion: 0.08
+Nodes (23): main, a, b, core, false, isVersionLower, out, _parts (+15 more)
 
 ### Community 261 - "processors.spec.ts"
-Cohesion: 0.22
-Nodes (10): connection, env, repeatable, workers, bullConnection(), IMPLEMENTED_QUEUES, ImplementedQueue, isImplemented() (+2 more)
+Cohesion: 0.16
+Nodes (12): startHealthServer(), connection, env, repeatable, workers, bullConnection(), IMPLEMENTED_QUEUES, ImplementedQueue (+4 more)
 
 ### Community 262 - "createAuthModule"
 Cohesion: 0.11
-Nodes (13): What changed, Evidence (2026-10-22), Follow-ups, Result, valkeyOneTimeTokens(), RoleDirectory, AuthApi, createAuthModule() (+5 more)
+Nodes (14): What changed, Evidence (2026-10-22), Follow-ups, Result, Use cases (application layer), valkeyOneTimeTokens(), RoleDirectory, AuthApi (+6 more)
 
 ### Community 263 - "profile_draft.dart"
-Cohesion: 0.10
+Cohesion: 0.11
 Nodes (16): asksDegreeSubject, community, CommunityChoice, copyWith, dateOfBirth, degreeSubject, isComplete, label (+8 more)
 
 ### Community 264 - "auth.spec.ts"
-Cohesion: 0.17
-Nodes (11): Bolts, Client (Flutter), Contract changes, Data, Failure modes, Flags and LiveOps, Logical design: U-auth, Non-functional budget (+3 more)
+Cohesion: 0.18
+Nodes (10): Bolts, Client (Flutter), Contract changes, Data, Failure modes, Flags and LiveOps, Logical design: U-auth, Non-functional budget (+2 more)
 
 ### Community 265 - "package:flutter/foundation.dart"
 Cohesion: 0.11
 Nodes (15): ApiConfig, appVersion, baseUrl, fromEnvironment, localPort, productionBaseUrl, resolveBaseUrl, AgeGate (+7 more)
 
 ### Community 266 - "shared/ports.ts"
-Cohesion: 0.15
-Nodes (7): BOLT-0014: Notifications (tokens, budget, quiet hours, sender) + Exam Alerts (webhook intake, Desk approval), Plan, Result, DomainEvent, EventPublisher, FlagReader, IdempotencyStore
+Cohesion: 0.10
+Nodes (14): BOLT-0014: Notifications (tokens, budget, quiet hours, sender) + Exam Alerts (webhook intake, Desk approval), Plan, Result, ExamAlertsDeps, GAME_LIMITS, gamesAreSleeping(), GamesModule, Clock (+6 more)
 
 ### Community 267 - "UserRecord"
 Cohesion: 0.29
 Nodes (3): UserRecord, PrismaUserRepository, toRecord()
 
 ### Community 268 - "hm_api_exception.dart"
-Cohesion: 0.07
-Nodes (22): code, fromResponse, HmApiException, isNetwork, message, network, networkError, networkMessage (+14 more)
+Cohesion: 0.13
+Nodes (12): code, fromResponse, isNetwork, message, network, networkError, networkMessage, retryAfterSeconds (+4 more)
 
 ### Community 269 - "Logical design: U-exam-hall"
 Cohesion: 0.18
 Nodes (10): Background work (registry additions, devops/backend in BOLT-0011), Client, Contract, Data, Failure modes, Flags and LiveOps, Logical design: U-exam-hall, NFR (+2 more)
 
-### Community 270 - "study_map_body.dart"
-Cohesion: 0.06
-Nodes (31): MapPreviewStep, liteModeProvider, mainExamCodeProvider, studyMapProvider, studyRepositoryProvider, _api, ApiStudyRepository, _lamp (+23 more)
+### Community 270 - "study_repository.dart"
+Cohesion: 0.07
+Nodes (28): HmApi, _api, ApiProfileRepository, consentNotice, deleteAccount, logout, logoutAll, me (+20 more)
 
 ### Community 271 - "listen_controller.dart"
-Cohesion: 0.16
+Cohesion: 0.15
 Nodes (13): build, _configured, FlutterTtsPort, listen, ListenController, ListenStatus, onDone, speak (+5 more)
 
 ### Community 272 - "Logical design: U-practice"
 Cohesion: 0.18
 Nodes (10): Background work, Client, Contract, Data, Failure modes, Flags and LiveOps, Logical design: U-practice, Non-functional (+2 more)
 
-### Community 274 - "catalog.ts"
-Cohesion: 0.14
-Nodes (9): Community, SEED_EXAMS, SEED_GLOSSARY, SEED_LESSONS, SeedExam, SeedLesson, SYLLABUS_DIR, YamlSyllabus (+1 more)
+### Community 274 - "db/src/index.ts"
+Cohesion: 0.08
+Nodes (24): Result, call(), lastCode(), Res, signIn(), Community, SEED_EXAMS, SEED_GLOSSARY (+16 more)
 
 ### Community 275 - "Logical design: U-exams"
 Cohesion: 0.10
@@ -1151,28 +1213,32 @@ Cohesion: 0.17
 Nodes (11): Background work, Client (Flutter), Contract changes, Data, Failure modes, Flags and LiveOps, Logical design: U-syllabus, Non-functional budget (+3 more)
 
 ### Community 280 - "Logical design: U-users"
-Cohesion: 0.25
-Nodes (7): Background work, Client, Contract changes, Data, Failure modes, Logical design: U-users, Test plan
+Cohesion: 0.17
+Nodes (10): Background work, Client, Contract changes, Data, Failure modes, Logical design: U-users, Test plan, Use cases (+2 more)
 
 ### Community 281 - "ports.dart"
-Cohesion: 0.15
-Nodes (12): grievanceEmail, LinkOpener, messageOf, open, privacyUrl, SharePlusService, ShareService, shareText (+4 more)
+Cohesion: 0.14
+Nodes (13): grievanceEmail, LinkOpener, messageOf, open, privacyUrl, SharePlusService, ShareService, shareServiceProvider (+5 more)
 
 ### Community 282 - "Logical design: U-readiness"
 Cohesion: 0.20
 Nodes (9): Background work, Client, Contract, Data, Failure modes, Flags, Logical design: U-readiness, Test plan (≥ 70 %) (+1 more)
 
+### Community 283 - "content/index.ts"
+Cohesion: 0.12
+Nodes (21): questionBank, QuestionCandidates, GradedAnswerDto, gradeWithKey(), isCorrect(), QuestionDto, QuestionKeyDto, QuestionReader (+13 more)
+
 ### Community 284 - "LeadForm.tsx"
 Cohesion: 0.24
 Nodes (7): ContactPage(), metadata, EXAMS, LeadForm(), LeadType, TABS, APP_URL
 
-### Community 285 - "app_version.dart"
-Cohesion: 0.20
-Nodes (8): a, b, core, false, isVersionLower, out, _parts, pieces
+### Community 285 - "pack_and_store_test.dart"
+Cohesion: 0.06
+Nodes (25): _catalog, download, offerFrom, offers, PackDownloader, _store, _transport, updates (+17 more)
 
 ### Community 286 - "Domain model: U-app-shell (+ U-design-system)"
 Cohesion: 0.08
-Nodes (24): Aggregates and entities, Domain events, Domain model: U-app-shell (+ U-design-system), Firewall impact, Invariants (each is a test), Open questions, Phase 2 extension, State machines (+16 more)
+Nodes (23): Aggregates and entities, Domain events, Domain model: U-app-shell (+ U-design-system), Firewall impact, Invariants (each is a test), Open questions, Phase 2 extension, State machines (+15 more)
 
 ### Community 287 - "INT-005: Align the marketing site with the app-only product"
 Cohesion: 0.40
@@ -1186,9 +1252,9 @@ Nodes (3): BOLT-0000: Architecture scaffold, Plan, Result
 Cohesion: 0.22
 Nodes (8): Aggregates and entities, Domain events, Domain model: U-app-onboarding, Firewall impact, Invariants (each is a test), Open questions, State machine, Ubiquitous language
 
-### Community 290 - "INT-002: Phase 2 (Week 2) Core study loop"
-Cohesion: 0.15
-Nodes (12): Dependencies on INT-001 deliverables, Exam-agnostic build rules (changed 2026-10-22, D-2026-10-22-01), G-I checklist (founder), INT-002: Phase 2 (Week 2) Core study loop, Non-functional criteria (all stories), Open questions (founder), Outcome (filled at G-O), Proposed bolts (+4 more)
+### Community 290 - "prisma-exam-hall-repository.ts"
+Cohesion: 0.13
+Nodes (22): publishDueRanks(), add(), compare(), frac(), Fraction, gcd(), sub(), times() (+14 more)
 
 ### Community 291 - "Domain model: U-auth"
 Cohesion: 0.22
@@ -1206,9 +1272,9 @@ Nodes (13): Aggregates and entities, Domain events, Domain model: U-exams, Event
 Cohesion: 0.22
 Nodes (8): Aggregates and entities, Domain events, Domain model: U-users, Invariants, Open questions, Rules that touch the money/game firewall (T2), State machines, Ubiquitous language
 
-### Community 296 - "desk_sign_in_test.dart"
-Cohesion: 0.09
-Nodes (14): appVersion, build, deskRouter, HeyMeyDesk, main, appVersion, build, HeyMeyApp (+6 more)
+### Community 296 - "sync_engine.dart"
+Cohesion: 0.07
+Nodes (21): dismissRejected, _outbox, OutboxRepository, pendingCount, record, rejected, _topics, topicState (+13 more)
 
 ### Community 297 - "Landscape.tsx"
 Cohesion: 0.43
@@ -1235,12 +1301,12 @@ Cohesion: 0.29
 Nodes (6): Checks, HeyMey™ marketing site, How the motion is built (one job per library), Pages, Rules that matter when editing, Run
 
 ### Community 305 - "state.md"
-Cohesion: 0.09
-Nodes (15): BOLT-0001: Phase 1 contract, schema, platform core, Plan, BOLT-0003: Catalog — exams + eligibility engine, Study Map, lessons, glossary, seed, Plan, BOLT-0007: Security fixes from BOLT-0006 review (SEC-H2, SEC-M1, SEC-M3, SEC-M4 interim, SEC-L6), Infra section (devops, 2026-10-22; restored after accidental overwrite), Plan, Result (conductor, 2026-10-22) (+7 more)
+Cohesion: 0.10
+Nodes (14): BOLT-0001: Phase 1 contract, schema, platform core, Plan, BOLT-0003: Catalog — exams + eligibility engine, Study Map, lessons, glossary, seed, Plan, BOLT-0007: Security fixes from BOLT-0006 review (SEC-H2, SEC-M1, SEC-M3, SEC-M4 interim, SEC-L6), Infra section (devops, 2026-10-22; restored after accidental overwrite), Plan, Result (conductor, 2026-10-22) (+6 more)
 
 ### Community 306 - "auth.fakes.ts"
-Cohesion: 0.09
-Nodes (19): Always, Load, Review checklist (every PR), OneTimeTokenStore, ACTOR, identityHarness(), memAuthRepos(), MemConsents (+11 more)
+Cohesion: 0.12
+Nodes (11): Always, Load, Review checklist (every PR), ACTOR, identityHarness(), memAuthRepos(), MemOneTimeTokens, MemRateLimiter (+3 more)
 
 ### Community 307 - "Domain model: U-desk (Phase 1 part: sign-in with TOTP)"
 Cohesion: 0.33
@@ -1267,8 +1333,8 @@ Cohesion: 0.40
 Nodes (4): ADR-0005: AIDLC is the development lifecycle, Consequences, Context, Decision
 
 ### Community 313 - "Domain model: U-mastery"
-Cohesion: 0.15
-Nodes (10): Aggregates and entities, Domain events, Domain model: U-mastery, Invariants (each becomes a unit test), Open questions, Rules that touch the money/game firewall, State machines, Ubiquitous language (+2 more)
+Cohesion: 0.22
+Nodes (8): Aggregates and entities, Domain events, Domain model: U-mastery, Invariants (each becomes a unit test), Open questions, Rules that touch the money/game firewall, State machines, Ubiquitous language
 
 ### Community 314 - "ADR-0007: Dart pub workspace; Desk features in a separate hm_desk package"
 Cohesion: 0.40
@@ -1286,9 +1352,9 @@ Nodes (4): ADR-0010: Compose stacks: app (prod + staging), edge, monitoring, Con
 Cohesion: 0.40
 Nodes (4): ADR-0011: Graphify knowledge graph for agent navigation, Consequences, Context, Decision
 
-### Community 318 - "Domain model: U-practice"
-Cohesion: 0.22
-Nodes (8): Aggregates and entities, Domain events, Domain model: U-practice, Firewall, Invariants, Open questions, State machines, Ubiquitous language
+### Community 318 - "mastery.fakes.ts"
+Cohesion: 0.11
+Nodes (15): Aggregates and entities, Domain events, Domain model: U-practice, Firewall, Invariants, Open questions, State machines, Ubiquitous language (+7 more)
 
 ### Community 319 - "Security review"
 Cohesion: 0.14
@@ -1350,13 +1416,29 @@ Nodes (4): ADR-0013: Exam-agnostic catalogue (family → exam → stage → pape
 Cohesion: 0.40
 Nodes (4): ADR-0006: Contract-first: Zod → OpenAPI 3.1 → Dart client, Consequences, Context, Decision
 
-### Community 345 - "study.ts"
-Cohesion: 0.22
-Nodes (8): ExamCode, GlossaryList, GlossaryQuery, LampRing, Lesson, StudyMap, StudyMapTopic, TextbookRef
+### Community 335 - "attempts.ts"
+Cohesion: 0.15
+Nodes (23): AGENTS.md: packages/domain (business modules), AnswerInput, startAttempt(), view(), listMocks(), stateMockInfo(), MockListDto, StateMockInfoDto (+15 more)
+
+### Community 336 - "eligibility.ts"
+Cohesion: 0.11
+Nodes (21): Qualification, checkEligibility(), ADULT_AGE, Answers, assertAdult(), byFit(), CATEGORY_TEXT, checkEligibility() (+13 more)
+
+### Community 337 - "hm_database.dart"
+Cohesion: 0.07
+Nodes (20): add, all, allSchemaEntities, allTables, _db, HmDatabase, markRejected, memory (+12 more)
+
+### Community 345 - "local_stores.dart"
+Cohesion: 0.08
+Nodes (28): DriftOutboxStore, DriftPackStore, DriftTopicStateStore, add, all, clientActionId, clientAt, json (+20 more)
 
 ### Community 346 - "changedetection-sync.mjs"
 Cohesion: 0.22
 Nodes (7): body, byUrl, cfg, dryRun, headers, ports, root
+
+### Community 347 - "study_action.dart"
+Cohesion: 0.09
+Nodes (24): answers, checkKind, chosenOptionIds, fieldsJson, fromStored, itemId, kind, kindWire (+16 more)
 
 ### Community 348 - "BOLT-0015: changedetection.io -> api webhook wiring, and the content-pack CDN"
 Cohesion: 0.40
@@ -1366,33 +1448,145 @@ Nodes (4): BOLT-0015: changedetection.io -> api webhook wiring, and the content-
 Cohesion: 0.50
 Nodes (3): BOLT-0011: Exam Hall (OMR/CBT mocks, State Mock Sunday) + exam-structure catalogue, Plan, Result
 
-### Community 350 - "local-dev.md"
-Cohesion: 0.50
-Nodes (3): Local development, Port collision with the old `heymey-app` containers (D-2026-10-20-16, OPEN), Troubleshooting
+### Community 350 - "application/providers.dart"
+Cohesion: 0.08
+Nodes (20): controller, db, devices, _hmApiGatewayProvider, hmDatabaseProvider, outboxRepositoryProvider, outboxStoreProvider, packCatalogGatewayProvider (+12 more)
 
-### Community 352 - "HeyMey"
+### Community 352 - "outbox_test.dart"
+Cohesion: 0.08
+Nodes (21): acceptAll, advance, call, calls, clock, engine, failNext, fakeApi (+13 more)
+
+### Community 353 - "DomainError"
+Cohesion: 0.23
+Nodes (22): getAttempt(), saveAnswers(), ExamHallDeps, MockSummaryDto, StatewideRankDto, expireOverdueAttempts(), statewideRank(), getReport() (+14 more)
+
+### Community 354 - "get-lesson.ts"
+Cohesion: 0.17
+Nodes (12): Result, getLesson(), LessonRepository, TextbookRefSource, latestPublished(), LessonDto, LessonRecord, TextbookRefDto (+4 more)
+
+### Community 355 - "auth/domain/policy.ts"
+Cohesion: 0.12
+Nodes (18): createOtpGcProcessor(), OtpGcDeps, purgeExpiredOtpCodes(), OtpPurpose, DESK_ROLES, purgeOtpCodesFor(), requestOtp(), AUTH_POLICY (+10 more)
+
+### Community 356 - "outbox_entry.dart"
+Cohesion: 0.09
+Nodes (19): action, attempts, backoff, batchMax, clientActionId, clientAt, copyWith, firstRetry (+11 more)
+
+### Community 357 - "Purpose"
+Cohesion: 0.11
+Nodes (5): RequestOtpInput, OtpRecord, OtpRepository, Purpose, PrismaOtpRepository
+
+### Community 358 - "dob_step.dart"
+Cohesion: 0.11
+Nodes (18): clockProvider, submitDateOfBirth, build, createState, _day, DobStep, _DobStepState, _error (+10 more)
+
+### Community 359 - "gateways.dart"
+Cohesion: 0.12
+Nodes (16): _api, body, _client, HmApiSyncGateway, HttpPackTransport, listPacks, PackCatalogGateway, PackResponse (+8 more)
+
+### Community 360 - "prisma-exams-repository.ts"
+Cohesion: 0.15
+Nodes (10): QUALIFICATIONS, Evaluated, ExamWithRule, ExamRecord, MaxAgeByCommunity, PrismaExamsRepository, Qualification, RelaxationYears (+2 more)
+
+### Community 361 - "SendStatus"
+Cohesion: 0.18
+Nodes (6): SendLogRepository, SendLogRow, SendStatus, PrismaSendLogRepository, toRow(), MemLog
+
+### Community 362 - "study_map_body.dart"
+Cohesion: 0.12
+Nodes (10): StudyMapView, header, lite, _LiteSubject, map, onOpenTopic, onTap, StudyMapBody (+2 more)
+
+### Community 363 - "sync_triggers.dart"
+Cohesion: 0.12
+Nodes (11): actionRecorded, _cancelRetry, dispose, _engine, _online, _onNetwork, _reports, _retry (+3 more)
+
+### Community 364 - "createMasteryModule"
+Cohesion: 0.16
+Nodes (10): DimmingRunResult, runDimming(), AnswerInputDto, CheckResultDto, TopicCheckDto, topicStatesFor(), TopicStateDto, createMasteryDimming() (+2 more)
+
+### Community 365 - "notifications-service.ts"
+Cohesion: 0.21
+Nodes (13): AlertSettingsDto, enqueue(), EnqueueInput, getSettings(), putSettings(), releaseHeld(), send(), toDto() (+5 more)
+
+### Community 366 - "notifications.spec.ts"
+Cohesion: 0.17
+Nodes (8): AlertPreferenceRepository, AlertPrefs, PrismaAlertPreferenceRepository, base, MemPrefs, NIGHT_IST, NOON_IST, setup()
+
+### Community 367 - "sync_report.dart"
+Cohesion: 0.12
+Nodes (14): accepted, couldNotSave, failed, packRetry, rejected, remaining, retryAt, sent (+6 more)
+
+### Community 368 - "mastery/application/ports.ts"
+Cohesion: 0.21
+Nodes (8): Commit, LearnerPorts, MasteryDeps, RingEventRow, TopicCatalog, LampWrite, ActionSource, RingEventKind
+
+### Community 369 - "hm_api_test.dart"
+Cohesion: 0.17
+Nodes (9): OtpDeskChallengeOutcome, OtpSessionOutcome, OtpVerifyOutcome, _config, _error, _json, main, _profile (+1 more)
+
+### Community 370 - "content_pack.dart"
+Cohesion: 0.15
+Nodes (12): code, InstalledPack, locked, PackDownloadResult, PackOffer, PackTier, path, sha256 (+4 more)
+
+### Community 371 - "data/wire.dart"
+Cohesion: 0.17
+Nodes (9): _contentPack, contentPacks, _date, lampRing, _map, _syncActionResult, syncBatchResult, topicState (+1 more)
+
+### Community 375 - "Domain model: U-syllabus"
+Cohesion: 0.20
+Nodes (8): Aggregates and entities, Domain events, Domain model: U-syllabus, Invariants (unit tests in `packages/domain/test/modules/syllabus.spec.ts`), Open questions, Rules that touch the money/game firewall (T2), State machines, Ubiquitous language
+
+### Community 376 - "JoseTokenService"
+Cohesion: 0.33
+Nodes (4): AccessContext, JoseTokenService, mint(), mintChallenge()
+
+### Community 377 - "syllabus.spec.ts"
+Cohesion: 0.22
+Nodes (4): aptitude, polity, published, topics
+
+### Community 378 - "ref_node_fs"
+Cohesion: 0.29
+Nodes (4): [base = "http://localhost:4570", outDir = "e2e/baseline"], SIZES, rootEnv, prisma
+
+### Community 379 - "theme.dart"
+Cohesion: 0.29
+Nodes (5): _build, dark, highContrast, HmTheme, light
+
+### Community 382 - "MdBlock"
+Cohesion: 0.47
+Nodes (6): flush, MdBlock, MdBullet, MdHeading, MdParagraph, parseMarkdown
+
+### Community 384 - "NotificationsDeps"
+Cohesion: 0.40
+Nodes (3): NotificationsDeps, OffersConsentReader, SendDispatcher
+
+### Community 385 - "BOLT-0009: mastery: rings, recall ladder, dimming + relight, Career Ladder, offline sync"
 Cohesion: 0.50
-Nodes (4): HeyMey, Layout, Quick start, Services and ports (one VPS)
+Nodes (3): BOLT-0009: mastery: rings, recall ladder, dimming + relight, Career Ladder, offline sync, Plan, Result
+
+### Community 386 - "lcp.mjs"
+Cohesion: 0.50
+Nodes (3): results, sorted, [url = "http://localhost:4570/", runsArg = "3"]
 
 ## Knowledge Gaps
-- **748 isolated node(s):** `@fastify/cors`, `@heymey/config`, `@heymey/contracts`, `@heymey/db`, `@heymey/domain` (+743 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2820 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **102 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **972 isolated node(s):** `RFC-6238`, `offline`, `online`, `wifi`, `operator` (+967 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 3201 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **110 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Clock` connect `Domain model: U-mastery` to `auth/index.ts`, `main.worker.ts`, `exams/index.ts`, `auth-service.ts`, `AuthModuleDeps`, `contracts/src/index.ts`, `users-service.ts`, `prisma-users.ts`, `AGENTS.md: HeyMey monorepo`, `Stories`, `Stories`?**
-  _High betweenness centrality (0.044) - this node is a cross-community bridge._
-- **What connects `@fastify/cors`, `@heymey/config`, `@heymey/contracts` to the rest of the system?**
-  _748 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `Clock` connect `shared/ports.ts` to `NotificationsDeps`, `exams/index.ts`, `auth-service.ts`, `Logical design: U-users`, `application/exam-alerts.ts`, `contracts/src/index.ts`, `AGENTS.md: HeyMey monorepo`, `Domain model: U-mastery`, `auth/index.ts`, `notifications/index.ts`, `attempts.ts`, `eligibility.ts`, `DomainError`, `auth/domain/policy.ts`, `notifications-service.ts`, `users-service.ts`, `exam-hall.ts`, `Stories`, `Stories`?**
+  _High betweenness centrality (0.049) - this node is a cross-community bridge._
+- **What connects `RFC-6238`, `offline`, `online` to the rest of the system?**
+  _972 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.worker.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.11578947368421053 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07459677419354839 - nodes in this community are weakly interconnected._
 - **Why does `next` connect `PageIntro` to `app/page.tsx`, `site.spec.ts`, `Landscape.tsx`, `FinalCta.tsx`, `next`, `marketing/package.json`, `LegalPage.tsx`, `LeadForm.tsx`?**
   _High betweenness centrality (0.036) - this node is a cross-community bridge._
 - **Should `tokens.dart` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Why does `AGENTS.md: HeyMey monorepo` connect `AGENTS.md: HeyMey monorepo` to `state.md`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
 - **Should `HeyMey — Master Document v1.2` be split into smaller, more focused modules?**
   _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._
