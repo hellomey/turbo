@@ -1,0 +1,229 @@
+"use client";
+
+import React from "react";
+
+export default function HowItWorks() {
+  return (
+    <section className="c-how" data-how="" id="how">
+      <canvas
+        data-how-canvas=""
+        data-artboard="Main - Clouds - Desktop"
+        data-state-machines="SM - Clouds Desktop"
+        className="show-desktop abs"
+        width="1905"
+        height="917"
+      ></canvas>
+      <canvas
+        data-how-canvas=""
+        data-artboard="Main - Clouds Mobile"
+        data-state-machines="SM - Clouds Mobile"
+        className="show-mobile abs"
+        width="0"
+        height="0"
+      ></canvas>
+
+      <div className="c-how__mockup">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 80 80"
+          width="80"
+          height="80"
+          data-how-artboard=""
+        >
+          <path
+            fill="url(#paint0_linear_3752_31835)"
+            d="M0 12C0 5.373 5.373 0 12 0h56c6.627 0 12 5.373 12 12v56c0 6.627-5.373 12-12 12H12C5.373 80 0 74.627 0 68V12Z"
+          ></path>
+          <path fill="#fff" d="M10 18a8 8 0 0 1 8-8h44a8 8 0 0 1 8 8v62H10V18Z"></path>
+          <defs>
+            <linearGradient
+              id="paint0_linear_3752_31835"
+              x1="40"
+              x2="40"
+              y1="-25.191"
+              y2="103.78"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#CCE7FF"></stop>
+              <stop offset="1" stopColor="#fff"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div className="c-how__icons show-desktop-tab" data-how-icons="">
+        <div className="c-how__icon" data-icon="" style={{ "--color": "#FFCFB4" } as any}></div>
+        <div className="c-how__icon" data-icon="" style={{ "--color": "#99CFFF" } as any}></div>
+        <div className="c-how__icon" data-icon="" style={{ "--color": "#A8ECC7" } as any}></div>
+        <div className="c-how__icon" data-icon="" style={{ "--color": "#E4CCFF" } as any}></div>
+        <div className="c-how__icon" data-icon="" style={{ "--color": "#FFF2BE" } as any}></div>
+      </div>
+
+      <div
+        className="c-how__content"
+        data-how-content=""
+        style={{ position: "relative", zIndex: 10 }}
+      >
+        <div className="c-how__label" data-how-label="" style={{ opacity: 1 }}>
+          Study with purpose. <br /> Not endless confusion.
+        </div>
+
+        {/* Tablet view */}
+        <h2 className="c-how__title show-tablet">
+          <span className="line">
+            <span>HeyMey lights your</span>
+          </span>
+          <span className="line line-2">
+            <span className="c-how__icon" style={{ "--color": "#FFCFB4" } as any}>
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Brush icon"
+                data-state-machines="State Machine 1"
+                width="0"
+                height="0"
+              ></canvas>
+            </span>
+            <span>syllabus,</span>
+            <span className="c-how__icon top" style={{ "--color": "#99CFFF" } as any}>
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Wand icon"
+                data-state-machines="State Machine 1"
+                width="0"
+                height="0"
+              ></canvas>
+            </span>
+            <span>spaced</span>
+          </span>
+          <span className="line line-3">
+            <span>recall,</span>
+            <span className="c-how__icon" style={{ "--color": "#A8ECC7" } as any}>
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Pallette icon"
+                data-state-machines="State Machine 1"
+                width="0"
+                height="0"
+              ></canvas>
+            </span>
+            <span>squad duels,</span>
+          </span>
+          <span className="line line-4">
+            <span>and then builds a</span>
+          </span>
+          <span className="line line-5">
+            <span className="c-how__icon" style={{ "--color": "#E4CCFF" } as any}>
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Flower icon"
+                data-state-machines="State Machine 1"
+                width="0"
+                height="0"
+              ></canvas>
+            </span>
+            <span>rank</span>
+            <span>for</span>
+          </span>
+          <span className="line line-6">
+            <span>you.</span>
+            <span className="c-how__icon" style={{ "--color": "#FFF2BE" } as any}>
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Genie icon"
+                data-state-machines="State Machine 1"
+                width="0"
+                height="0"
+              ></canvas>
+            </span>
+          </span>
+        </h2>
+
+        {/* Desktop view */}
+        <h2 className="c-how__title show-desktop-tab" data-how-title="">
+          <span className="line">
+            <span data-line-text="">HeyMey lights your</span>
+            <span
+              className="c-how__icon"
+              data-icon=""
+              style={{ "--color": "#FFCFB4" } as any}
+            >
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Brush icon"
+                data-state-machines="State Machine 1"
+                width="80"
+                height="80"
+              ></canvas>
+            </span>
+            <span data-line-text="">syllabus,</span>
+          </span>
+          <span className="line line-2">
+            <span
+              className="c-how__icon top"
+              data-icon=""
+              style={{ "--color": "#99CFFF", borderRadius: "50%" } as any}
+            >
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Wand icon"
+                data-state-machines="State Machine 1"
+                width="80"
+                height="80"
+              ></canvas>
+            </span>
+            <span data-line-text="">spaced recall,</span>
+            <span
+              className="c-how__icon"
+              data-icon=""
+              style={{ "--color": "#A8ECC7" } as any}
+            >
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Pallette icon"
+                data-state-machines="State Machine 1"
+                width="80"
+                height="80"
+              ></canvas>
+            </span>
+            <span data-line-text="">squad duels,</span>
+          </span>
+          <span className="line line-3">
+            <span data-line-text="">and then builds a</span>
+            <span
+              className="c-how__icon"
+              data-icon=""
+              style={{ "--color": "#E4CCFF" } as any}
+            >
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Flower icon"
+                data-state-machines="State Machine 1"
+                width="80"
+                height="80"
+              ></canvas>
+            </span>
+            <span data-line-text="">rank</span>
+          </span>
+          <span className="line line-4">
+            <span data-line-text="">for</span>
+            <span
+              className="c-how__icon"
+              data-icon=""
+              style={{ "--color": "#FFF2BE" } as any}
+            >
+              <canvas
+                data-how-canvas=""
+                data-artboard="Main - Genie icon"
+                data-state-machines="State Machine 1"
+                width="80"
+                height="80"
+              ></canvas>
+            </span>
+            <span data-line-text="">you.</span>
+          </span>
+        </h2>
+      </div>
+    </section>
+  );
+}
