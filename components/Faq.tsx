@@ -19,10 +19,6 @@ const faqs = [
     q: "Is HeyMey available for free?",
     a: "Yes! HeyMey is free to download and use. Free aspirants get daily check-ins, study map tracking, daily lucky games, and peer duels. HeyMey Pro unlocks the full 10-year PYQ vault, AI doubt solver, and unlimited mocks.",
   },
-  {
-    q: "Can I study and revise offline?",
-    a: "Yes! HeyMey Pro lets you save question banks, revision notes, and syllabus progress directly to your phone so you can practice on buses, trains, or without internet.",
-  },
 ];
 
 export default function Faq() {
