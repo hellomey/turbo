@@ -30,3 +30,4 @@ Thumbs.db
 
 # local scratch / scraped references (not part of the app)
 _archive/
+scratch/
