@@ -1695,12 +1695,15 @@ export class NavAnimation extends BaseComponent {
   }
 
   addEventListeners() {
-    (this.elements.toggle as HTMLElement)?.addEventListener("click", this.handleClick.bind(this));
-    window.addEventListener("keydown", this.handleKeyDown.bind(this));
     if (this.lenis) {
       this.lenis.on("scroll", (e: any) => {
         const scr = this.lenis!.scroll;
         const container = this.elements.container as HTMLElement;
+        const isMenuOpen = this.element?.classList.contains(this.activeClass);
+        if (isMenuOpen) {
+          container?.classList.remove(this.hiddenClass);
+          return;
+        }
         if (e.direction === 1 && scr > 100) {
           container?.classList.add(this.hiddenClass);
         } else {
@@ -1708,30 +1711,6 @@ export class NavAnimation extends BaseComponent {
         }
       });
     }
-  }
-
-  handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Escape") {
-      this.closeMenu();
-      (this.elements.toggle as HTMLElement)?.focus();
-    }
-  }
-
-  handleClick(e: MouseEvent) {
-    e.preventDefault();
-    if (!this.element) return;
-    toggleNavMenu(
-      e,
-      "[data-nav-toggle]",
-      this.element,
-      "[data-nav]",
-      this.activeClass,
-      this.closeMenu.bind(this)
-    );
-  }
-
-  closeMenu() {
-    this.element?.classList.remove(this.activeClass);
   }
 }
 
