@@ -129,13 +129,13 @@ export default function FeaturesGrid() {
               <div className="c-collaborate__top__left">
                 <div className="c-avatars">
                   <div className="c-avatar">
-                    <img loading="lazy" src="/images/2.svg" alt="Avatar" />
+                    <img loading="lazy" src="/images/2.svg" alt="Priya (Tahsildar Rank)" />
                   </div>
                   <div className="c-avatar">
-                    <img loading="lazy" src="/images/4.svg" alt="Avatar" />
+                    <img loading="lazy" src="/images/4.svg" alt="Captain Kavi" />
                   </div>
                   <div className="c-avatar">
-                    <img loading="lazy" src="/images/7.svg" alt="Avatar" />
+                    <img loading="lazy" src="/images/7.svg" alt="Arun (Village Officer)" />
                   </div>
                   <div className="c-avatar c-avatar--num">
                     +<span>4</span>

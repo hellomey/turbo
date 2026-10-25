@@ -4,24 +4,7 @@ import React from "react";
 
 export default function HowItWorks() {
   return (
-    <section className="c-how" data-how="" id="how">
-      <canvas
-        data-how-canvas=""
-        data-artboard="Main - Clouds - Desktop"
-        data-state-machines="SM - Clouds Desktop"
-        className="show-desktop abs"
-        width="1905"
-        height="917"
-      ></canvas>
-      <canvas
-        data-how-canvas=""
-        data-artboard="Main - Clouds Mobile"
-        data-state-machines="SM - Clouds Mobile"
-        className="show-mobile abs"
-        width="0"
-        height="0"
-      ></canvas>
-
+    <section className="c-how" data-how="" id="how" style={{ background: "#ffffff" }}>
       <div className="c-how__mockup">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -52,6 +35,7 @@ export default function HowItWorks() {
         </svg>
       </div>
 
+      {/* Target coordinates container for GSAP Flip calculations */}
       <div className="c-how__icons show-desktop-tab" data-how-icons="">
         <div className="c-how__icon" data-icon="" style={{ "--color": "#FFCFB4" } as any}></div>
         <div className="c-how__icon" data-icon="" style={{ "--color": "#99CFFF" } as any}></div>
@@ -76,36 +60,30 @@ export default function HowItWorks() {
           </span>
           <span className="line line-2">
             <span className="c-how__icon" style={{ "--color": "#FFCFB4" } as any}>
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Brush icon"
-                data-state-machines="State Machine 1"
-                width="0"
-                height="0"
-              ></canvas>
+              <img
+                src="/icons/syllabus.svg"
+                alt="Syllabus curriculum"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span>syllabus,</span>
             <span className="c-how__icon top" style={{ "--color": "#99CFFF" } as any}>
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Wand icon"
-                data-state-machines="State Machine 1"
-                width="0"
-                height="0"
-              ></canvas>
+              <img
+                src="/icons/spaced-recall.svg"
+                alt="Spaced recall flashcards"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span>spaced</span>
           </span>
           <span className="line line-3">
             <span>recall,</span>
             <span className="c-how__icon" style={{ "--color": "#A8ECC7" } as any}>
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Pallette icon"
-                data-state-machines="State Machine 1"
-                width="0"
-                height="0"
-              ></canvas>
+              <img
+                src="/icons/squad-duels.svg"
+                alt="Squad duels swords"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span>squad duels,</span>
           </span>
@@ -114,13 +92,11 @@ export default function HowItWorks() {
           </span>
           <span className="line line-5">
             <span className="c-how__icon" style={{ "--color": "#E4CCFF" } as any}>
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Flower icon"
-                data-state-machines="State Machine 1"
-                width="0"
-                height="0"
-              ></canvas>
+              <img
+                src="/icons/rank.svg"
+                alt="Rank champion trophy"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span>rank</span>
             <span>for</span>
@@ -128,13 +104,11 @@ export default function HowItWorks() {
           <span className="line line-6">
             <span>you.</span>
             <span className="c-how__icon" style={{ "--color": "#FFF2BE" } as any}>
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Genie icon"
-                data-state-machines="State Machine 1"
-                width="0"
-                height="0"
-              ></canvas>
+              <img
+                src="/icons/you.svg"
+                alt="HeyMey Sacred Lamp"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
           </span>
         </h2>
@@ -148,13 +122,11 @@ export default function HowItWorks() {
               data-icon=""
               style={{ "--color": "#FFCFB4" } as any}
             >
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Brush icon"
-                data-state-machines="State Machine 1"
-                width="80"
-                height="80"
-              ></canvas>
+              <img
+                src="/icons/syllabus.svg"
+                alt="Syllabus curriculum"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span data-line-text="">syllabus,</span>
           </span>
@@ -164,13 +136,11 @@ export default function HowItWorks() {
               data-icon=""
               style={{ "--color": "#99CFFF", borderRadius: "50%" } as any}
             >
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Wand icon"
-                data-state-machines="State Machine 1"
-                width="80"
-                height="80"
-              ></canvas>
+              <img
+                src="/icons/spaced-recall.svg"
+                alt="Spaced recall flashcards"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span data-line-text="">spaced recall,</span>
             <span
@@ -178,13 +148,11 @@ export default function HowItWorks() {
               data-icon=""
               style={{ "--color": "#A8ECC7" } as any}
             >
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Pallette icon"
-                data-state-machines="State Machine 1"
-                width="80"
-                height="80"
-              ></canvas>
+              <img
+                src="/icons/squad-duels.svg"
+                alt="Squad duels swords"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span data-line-text="">squad duels,</span>
           </span>
@@ -195,13 +163,11 @@ export default function HowItWorks() {
               data-icon=""
               style={{ "--color": "#E4CCFF" } as any}
             >
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Flower icon"
-                data-state-machines="State Machine 1"
-                width="80"
-                height="80"
-              ></canvas>
+              <img
+                src="/icons/rank.svg"
+                alt="Rank champion trophy"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span data-line-text="">rank</span>
           </span>
@@ -212,13 +178,11 @@ export default function HowItWorks() {
               data-icon=""
               style={{ "--color": "#FFF2BE" } as any}
             >
-              <canvas
-                data-how-canvas=""
-                data-artboard="Main - Genie icon"
-                data-state-machines="State Machine 1"
-                width="80"
-                height="80"
-              ></canvas>
+              <img
+                src="/icons/you.svg"
+                alt="HeyMey Sacred Lamp"
+                style={{ width: "100%", height: "100%", borderRadius: "50%", display: "block" }}
+              />
             </span>
             <span data-line-text="">you.</span>
           </span>

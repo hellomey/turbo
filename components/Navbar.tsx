@@ -7,9 +7,12 @@ export default function Navbar() {
     <div className="c-nav" data-nav-container="">
       <div className="d-nav show-desktop-tab">
         <div className="d-nav__left">
-          <a href="#" className="d-nav__logo">
-            <img src="/wordmark.svg" alt="HeyMey Logo" height={24} />
+          <a href="#" className="d-nav__logo" aria-label="HeyMey Home">
+            <img src="/wordmark.svg" alt="HeyMey Logo" height={32} style={{ height: "32px", width: "auto", display: "block" }} />
           </a>
+        </div>
+
+        <div className="d-nav__center">
           <div className="d-nav__links">
             <a href="#how" className="d-nav__link">
               How it works
@@ -17,17 +20,15 @@ export default function Navbar() {
             <a href="#styles" className="d-nav__link">
               Study Map
             </a>
-            <a href="#pricing" className="d-nav__link">
-              Pricing
-            </a>
             <a href="#faq" className="d-nav__link">
               FAQs
             </a>
           </div>
         </div>
+
         <div className="d-nav__right">
           <a
-            href="#pricing"
+            href="#cta"
             className="c-button--semi"
           >
             <span className="c-button__text">Get App</span>
@@ -38,10 +39,12 @@ export default function Navbar() {
       <div className="m-nav show-tablet" data-nav="">
         <div className="m-nav__top">
           <div className="m-nav__logo">
-            <img src="/wordmark.svg" alt="HeyMey Logo" height={20} />
+            <a href="#" aria-label="HeyMey Home">
+              <img src="/wordmark.svg" alt="HeyMey Logo" height={26} style={{ height: "26px", width: "auto", display: "block" }} />
+            </a>
           </div>
           <div className="m-nav__right">
-            <a href="#pricing" className="m-nav__right__button">
+            <a href="#cta" className="m-nav__right__button">
               <span className="c-button--semi">Get App</span>
             </a>
             <button
@@ -60,9 +63,6 @@ export default function Navbar() {
           </a>
           <a href="#styles" className="m-nav__link">
             <span>Study Map</span>
-          </a>
-          <a href="#pricing" className="m-nav__link">
-            <span>Pricing</span>
           </a>
           <a href="#faq" className="m-nav__link">
             <span>FAQs</span>

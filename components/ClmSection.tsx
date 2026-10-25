@@ -24,17 +24,15 @@ export default function ClmSection() {
                 "--top": "164px",
                 "--top-mobile": "32px",
                 "--right-mobile": "26px",
-                "--rotate": "26deg",
+                "--rotate": "12deg",
               } as any
             }
           >
-            <canvas
-              data-clm-canvas=""
-              data-artboard="Main - blue genie"
-              data-state-machines="SM - Blue genie"
-              width="139"
-              height="139"
-            ></canvas>
+            <img
+              src="/icons/clm-learn-lamp.svg"
+              alt="Lit Study Lamp"
+              style={{ width: "100%", height: "100%", display: "block", filter: "drop-shadow(0 10px 20px rgba(2, 132, 199, 0.2))" }}
+            />
           </div>
           <div className="c-clm__title" aria-label="Learn">
             <span>L</span>
@@ -65,16 +63,15 @@ export default function ClmSection() {
                 "--top": "74px",
                 "--top-mobile": "14px",
                 "--left-mobile": "34px",
+                "--rotate": "-8deg",
               } as any
             }
           >
-            <canvas
-              data-clm-canvas=""
-              data-artboard="Main - orange genie"
-              data-state-machines="SM - Orange genie"
-              width="104"
-              height="104"
-            ></canvas>
+            <img
+              src="/icons/clm-relight-flame.svg"
+              alt="Relight Sacred Flame"
+              style={{ width: "100%", height: "100%", display: "block", filter: "drop-shadow(0 10px 20px rgba(245, 158, 11, 0.22))" }}
+            />
           </div>
           <h2 className="c-clm__title" aria-label="Relight">
             <span>R</span>
@@ -107,16 +104,15 @@ export default function ClmSection() {
                 "--bottom": "136px",
                 "--bottom-mobile": "34px",
                 "--left-mobile": "28px",
+                "--rotate": "10deg",
               } as any
             }
           >
-            <canvas
-              data-clm-canvas=""
-              data-artboard="Main - yellow genie"
-              data-state-machines="SM - Yellow genie"
-              width="104"
-              height="104"
-            ></canvas>
+            <img
+              src="/icons/clm-gold-lamp.svg"
+              alt="Gold Master Lamp"
+              style={{ width: "100%", height: "100%", display: "block", filter: "drop-shadow(0 10px 20px rgba(217, 119, 6, 0.22))" }}
+            />
           </div>
           <div
             className="c-clm__icon"
@@ -126,16 +122,15 @@ export default function ClmSection() {
                 "--top": "58px",
                 "--top-mobile": "12px",
                 "--right-mobile": "36px",
+                "--rotate": "-12deg",
               } as any
             }
           >
-            <canvas
-              data-clm-canvas=""
-              data-artboard="Main - purple genie"
-              data-state-machines="SM - Purple genie"
-              width="104"
-              height="104"
-            ></canvas>
+            <img
+              src="/icons/clm-conquer-crest.svg"
+              alt="Conquer Career Crest"
+              style={{ width: "100%", height: "100%", display: "block", filter: "drop-shadow(0 10px 20px rgba(124, 58, 237, 0.22))" }}
+            />
           </div>
           <h2 className="c-clm__title" aria-label="Conquer">
             <span>C</span>

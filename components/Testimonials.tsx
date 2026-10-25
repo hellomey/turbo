@@ -4,63 +4,55 @@ import React from "react";
 
 const testimonialsRow1 = [
   {
-    quote: "HeyMey made revising 42 Polity topics feel like progressing in a game. My lamp turned gold and I cleared Group 4!",
-    name: "Selvi Muthuram",
-    title: "Junior Assistant • TNPSC Gr 4",
+    quote: "honestly was skeptical about the whole study lamp thing but after 2 weeks on the beta apk my polity revision is actually on track?? pls launch on app store soon so i can get my friends on squad battles",
+    name: "Pooja R.",
+    title: "Beta tester • TNPSC Gr 2 prep",
     avatar: "/images/lola.webp",
-    logo: "/images/cadobook.webp",
   },
   {
-    quote: "Squad Battles every Tuesday kept our study group accountable for 8 months straight. Unbeatable motivation.",
-    name: "Karthik Rajan",
-    title: "Village Administrative Officer",
+    quote: "The spaced repetition dimming lamps are genuinely genius. In other apps I forget what I studied 10 days ago. here when teh lamp dims I just know what to revise today. Really solid test build.",
+    name: "Arun Karthik",
+    title: "Early Access • UPSC CSE Aspirant",
     avatar: "/images/michael.webp",
-    logo: "/images/meta.webp",
   },
   {
-    quote: "The spaced recall dimming lamps saved my memory. When a lamp dims, you know exactly what to revise today.",
-    name: "Ananya Prakash",
-    title: "TNPSC Group 2 Aspirant",
+    quote: "finally got beta access yesterday night!! the district quest map is so addictive lol already finished 3 modules instead of scrolling reels. pls dont change anything before public release",
+    name: "kavya_s",
+    title: "Waitlist Member #142 • Group 4",
     avatar: "/images/uche.webp",
-    logo: "/images/wonderful-work.webp",
   },
   {
-    quote: "Best preparation tool for aspirants who refuse to sit through boring 100-hour passive video courses.",
-    name: "Vigneshwaran S.",
-    title: "Deputy Tahsildar",
+    quote: "been using the early build for quant & current affairs. The streak mechanics actually guilt-trip me into studying even after a 10 hr workday. Cant wait for the official rollout.",
+    name: "Siddharth Menon",
+    title: "Closed Beta Tester • Banking Exams",
     avatar: "/images/daniel.webp",
-    logo: "/images/lola-work.webp",
   },
 ];
 
 const testimonialsRow2 = [
   {
-    quote: "Clue Poker and District Quest turned weekend revisions into a high-energy celebration with peers.",
-    name: "Priya Dharshini",
-    title: "Commercial Taxes Officer",
+    quote: "clue poker with my study partner in the test version was chaotic in the best way possible haha. never thought solving previous year questions could feel like playing cards. launch it fast guys!!",
+    name: "Divya Bharathi",
+    title: "Early Tester • TNPSC Group 1",
     avatar: "/images/wonderful.webp",
-    logo: "/images/pullbase.webp",
   },
   {
-    quote: "The PYQ Vault with instant topic mapping is unmatched. It connects 10 years of exams straight to your lamps.",
-    name: "Manikandan T.",
-    title: "Group 2A Ranker",
+    quote: "Found one tiny ui glitch in the leaderboard tab on day 1 (reported it on discord), but otherwise the study map concept is 10/10. It completely replaces my messy notion revision tracker.",
+    name: "Mohammed Farhan",
+    title: "Beta tester • SSC CGL 2026",
     avatar: "/images/seun.webp",
-    logo: "/images/seun-work.webp",
   },
   {
-    quote: "I climbed the Career Ladder from Aspirant to Collector in the app, and now I'm living the dream in service.",
-    name: "Kavitha Sundaram",
-    title: "Sub-Registrar",
+    quote: "tbh standard test series are so dry and depressing. lightng my first study lamp and seeing it turn gold actually gave me dopamine to finish company law. praying the servers hold up at launch lol",
+    name: "sneha r.",
+    title: "Early Access • CA Foundation",
     avatar: "/images/shedrack.webp",
-    logo: "/images/abdul-work.webp",
   },
   {
-    quote: "Preparing for a government job finally feels like progressing in a game you never want to put down.",
-    name: "Abdul Rahman",
-    title: "Secretariat Assistant",
+    quote: "Got the testflight invite last Tuesday. Have completed 18 lamps so far without burn out. If the final release is as smooth as this preview build, its going to change how everyone prepares.",
+    name: "Vignesh W.",
+    title: "TestFlight Tester • Group 2 Aspirant",
     avatar: "/images/abdul.webp",
-    logo: "/images/cadobook.webp",
   },
 ];
 
@@ -68,9 +60,9 @@ export default function Testimonials() {
   return (
     <section className="c-testimonial">
       <div className="c-testimonial__content">
-        <h3 className="c-styles__title">Made for aspirants, loved by toppers</h3>
+        <h3 className="c-styles__title">Loved by our early beta testers</h3>
         <p className="c-styles__desc">
-          See how aspirants across Tamil Nadu are turning daily games into government jobs
+          Unfiltered feedback from students testing our private preview builds before official launch
         </p>
       </div>
 
@@ -94,12 +86,6 @@ export default function Testimonials() {
                       <p className="t-card__subtitle">{item.title}</p>
                     </div>
                   </div>
-                  <img
-                    src={item.logo}
-                    alt={item.name}
-                    loading="lazy"
-                    className="t-card__logo"
-                  />
                 </div>
               </div>
             ))}
@@ -122,12 +108,6 @@ export default function Testimonials() {
                       <p className="t-card__subtitle">{item.title}</p>
                     </div>
                   </div>
-                  <img
-                    src={item.logo}
-                    alt={item.name}
-                    loading="lazy"
-                    className="t-card__logo"
-                  />
                 </div>
               </div>
             ))}
@@ -153,12 +133,6 @@ export default function Testimonials() {
                       <p className="t-card__subtitle">{item.title}</p>
                     </div>
                   </div>
-                  <img
-                    src={item.logo}
-                    alt={item.name}
-                    loading="lazy"
-                    className="t-card__logo"
-                  />
                 </div>
               </div>
             ))}
@@ -181,12 +155,6 @@ export default function Testimonials() {
                       <p className="t-card__subtitle">{item.title}</p>
                     </div>
                   </div>
-                  <img
-                    src={item.logo}
-                    alt={item.name}
-                    loading="lazy"
-                    className="t-card__logo"
-                  />
                 </div>
               </div>
             ))}

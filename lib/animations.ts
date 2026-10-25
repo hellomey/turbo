@@ -59,6 +59,32 @@ export const Qo = (fromEl: HTMLElement | null, toEl: HTMLElement | null): FlipCo
   };
 };
 
+export function splitTextWords(el: HTMLElement) {
+  const walk = (node: Node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent || "";
+      if (!text.trim()) return;
+      const frag = document.createDocumentFragment();
+      const parts = text.split(/(\s+)/);
+      parts.forEach((part) => {
+        if (/^\s+$/.test(part)) {
+          frag.appendChild(document.createTextNode(part));
+        } else if (part.length > 0) {
+          const span = document.createElement("span");
+          span.className = "w";
+          span.textContent = part;
+          frag.appendChild(span);
+        }
+      });
+      node.parentNode?.replaceChild(frag, node);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      if ((node as HTMLElement).tagName.toLowerCase() === "br") return;
+      Array.from(node.childNodes).forEach(walk);
+    }
+  };
+  Array.from(el.childNodes).forEach(walk);
+}
+
 export const Ji = (riveInstance: any, smName: string, inputName: string) => {
   if (!riveInstance || !riveInstance.stateMachineInputs) return null;
   const inputs = riveInstance.stateMachineInputs(smName);
@@ -255,277 +281,202 @@ export class BaseComponent {
   }
 }
 
-// 1. Hero Animation (Cm)
+// 1. Hero Animation (Cherry Blossom Theme)
 export class HeroAnimation extends BaseComponent {
-  textsTl: gsap.core.Timeline | null = null;
-  riveComponent: RiveComponentManager | null = null;
-
   constructor() {
     super({
-      element: "[data-hero]",
+      element: "#hero",
       elements: {
-        allCanvas: "[data-hero-canvas]",
-        switchTextsContainer: "[data-switch-texts]",
-        switchTexts: "[data-switch-texts] span",
-        desktopIconsContainer: "[data-desktop-hero-icons]",
-        desktopIcons: "[data-desktop-hero-icons] div",
-        mobileIconsContainer: "[data-mobile-hero-icons]",
-        mobileIcons: "[data-mobile-hero-icons] div",
+        title: "#heroTitle",
+        glass: "#heroGlass",
+        nav: ".hero .nav",
+        clouds: ".cloud",
+        media: ".hero-media",
       },
     });
     if (!this.element) return;
-    this.animateHeroElements();
-    this.initBgRive();
-    this.addScrollListeners();
-    this.setInitialWidth();
-    this.addEventListeners();
+    this.initHero();
   }
 
-  addEventListeners() {
-    windowWatcher.onWidthChange(() => {
-      this.textsTl?.kill();
-      this.initSet();
-      this.switchTexts();
-      this.showBrush();
-    });
-  }
+  initHero() {
+    const isMobile = typeof window !== "undefined" && window.innerWidth <= 760;
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  getTextSize(idx: number): number {
-    const list = this.elements.switchTexts as HTMLElement[];
-    if (!list || !list[idx]) return 220;
-    return kl(list[idx]).width || 220;
-  }
-
-  setInitialWidth() {
-    const con = this.elements.switchTextsContainer as HTMLElement;
-    if (con) con.style.width = this.getTextSize(0) + "px";
-  }
-
-  initSet() {
-    const e = this.elements.switchTexts as HTMLElement[];
-    const n = this.elements.desktopIconsContainer as HTMLElement;
-    const t = this.elements.desktopIcons as HTMLElement[];
-    const i = this.elements.mobileIconsContainer as HTMLElement;
-    const r = this.elements.mobileIcons as HTMLElement[];
-    this.setInitialWidth();
-    if (n) {
-      n.style.marginLeft = "-8rem";
-      n.style.marginRight = "-8rem";
-    }
-    if (t && t[0]) {
-      t[0].style.opacity = "0";
-      t[0].style.transform = "translateX(8rem)";
-    }
-    if (t && t[2]) {
-      t[2].style.opacity = "0";
-      t[2].style.transform = "translateX(-8rem)";
-    }
-    if (i) {
-      i.style.marginLeft = "0";
-      i.style.marginRight = "0";
-    }
-    if (r && r[0]) {
-      r[0].style.opacity = "0";
-      r[0].style.transform = "translateX(64px)";
-    }
-    if (r && r[2]) {
-      r[2].style.opacity = "0";
-      r[2].style.transform = "translateX(-64px)";
-    }
-    if (e && Array.isArray(e)) {
-      e.forEach((el, idx) => {
-        el.style.transform = "none";
-        el.style.opacity = idx === 0 ? "1" : "0";
-        el.style.pointerEvents = idx === 0 ? "auto" : "none";
+    // 1. Split words for #heroTitle
+    const titleEl = document.getElementById("heroTitle");
+    if (titleEl) {
+      splitTextWords(titleEl);
+      const words = titleEl.querySelectorAll(".w");
+      gsap.set(words, { opacity: 0, y: 24, filter: "blur(10px)" });
+      gsap.to(words, {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration: 1.0,
+        stagger: 0.07,
+        ease: "power3.out",
+        delay: 0.25,
       });
     }
-  }
 
-  switchTexts() {
-    const e = this.elements.switchTextsContainer as HTMLElement;
-    const n = (
-      Array.isArray(this.elements.switchTexts)
-        ? this.elements.switchTexts
-        : [this.elements.switchTexts]
-    ).filter(Boolean) as HTMLElement[];
-    const t = this.elements.desktopIconsContainer as HTMLElement;
-    const i = (
-      Array.isArray(this.elements.desktopIcons)
-        ? this.elements.desktopIcons
-        : [this.elements.desktopIcons]
-    ).filter(Boolean) as HTMLElement[];
-    const r = this.elements.mobileIconsContainer as HTMLElement;
-    const o = (
-      Array.isArray(this.elements.mobileIcons)
-        ? this.elements.mobileIcons
-        : [this.elements.mobileIcons]
-    ).filter(Boolean) as HTMLElement[];
-    if (!n || n.length < 3) return;
-
-    const delay = 2;
-    const d = 0.6;
-    this.textsTl = gsap.timeline({
-      repeat: -1,
-      repeatDelay: 2,
-      defaults: { duration: 0.4, ease: "switch-texts" },
-    });
-
-    const i0 = i[0] || null;
-    const o0 = o[0] || null;
-    const i2 = i[2] || null;
-    const o2 = o[2] || null;
-
-    this.textsTl
-      .to(n[0], { opacity: 0, pointerEvents: "none", y: 10 })
-      .to(e, { width: this.getTextSize(1) + "px" })
-      .to(n[1], { opacity: 1, pointerEvents: "auto" }, "<")
-      .to([t, r].filter(Boolean), { marginLeft: (h: number) => (h === 0 ? "-2.4rem" : "24px"), duration: d }, "<");
-
-    if (i0 || o0) {
-      this.textsTl.to([i0, o0].filter(Boolean), { opacity: 1, x: (h: number) => (h === 0 ? "2.4rem" : "24px"), duration: d }, "<");
+    // Subtitle reveal
+    const subEl = this.element.querySelector(".hero-sub");
+    if (subEl) {
+      gsap.fromTo(
+        subEl,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", delay: 0.55 }
+      );
     }
 
-    this.textsTl
-      .to(n[1], {
-        delay,
-        opacity: 0,
-        pointerEvents: "none",
-        y: 10,
-        onStart: () => {
-          this.showGenie();
-        },
-      })
-      .to(e, { width: this.getTextSize(2) + "px" })
-      .to(n[2], { opacity: 1, pointerEvents: "auto" }, "<")
-      .to([t, r].filter(Boolean), { marginRight: (h: number) => (h === 0 ? "-2.4rem" : "24px"), duration: d }, "<");
-
-    if (i2 || o2) {
-      this.textsTl.to([i2, o2].filter(Boolean), { opacity: 1, x: (h: number) => (h === 0 ? "-2.4rem" : "-24px"), duration: d }, "<");
+    // Nav entrance
+    const navEl = this.element.querySelector(".nav");
+    if (navEl) {
+      gsap.fromTo(
+        navEl,
+        { opacity: 0, y: -16 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.1 }
+      );
     }
 
-    this.textsTl
-      .to(n[2], {
-        delay,
-        opacity: 0,
-        pointerEvents: "none",
-        y: 10,
-        onStart: () => {
-          this.showBrush();
-        },
-      })
-      .to(e, { width: this.getTextSize(0) + "px" })
-      .to(n[0], { opacity: 1, pointerEvents: "auto" }, "<")
-      .to(
-        [t, r].filter(Boolean),
+    // Clouds entrance
+    const cloudL = this.element.querySelector(".cloud-l");
+    const cloudR = this.element.querySelector(".cloud-r");
+    if (cloudL) {
+      gsap.fromTo(
+        cloudL,
+        { x: -80, opacity: 0 },
         {
-          marginRight: (h: number) => (h === 0 ? "-8rem" : "0"),
-          marginLeft: (h: number) => (h === 0 ? "-8rem" : "0"),
-          duration: d,
-        },
-        "<"
-      )
-      .set(n, { y: 0 }, "<");
-
-    if (i0 || o0) {
-      this.textsTl.to([i0, o0].filter(Boolean), { opacity: 0, x: (h: number) => (h === 0 ? "8rem" : "64px"), duration: d }, "<");
+          x: 0,
+          opacity: 1,
+          duration: 1.4,
+          ease: "power3.out",
+          delay: 0.15,
+          onComplete: () => {
+            gsap.set(cloudL, { clearProps: "x" });
+          },
+        }
+      );
     }
-    if (i2 || o2) {
-      this.textsTl.to([i2, o2].filter(Boolean), { opacity: 0, x: (h: number) => (h === 0 ? "-8rem" : "-64px"), duration: d }, "<");
+    if (cloudR) {
+      gsap.fromTo(
+        cloudR,
+        { x: 80, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1.4,
+          ease: "power3.out",
+          delay: 0.15,
+          onComplete: () => {
+            gsap.set(cloudR, { clearProps: "x" });
+          },
+        }
+      );
     }
-  }
 
-  animateHeroElements() {
-    gsap.set("[data-hero-content]", { autoAlpha: 1 });
-    const switchSpans = document.querySelectorAll("[data-switch-texts] span");
-    if (switchSpans && switchSpans[0]) {
-      gsap.set(switchSpans[0], { opacity: 1, pointerEvents: "auto" });
-    }
-    const tl = gsap.timeline({
-      delay: 0.1,
-      onComplete: () => {
-        this.switchTexts();
-      },
-    });
-    tl.from("[data-hero-title] .line", {
-      opacity: 0,
-      y: 32,
-      stagger: 0.08,
-      duration: 1.5,
-    })
-      .from("[data-hero-desc]", { opacity: 0, y: 10, duration: 1.0, stagger: 0.3 }, "<20%")
-      .from("[data-hero-button]", { opacity: 0, duration: 1.0, ease: "power2.out" }, "<20%");
-  }
+    // 2. Frosted glass squares at [x%, y%]
+    const glassContainer = document.getElementById("heroGlass");
+    if (glassContainer) {
+      glassContainer.innerHTML = "";
+      const coords = [
+        [3, 64], [3, 71], [6.5, 71], [10, 71], [3, 78], [-1, 70],
+        [45.5, 76], [49, 80], [49, 76], [52.5, 76],
+        [86, 58], [86, 67], [82, 76], [89.5, 76], [86, 84],
+      ];
 
-  async initBgRive() {
-    try {
-      const riveModule = await import("@rive-app/canvas");
-      const { Rive, RiveFile, Layout, Fit } = riveModule;
-      const canvases = (
-        Array.isArray(this.elements.allCanvas)
-          ? this.elements.allCanvas
-          : [this.elements.allCanvas]
-      ).filter(Boolean) as HTMLCanvasElement[];
-      if (canvases.length === 0) return;
+      coords.forEach(([x, y], idx) => {
+        if (isMobile && idx % 2 !== 0) return;
+        const sq = document.createElement("div");
+        sq.className = "glass";
+        sq.style.left = x + "%";
+        sq.style.top = y + "%";
+        if (x > 40 && x < 60) {
+          sq.style.width = "clamp(28px, 3.4vw, 44px)";
+          sq.style.height = "clamp(28px, 3.4vw, 44px)";
+        } else {
+          sq.style.width = "clamp(36px, 5.4vw, 74px)";
+          sq.style.height = "clamp(36px, 5.4vw, 74px)";
+        }
+        glassContainer.appendChild(sq);
 
-      this.riveComponent = new RiveComponentManager();
-      const riveFile = new RiveFile({
-        src: "/rive/hero.riv",
-        assetLoader: riveFontLoader(riveModule),
-        onLoad: () => {
-          canvases.forEach((c) => {
-            const artboard = c.getAttribute("data-artboard") || undefined;
-            const sm = c.getAttribute("data-state-machines") || undefined;
-            this.riveComponent!.setupRiveInstance(
-              {
-                riveFile,
-                canvas: c,
-                stateMachines: sm,
-                artboard,
-                layout: new Layout({ fit: Fit.Cover }),
-              },
-              canvases.length,
-              true,
-              Rive
-            );
+        gsap.fromTo(
+          sq,
+          { opacity: 0, scale: 0.6 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.6,
+            ease: "back.out(2)",
+            delay: 0.35 + Math.random() * 0.3,
+          }
+        );
+
+        if (!prefersReducedMotion) {
+          gsap.to(sq, {
+            opacity: 0.15,
+            duration: 0.9,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut",
+            delay: Math.random() * 3,
+            repeatDelay: 1 + Math.random() * 3,
           });
-        },
-        onLoadError: () => console.log("Hero Rive load notice"),
+        }
       });
-      await riveFile.init();
-    } catch (e: any) {
-      console.log("Rive init skipped:", e.message);
     }
-  }
 
-  showGenie() {
-    this.riveComponent?.instances.forEach((e) => {
-      const n = Ji(e.rive, e.stateMachines, "Show Genie");
-      n && n.fire && n.fire();
+    // 3. Parallax on Scroll (top top -> bottom top, scrub)
+    if (titleEl) {
+      gsap.to(titleEl, {
+        yPercent: -60,
+        ease: "none",
+        scrollTrigger: {
+          trigger: this.element,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }
+
+    const parClouds = this.element.querySelectorAll("[data-par]");
+    parClouds.forEach((c) => {
+      const par = parseFloat(c.getAttribute("data-par") || "0");
+      gsap.to(c, {
+        y: par * 2,
+        ease: "none",
+        scrollTrigger: {
+          trigger: this.element,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
     });
-  }
 
-  showBrush() {
-    this.riveComponent?.instances.forEach((e) => {
-      const n = Ji(e.rive, e.stateMachines, "Show Brush");
-      n && n.fire && n.fire();
-    });
-  }
+    const mediaEl = this.element.querySelector(".hero-media");
+    if (mediaEl) {
+      gsap.to(mediaEl, {
+        yPercent: 8,
+        ease: "none",
+        scrollTrigger: {
+          trigger: this.element,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }
 
-  setScrollPct(val: number) {
-    this.riveComponent?.instances.forEach((n) => {
-      const t = Ji(n.rive, n.stateMachines, "Scrll Pct");
-      if (t) t.value = val;
-    });
-  }
-
-  addScrollListeners() {
-    if (!this.element) return;
+    // Sticky nav toggle helper
     ScrollTrigger.create({
       trigger: this.element,
-      end: "bottom 60%",
-      scrub: 1,
-      onEnterBack: () => this.setScrollPct(0),
-      onLeave: () => this.setScrollPct(10),
+      start: "bottom top",
+      onEnter: () => document.body.classList.add("scrolled-down"),
+      onLeaveBack: () => document.body.classList.remove("scrolled-down"),
     });
   }
 }
@@ -534,7 +485,7 @@ export class HeroAnimation extends BaseComponent {
 export class HowAnimation extends BaseComponent {
   flipData: FlipCoords[] = [];
   centerFlipData: FlipCoords[] = [];
-  riveComponent: RiveComponentManager | null = null;
+  
 
   constructor() {
     super({
@@ -547,7 +498,7 @@ export class HowAnimation extends BaseComponent {
         titleLines: "[data-how-title] [data-line-text]",
         label: "[data-how-label]",
         mockup: "[data-how-artboard]",
-        allCanvas: "[data-how-canvas]",
+        
       },
     });
     if (!this.element) return;
@@ -559,7 +510,7 @@ export class HowAnimation extends BaseComponent {
     mm.add("(max-width: 768px)", () => {
       this.resetTextIcons();
     });
-    this.observeLoadRive();
+    
   }
 
   initTextIcons() {
@@ -687,76 +638,6 @@ export class HowAnimation extends BaseComponent {
 
     r.add(o);
     r.add(u);
-  }
-
-  observeLoadRive() {
-    if (!this.element) return;
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((t) => {
-        if (t.isIntersecting) {
-          this.initBgRive();
-          obs.disconnect();
-        }
-      });
-    });
-    obs.observe(this.element);
-  }
-
-  async initBgRive() {
-    try {
-      const riveModule = await import("@rive-app/canvas");
-      const { Rive, RiveFile, Layout, Fit } = riveModule;
-      const canvases = (
-        Array.isArray(this.elements.allCanvas)
-          ? this.elements.allCanvas
-          : [this.elements.allCanvas]
-      ).filter(Boolean) as HTMLCanvasElement[];
-      if (canvases.length === 0) return;
-
-      this.riveComponent = new RiveComponentManager();
-      const riveFile = new RiveFile({
-        src: "/rive/start_with_style_section.riv",
-        assetLoader: riveFontLoader(riveModule),
-        onLoad: () => {
-          canvases.forEach((c) => {
-            const artboard = c.getAttribute("data-artboard") || undefined;
-            const sm = c.getAttribute("data-state-machines") || undefined;
-            this.riveComponent!.setupRiveInstance(
-              {
-                riveFile,
-                canvas: c,
-                stateMachines: sm,
-                artboard,
-                layout: new Layout({ fit: Fit.FitWidth }),
-              },
-              canvases.length,
-              true,
-              Rive
-            );
-          });
-        },
-      });
-      await riveFile.init();
-      this.addScrollListeners();
-    } catch (_) {}
-  }
-
-  setScrollPct(val: number) {
-    this.riveComponent?.instances.forEach((n) => {
-      const t = Ji(n.rive, n.stateMachines, "Scrll Pct");
-      if (t) t.value = val;
-    });
-  }
-
-  addScrollListeners() {
-    if (!this.element) return;
-    ScrollTrigger.create({
-      trigger: this.element,
-      end: "bottom 60%",
-      scrub: 1,
-      onEnterBack: () => this.setScrollPct(9),
-      onLeave: () => this.setScrollPct(10),
-    });
   }
 }
 
@@ -1581,127 +1462,6 @@ export class FeaturesAnimation extends BaseComponent {
   }
 }
 
-// 8. Pricing Section (km)
-export class PricingAnimation extends BaseComponent {
-  lastHovered: string | null = null;
-  riveComponent: RiveComponentManager | null = null;
-
-  constructor() {
-    super({
-      element: "[data-pricing]",
-      elements: {
-        allCanvas: "[data-pricing-canvas]",
-        genieLeft: "[data-genie-left]",
-        genieRight: "[data-genie-right]",
-        pricingCard: "[data-pricing-card]",
-      },
-    });
-    if (!this.element) return;
-    this.observeLoadRive();
-  }
-
-  observeLoadRive() {
-    if (!this.element) return;
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((t) => {
-        if (t.isIntersecting) {
-          this.initBgRive();
-          obs.disconnect();
-        }
-      });
-    });
-    obs.observe(this.element);
-  }
-
-  showGenie(e: string) {
-    this.riveComponent?.instances.forEach((n) => {
-      const t = Ji(n.rive, n.stateMachines, "Genie appear");
-      if (t && n.stateMachines === e) t.value = true;
-    });
-  }
-
-  hideGenie(e: string) {
-    this.riveComponent?.instances.forEach((n) => {
-      const t = Ji(n.rive, n.stateMachines, "Genie appear");
-      if (t && n.stateMachines === e) t.value = false;
-    });
-  }
-
-  async initBgRive() {
-    try {
-      const riveModule = await import("@rive-app/canvas");
-      const { Rive, RiveFile, Layout, Fit } = riveModule;
-      const canvases = (
-        Array.isArray(this.elements.allCanvas)
-          ? this.elements.allCanvas
-          : [this.elements.allCanvas]
-      ).filter(Boolean) as HTMLCanvasElement[];
-      if (canvases.length === 0) return;
-
-      this.riveComponent = new RiveComponentManager();
-      const riveFile = new RiveFile({
-        src: "/rive/pricing_section.riv",
-        assetLoader: riveFontLoader(riveModule),
-        onLoad: () => {
-          canvases.forEach((c) => {
-            const artboard = c.getAttribute("data-artboard") || undefined;
-            const sm = c.getAttribute("data-state-machines") || undefined;
-            this.riveComponent!.setupRiveInstance(
-              {
-                riveFile,
-                canvas: c,
-                stateMachines: sm,
-                artboard,
-                layout: new Layout({ fit: Fit.Cover }),
-              },
-              canvases.length,
-              true,
-              Rive
-            );
-          });
-        },
-      });
-      await riveFile.init();
-      this.addEventListeners();
-    } catch (_) {}
-  }
-
-  addEventListeners() {
-    const e = this.elements.pricingCard as HTMLElement;
-    const n = this.elements.genieLeft as HTMLElement;
-    const t = this.elements.genieRight as HTMLElement;
-    if (!e || !n || !t) return;
-
-    const leftSm = n.getAttribute("data-state-machines") || "";
-    const rightSm = t.getAttribute("data-state-machines") || "";
-    const o = 40;
-
-    e.addEventListener("mousemove", (u: MouseEvent) => {
-      if (u.clientX < window.innerWidth / 2 - o) {
-        if (this.lastHovered === "left") return;
-        this.showGenie(leftSm);
-        this.hideGenie(rightSm);
-        this.lastHovered = "left";
-      } else if (u.clientX > window.innerWidth / 2 + o) {
-        if (this.lastHovered === "right") return;
-        this.showGenie(rightSm);
-        this.hideGenie(leftSm);
-        this.lastHovered = "right";
-      } else {
-        this.hideGenie(leftSm);
-        this.hideGenie(rightSm);
-        this.lastHovered = null;
-      }
-    });
-
-    e.addEventListener("mouseleave", () => {
-      this.hideGenie(leftSm);
-      this.hideGenie(rightSm);
-      this.lastHovered = null;
-    });
-  }
-}
-
 // 9. FAQ Mouse Trail Animation (Mm)
 export const Gn = {
   imageCount: 35,
@@ -1975,89 +1735,182 @@ export class NavAnimation extends BaseComponent {
   }
 }
 
-// 11. Footer Animation (Lm)
+// 11. Footer Animation (CTA + Lime Footer)
 export class FooterAnimation extends BaseComponent {
-  riveComponent: RiveComponentManager | null = null;
-
   constructor() {
     super({
-      element: "[data-footer]",
+      element: "#footer",
       elements: {
-        allCanvas: "[data-footer-canvas]",
+        cta: "#cta",
+        fLogo: ".f-logo",
       },
     });
-    if (!this.element) return;
-    this.observeLoadRive();
+    this.initCta();
+    this.initFooterLogo();
   }
 
-  observeLoadRive() {
-    if (!this.element) return;
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((t) => {
-        if (t.isIntersecting) {
-          this.initBgRive();
-          obs.disconnect();
+  initCta() {
+    const ctaSection = document.getElementById("cta");
+    if (!ctaSection) return;
+
+    // 1. Grid sq-field
+    const sqField = ctaSection.querySelector(".sq-field");
+    if (sqField && sqField.children.length === 0) {
+      const count = parseInt(sqField.getAttribute("data-count") || "16", 10);
+      for (let i = 0; i < count; i++) {
+        const col = Math.floor(Math.random() * 30);
+        const row = Math.floor(Math.random() * 6);
+        const sq = document.createElement("div");
+        sq.className = "grid-sq";
+        sq.style.width = "46px";
+        sq.style.height = "46px";
+        sq.style.left = (col * 48 - 10) + "px";
+        sq.style.top = (row * 48 + 6) + "px";
+        sqField.appendChild(sq);
+
+        gsap.to(sq, {
+          opacity: 1,
+          duration: 1.2,
+          yoyo: true,
+          repeat: -1,
+          ease: "sine.inOut",
+          delay: Math.random() * 4,
+          repeatDelay: Math.random() * 3,
+        });
+      }
+    }
+
+    // 2. Petals generator
+    const petalsContainer = document.getElementById("petals");
+    if (petalsContainer && petalsContainer.children.length === 0) {
+      for (let i = 0; i < 18; i++) {
+        const petal = document.createElement("span");
+        petal.className = "petal";
+        const left = Math.random() * 100;
+        const dx = -80 + Math.random() * 160;
+        const dur = 9 + Math.random() * 9;
+        const del = -(Math.random() * 15);
+        const scale = 0.6 + Math.random() * 0.8;
+        petal.style.left = left + "%";
+        petal.style.setProperty("--dx", dx + "px");
+        petal.style.animationDuration = dur + "s";
+        petal.style.animationDelay = del + "s";
+        petal.style.transform = "scale(" + scale + ")";
+        petalsContainer.appendChild(petal);
+      }
+    }
+
+    // 3. CTA image parallax
+    const ctaImg = document.getElementById("ctaImg");
+    if (ctaImg) {
+      gsap.fromTo(
+        ctaImg,
+        { yPercent: -12 },
+        {
+          yPercent: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ctaSection,
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+          },
         }
-      });
-    });
-    obs.observe(this.element);
+      );
+    }
+
+    // 4. CTA Card animation
+    const ctaCard = document.getElementById("ctaCard");
+    if (ctaCard) {
+      const splitEl = ctaCard.querySelector(".split") as HTMLElement | null;
+      if (splitEl) splitTextWords(splitEl);
+
+      gsap.fromTo(
+        ctaCard,
+        { y: 80, scale: 0.94, opacity: 0, filter: "blur(10px)" },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ctaSection,
+            start: "top 60%",
+          },
+        }
+      );
+    }
   }
 
-  async initBgRive() {
-    try {
-      const riveModule = await import("@rive-app/canvas");
-      const { Rive, RiveFile, Layout, Fit } = riveModule;
-      const canvases = (
-        Array.isArray(this.elements.allCanvas)
-          ? this.elements.allCanvas
-          : [this.elements.allCanvas]
-      ).filter(Boolean) as HTMLCanvasElement[];
-      if (canvases.length === 0) return;
+  initFooterLogo() {
+    const footerEl = document.getElementById("footer");
+    if (!footerEl) return;
 
-      this.riveComponent = new RiveComponentManager();
-      const riveFile = new RiveFile({
-        src: "/rive/footer.riv",
-        assetLoader: riveFontLoader(riveModule),
-        onLoad: () => {
-          canvases.forEach((c) => {
-            const artboard = c.getAttribute("data-artboard") || undefined;
-            const sm = c.getAttribute("data-state-machines") || undefined;
-            this.riveComponent!.setupRiveInstance(
-              {
-                riveFile,
-                canvas: c,
-                stateMachines: sm,
-                artboard,
-                layout: new Layout({ fit: Fit.Cover }),
-              },
-              canvases.length,
-              true,
-              Rive
-            );
-          });
+    const fRing = footerEl.querySelector("#fRing");
+    const fMark = footerEl.querySelector("#fMark");
+    const fDots = footerEl.querySelectorAll(".fdot");
+
+    if (!fRing || !fMark || fDots.length < 3) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: footerEl,
+        start: "top 92%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // dots bounce y -8 (.25s, stagger .08, yoyo, repeat 3, sine.inOut)
+    tl.to(fDots, {
+      y: -8,
+      duration: 0.25,
+      stagger: 0.08,
+      yoyo: true,
+      repeat: 3,
+      ease: "sine.inOut",
+    })
+      // all dots move to cx 27 cy 50 (.45s power3.inOut)
+      .to(fDots, {
+        attr: { cx: 27, cy: 50 },
+        duration: 0.45,
+        ease: "power3.inOut",
+      })
+      // dots 2 and 3 fade out (.1s)
+      .to([fDots[1], fDots[2]], {
+        opacity: 0,
+        duration: 0.1,
+      })
+      // #fMark strokeDashoffset 0 (.6s power3.out, "-=.05") with dot 1 r -> 5.5 (back.out(3), "<")
+      .to(
+        fMark,
+        {
+          strokeDashoffset: 0,
+          duration: 0.6,
+          ease: "power3.out",
         },
-      });
-      await riveFile.init();
-      this.addScrollListeners();
-    } catch (_) {}
-  }
-
-  setScrollPct(val: number) {
-    this.riveComponent?.instances.forEach((n) => {
-      const t = Ji(n.rive, n.stateMachines, "Scrll Pct");
-      if (t) t.value = val;
-    });
-  }
-
-  addScrollListeners() {
-    if (!this.element) return;
-    ScrollTrigger.create({
-      trigger: this.element,
-      start: "top 70%",
-      end: "bottom top",
-      onEnter: () => this.setScrollPct(10),
-      onLeaveBack: () => this.setScrollPct(0),
-    });
+        "-=0.05"
+      )
+      .to(
+        fDots[0],
+        {
+          attr: { r: 5.5 },
+          duration: 0.6,
+          ease: "back.out(3)",
+        },
+        "<"
+      )
+      // #fRing strokeDashoffset 0 (.9s power2.inOut, "-=.3")
+      .to(
+        fRing,
+        {
+          strokeDashoffset: 0,
+          duration: 0.9,
+          ease: "power2.inOut",
+        },
+        "-=0.3"
+      );
   }
 }
 
@@ -2101,7 +1954,6 @@ export function initAllAnimations(): Lenis | undefined {
   safeInit("Features", () => new FeaturesAnimation());
   safeInit("Nav", () => new NavAnimation(lenis || null));
   safeInit("Footer", () => new FooterAnimation());
-  safeInit("Pricing", () => new PricingAnimation());
   safeInit("Faq", () => new FaqAnimation());
 
   // Refresh ScrollTrigger after render settles

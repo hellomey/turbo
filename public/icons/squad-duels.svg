@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="100%" height="100%" fill="none">
+  <defs>
+    <clipPath id="duel_clip">
+      <circle cx="40" cy="40" r="40" />
+    </clipPath>
+    <!-- Background Gradient -->
+    <linearGradient id="duel_bg" x1="12" y1="10" x2="68" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#CEFADE" />
+      <stop offset="100%" stop-color="#6CE2A7" />
+    </linearGradient>
+    <!-- Blade Light Facet -->
+    <linearGradient id="blade_light" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E2E8F0" />
+    </linearGradient>
+    <!-- Blade Shadow Facet -->
+    <linearGradient id="blade_shadow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#CBD5E1" />
+      <stop offset="100%" stop-color="#94A3B8" />
+    </linearGradient>
+    <!-- Gold Guard Gradient -->
+    <linearGradient id="gold_guard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFE066" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#B45309" />
+    </linearGradient>
+    <!-- Drop Shadow -->
+    <filter id="duel_shadow" x="12" y="12" width="56" height="56" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#064E3B" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <g clip-path="url(#duel_clip)">
+    <!-- Base Gamified Circle -->
+    <circle cx="40" cy="40" r="40" fill="url(#duel_bg)" />
+
+    <!-- Radiant Combat Aura -->
+    <circle cx="40" cy="40" r="28" fill="#FFFFFF" opacity="0.35" />
+    <circle cx="40" cy="40" r="22" fill="#34D399" opacity="0.25" filter="blur(6px)" />
+
+    <!-- Squad Heraldic Battle Shield Backing -->
+    <path d="M40 16 C50 16 57 20 57 30 C57 44 46 54 40 58 C34 54 23 44 23 30 C23 20 30 16 40 16 Z" fill="#FFFFFF" fill-opacity="0.55" stroke="#059669" stroke-width="2" stroke-linecap="round" />
+    <path d="M40 20 C47 20 52 23 52 30 C52 41 44 49 40 52 C36 49 28 41 28 30 C28 23 33 20 40 20 Z" fill="#ECFDF5" fill-opacity="0.8" />
+
+    <!-- Crossed Champion Broadswords -->
+    <g filter="url(#duel_shadow)">
+      <!-- Sword 1: Bottom-Left to Top-Right -->
+      <g transform="rotate(45 40 40)">
+        <!-- Blade Point & Body (Light Left Facet) -->
+        <path d="M37 15 L40 10 L40 50 L37 49 Z" fill="url(#blade_light)" />
+        <!-- Blade Body (Shadow Right Facet) -->
+        <path d="M40 10 L43 15 L43 49 L40 50 Z" fill="url(#blade_shadow)" />
+        <!-- Central Fuller Ridge -->
+        <line x1="40" y1="12" x2="40" y2="48" stroke="#64748B" stroke-width="0.9" />
+
+        <!-- Winged Golden Crossguard -->
+        <path d="M30 50 C34 49 37 50.5 40 51 C43 50.5 46 49 50 50 C51 51 51 53 49 54 C45 54.5 43 53 40 53 C37 53 35 54.5 31 54 C29 53 29 51 30 50 Z" fill="url(#gold_guard)" />
+        <circle cx="40" cy="52" r="2" fill="#EF4444" stroke="#991B1B" stroke-width="0.5" />
+
+        <!-- Leather Spiral Grip -->
+        <rect x="38" y="53.5" width="4" height="9" rx="1.5" fill="#1E293B" />
+        <line x1="38" y1="56" x2="42" y2="55" stroke="#F59E0B" stroke-width="0.8" />
+        <line x1="38" y1="59" x2="42" y2="58" stroke="#F59E0B" stroke-width="0.8" />
+
+        <!-- Golden Pommel -->
+        <circle cx="40" cy="64" r="2.8" fill="url(#gold_guard)" />
+        <circle cx="40" cy="64" r="1.2" fill="#FEF08A" />
+      </g>
+
+      <!-- Sword 2: Bottom-Right to Top-Left -->
+      <g transform="rotate(-45 40 40)">
+        <!-- Blade Point & Body (Light Left Facet) -->
+        <path d="M37 15 L40 10 L40 50 L37 49 Z" fill="url(#blade_light)" />
+        <!-- Blade Body (Shadow Right Facet) -->
+        <path d="M40 10 L43 15 L43 49 L40 50 Z" fill="url(#blade_shadow)" />
+        <!-- Central Fuller Ridge -->
+        <line x1="40" y1="12" x2="40" y2="48" stroke="#64748B" stroke-width="0.9" />
+
+        <!-- Winged Golden Crossguard -->
+        <path d="M30 50 C34 49 37 50.5 40 51 C43 50.5 46 49 50 50 C51 51 51 53 49 54 C45 54.5 43 53 40 53 C37 53 35 54.5 31 54 C29 53 29 51 30 50 Z" fill="url(#gold_guard)" />
+        <circle cx="40" cy="52" r="2" fill="#EF4444" stroke="#991B1B" stroke-width="0.5" />
+
+        <!-- Leather Spiral Grip -->
+        <rect x="38" y="53.5" width="4" height="9" rx="1.5" fill="#1E293B" />
+        <line x1="38" y1="56" x2="42" y2="55" stroke="#F59E0B" stroke-width="0.8" />
+        <line x1="38" y1="59" x2="42" y2="58" stroke="#F59E0B" stroke-width="0.8" />
+
+        <!-- Golden Pommel -->
+        <circle cx="40" cy="64" r="2.8" fill="url(#gold_guard)" />
+        <circle cx="40" cy="64" r="1.2" fill="#FEF08A" />
+      </g>
+    </g>
+
+    <!-- Center Clash Energy Explosion (Epic Battle Flash) -->
+    <g transform="translate(40, 40)">
+      <!-- Outer Golden Ring Shockwave -->
+      <circle cx="0" cy="0" r="10" fill="#FEF08A" fill-opacity="0.45" />
+      <circle cx="0" cy="0" r="6" fill="#F59E0B" fill-opacity="0.55" />
+      
+      <!-- 8-Point Brilliant Starburst Flash -->
+      <path d="M0 -12 L2.5 -3 L12 0 L2.5 3 L0 12 L-2.5 3 L-12 0 L-2.5 -3 Z" fill="#FFFFFF" />
+      <path d="M0 -7 L1.5 -1.5 L7 0 L1.5 1.5 L0 7 L-1.5 1.5 L-7 0 L-1.5 -1.5 Z" fill="#FFFBEB" />
+      <circle cx="0" cy="0" r="2.5" fill="#FF8800" />
+      <circle cx="0" cy="0" r="1.2" fill="#FFFFFF" />
+
+      <!-- Spark particles flying outward -->
+      <circle cx="7" cy="-7" r="1.5" fill="#FFFFFF" />
+      <circle cx="-8" cy="6" r="1.5" fill="#FFE58F" />
+      <circle cx="8" cy="7" r="1.2" fill="#FFE58F" />
+      <circle cx="-7" cy="-8" r="1.2" fill="#FFFFFF" />
+    </g>
+  </g>
+</svg>

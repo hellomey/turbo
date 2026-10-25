@@ -1,16 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" fill="none" viewBox="0 0 65 65">
-  <g clip-path="url(#clip0_3239_32511)">
-    <rect width="64" height="64" x=".352" y=".778" fill="#FFE7DA" rx="32" />
-    <path fill="#252B37"
-      d="M68.81 104.958a4.044 4.044 0 0 1-5.39-1.558L33.528 51.513a6.27 6.27 0 0 1 2.506-8.675 6.27 6.27 0 0 1 8.575 2.828l25.958 53.963a4.044 4.044 0 0 1-1.757 5.329Z" />
-    <path fill="#C999FF"
-      d="M34.205 52.791c-1.97-.47-3.933-1.327-5.62-2.27-3.625-2.028-7.11-4.543-9.359-8.032-5.633-8.735-1.888-19.777 2.963-27.943.705-1.187 1.684-.365 2.293.37.996 1.205 1.749 2.31 3.102 3.19 2.97 1.93 6.551 2.405 9.792 3.701 3.211 1.288 5.987 3.642 7.753 6.622 3.402 5.747 2.136 12.124-.109 18.028-1.827 4.803-5.573 7.578-10.806 6.33l-.01.004Z" />
-    <path fill="#FF8744"
-      d="M43.23 28.768c-.43.665-1.184 1.07-1.954 1.257-.774.187-1.579.183-2.375.196-2.78.06-5.586.396-8.196 1.361-2.61.966-5.02 2.61-6.582 4.912-.749 1.1-1.301 2.345-2.223 3.302l-.026.026c-1.41 1.423-3.833.779-4.481-1.114-2.732-7.983.622-17.132 4.794-24.162.704-1.192 1.679-.365 2.292.366.997 1.209 1.75 2.31 3.102 3.188 2.972 1.936 6.552 2.406 9.793 3.707 1.01.4 1.975.914 2.884 1.514A9.402 9.402 0 0 1 43 26.092c.53.84.857 1.701.235 2.667l-.004.009Z" />
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" viewBox="0 0 64 64">
   <defs>
-    <clipPath id="clip0_3239_32511">
-      <rect width="64" height="64" x=".352" y=".778" fill="#fff" rx="32" />
+    <clipPath id="you_av_clip">
+      <rect width="64" height="64" rx="32" />
     </clipPath>
+    <linearGradient id="you_av_bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFEADE" />
+      <stop offset="100%" stop-color="#FFC5A3" />
+    </linearGradient>
+    <linearGradient id="you_gold" x1="20" y1="12" x2="44" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF9A6" />
+      <stop offset="50%" stop-color="#FF9100" />
+      <stop offset="100%" stop-color="#E65100" />
+    </linearGradient>
   </defs>
+
+  <g clip-path="url(#you_av_clip)">
+    <!-- Avatar Background -->
+    <rect width="64" height="64" fill="url(#you_av_bg)" />
+
+    <!-- Ambient Aura -->
+    <circle cx="32" cy="28" r="22" fill="#FFFFFF" opacity="0.5" />
+
+    <!-- Aspirant Hoodie / Sweater (Modern Teal Study Hoodie) -->
+    <path d="M12 64 C12 48 20 44 32 44 C44 44 52 48 52 64 Z" fill="#0284C7" />
+    <!-- Hoodie V-neck and strings -->
+    <path d="M26 44 C28 50 36 50 38 44 Z" fill="#0369A1" />
+    <circle cx="32" cy="48" r="2" fill="#BAE6FD" />
+
+    <!-- Golden HeyMey Diya Flame Pin on Chest -->
+    <path d="M38 52 C37 50 37 48 39 46 C41 48 41 50 40 52 C39.5 53 38.5 53 38 52 Z" fill="url(#you_gold)" />
+    <circle cx="39" cy="49" r="0.8" fill="#FFFBEB" />
+
+    <!-- Neck -->
+    <rect x="28" y="34" width="8" height="12" rx="3" fill="#FBBF24" opacity="0.8" />
+    <path d="M28 36 C30 40 34 40 36 36 Z" fill="#D97706" opacity="0.3" />
+
+    <!-- Head & Face -->
+    <ellipse cx="32" cy="27" rx="11" ry="12" fill="#FED7AA" />
+
+    <!-- Friendly Cheeks & Smile -->
+    <ellipse cx="24" cy="30" rx="2" ry="1.2" fill="#FB7185" opacity="0.6" />
+    <ellipse cx="40" cy="30" rx="2" ry="1.2" fill="#FB7185" opacity="0.6" />
+    <path d="M28 31 C29.5 34 34.5 34 36 31" stroke="#9A3412" stroke-width="1.5" stroke-linecap="round" fill="none" />
+
+    <!-- Eyes (Enthusiastic Aspirant) -->
+    <ellipse cx="26" cy="26" rx="1.6" ry="2.2" fill="#1E293B" />
+    <ellipse cx="38" cy="26" rx="1.6" ry="2.2" fill="#1E293B" />
+    <circle cx="25.3" cy="25" r="0.7" fill="#FFFFFF" />
+    <circle cx="37.3" cy="25" r="0.7" fill="#FFFFFF" />
+
+    <!-- Smart Sleek Study Glasses -->
+    <rect x="22" y="22" width="9" height="7.5" rx="3" fill="none" stroke="#0F172A" stroke-width="1.3" />
+    <rect x="33" y="22" width="9" height="7.5" rx="3" fill="none" stroke="#0F172A" stroke-width="1.3" />
+    <path d="M31 25.5 L33 25.5" stroke="#0F172A" stroke-width="1.3" />
+
+    <!-- Hair (Textured Casual Crop) -->
+    <path d="M20 22 C20 14 26 11 32 11 C38 11 44 14 44 22 C43 18 39 16 32 16 C25 16 21 18 20 22 Z" fill="#451A03" />
+    <path d="M22 17 C25 13 31 12 37 13 C35 15 31 15 28 16 Z" fill="#78350F" />
+
+    <!-- Floating Mini Sparkles -->
+    <circle cx="16" cy="20" r="1.2" fill="#F97316" />
+    <path d="M47 16 L48 18 L50 19 L48 20 L47 22 L46 20 L44 19 L46 18 Z" fill="#F59E0B" />
+  </g>
 </svg>

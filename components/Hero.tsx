@@ -1,136 +1,104 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
+
+const HERO_VIDEO =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093331_5998f443-1b9c-4b62-820c-8219c73c72c4.mp4";
+const HERO_POSTER =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_b7826239-e451-4e15-b42b-d6bcf9497a32.png";
+const CLOUD_A =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093216_44218665-b15e-4566-a2d4-2676ab03609d.png";
+const CLOUD_B =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_0f37c0c3-f82c-485b-87dd-5a35b75a8782.png";
 
 export default function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Ensure video properties satisfy browser autoplay policies
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute("playsinline", "true");
+    video.setAttribute("webkit-playsinline", "true");
+
+    const playVideo = () => {
+      if (video.paused) {
+        video.play().catch(() => { });
+      }
+    };
+
+    playVideo();
+
+    // Fallback listeners to trigger play on first interaction if blocked
+    const handleInteraction = () => {
+      playVideo();
+      window.removeEventListener("scroll", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
+      window.removeEventListener("click", handleInteraction);
+    };
+
+    window.addEventListener("scroll", handleInteraction, { passive: true, once: true });
+    window.addEventListener("touchstart", handleInteraction, { passive: true, once: true });
+    window.addEventListener("click", handleInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleInteraction);
+      window.removeEventListener("touchstart", handleInteraction);
+      window.removeEventListener("click", handleInteraction);
+    };
+  }, []);
+
   return (
-    <section className="c-hero" data-hero="">
-      <div className="c-hero__inner" style={{ position: "relative", zIndex: 10 }}>
-        <div
-          className="c-hero__content"
-          data-hero-content=""
-          style={{ position: "relative", zIndex: 10, opacity: 1, visibility: "inherit" }}
-        >
-          <div
-            className="c-hero__text__icons show-tablet"
-            data-mobile-hero-icons=""
-            style={{ marginLeft: 24, marginRight: -80 }}
-          >
-            <div className="c-hero__text__icon">
-              <canvas
-                data-hero-canvas=""
-                data-artboard="Main - Icon 1"
-                data-state-machines="State Machine 1"
-                width="0"
-                height="0"
-              ></canvas>
-            </div>
-            <div className="c-hero__text__icon">
-              <canvas
-                data-hero-canvas=""
-                data-artboard="Main - Icon 2"
-                data-state-machines="State Machine 1"
-                width="0"
-                height="0"
-              ></canvas>
-            </div>
-            <div className="c-hero__text__icon">
-              <canvas
-                data-hero-canvas=""
-                data-artboard="Main - Icon 3"
-                data-state-machines="State Machine 1"
-                width="0"
-                height="0"
-              ></canvas>
-            </div>
-          </div>
+    <section className="hero" id="hero">
 
-          <h1
-            className="c-hero__title"
-            data-hero-title=""
-            aria-label="Aspirants don’t have to start from scratch"
-          >
-            <span className="line" style={{ opacity: 1 }}>
-              <div data-switch-texts="" style={{ minWidth: 220 }}>
-                <span style={{ opacity: 1, pointerEvents: "auto" }}>Aspirants</span>
-                <span style={{ opacity: 0, pointerEvents: "none" }}>Dreamers</span>
-                <span style={{ opacity: 0, pointerEvents: "none" }}>Rankers</span>
-              </div>
-              <div
-                className="c-hero__text__icons show-desktop-tab"
-                data-desktop-hero-icons=""
-                style={{ marginLeft: "-2.4rem", marginRight: "-80px" }}
-              >
-                <div className="c-hero__text__icon">
-                  <canvas
-                    data-hero-canvas=""
-                    data-artboard="Main - Icon 1"
-                    data-state-machines="State Machine 1"
-                    width="80"
-                    height="80"
-                  ></canvas>
-                </div>
-                <div className="c-hero__text__icon">
-                  <canvas
-                    data-hero-canvas=""
-                    data-artboard="Main - Icon 2"
-                    data-state-machines="State Machine 1"
-                    width="80"
-                    height="80"
-                  ></canvas>
-                </div>
-                <div className="c-hero__text__icon">
-                  <canvas
-                    data-hero-canvas=""
-                    data-artboard="Main - Icon 3"
-                    data-state-machines="State Machine 1"
-                    width="80"
-                    height="80"
-                  ></canvas>
-                </div>
-              </div>
-              <span>don’t have</span>
-            </span>
-            <span className="line line-2">
-              <span>to start</span>
-              <span>from scratch</span>
-            </span>
-          </h1>
-
-          <p className="c-hero__desc" data-hero-desc="">
-            Turn your 1–3 year government-exam prep into a game you love to play.
-          </p>
-
-          <a href="#pricing" className="c-button" data-hero-button="">
-            <span className="c-button__text">Start Free</span>
-          </a>
-        </div>
+      {/* Cloud Left - Drifting cumulus cloud over top-left corner */}
+      <div className="cloud cloud-l" data-par="-60">
+        <img
+          className="drift-a"
+          src={CLOUD_A}
+          alt="Drifting pink sunset cloud"
+          loading="eager"
+          decoding="async"
+        />
       </div>
 
-      <canvas
-        data-hero-canvas=""
-        data-artboard="Main - Foreground - Desktop"
-        data-state-machines="SM - All motion"
-        className="show-desktop"
-        width="1905"
-        height="917"
-      ></canvas>
-      <canvas
-        data-hero-canvas=""
-        data-artboard="Main - Big clouds - Desktop"
-        data-state-machines="SM - Clouds motion"
-        className="show-desktop"
-        width="1905"
-        height="917"
-      ></canvas>
-      <canvas
-        data-hero-canvas=""
-        data-artboard="Main - Mobile"
-        data-state-machines="SM - All motion"
-        className="show-mobile"
-        width="0"
-        height="0"
-      ></canvas>
+      {/* Cloud Right - Drifting cumulus cloud over top-right corner */}
+      <div className="cloud cloud-r" data-par="-90">
+        <img
+          className="drift-b"
+          src={CLOUD_B}
+          alt="Drifting pink sunset cloud"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+
+      {/* Hero Headline - Centered in open sky with GSAP word blur reveal */}
+      <h1 id="heroTitle" className="split">
+        You don’t have to<br />
+        start from <em>scratch.</em>
+      </h1>
+
+      {/* Hero Media Video with sky gradient mask - river, petals & birds moving */}
+      <div className="hero-media">
+        <video
+          ref={videoRef}
+          id="heroVideo"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={HERO_POSTER}
+          src={HERO_VIDEO}
+        />
+      </div>
+
+      {/* Frosted Glass Floating Squares */}
+      <div className="hero-glass" id="heroGlass" />
     </section>
   );
 }

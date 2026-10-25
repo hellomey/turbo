@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" fill="none" viewBox="0 0 65 65">
+  <g clip-path="url(#clip_flower)">
+    <rect width="64" height="64" x=".5" y=".5" fill="#E4CCFF" rx="32" />
+    <!-- Stem and Leaf -->
+    <path d="M32.5 35V49" stroke="#10B981" stroke-width="3.5" stroke-linecap="round" />
+    <path d="M32.5 42C36.5 40 40 41 41 44C38 45.5 34 44.5 32.5 42Z" fill="#10B981" />
+    <!-- 6 White Petals -->
+    <ellipse cx="32.5" cy="22" rx="5.5" ry="7.5" fill="#FFFFFF" />
+    <ellipse cx="32.5" cy="38" rx="5.5" ry="7.5" fill="#FFFFFF" />
+    <ellipse cx="24.5" cy="26" rx="5.5" ry="7.5" transform="rotate(-60 24.5 26)" fill="#FFFFFF" />
+    <ellipse cx="40.5" cy="34" rx="5.5" ry="7.5" transform="rotate(-60 40.5 34)" fill="#FFFFFF" />
+    <ellipse cx="24.5" cy="34" rx="5.5" ry="7.5" transform="rotate(60 24.5 34)" fill="#FFFFFF" />
+    <ellipse cx="40.5" cy="26" rx="5.5" ry="7.5" transform="rotate(60 40.5 26)" fill="#FFFFFF" />
+    <!-- Sunny Yellow Center -->
+    <circle cx="32.5" cy="30" r="6" fill="#FBBF24" />
+    <circle cx="32.5" cy="30" r="4.2" fill="#F59E0B" />
+  </g>
+  <defs>
+    <clipPath id="clip_flower">
+      <rect width="64" height="64" x=".5" y=".5" fill="#fff" rx="32" />
+    </clipPath>
+  </defs>
+</svg>
