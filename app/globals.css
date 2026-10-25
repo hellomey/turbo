@@ -740,6 +740,17 @@ footer#footer {
   line-height: 1.5 !important;
 }
 
+.t-card__avatar {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 2px 8px rgba(10, 20, 50, 0.08) !important;
+  flex-shrink: 0 !important;
+  background: #f3f4f6;
+}
+
 .c-faq {
   padding-top: max(7rem, 64px) !important;
   padding-bottom: max(9rem, 80px) !important;
