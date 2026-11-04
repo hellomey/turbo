@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="100%" height="100%" fill="none">
+  <defs>
+    <clipPath id="rec_clip">
+      <circle cx="40" cy="40" r="40" />
+    </clipPath>
+    <!-- Background Gradient -->
+    <linearGradient id="rec_bg" x1="12" y1="10" x2="68" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#CBEAFF" />
+      <stop offset="100%" stop-color="#76BFFF" />
+    </linearGradient>
+    <!-- Card White Gradient -->
+    <linearGradient id="card_white" x1="26" y1="20" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#F0F8FF" />
+      <stop offset="100%" stop-color="#D6ECFF" />
+    </linearGradient>
+    <!-- Core Bulb Glow Gradient -->
+    <linearGradient id="bulb_core" x1="34" y1="30" x2="46" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF385" />
+      <stop offset="45%" stop-color="#FFB300" />
+      <stop offset="100%" stop-color="#FF6F00" />
+    </linearGradient>
+    <!-- Orbit Ring Gradient -->
+    <linearGradient id="orbit_ring" x1="18" y1="20" x2="62" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0052CC" />
+      <stop offset="50%" stop-color="#0099FF" />
+      <stop offset="100%" stop-color="#00D4FF" />
+    </linearGradient>
+    <!-- Drop Shadow -->
+    <filter id="rec_shadow" x="14" y="14" width="52" height="54" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="5" stdDeviation="3.5" flood-color="#043F7C" flood-opacity="0.32" />
+    </filter>
+  </defs>
+
+  <g clip-path="url(#rec_clip)">
+    <!-- Base Gamified Circle -->
+    <circle cx="40" cy="40" r="40" fill="url(#rec_bg)" />
+
+    <!-- Ambient Glow behind artifact -->
+    <circle cx="40" cy="38" r="25" fill="#66BAFF" opacity="0.4" filter="blur(6px)" />
+
+    <!-- Back Half of 3D Orbit Loop (Behind Cards) -->
+    <path d="M21 44 C15 32 23 20 40 18 C57 16 67 27 61 38" stroke="url(#orbit_ring)" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 2.5" opacity="0.65" />
+
+    <!-- Stack of Gamified Active Recall Cards -->
+    <g filter="url(#rec_shadow)">
+      <!-- Back Card (Floating Tilted) -->
+      <rect x="30" y="21" width="28" height="36" rx="5" transform="rotate(11 30 21)" fill="#BAE3FF" stroke="#0077E6" stroke-width="1.5" />
+      <rect x="33" y="24" width="22" height="6" rx="2.5" transform="rotate(11 30 21)" fill="#82C8FF" opacity="0.7" />
+
+      <!-- Front Flashcard (Main Hero Card) -->
+      <rect x="23" y="21" width="30" height="38" rx="5.5" fill="url(#card_white)" stroke="#005BBE" stroke-width="2" />
+
+      <!-- Card Top Accent Header Ribbon -->
+      <path d="M23 26.5 C23 23.5 25.5 21 28.5 21 H47.5 C50.5 21 53 23.5 53 26.5 V28.5 H23 V26.5 Z" fill="#006DEB" />
+      <rect x="28" y="24" width="20" height="2" rx="1" fill="#FFFFFF" opacity="0.8" />
+
+      <!-- Glowing Lightbulb / Memory Energy Core inside Card -->
+      <g transform="translate(38, 40)">
+        <!-- Radiant Bulb Aura -->
+        <circle cx="0" cy="-2" r="9" fill="#FFD54F" opacity="0.35" />
+        
+        <!-- Glass Bulb Body -->
+        <path d="M-5 -4 C-5 -7.5 -2.5 -10 0 -10 C2.5 -10 5 -7.5 5 -4 C5 -1.5 3.2 0.5 2.2 2.5 L2.2 4.5 L-2.2 4.5 L-2.2 2.5 C-3.2 0.5 -5 -1.5 -5 -4 Z" fill="url(#bulb_core)" />
+        
+        <!-- Specular Highlight Curve on Bulb Glass -->
+        <path d="M-3 -4 C-3 -6.5 -1 -8.5 1 -8.5" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" />
+        <circle cx="0" cy="-3.5" r="2" fill="#FFFFFF" />
+
+        <!-- Chrome Base Socket -->
+        <path d="M-2.2 4.8 H2.2 V7 C2.2 7.8 1.5 8.5 0.5 8.5 H-0.5 C-1.5 8.5 -2.2 7.8 -2.2 7 Z" fill="#475569" />
+        <rect x="-1.8" y="5.4" width="3.6" height="1" rx="0.5" fill="#94A3B8" />
+        <circle cx="0" cy="9.2" r="0.8" fill="#1E293B" />
+      </g>
+
+      <!-- Spaced Interval Progress Dots (Level 1, 2, 3) -->
+      <circle cx="29" cy="53" r="1.8" fill="#10B981" stroke="#059669" stroke-width="0.6" />
+      <circle cx="38" cy="53" r="1.8" fill="#3B82F6" stroke="#1D4ED8" stroke-width="0.6" />
+      <circle cx="47" cy="53" r="1.8" fill="#A855F7" stroke="#7E22CE" stroke-width="0.6" />
+    </g>
+
+    <!-- Front Half of 3D Orbit Loop (Sweeping over the Card) -->
+    <path d="M58 35 C64 47 56 60 39 62 C23 64 15 53 19 43" stroke="url(#orbit_ring)" stroke-width="3.5" stroke-linecap="round" />
+    <!-- Dynamic Glowing Arrowhead on Orbit Loop -->
+    <path d="M16 45.5 L19.2 40 L24 45.2" fill="url(#orbit_ring)" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" />
+
+    <!-- Floating Memory Sparkles -->
+    <path d="M63 19 L64.5 22.5 L68 24 L64.5 25.5 L63 29 L61.5 25.5 L58 24 L61.5 22.5 Z" fill="#FFFFFF" />
+    <circle cx="66" cy="34" r="1.8" fill="#FFE58F" />
+    <circle cx="16" cy="27" r="1.5" fill="#FFFFFF" />
+    <path d="M19 14 L20 16.5 L22.5 17.5 L20 18.5 L19 21 L18 18.5 L15.5 17.5 L18 16.5 Z" fill="#FFE58F" />
+  </g>
+</svg>

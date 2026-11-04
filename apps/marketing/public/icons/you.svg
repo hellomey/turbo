@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="100%" height="100%" fill="none">
+  <defs>
+    <clipPath id="you_clip">
+      <circle cx="40" cy="40" r="40" />
+    </clipPath>
+    <!-- Background Warm Golden Yellow Gradient -->
+    <linearGradient id="you_bg" x1="12" y1="10" x2="68" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF8D6" />
+      <stop offset="100%" stop-color="#FFE082" />
+    </linearGradient>
+    <!-- 3D Brass Lamp Body Gradient -->
+    <linearGradient id="lamp_brass" x1="24" y1="36" x2="56" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF9A6" />
+      <stop offset="28%" stop-color="#FFCA28" />
+      <stop offset="70%" stop-color="#F57C00" />
+      <stop offset="100%" stop-color="#BD5600" />
+    </linearGradient>
+    <!-- Sacred Flame Gradient (Triple-Ring HeyMey Gold) -->
+    <linearGradient id="flame_glow" x1="40" y1="14" x2="40" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="25%" stop-color="#FFF066" />
+      <stop offset="60%" stop-color="#FF9100" />
+      <stop offset="100%" stop-color="#E65100" />
+    </linearGradient>
+    <!-- Outer Halo Ring Gradient -->
+    <linearGradient id="halo_ring" x1="20" y1="14" x2="60" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#99CFFF" />
+      <stop offset="50%" stop-color="#E4CCFF" />
+      <stop offset="100%" stop-color="#FFD1B8" />
+    </linearGradient>
+    <!-- Drop Shadow -->
+    <filter id="lamp_shadow" x="14" y="12" width="52" height="58" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4.5" stdDeviation="3.5" flood-color="#854D0E" flood-opacity="0.32" />
+    </filter>
+  </defs>
+
+  <g clip-path="url(#you_clip)">
+    <!-- Base Gamified Circle -->
+    <circle cx="40" cy="40" r="40" fill="url(#you_bg)" />
+
+    <!-- Radiant Ambient Aura -->
+    <circle cx="40" cy="38" r="28" fill="#FDE047" opacity="0.45" />
+    <circle cx="40" cy="36" r="18" fill="#FFFFFF" opacity="0.6" filter="blur(6px)" />
+
+    <!-- Three Rings of HeyMey (Lit -> Steady -> Gold) Orbiting Diya -->
+    <ellipse cx="40" cy="38" rx="25" ry="12" stroke="url(#halo_ring)" stroke-width="1.8" stroke-dasharray="3 3" opacity="0.8" />
+    <ellipse cx="40" cy="38" rx="21" ry="9" stroke="#FFB800" stroke-width="1.2" opacity="0.6" />
+
+    <!-- 3D Chunky HeyMey Sacred Lamp (Diya) -->
+    <g filter="url(#lamp_shadow)">
+      <!-- Pedestal Base of Diya -->
+      <ellipse cx="40" cy="59" rx="14" ry="4.5" fill="#8C3B00" />
+      <path d="M30 56.5 C30 54 36 53 40 53 C44 53 50 54 50 56.5 L48 59 C48 61 32 61 32 59 Z" fill="url(#lamp_brass)" />
+      
+      <!-- Central Pillar of Lamp -->
+      <rect x="37" y="49" width="6" height="5" rx="1.5" fill="#B24900" />
+      <rect x="38" y="49" width="4" height="5" rx="1" fill="#FFCA28" />
+
+      <!-- Main Diya Bowl (Traditional Brass Oval with Spout) -->
+      <path d="M21 44 C21 53 30 56 40 56 C50 56 59 53 59 44 C59 40 50 41 40 41 C30 41 21 40 21 44 Z" fill="url(#lamp_brass)" />
+      
+      <!-- Diya Bowl Rim / Oil Pool Reflection -->
+      <ellipse cx="40" cy="43.5" rx="17" ry="5.5" fill="#BD5600" />
+      <ellipse cx="40" cy="43" rx="15" ry="4" fill="#FFE082" opacity="0.85" />
+      <ellipse cx="40" cy="43.5" rx="13" ry="3" fill="#D97706" />
+
+      <!-- Golden Lamp Lip Specular Highlight -->
+      <path d="M24 44 C28 47 52 47 56 44" stroke="#FFFDE7" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9" />
+
+      <!-- HeyMey Sacred Flame (Tall, Radiant & Dynamic) -->
+      <!-- Outer Flame Aura -->
+      <path d="M40 16 C34 26 31 33 34 39 C36 43 44 43 46 39 C49 33 46 26 40 16 Z" fill="url(#flame_glow)" />
+
+      <!-- Inner Steady Core Flame -->
+      <path d="M40 22 C36 28 34 33 36 38 C37 40.5 43 40.5 44 38 C46 33 44 28 40 22 Z" fill="#FFFBEB" />
+      
+      <!-- Pure White Hot Spark at Core -->
+      <circle cx="40" cy="34" r="2.2" fill="#FFFFFF" />
+      
+      <!-- Front Brass Crest Medallion on Lamp Body -->
+      <circle cx="40" cy="51" r="3.2" fill="#FFF9A6" />
+      <circle cx="40" cy="51" r="2" fill="#E65100" />
+      <circle cx="40" cy="51" r="0.8" fill="#FFFBEB" />
+    </g>
+
+    <!-- Floating Gold Knowledge Sparkles -->
+    <path d="M63 24 L64.2 27 L67 28.2 L64.2 29.4 L63 32 L61.8 29.4 L59 28.2 L61.8 27 Z" fill="#F59E0B" />
+    <circle cx="67" cy="36" r="1.5" fill="#FFFFFF" />
+    <path d="M17 22 L18 24.5 L20.5 25.5 L18 26.5 L17 29 L16 26.5 L13.5 25.5 L16 24.5 Z" fill="#FFFFFF" />
+    <circle cx="15" cy="34" r="1.5" fill="#F59E0B" />
+    <!-- Top Crown Sparkle -->
+    <path d="M40 9 L41 12 L44 13 L41 14 L40 17 L39 14 L36 13 L39 12 Z" fill="#F59E0B" />
+  </g>
+</svg>
