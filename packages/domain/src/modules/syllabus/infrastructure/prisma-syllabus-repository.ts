@@ -19,6 +19,7 @@ export class PrismaSyllabusRepository implements SyllabusRepository {
       order: t.order,
       subject: { code: t.subject.code, name: t.subject.name, order: t.subject.order },
       examCodes: t.examTags.map((tag) => tag.examCode),
+      priorities: Object.fromEntries(t.examTags.map((tag) => [tag.examCode, tag.priority])),
     }));
   }
 
@@ -49,6 +50,7 @@ export class PrismaSyllabusRepository implements SyllabusRepository {
       order: t.order,
       subject: { code: t.subject.code, name: t.subject.name, order: t.subject.order },
       examCodes: t.examTags.map((tag) => tag.examCode),
+      priorities: Object.fromEntries(t.examTags.map((tag) => [tag.examCode, tag.priority])),
     };
   }
 }

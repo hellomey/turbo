@@ -64,11 +64,15 @@ class SessionGranted {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "SessionGranted[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SessionGranted[$key]" has a null value in JSON.');
         });
+        assert(json[r'kind'] != null, 'Required key "SessionGranted[kind]" has a null value in JSON.');
+        assert(json[r'tokens'] != null, 'Required key "SessionGranted[tokens]" has a null value in JSON.');
+        assert(json[r'isNewUser'] != null, 'Required key "SessionGranted[isNewUser]" has a null value in JSON.');
+        assert(json[r'deletionCancelled'] != null, 'Required key "SessionGranted[deletionCancelled]" has a null value in JSON.');
         return true;
       }());
 

@@ -119,9 +119,20 @@ describe("audit personal-data guard", () => {
     await expect(audit.record({ actor, action: "role.grant" })).rejects.toThrow("db down");
   });
 
-  it("the public API is write-only: record() and nothing that updates or deletes", () => {
+  it("the public API is write-only: record() + recordIn(tx) (SEC-P2-M1) and nothing that reads, updates or deletes", () => {
     const audit = createAuditModule({ repository: { append: async () => {} } });
-    expect(Object.keys(audit)).toEqual(["record"]);
+    expect(Object.keys(audit).sort()).toEqual(["record", "recordIn"]);
+    for (const k of Object.keys(audit)) expect(k).not.toMatch(/get|find|list|read|update|delete|remove|purge/i);
+  });
+
+  it("recordIn appends through the caller's transaction client and validates first", async () => {
+    const audit = createAuditModule({ repository: { append: async () => {} } });
+    const created: unknown[] = [];
+    const tx = { auditLog: { create: async (a: unknown) => void created.push(a) } } as unknown as Parameters<typeof audit.recordIn>[0];
+    await audit.recordIn(tx, { actor, action: "exam_change.reject", target: "exam_change:x", after: { reason: "r" } });
+    expect(created).toHaveLength(1);
+    await expect(audit.recordIn(tx, { actor, action: "Bad Action" })).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+    expect(created).toHaveLength(1);
   });
 
   // QA finding Q-1 (fixed in BOLT-0007): nested personal data and more key names are refused.

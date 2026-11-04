@@ -1,7 +1,7 @@
 name: heymey_mobile
 description: HeyMey mobile app (Android + iOS). Every user lives here. No web build for aspirants.
 publish_to: none
-version: 0.1.0+1
+version: 1.0.0+1
 resolution: workspace
 
 environment:

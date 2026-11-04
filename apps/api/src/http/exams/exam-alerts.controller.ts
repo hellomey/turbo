@@ -21,7 +21,7 @@ const ChangeId = z.uuid();
 /**
  * Exam Alerts (blueprint §19.1 Q7, §17.5, §20.2; INT-002-S17; D-2026-10-22-32).
  * Approve/reject: Desk session (PlatformGuard) + role OPS or ADMIN (here) + audit (here: the composition root
- * writes it, `exams` does not depend on `audit`, U-exams logical design).
+ * writes it inside the review transaction via a hook, `exams` does not depend on `audit`; SEC-P2-M1).
  */
 @Controller()
 export class ExamAlertsController {
@@ -67,14 +67,15 @@ export class ExamAlertsController {
     const reviewer = this.requireReviewer(req);
     const id = parse(ChangeId, changeId);
     const input = parse(ApproveExamChangeBody, body);
-    const res = await this.alerts.approve(reviewer, id, input);
-    await this.audit.record({
-      actor: actorOf(req),
-      action: "exam_change.approve",
-      target: `exam_change:${id}`,
-      after: { alertId: res.alertId, examCode: input.examCode, kind: input.kind, newStageDate: input.newStageDate ?? null },
-    });
-    return res;
+    // SEC-P2-M1: the audit row is written in the approve transaction; if it fails nothing is approved or pushed.
+    return this.alerts.approve(reviewer, id, input, (tx, { alertId }) =>
+      this.audit.recordIn(tx, {
+        actor: actorOf(req),
+        action: "exam_change.approve",
+        target: `exam_change:${id}`,
+        after: { alertId, examCode: input.examCode, kind: input.kind, newStageDate: input.newStageDate ?? null },
+      }),
+    );
   }
 
   @Post("v1/desk/exam-changes/:changeId/reject")
@@ -83,9 +84,9 @@ export class ExamAlertsController {
     const reviewer = this.requireReviewer(req);
     const id = parse(ChangeId, changeId);
     const { reason } = parse(RejectExamChangeBody, body);
-    const res = await this.alerts.reject(reviewer, id, reason);
-    await this.audit.record({ actor: actorOf(req), action: "exam_change.reject", target: `exam_change:${id}`, after: { reason } });
-    return res;
+    return this.alerts.reject(reviewer, id, reason, (tx) =>
+      this.audit.recordIn(tx, { actor: actorOf(req), action: "exam_change.reject", target: `exam_change:${id}`, after: { reason } }),
+    );
   }
 
   /** D-2026-10-22-32: OPS or ADMIN only. Other Desk roles (REVIEWER, ...) get 403 FORBIDDEN. */

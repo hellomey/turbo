@@ -1,16 +1,27 @@
+import { randomInt } from "node:crypto";
 import { Queue, Worker } from "bullmq";
 import nodemailer from "nodemailer";
 import { PORTS, baseEnv, databaseEnv, loadEnv, loadLocalEnv, smtpEnv, valkeyEnv } from "@heymey/config";
 import { createPrismaClient } from "@heymey/db";
+import { createExamHallModule } from "@heymey/domain/modules/exam-hall";
 import { createAuditModule } from "@heymey/domain/modules/audit";
-import { createExamAlertsModule } from "@heymey/domain/modules/exams";
+import { createExamAlertsModule, createExamsModule } from "@heymey/domain/modules/exams";
+import { createContentModule, createQuestionBank } from "@heymey/domain/modules/content";
+import { createSyllabusModule } from "@heymey/domain/modules/syllabus";
+import { createReadinessModule } from "@heymey/domain/modules/readiness";
+import { createPlanModule, planPortsFrom } from "@heymey/domain/modules/plan";
+import { createMasteryActivity, createMasteryDimming, createMasteryModule } from "@heymey/domain/modules/mastery";
 import { createLogOnlyPushSender, createNotificationsModule } from "@heymey/domain/modules/notifications";
 import { createOtpMaintenance, createSessionRevoker } from "@heymey/domain/modules/auth";
 import { createRolesModule } from "@heymey/domain/modules/roles";
 import { createUsersModule } from "@heymey/domain/modules/users";
 import { systemClock } from "@heymey/domain/shared";
 import { startHealthServer } from "./health.js";
+import { createExamHallExpireProcessor, createExamHallRanksProcessor } from "./processors/exam-hall.js";
 import { createOtpGcProcessor } from "./processors/auth-otp-gc.js";
+import { createMasteryDimmingProcessor } from "./processors/mastery-dimming.js";
+import { createPlanDateChangedProcessor, createPlanRebalanceProcessor } from "./processors/plan.js";
+import { createSundayReportProcessor, sundayReportPush } from "./processors/readiness.js";
 import { createEmailOtpProcessor } from "./processors/email-otp.js";
 import { createExamAlertFanOutProcessor, createPushSendProcessor, createReleaseHeldProcessor } from "./processors/notifications.js";
 import { bullConnection, isImplemented } from "./processors/index.js";
@@ -51,7 +62,45 @@ const notifications = createNotificationsModule({
 });
 const examAlerts = createExamAlertsModule({ prisma, clock: systemClock, events: { publish: async () => {} } });
 
+const examHall = createExamHallModule({ prisma, clock: systemClock }); // BOLT-0011
+
+// BOLT-0013: readiness reads mastery + exam-hall through their public APIs; exams facts and the push are joined here.
+const exams = createExamsModule({ prisma, clock: systemClock });
+const syllabus = createSyllabusModule({ prisma });
+const content = createContentModule({ prisma, syllabus });
+const mastery = createMasteryModule({
+  prisma,
+  clock: systemClock,
+  syllabus,
+  questions: createQuestionBank({ prisma, randomInt: (max) => randomInt(max) }),
+  openableTopics: (ids) => content.topicsWithPublishedLesson(ids),
+  learner: {
+    examCodes: async (userId) => {
+      const mine = await exams.getMyExams(userId);
+      return [...(mine.main ? [mine.main.code] : []), ...mine.others.map((e) => e.code)];
+    },
+    publishedExamCodes: () => exams.publishedCodes(),
+  },
+});
+// BOLT-0012: plan reads exams, syllabus and mastery through their public APIs.
+const plan = createPlanModule({ prisma, clock: systemClock, ports: planPortsFrom({ exams, syllabus, mastery }) });
+const readiness = createReadinessModule({
+  prisma,
+  clock: systemClock,
+  mastery,
+  masteryActivity: createMasteryActivity({ prisma }),
+  examHall,
+  // The Sunday job does not read exam facts (only the meter does); the API composition root wires the real ones.
+  exams: { examInfo: async () => null },
+});
+
 const processors: Record<string, (data: unknown) => Promise<unknown>> = {
+  "readiness.sunday-report": createSundayReportProcessor({ readiness, notify: sundayReportPush(notifications) }),
+  "plan.rebalance": createPlanRebalanceProcessor(plan),
+  "exams.date-changed": createPlanDateChangedProcessor(plan),
+  "mastery.dimming": createMasteryDimmingProcessor({ dimming: createMasteryDimming({ prisma, clock: systemClock }) }),
+  "exam-hall.expire": createExamHallExpireProcessor(examHall),
+  "exam-hall.publish-ranks": createExamHallRanksProcessor(examHall),
   "email.otp": createEmailOtpProcessor({ transport, from: env.MAIL_FROM }),
   "users.deletion": createUsersDeletionProcessor({ users, sessions, otps, pushTokens: notifications }),
   "auth.otp-gc": createOtpGcProcessor({ otps, clock: systemClock }),

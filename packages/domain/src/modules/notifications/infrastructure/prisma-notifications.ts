@@ -12,15 +12,21 @@ import type {
 export class PrismaPushTokenRepository implements PushTokenRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async upsert(i: { userId: string; deviceId: string; platform: "android" | "ios"; token: string; at: Date }): Promise<void> {
-    await this.prisma.$transaction(async (tx) => {
-      // A token moves with the app install: drop it from any other (user, device) first (token is unique).
+  async upsert(
+    i: { userId: string; deviceId: string; platform: "android" | "ios"; token: string; at: Date },
+    canTakeFrom: (owner: { userId: string; deviceId: string }) => boolean,
+  ): Promise<"ok" | "refused"> {
+    return this.prisma.$transaction(async (tx) => {
+      // SEC-P2-L1: a token held by another (user, device) moves only when the caller proves the device.
+      const owner = await tx.pushToken.findUnique({ where: { token: i.token }, select: { userId: true, deviceId: true } });
+      if (owner && !(owner.userId === i.userId && owner.deviceId === i.deviceId) && !canTakeFrom(owner)) return "refused" as const;
       await tx.pushToken.deleteMany({ where: { token: i.token, NOT: { userId: i.userId, deviceId: i.deviceId } } });
       await tx.pushToken.upsert({
         where: { userId_deviceId: { userId: i.userId, deviceId: i.deviceId } },
         create: { userId: i.userId, deviceId: i.deviceId, platform: i.platform, token: i.token, lastSeenAt: i.at },
         update: { platform: i.platform, token: i.token, lastSeenAt: i.at, revokedAt: null },
       });
+      return "ok" as const;
     });
   }
 
@@ -48,8 +54,16 @@ export class PrismaAlertPreferenceRepository implements AlertPreferenceRepositor
   async get(userId: string): Promise<AlertPrefs | null> {
     const r = await this.prisma.alertPreference.findUnique({ where: { userId } });
     if (!r) return null;
-    const { updatedAt: _u, userId: _id, ...prefs } = r;
-    return prefs;
+    return {
+      studyReminders: r.studyReminders,
+      examAlerts: r.examAlerts,
+      offers: r.offers,
+      quietEnabled: r.quietEnabled,
+      quietStartMinute: r.quietStartMinute,
+      quietEndMinute: r.quietEndMinute,
+      morningAlertMinute: r.morningAlertMinute,
+      dailyLimit: r.dailyLimit,
+    };
   }
 
   async put(userId: string, prefs: AlertPrefs): Promise<void> {

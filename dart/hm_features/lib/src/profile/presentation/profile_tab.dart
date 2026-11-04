@@ -7,34 +7,82 @@ import '../application/profile_controller.dart';
 
 /// Profile (§10.5). Phase 1: who you are, Calm Mode, log out, log out of all devices, delete account.
 class ProfileTab extends ConsumerWidget {
-  const ProfileTab({super.key});
+  const ProfileTab({
+    super.key,
+    this.onOpenReadiness,
+    this.onOpenReports,
+    this.onOpenAlerts,
+    this.onOpenAlertSettings,
+  });
+
+  /// Profile links (§10.5 Profile: Readiness Meter, reports, Exam Alerts, settings). Hidden when null.
+  final VoidCallback? onOpenReadiness;
+  final VoidCallback? onOpenReports;
+  final VoidCallback? onOpenAlerts;
+  final VoidCallback? onOpenAlertSettings;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final me = ref.watch(meProvider);
     final text = Theme.of(context).textTheme;
     return me.when(
-      loading: () => const HmLoadingView(label: 'Loading your profile'),
+      loading: () => const HmSkeletonList(label: 'Loading your profile'),
       error: (e, _) => HmErrorView(
         message: messageOf(e),
         onRetry: () => ref.invalidate(meProvider),
       ),
       data: (user) => ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(
+          HmSpace.lg,
+          HmSpace.lg,
+          HmSpace.lg,
+          HmSpace.xxl,
+        ),
         children: [
           Semantics(
             header: true,
-            child: Text('Profile', style: text.headlineSmall),
+            child: Text('Profile', style: text.headlineMedium),
           ),
-          const SizedBox(height: 8),
-          if (user.nickname != null)
-            Text(user.nickname!, style: text.titleMedium),
-          Text(
-            user.email,
-            key: const Key('profile-email'),
-            style: text.bodyLarge,
+          const SizedBox(height: HmSpace.lg),
+          HmCard(
+            child: Row(
+              children: [
+                ExcludeSemantics(
+                  child: CircleAvatar(
+                    radius: 28,
+                    backgroundColor: context.hm.primary,
+                    foregroundColor: context.hm.onPrimary,
+                    child: Text(
+                      (user.nickname ?? user.email).isEmpty
+                          ? '?'
+                          : (user.nickname ?? user.email)[0].toUpperCase(),
+                      style: text.titleLarge?.copyWith(
+                        color: context.hm.onPrimary,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: HmSpace.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (user.nickname != null)
+                        Text(user.nickname!, style: text.titleMedium),
+                      Text(
+                        user.email,
+                        key: const Key('profile-email'),
+                        style: text.bodyLarge?.copyWith(
+                          color: context.hm.textMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
+          const HmSectionTitle('Settings', icon: Icons.tune_rounded),
           SwitchListTile(
             key: const Key('calm-mode'),
             title: const Text('Calm Mode'),
@@ -54,6 +102,40 @@ class ProfileTab extends ConsumerWidget {
               }
             },
           ),
+          for (final (key, label, icon, onTap) in [
+            (
+              'profile-readiness',
+              'Readiness',
+              Icons.insights_outlined,
+              onOpenReadiness,
+            ),
+            (
+              'profile-reports',
+              'Sunday Reports',
+              Icons.event_note_outlined,
+              onOpenReports,
+            ),
+            (
+              'profile-alerts',
+              'Exam Alerts',
+              Icons.campaign_outlined,
+              onOpenAlerts,
+            ),
+            (
+              'profile-alert-settings',
+              'Alert settings',
+              Icons.notifications_outlined,
+              onOpenAlertSettings,
+            ),
+          ])
+            if (onTap != null)
+              ListTile(
+                key: Key(key),
+                leading: HmIconBadge(icon: icon, size: 40),
+                title: Text(label, style: text.titleSmall),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: onTap,
+              ),
           const Divider(height: 32),
           const DataChoicesSection(),
           const Divider(height: 32),

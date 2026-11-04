@@ -282,6 +282,7 @@ class Harness {
     FakeProfileRepository? profile,
     this.lite = false,
     DateTime? now,
+    this.extra = const [],
   }) : onboarding = onboarding ?? FakeOnboardingRepository(),
        study = study ?? FakeStudyRepository(),
        profile = profile ?? FakeProfileRepository(),
@@ -297,6 +298,9 @@ class Harness {
   final bool lite;
   final DateTime now;
 
+  /// Feature-specific overrides (e.g. the Exam Hall fakes).
+  final List<Override> extra;
+
   List<Override> get overrides => [
     onboardingRepositoryProvider.overrideWithValue(onboarding),
     studyRepositoryProvider.overrideWithValue(study),
@@ -307,6 +311,7 @@ class Harness {
     tokenStoreProvider.overrideWithValue(tokens),
     clockProvider.overrideWithValue(() => now),
     liteModeProvider.overrideWithValue(lite),
+    ...extra,
   ];
 
   late final ProviderContainer container = ProviderContainer(

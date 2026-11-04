@@ -64,11 +64,15 @@ class SundayReportSummary {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "SundayReportSummary[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SundayReportSummary[$key]" has a null value in JSON.');
         });
+        assert(json[r'id'] != null, 'Required key "SundayReportSummary[id]" has a null value in JSON.');
+        assert(json[r'weekStart'] != null, 'Required key "SundayReportSummary[weekStart]" has a null value in JSON.');
+        assert(json[r'tier'] != null, 'Required key "SundayReportSummary[tier]" has a null value in JSON.');
+        assert(json[r'createdAt'] != null, 'Required key "SundayReportSummary[createdAt]" has a null value in JSON.');
         return true;
       }());
 

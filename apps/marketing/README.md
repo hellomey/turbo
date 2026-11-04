@@ -4,12 +4,10 @@ Next.js (App Router, TypeScript, Tailwind v4). Dark theme only. Served at `heyme
 
 ## Run
 
-This app is `@heymey/marketing` in the HeyMey monorepo (pnpm workspace). From the repo root:
-
 ```bash
-pnpm install
-pnpm --filter @heymey/marketing dev      # http://localhost:4570
-pnpm --filter @heymey/marketing build && pnpm --filter @heymey/marketing start   # production build, also on 4570
+npm install
+npm run dev                      # http://localhost:4570
+npm run build && npm start       # production build, also on 4570
 ```
 
 `NEXT_PUBLIC_APP_URL` sets where "Sign in", "Get Started" and the contact form go. Dev uses `.env.development` (`http://localhost:4567`). Production defaults to `https://app.heymey.in`. For a local *production* build that talks to the local app:

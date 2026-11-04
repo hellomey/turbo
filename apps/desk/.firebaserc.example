@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "heymey-desk"
+  },
+  "targets": {
+    "heymey-desk": {
+      "hosting": {
+        "desk": [
+          "heymey-desk"
+        ],
+        "desk-staging": [
+          "heymey-desk-staging"
+        ]
+      }
+    }
+  }
+}

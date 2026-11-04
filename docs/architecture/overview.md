@@ -17,7 +17,7 @@ Generated companions: [ports.md](ports.md) (port map) and [modules.md](modules.m
  External (paid, irreplaceable): Google Play + App Store billing, FCM/APNs, SMTP provider, Razorpay, OpenRouter
 ```
 
-## 2. Containers and ports (one VPS)
+## 2. Containers and ports (target dedicated-VPS layout, NOT what runs at launch; launch tier in §2a)
 
 ```
 Caddy :443 ─┬─ heymey.app        ─► marketing  :4570  Next.js standalone
@@ -37,13 +37,39 @@ Caddy :443 ─┬─ heymey.app        ─► marketing  :4570  Next.js standalo
 Rules: only Caddy is public. App containers listen on their series port on the Docker network; single-replica data
 and ops services are also published on `127.0.0.1:<series port>` for on-box debugging. See ADR-0002, ADR-0010.
 
+
+
+## 2a. Launch-tier placement (ADR-0014, D-2026-11-01-01, PROVISIONAL)
+
+At launch the diagram above is split across free/starter tiers. The dedicated-VPS layout stays the target once revenue justifies it.
+
+```
+heymey.app ──────────► Vercel (Next.js, GitHub integration; D-2026-11-04-01, changed 2026-11-04)
+desk.heymey.app ─────► Firebase Hosting (static Flutter web) behind Cloudflare Access
+cdn.heymey.app ──────► Cloudflare R2 (packs, audio, images; nightly pg_dump bucket separate, private)
+api. / rt. ──────────► ONE small VM (Oracle Always Free ARM; fallback Hetzner CX22), Docker Compose:
+                         caddy → api :4567 · realtime :4568 · worker :4571 · scheduler :4572
+                         valkey :4582 · changedetection :4596 · (grafana/glitchtip only if RAM allows)
+                         └─► Supabase Postgres (ap-south-1): app = transaction pooler :6543, migrations = direct :5432
+Errors/metrics: Sentry free + Grafana Cloud free (or self-hosted on the VM). Email: SES. Push: FCM.
+```
+
+Backups: Supabase has no pgBackRest/WAL access on our side, so the `backup` service runs a nightly `pg_dump`
+(custom format, via `DIRECT_URL`) → age-encrypted → R2 bucket `heymey-backups` (35-day lifecycle), plus one before
+every production migration (`infra/backup/pg-dump-r2.sh`, `infra/scripts/restore.sh`). No pgbouncer: Supabase's
+transaction pooler (6543) does the pooling.
+
+Local development: `pnpm infra:up` runs Postgres (4580), Valkey (4582), SeaweedFS (4583) and Mailpit (4584/4585).
+Port 4581 (pgbouncer) stays reserved in `ports.json` for the dedicated-VPS layout but nothing runs on it.
+Staging = a second Compose project on the same VM (ports +100) + a second Supabase project.
+
 ## 3. Repository → runtime
 
 | Runtime | Source | Build | Image |
 |---|---|---|---|
 | api, realtime, worker, scheduler | `apps/{api,realtime,worker}` + `packages/*` | `nest build` (SWC) / `tsc` | `ghcr.io/heymey/server:<sha>` (one image, 4 entrypoints) + `migrator` target |
-| desk | `apps/desk` + `dart/hm_desk`… | `flutter build web` | `ghcr.io/heymey/desk:<sha>` |
-| marketing | `apps/marketing` | `next build` (standalone) | `ghcr.io/heymey/marketing:<sha>` |
+| desk | `apps/desk` + `dart/hm_desk`… | `flutter build web` | none (Firebase Hosting, ADR-0014) |
+| marketing | `apps/marketing` | `turbo run build` → `next build` on Vercel (`apps/marketing/vercel.json`) | none (Vercel) |
 | mobile | `apps/mobile` + `dart/*` | fastlane (AAB / IPA) | stores |
 
 ## 4. Backend: a modular monolith
@@ -101,5 +127,5 @@ purchases are online-only (§39).
 | | Where | Data | Deploy |
 |---|---|---|---|
 | local | developer / agent machine; `pnpm infra:up` + `pnpm dev` | seed | — |
-| staging | same VPS, project `heymey-staging`, ports +100, `staging-*.heymey.app` | seed / anonymised | automatic on merge to `main` |
-| production | VPS, project `heymey` | real | manual **Promote** (founder) → rolling, auto-rollback |
+| staging | same VM, project `heymey-staging`, own Supabase project (ADR-0014), ports +100, `staging-*.heymey.app` | seed / anonymised | automatic on merge to `main` |
+| production | VM, project `heymey` + Supabase + Cloudflare R2 + Firebase Hosting (desk) + Vercel (marketing) (ADR-0014) | real | manual **Promote** (founder) → rolling, auto-rollback |

@@ -130,11 +130,26 @@ class StateMockInfoMock {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "StateMockInfoMock[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "StateMockInfoMock[$key]" has a null value in JSON.');
         });
+        assert(json[r'id'] != null, 'Required key "StateMockInfoMock[id]" has a null value in JSON.');
+        assert(json[r'code'] != null, 'Required key "StateMockInfoMock[code]" has a null value in JSON.');
+        assert(json[r'examCode'] != null, 'Required key "StateMockInfoMock[examCode]" has a null value in JSON.');
+        assert(json[r'paperCode'] != null, 'Required key "StateMockInfoMock[paperCode]" has a null value in JSON.');
+        assert(json[r'title'] != null, 'Required key "StateMockInfoMock[title]" has a null value in JSON.');
+        assert(json[r'kind'] != null, 'Required key "StateMockInfoMock[kind]" has a null value in JSON.');
+        assert(json[r'questionCount'] != null, 'Required key "StateMockInfoMock[questionCount]" has a null value in JSON.');
+        assert(json[r'durationMinutes'] != null, 'Required key "StateMockInfoMock[durationMinutes]" has a null value in JSON.');
+        assert(json[r'negativeMarking'] != null, 'Required key "StateMockInfoMock[negativeMarking]" has a null value in JSON.');
+        assert(json[r'opensAt'] != null, 'Required key "StateMockInfoMock[opensAt]" has a null value in JSON.');
+        assert(json[r'lateJoinUntil'] != null, 'Required key "StateMockInfoMock[lateJoinUntil]" has a null value in JSON.');
+        assert(json[r'closesAt'] != null, 'Required key "StateMockInfoMock[closesAt]" has a null value in JSON.');
+        assert(json[r'free'] != null, 'Required key "StateMockInfoMock[free]" has a null value in JSON.');
+        assert(json[r'locked'] != null, 'Required key "StateMockInfoMock[locked]" has a null value in JSON.');
+        assert(json[r'myLastAttemptId'] != null, 'Required key "StateMockInfoMock[myLastAttemptId]" has a null value in JSON.');
         return true;
       }());
 

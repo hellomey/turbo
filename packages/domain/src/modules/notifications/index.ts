@@ -32,6 +32,7 @@ export {
   defaultPrefs,
   inQuietHours,
   istMinuteOfDay,
+  pushTokenMoveAllowed,
   type AlertCategory,
   type AlertPrefs,
   type SendInput,
@@ -50,7 +51,8 @@ export type {
 export type { AlertSettingsDto, EnqueueInput } from "./application/notifications-service.js";
 
 export interface NotificationsApi {
-  registerToken(userId: string, body: z.infer<typeof RegisterPushTokenBody>): Promise<{ deviceId: string; registeredAt: string }>;
+  /** `sessionDeviceId`: the device the caller's session is bound to (proof for moving a token, SEC-P2-L1). */
+  registerToken(userId: string, body: z.infer<typeof RegisterPushTokenBody>, sessionDeviceId?: string): Promise<{ deviceId: string; registeredAt: string }>;
   deleteToken(userId: string, deviceId: string): Promise<{ ok: true }>;
   getSettings(userId: string): Promise<svc.AlertSettingsDto>;
   putSettings(userId: string, body: svc.AlertSettingsDto): Promise<svc.AlertSettingsDto>;
@@ -93,7 +95,7 @@ export function createNotificationsModule(deps: NotificationsModuleDeps): Notifi
     ...(deps.dispatcher ? { dispatcher: deps.dispatcher } : {}),
   };
   return {
-    registerToken: (u, b) => svc.registerToken(d, u, b),
+    registerToken: (u, b, s) => svc.registerToken(d, u, b, s),
     deleteToken: (u, dev) => svc.deleteToken(d, u, dev),
     getSettings: (u) => svc.getSettings(d, u),
     putSettings: (u, b) => svc.putSettings(d, u, b),

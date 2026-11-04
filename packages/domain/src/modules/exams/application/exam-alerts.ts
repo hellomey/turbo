@@ -1,4 +1,5 @@
 import type { ApproveExamChangeBody, SiteChangeWebhookBody, z } from "@heymey/contracts";
+import type { Prisma } from "@heymey/db";
 import { DomainError } from "../../../shared/errors.js";
 import type { Clock } from "../../../shared/clock.js";
 import type { EventPublisher } from "../../../shared/ports.js";
@@ -13,6 +14,12 @@ import {
   type ExamChangeRecord,
   type ExamChangeStatus,
 } from "../domain/exam-alerts.js";
+
+/**
+ * SEC-P2-M1: runs INSIDE the approve/reject transaction (the composition root writes the Desk audit row here).
+ * If it throws, the review is rolled back: nothing approved, no alert, no events/pushes.
+ */
+export type ReviewTxHook = (tx: Prisma.TransactionClient, outcome: { alertId: string | null }) => Promise<void>;
 
 /** Port: ExamWatchChange + ExamAlert storage (exams owns both tables). */
 export interface ExamAlertsRepository {
@@ -32,8 +39,8 @@ export interface ExamAlertsRepository {
     at: Date;
     alert: { examId: string; examCode: string; kind: ExamAlertKind; title: string; summary: string; officialUrl: string };
     stageDate?: { stageCode: string; date: string };
-  }): Promise<{ change: ExamChangeRecord; alert: ExamAlertRecord; cycleId: string | null } | null>;
-  reject(input: { changeId: string; reviewerId: string; at: Date; note: string }): Promise<ExamChangeRecord | null>;
+  }, inTx?: ReviewTxHook): Promise<{ change: ExamChangeRecord; alert: ExamAlertRecord; cycleId: string | null } | null>;
+  reject(input: { changeId: string; reviewerId: string; at: Date; note: string }, inTx?: ReviewTxHook): Promise<ExamChangeRecord | null>;
   alertsForUser(userId: string, cursor: string | undefined, limit: number): Promise<ExamAlertRecord[]>;
   followersOf(examCode: string): Promise<string[]>;
 }
@@ -77,7 +84,7 @@ export async function listChanges(d: ExamAlertsDeps, q: { status: ExamChangeStat
 }
 
 /** Invariants 7, 8: single use; exactly one alert; events after commit. Role check + audit are in the API. */
-export async function approveChange(d: ExamAlertsDeps, reviewerId: string, changeId: string, body: z.infer<typeof ApproveExamChangeBody>): Promise<ExamChangeDto> {
+export async function approveChange(d: ExamAlertsDeps, reviewerId: string, changeId: string, body: z.infer<typeof ApproveExamChangeBody>, inTx?: ReviewTxHook): Promise<ExamChangeDto> {
   const change = await d.repo.findChange(changeId);
   if (!change) throw new DomainError("NOT_FOUND");
   assertPending(change);
@@ -90,7 +97,7 @@ export async function approveChange(d: ExamAlertsDeps, reviewerId: string, chang
     at,
     alert: { examId, examCode: body.examCode, kind: body.kind, title: body.title, summary: body.summary, officialUrl: body.officialUrl },
     ...(body.newStageDate ? { stageDate: body.newStageDate } : {}),
-  });
+  }, inTx);
   if (!res) throw new DomainError("EXAM_CHANGE_ALREADY_REVIEWED");
   await d.events.publish({ type: "exams.notification_published", occurredAt: at, payload: { alertId: res.alert.id, examCode: body.examCode } });
   if (body.newStageDate && res.cycleId) {
@@ -104,11 +111,11 @@ export async function approveChange(d: ExamAlertsDeps, reviewerId: string, chang
 }
 
 /** Invariant 10: reject never publishes. */
-export async function rejectChange(d: ExamAlertsDeps, reviewerId: string, changeId: string, reason: string): Promise<ExamChangeDto> {
+export async function rejectChange(d: ExamAlertsDeps, reviewerId: string, changeId: string, reason: string, inTx?: ReviewTxHook): Promise<ExamChangeDto> {
   const change = await d.repo.findChange(changeId);
   if (!change) throw new DomainError("NOT_FOUND");
   assertPending(change);
-  const res = await d.repo.reject({ changeId, reviewerId, at: d.clock.now(), note: reason });
+  const res = await d.repo.reject({ changeId, reviewerId, at: d.clock.now(), note: reason }, inTx);
   if (!res) throw new DomainError("EXAM_CHANGE_ALREADY_REVIEWED");
   return toExamChangeDto(res);
 }

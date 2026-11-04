@@ -1,20 +1,24 @@
-# HeyMey application stack (blueprint §21). The SAME file runs production and staging:
+# HeyMey application stack on ONE VM (blueprint §21; free/starter tier: BOLT-0023, ADR-0014). The SAME file runs
+# production and staging:
 #   production: docker compose -p heymey         --env-file ports.env --env-file images.env --env-file ../secrets/production.env -f compose.yml up -d
 #   staging:    docker compose -p heymey-staging --env-file ports.env --env-file images.env --env-file ../secrets/staging.env    -f compose.yml -f compose.staging.yml up -d
 # (infra/scripts/deploy.sh wraps this.) Caddy lives in compose.edge.yml and reaches services as
 # "${STACK}-<service>" on the shared `heymey-edge` network.
 #
-# PORT RULE: every app container LISTENS on its series port (api 4567, realtime 4568, desk 4569,
-# marketing 4570, worker 4571, scheduler 4572). Nothing here is published to the internet;
-# single-replica data services are published on 127.0.0.1 only, for on-box debugging.
+# NOT on this VM any more (BOLT-0023): Postgres -> Supabase (DATABASE_URL = transaction pooler :6543, DIRECT_URL =
+# session/direct for migrations + backups); object storage + pack CDN -> Cloudflare R2 (cdn.heymey.app);
+# marketing -> Vercel (D-2026-11-04-01); desk -> Firebase Hosting. Local dev keeps all of them in compose.dev.yml.
+#
+# PORT RULE: every app container LISTENS on its series port (api 4567, realtime 4568, worker 4571, scheduler 4572).
+# Nothing here is published to the internet; valkey is published on 127.0.0.1 only, for on-box debugging.
+# Images are multi-arch (linux/amd64 + linux/arm64: Oracle Ampere A1 or Hetzner).
 
 x-app-env: &app-env
   HEYMEY_ENV: ${STACK}
   NODE_ENV: production
-  DATABASE_URL: postgresql://heymey:${POSTGRES_PASSWORD}@pgbouncer:5432/heymey
+  # DATABASE_URL, DIRECT_URL, S3_* (R2) come from ../secrets/${STACK}.env (env_file). See infra/secrets/.env.example.
   # Valkey requires a password in staging/production (SEC-M2). VALKEY_PASSWORD must be URL-safe (openssl rand -hex 32).
   VALKEY_URL: redis://:${VALKEY_PASSWORD:?set VALKEY_PASSWORD in the stack secrets}@valkey:6379
-  S3_ENDPOINT: http://seaweedfs:8333
   APP_VERSION: ${APP_VERSION}
   # Client IP (SEC-H1): exactly ONE trusted hop = Caddy, which overwrites X-Forwarded-For with {client_ip}
   # (CF-Connecting-IP from a Cloudflare peer only). Never "true"/all hops. Read by api and realtime.
@@ -40,13 +44,13 @@ services:
       internal: {}
       edge: { aliases: ["${STACK}-api"] }
     deploy:
-      replicas: 3
-      resources: { limits: { cpus: "1", memory: 1536M } }
+      replicas: 2
+      resources: { limits: { cpus: "1", memory: 1G } }
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:${API_PORT}/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 10s
       retries: 3
-    depends_on: { pgbouncer: { condition: service_started }, valkey: { condition: service_started } }
+    depends_on: { valkey: { condition: service_healthy } }
 
   realtime:
     <<: *app
@@ -57,8 +61,8 @@ services:
       internal: {}
       edge: { aliases: ["${STACK}-realtime"] }
     deploy:
-      replicas: 2
-      resources: { limits: { cpus: "1", memory: 1536M } }
+      replicas: 1 # single VM: one replica, no sticky-session concerns (scale with the Valkey adapter later)
+      resources: { limits: { cpus: "1", memory: 1G } }
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:${REALTIME_PORT}/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 10s
@@ -69,8 +73,8 @@ services:
     command: ["node", "apps/worker/dist/main.worker.js"]
     environment: { <<: *app-env, PORT: "${WORKER_PORT}" }
     deploy:
-      replicas: 2
-      resources: { limits: { cpus: "1", memory: 2G } }
+      replicas: 1
+      resources: { limits: { cpus: "1", memory: 1G } }
 
   scheduler:
     <<: *app
@@ -81,55 +85,6 @@ services:
       replicas: 1 # exactly one, always
       resources: { limits: { cpus: "0.5", memory: 512M } }
 
-  desk:
-    image: ghcr.io/heymey/desk:${APP_VERSION}
-    restart: unless-stopped
-    networks:
-      edge: { aliases: ["${STACK}-desk"] }
-    deploy: { resources: { limits: { cpus: "0.25", memory: 128M } } }
-
-  marketing:
-    image: ghcr.io/heymey/marketing:${APP_VERSION}
-    restart: unless-stopped
-    environment: { PORT: "${MARKETING_PORT}", HOSTNAME: "0.0.0.0" }
-    networks:
-      edge: { aliases: ["${STACK}-marketing"] }
-    deploy: { resources: { limits: { cpus: "0.5", memory: 512M } } }
-
-  postgres:
-    image: ghcr.io/heymey/postgres-pgbackrest:17 # postgres:17 + pgBackRest (infra/docker/postgres.Dockerfile)
-    restart: unless-stopped
-    shm_size: 1g
-    environment:
-      POSTGRES_USER: heymey
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: heymey
-    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
-    volumes:
-      - pg-data:/var/lib/postgresql/data
-      - ../postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
-      - ../postgres/init:/docker-entrypoint-initdb.d:ro
-      - ../backup/pgbackrest.conf:/etc/pgbackrest/pgbackrest.conf:ro
-    ports: ["127.0.0.1:${POSTGRES_PORT}:5432"]
-    networks: [internal]
-    deploy: { resources: { limits: { cpus: "6", memory: 24G } } }
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U heymey"]
-      interval: 5s
-
-  pgbouncer:
-    image: ${PGBOUNCER_IMAGE}
-    restart: unless-stopped
-    environment:
-      DATABASE_URL: postgresql://heymey:${POSTGRES_PASSWORD}@postgres:5432/heymey
-      POOL_MODE: transaction
-      MAX_CLIENT_CONN: "2000"
-      DEFAULT_POOL_SIZE: "40"
-      AUTH_TYPE: scram-sha-256
-    ports: ["127.0.0.1:${PGBOUNCER_PORT}:5432"]
-    networks: [internal]
-    depends_on: { postgres: { condition: service_healthy } }
-
   valkey:
     image: ${VALKEY_IMAGE}
     restart: unless-stopped
@@ -138,7 +93,7 @@ services:
     # VALKEY_MAXMEMORY must stay below the container memory limit (staging overrides both).
     environment:
       VALKEY_PASSWORD: ${VALKEY_PASSWORD:?set VALKEY_PASSWORD in the stack secrets}
-      VALKEY_MAXMEMORY: 3gb
+      VALKEY_MAXMEMORY: 1536mb
     command:
       - sh
       - -c
@@ -150,20 +105,7 @@ services:
     volumes: [valkey-data:/data]
     ports: ["127.0.0.1:${VALKEY_PORT}:6379"]
     networks: [internal]
-    deploy: { resources: { limits: { cpus: "1", memory: 4G } } }
-
-  seaweedfs:
-    image: ${SEAWEEDFS_IMAGE}
-    restart: unless-stopped
-    command: ["server", "-s3", "-s3.port=8333", "-dir=/data", "-s3.config=/etc/seaweedfs/s3.json"]
-    volumes:
-      - seaweed-data:/data
-      - ../secrets/${STACK}.s3.json:/etc/seaweedfs/s3.json:ro
-    ports: ["127.0.0.1:${S3_PORT}:8333"]
-    networks:
-      internal: {}
-      edge: { aliases: ["${STACK}-seaweedfs"] }
-    deploy: { resources: { limits: { cpus: "1", memory: 2G } } }
+    deploy: { resources: { limits: { cpus: "0.5", memory: 2G } } }
 
   changedetection:
     image: ${CHANGEDETECTION_IMAGE}
@@ -191,10 +133,24 @@ services:
       edge: { aliases: ["${STACK}-changedetection"] }
     deploy: { resources: { limits: { cpus: "0.5", memory: 512M } } }
 
+  backup:
+    # Nightly pg_dump of Supabase (DIRECT_URL) -> age-encrypted -> R2 bucket BACKUP_S3_BUCKET (BOLT-0023, blueprint
+    # §20.3). Supabase's own daily backups are a second copy; restore is tested monthly (docs/runbooks/restore.md).
+    image: ghcr.io/heymey/backup:${APP_VERSION}
+    restart: unless-stopped
+    env_file: ["../secrets/${STACK}.env"]
+    environment: { STACK: "${STACK}", TZ: Asia/Kolkata }
+    networks: [internal]
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f pg-dump-r2 >/dev/null"]
+      interval: 60s
+    deploy: { resources: { limits: { cpus: "0.5", memory: 512M } } }
+
 volumes:
-  pg-data:
   valkey-data:
-  seaweed-data:
   changedetection-data:
 
 networks:

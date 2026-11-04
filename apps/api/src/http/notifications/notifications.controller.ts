@@ -15,7 +15,8 @@ export class NotificationsController {
   @Post("v1/me/push-tokens")
   @HttpCode(200)
   register(@Req() req: HmRequest, @Body() body: unknown) {
-    return this.notifications.registerToken(requireAuth(req).userId, parse(RegisterPushTokenBody, body));
+    const auth = requireAuth(req);
+    return this.notifications.registerToken(auth.userId, parse(RegisterPushTokenBody, body), auth.deviceId);
   }
 
   @Delete("v1/me/push-tokens/:deviceId")

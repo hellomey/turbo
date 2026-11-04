@@ -38,18 +38,35 @@ class _DeskSignInFlowState extends ConsumerState<DeskSignInFlow> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 480),
             child: HmCard(
-              padding: const EdgeInsets.all(24),
-              child: switch (state.step) {
-                DeskStep.starting => const SizedBox(
-                  height: 120,
-                  child: HmLoadingView(),
-                ),
-                DeskStep.email => const _EmailStep(),
-                DeskStep.code => const _CodeStep(),
-                DeskStep.enroll => const _EnrollStep(),
-                DeskStep.totp => const _TotpStep(),
-                DeskStep.home => const SizedBox.shrink(),
-              },
+              padding: const EdgeInsets.all(HmSpace.xl),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (switch (state.step) {
+                        DeskStep.email => 1,
+                        DeskStep.code => 2,
+                        DeskStep.enroll || DeskStep.totp => 3,
+                        _ => null,
+                      }
+                      case final n?)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: HmSpace.md),
+                      child: HmStepHeader(step: n, total: 3),
+                    ),
+                  switch (state.step) {
+                    DeskStep.starting => const SizedBox(
+                      height: 120,
+                      child: HmLoadingView(),
+                    ),
+                    DeskStep.email => const _EmailStep(),
+                    DeskStep.code => const _CodeStep(),
+                    DeskStep.enroll => const _EnrollStep(),
+                    DeskStep.totp => const _TotpStep(),
+                    DeskStep.home => const SizedBox.shrink(),
+                  },
+                ],
+              ),
             ),
           ),
         ),
@@ -70,12 +87,21 @@ class _Header extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('HeyMey Desk', style: text.labelLarge),
-        const SizedBox(height: 8),
+        Row(
+          children: [
+            const HmIconBadge(icon: Icons.shield_outlined, size: 36),
+            const SizedBox(width: HmSpace.sm),
+            Text('HeyMey Desk', style: text.labelLarge),
+          ],
+        ),
+        const SizedBox(height: HmSpace.lg),
         Semantics(header: true, child: Text(title, style: text.headlineSmall)),
-        const SizedBox(height: 8),
-        Text(body, style: text.bodyLarge),
-        const SizedBox(height: 20),
+        const SizedBox(height: HmSpace.sm),
+        Text(
+          body,
+          style: text.bodyLarge?.copyWith(color: context.hm.textMuted),
+        ),
+        const SizedBox(height: HmSpace.xl),
       ],
     );
   }

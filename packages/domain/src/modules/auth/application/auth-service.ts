@@ -256,7 +256,7 @@ export async function verifyAccessToken(d: AuthDeps, token: string): Promise<Acc
     const session = await d.repos.sessions.findById(ctx.sessionId);
     if (!session || session.revokedAt || session.expiresAt <= now || session.userId !== ctx.userId) return null;
     if (session.isDesk !== ctx.isDesk) return null;
-    return ctx;
+    return { ...ctx, deviceId: session.deviceId }; // SEC-P2-L1: the device this session is bound to
   } catch {
     return null;
   }

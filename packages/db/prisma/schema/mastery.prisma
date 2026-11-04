@@ -70,10 +70,11 @@ model RingEvent {
   kind           String
   at             DateTime
   source         ActionSource
-  clientActionId String?      @unique @db.Uuid
+  clientActionId String?      @db.Uuid // SEC-P2-L2: unique per user, not global
   checkId        String?      @db.Uuid
   details        Json?
 
+  @@unique([userId, clientActionId])
   @@index([userId, at])
   @@index([userId, topicId, at])
 }

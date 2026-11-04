@@ -140,11 +140,24 @@ class SundayReport {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "SundayReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SundayReport[$key]" has a null value in JSON.');
         });
+        assert(json[r'id'] != null, 'Required key "SundayReport[id]" has a null value in JSON.');
+        assert(json[r'weekStart'] != null, 'Required key "SundayReport[weekStart]" has a null value in JSON.');
+        assert(json[r'tier'] != null, 'Required key "SundayReport[tier]" has a null value in JSON.');
+        assert(json[r'createdAt'] != null, 'Required key "SundayReport[createdAt]" has a null value in JSON.');
+        assert(json[r'lampsLit'] != null, 'Required key "SundayReport[lampsLit]" has a null value in JSON.');
+        assert(json[r'steadyEarned'] != null, 'Required key "SundayReport[steadyEarned]" has a null value in JSON.');
+        assert(json[r'goldEarned'] != null, 'Required key "SundayReport[goldEarned]" has a null value in JSON.');
+        assert(json[r'relit'] != null, 'Required key "SundayReport[relit]" has a null value in JSON.');
+        assert(json[r'dimmedNow'] != null, 'Required key "SundayReport[dimmedNow]" has a null value in JSON.');
+        assert(json[r'questionsAnswered'] != null, 'Required key "SundayReport[questionsAnswered]" has a null value in JSON.');
+        assert(json[r'mocksTaken'] != null, 'Required key "SundayReport[mocksTaken]" has a null value in JSON.');
+        assert(json[r'studyMinutes'] != null, 'Required key "SundayReport[studyMinutes]" has a null value in JSON.');
+        assert(json[r'lines'] != null, 'Required key "SundayReport[lines]" has a null value in JSON.');
         return true;
       }());
 

@@ -9,7 +9,7 @@
  * Apps call `createAuditModule({ prisma })` once in their composition root and pass the result to
  * the modules that declare `audit` in module.json.
  */
-import type { PrismaClient } from "@heymey/db";
+import type { Prisma, PrismaClient } from "@heymey/db";
 import { recordAudit, type AuditRepository } from "./application/record-audit.js";
 import type { AuditEntry } from "./domain/audit-entry.js";
 import { PrismaAuditRepository } from "./infrastructure/prisma-audit-repository.js";
@@ -21,9 +21,14 @@ export type { AuditRepository } from "./application/record-audit.js";
 
 export interface AuditApi {
   record(entry: AuditEntry): Promise<void>;
+  /** Append inside the caller's transaction, so the action and its audit row commit or roll back together (SEC-P2-M1). */
+  recordIn(tx: Prisma.TransactionClient, entry: AuditEntry): Promise<void>;
 }
 
 export function createAuditModule(deps: { prisma: PrismaClient } | { repository: AuditRepository }): AuditApi {
   const repo = "repository" in deps ? deps.repository : new PrismaAuditRepository(deps.prisma);
-  return { record: (entry) => recordAudit(repo, entry) };
+  return {
+    record: (entry) => recordAudit(repo, entry),
+    recordIn: (tx, entry) => recordAudit(new PrismaAuditRepository(tx), entry),
+  };
 }

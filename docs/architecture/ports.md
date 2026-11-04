@@ -20,10 +20,10 @@ Staging runs the same services at **production port + 100**.
 | **4570** | 4670 | `marketing` | `MARKETING_PORT` | `heymey.app` | Marketing site + legal pages (Next.js) |
 | **4571** | 4671 | `worker` | `WORKER_PORT` | — | BullMQ workers (health + metrics only) |
 | **4572** | 4672 | `scheduler` | `SCHEDULER_PORT` | — | Repeatable-job scheduler, 1 replica (health + metrics only) |
-| **4580** | 4680 | `postgres` | `POSTGRES_PORT` | — | PostgreSQL 17 |
-| **4581** | 4681 | `pgbouncer` | `PGBOUNCER_PORT` | — | Connection pooling in front of Postgres |
+| **4580** | 4680 | `postgres` | `POSTGRES_PORT` | — | PostgreSQL 17, local dev only (production: Supabase, backups pg_dump to R2, ADR-0014) |
+| **4581** | 4681 | `pgbouncer` | `PGBOUNCER_PORT` | — | Reserved: pgbouncer for the dedicated-VPS layout only; not run at launch (Supabase pooler 6543, ADR-0014) |
 | **4582** | 4682 | `valkey` | `VALKEY_PORT` | — | Valkey 8: cache, queues, leaderboards, rooms |
-| **4583** | 4683 | `seaweedfs` | `S3_PORT` | `cdn.heymey.app` | SeaweedFS S3 endpoint (content packs, audio) |
+| **4583** | 4683 | `seaweedfs` | `S3_PORT` | `cdn.heymey.app` | SeaweedFS S3 endpoint, local dev only (production: Cloudflare R2 at cdn.heymey.app, ADR-0014) |
 | **4584** | 4684 | `mailpit` | `MAIL_SMTP_PORT` | — | LOCAL ONLY: Mailpit SMTP sink for OTP emails |
 | **4585** | 4685 | `mailpit` | `MAIL_UI_PORT` | — | LOCAL ONLY: Mailpit inbox UI |
 | **4590** | 4690 | `grafana` | `GRAFANA_PORT` | `ops.heymey.app/grafana` | Dashboards (metrics + logs) |

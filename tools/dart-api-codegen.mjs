@@ -32,6 +32,9 @@ const r = spawnSync(
     "-i", "/local/packages/contracts/openapi/openapi.json",
     "-g", "dart",
     "-o", "/local/dart/hm_api",
+    // Template override: required keys whose schema allows null (TopicState.litAt, SyncActionResult.errorCode, ...)
+    // are checked for presence only, so valid server JSON no longer trips the debug-mode non-null assert.
+    "-t", "/local/tools/dart-api-codegen-templates",
     "--additional-properties=pubName=hm_api,pubDescription=GENERATED from @heymey/contracts. Never hand-edited.",
   ],
   { stdio: "inherit" },

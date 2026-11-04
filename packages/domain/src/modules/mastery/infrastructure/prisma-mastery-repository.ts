@@ -159,8 +159,8 @@ export class PrismaMasteryRepository implements MasteryRepository {
     return this.prisma.topicCheck.count({ where: { userId, topicId, kind, issuedAt: { gte: since } } });
   }
 
-  async hasClientAction(clientActionId: string): Promise<boolean> {
-    return (await this.prisma.ringEvent.count({ where: { clientActionId } })) > 0;
+  async hasClientAction(userId: string, clientActionId: string): Promise<boolean> {
+    return (await this.prisma.ringEvent.count({ where: { userId, clientActionId } })) > 0;
   }
 
   async dimmingCandidates(q: { now: Date; dimCutoff: Date; limit: number; after: { userId: string; topicId: string } | null }): Promise<LampState[]> {

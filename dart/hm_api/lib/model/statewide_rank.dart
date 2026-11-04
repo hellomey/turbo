@@ -84,11 +84,18 @@ class StatewideRank {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "StatewideRank[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "StatewideRank[$key]" has a null value in JSON.');
         });
+        assert(json[r'mockId'] != null, 'Required key "StatewideRank[mockId]" has a null value in JSON.');
+        assert(json[r'scopeLabel'] != null, 'Required key "StatewideRank[scopeLabel]" has a null value in JSON.');
+        assert(json[r'rank'] != null, 'Required key "StatewideRank[rank]" has a null value in JSON.');
+        assert(json[r'rankedCandidates'] != null, 'Required key "StatewideRank[rankedCandidates]" has a null value in JSON.');
+        assert(json[r'percentile'] != null, 'Required key "StatewideRank[percentile]" has a null value in JSON.');
+        assert(json[r'score'] != null, 'Required key "StatewideRank[score]" has a null value in JSON.');
+        assert(json[r'publishedAt'] != null, 'Required key "StatewideRank[publishedAt]" has a null value in JSON.');
         return true;
       }());
 

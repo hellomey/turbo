@@ -62,11 +62,14 @@ class AlertSettingsQuietHours {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "AlertSettingsQuietHours[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AlertSettingsQuietHours[$key]" has a null value in JSON.');
         });
+        assert(json[r'enabled'] != null, 'Required key "AlertSettingsQuietHours[enabled]" has a null value in JSON.');
+        assert(json[r'startMinute'] != null, 'Required key "AlertSettingsQuietHours[startMinute]" has a null value in JSON.');
+        assert(json[r'endMinute'] != null, 'Required key "AlertSettingsQuietHours[endMinute]" has a null value in JSON.');
         return true;
       }());
 

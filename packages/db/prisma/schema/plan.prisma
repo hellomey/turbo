@@ -60,8 +60,9 @@ model StudyLog {
   at             DateTime
   istDay         String
   source         String // online | offline_sync
-  clientActionId String?  @unique @db.Uuid
+  clientActionId String?  @db.Uuid // SEC-P2-L2: unique per user, not global
   details        Json?
 
+  @@unique([userId, clientActionId])
   @@index([userId, istDay])
 }

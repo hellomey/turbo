@@ -139,11 +139,27 @@ class MockReport {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "MockReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MockReport[$key]" has a null value in JSON.');
         });
+        assert(json[r'attemptId'] != null, 'Required key "MockReport[attemptId]" has a null value in JSON.');
+        assert(json[r'mockId'] != null, 'Required key "MockReport[mockId]" has a null value in JSON.');
+        assert(json[r'examCode'] != null, 'Required key "MockReport[examCode]" has a null value in JSON.');
+        assert(json[r'submittedAt'] != null, 'Required key "MockReport[submittedAt]" has a null value in JSON.');
+        assert(json[r'score'] != null, 'Required key "MockReport[score]" has a null value in JSON.');
+        assert(json[r'maxScore'] != null, 'Required key "MockReport[maxScore]" has a null value in JSON.');
+        assert(json[r'scoreDisplay'] != null, 'Required key "MockReport[scoreDisplay]" has a null value in JSON.');
+        assert(json[r'markingSchemeVersion'] != null, 'Required key "MockReport[markingSchemeVersion]" has a null value in JSON.');
+        assert(json[r'correct'] != null, 'Required key "MockReport[correct]" has a null value in JSON.');
+        assert(json[r'wrong'] != null, 'Required key "MockReport[wrong]" has a null value in JSON.');
+        assert(json[r'unanswered'] != null, 'Required key "MockReport[unanswered]" has a null value in JSON.');
+        assert(json[r'sections'] != null, 'Required key "MockReport[sections]" has a null value in JSON.');
+        assert(json[r'mistakes'] != null, 'Required key "MockReport[mistakes]" has a null value in JSON.');
+        assert(json[r'weakTopicIds'] != null, 'Required key "MockReport[weakTopicIds]" has a null value in JSON.');
+        assert(json[r'ranked'] != null, 'Required key "MockReport[ranked]" has a null value in JSON.');
+        assert(json[r'fullReportLocked'] != null, 'Required key "MockReport[fullReportLocked]" has a null value in JSON.');
         return true;
       }());
 

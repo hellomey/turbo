@@ -2,6 +2,7 @@ import type { UserExams, z } from "@heymey/contracts";
 import { DomainError } from "../../../shared/errors.js";
 import { isPublished, toSummary } from "../domain/exam.js";
 import { validateExamChoice, type UserExamsInput } from "../domain/my-exams.js";
+import { assertCyclesBelong } from "./plan-targets.js";
 import type { ExamsRepository } from "./ports.js";
 
 export type UserExamsDto = z.infer<typeof UserExams>;
@@ -26,6 +27,7 @@ export async function setMyExams(repo: ExamsRepository, userId: string, input: U
   const published = new Set((await repo.listPublished()).filter(isPublished).map((e) => e.code));
   const missing = choices.map((c) => c.examCode).filter((code) => !published.has(code));
   if (missing.length) throw new DomainError("EXAM_NOT_FOUND", { codes: missing });
+  await assertCyclesBelong(repo, choices); // R2: attemptCycles (BOLT-0012)
   await repo.replaceChoices(userId, choices);
   return getMyExams(repo, userId);
 }

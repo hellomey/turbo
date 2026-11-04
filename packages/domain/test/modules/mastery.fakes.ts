@@ -91,8 +91,8 @@ export class MemoryMasteryRepo implements MasteryRepository {
   async countChecksSince(userId: string, topicId: string, kind: string, since: Date) {
     return [...this.checks.values()].filter((c) => c.userId === userId && c.topicId === topicId && c.kind === kind && c.issuedAt >= since).length;
   }
-  async hasClientAction(id: string) {
-    return this.events.some((e) => e.clientActionId === id);
+  async hasClientAction(userId: string, id: string) {
+    return this.events.some((e) => e.userId === userId && e.clientActionId === id);
   }
   async dimmingCandidates(q: Parameters<MasteryRepository["dimmingCandidates"]>[0]) {
     return [...this.states.values()]
@@ -132,7 +132,7 @@ export function topicRows(): TopicRow[] {
   }));
 }
 
-/** 20 questions per topic; the correct option of each is "a" (difficulty 1..5 cycling). */
+/** 40 questions per topic; the correct option of each is "a" (difficulty 1..5 cycling). */
 export function fakeBank(): QuestionBank & { picks: number } {
   const bank = {
     picks: 0,
@@ -140,7 +140,7 @@ export function fakeBank(): QuestionBank & { picks: number } {
       bank.picks++;
       const n = Number(t.slice(-12));
       if (n === 6) return []; // topic 6 has no questions
-      return Array.from({ length: 20 }, (_, i) => ({ i, d: (i % 5) + 1 }))
+      return Array.from({ length: 40 }, (_, i) => ({ i, d: (i % 5) + 1 }))
         .filter((x) => x.d >= minDifficulty)
         .slice(0, count)
         .map((x) => ({

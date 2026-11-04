@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import '../data/gateways.dart';
 import '../data/hm_database.dart';
 import '../data/local_stores.dart';
+import '../data/mock_answer_store.dart';
 import 'outbox_repository.dart';
 import 'pack_downloader.dart';
 import 'sync_engine.dart';
@@ -111,4 +112,9 @@ final syncTriggersProvider = Provider<SyncTriggers>((ref) {
 /// Pending outbox size, for the "Will sync when online" note.
 final pendingOutboxCountProvider = FutureProvider<int>(
   (ref) => ref.watch(outboxRepositoryProvider).pendingCount(),
+);
+
+/// Exam Hall answers kept on the phone until the server has them (BOLT-0019, D-2026-10-22-24).
+final mockAnswerStoreProvider = Provider<MockAnswerStore>(
+  (ref) => DriftMockAnswerStore(ref.watch(hmDatabaseProvider)),
 );

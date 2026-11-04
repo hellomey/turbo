@@ -43,6 +43,7 @@ class _DobStepState extends ConsumerState<DobStep> {
     final ready = _day != null && _month != null && _year != null;
     return OnboardingPage(
       title: "Let's find your exams",
+      illustration: HmIllustrationKind.welcome,
       subtitle:
           'Answer a few quick questions. We will show the government exams you can write.',
       children: [
@@ -50,10 +51,10 @@ class _DobStepState extends ConsumerState<DobStep> {
           'Your date of birth',
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: HmSpace.md),
         Wrap(
-          spacing: 12,
-          runSpacing: 12,
+          spacing: HmSpace.md,
+          runSpacing: HmSpace.md,
           children: [
             _Picker(
               key: const Key('dob-day'),
@@ -90,13 +91,25 @@ class _DobStepState extends ConsumerState<DobStep> {
             ),
           ],
         ),
-        const SizedBox(height: 8),
-        Text(
-          'We use it only to check exam age limits.',
-          style: Theme.of(context).textTheme.bodySmall,
+        const SizedBox(height: HmSpace.md),
+        Row(
+          children: [
+            Icon(
+              Icons.lock_outline_rounded,
+              size: 18,
+              color: context.hm.textMuted,
+            ),
+            const SizedBox(width: HmSpace.sm),
+            Expanded(
+              child: Text(
+                'We use it only to check exam age limits.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+          ],
         ),
         StepError(_error),
-        const SizedBox(height: 24),
+        const SizedBox(height: HmSpace.xl),
         HmPrimaryButton(
           key: const Key('dob-continue'),
           label: 'Continue',
@@ -137,10 +150,7 @@ class _Picker extends StatelessWidget {
       child: DropdownButtonFormField<int>(
         initialValue: value,
         isExpanded: true,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-        ),
+        decoration: InputDecoration(labelText: label),
         items: [
           for (final e in items.entries)
             DropdownMenuItem(value: e.key, child: Text(e.value)),
@@ -164,6 +174,8 @@ class Under18View extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const HmIllustration(kind: HmIllustrationKind.empty, size: 112),
+              const SizedBox(height: HmSpace.xl),
               Semantics(
                 liveRegion: true,
                 child: Text(

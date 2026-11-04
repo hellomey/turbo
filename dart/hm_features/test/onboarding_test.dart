@@ -141,8 +141,8 @@ void main() {
         await tester.pumpAndSettle();
 
         final check = find.byKey(const Key('answers-check'));
-        FilledButton button() => tester.widget<FilledButton>(
-          find.descendant(of: check, matching: find.byType(FilledButton)),
+        HmChunkyButton button() => tester.widget<HmChunkyButton>(
+          find.descendant(of: check, matching: find.byType(HmChunkyButton)),
         );
         expect(button().onPressed, isNull, reason: 'incomplete');
 
@@ -326,10 +326,10 @@ void main() {
         expect(find.text('Agree and continue'), findsNothing);
         await tapKey(tester, 'consent-privacy');
         expect(h.links.opened, ['https://heymey.app/legal/privacy']);
-        FilledButton agree() => tester.widget<FilledButton>(
+        HmChunkyButton agree() => tester.widget<HmChunkyButton>(
           find.descendant(
             of: find.byKey(const Key('consent-continue')),
-            matching: find.byType(FilledButton),
+            matching: find.byType(HmChunkyButton),
           ),
         );
         expect(agree().onPressed, isNull);

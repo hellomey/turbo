@@ -1,5 +1,6 @@
-# Staging overrides (blueprint §21, §42): same images, low limits, one replica each, own database.
-# Never real personal data. Data services are published at production port + 100 (4680, 4682, ...).
+# Staging overrides (blueprint §21, §42): same images, low limits, one replica each, OWN Supabase project
+# (its own DATABASE_URL/DIRECT_URL in staging.enc.env) and own R2 bucket. Never real personal data.
+# Valkey is published at production port + 100 (4682).
 services:
   api:
     deploy: { replicas: 1, resources: { limits: { cpus: "0.5", memory: 768M } } }
@@ -7,17 +8,11 @@ services:
     deploy: { replicas: 1, resources: { limits: { cpus: "0.5", memory: 512M } } }
   worker:
     deploy: { replicas: 1, resources: { limits: { cpus: "0.5", memory: 768M } } }
-  postgres:
-    ports: !override ["127.0.0.1:${STAGING_POSTGRES_PORT}:5432"]
-    deploy: { resources: { limits: { cpus: "1", memory: 2G } } }
-  pgbouncer:
-    ports: !override ["127.0.0.1:${STAGING_PGBOUNCER_PORT}:5432"]
   valkey:
     ports: !override ["127.0.0.1:${STAGING_VALKEY_PORT}:6379"]
     environment: { VALKEY_MAXMEMORY: 384mb } # below the 512M limit (noeviction: writes fail instead of OOM-kill)
     deploy: { resources: { limits: { cpus: "0.25", memory: 512M } } }
-  seaweedfs:
-    ports: !override ["127.0.0.1:${STAGING_S3_PORT}:8333"]
-    deploy: { resources: { limits: { cpus: "0.25", memory: 512M } } }
   changedetection:
     profiles: ["never"] # only production watches official sites
+  backup:
+    profiles: ["never"] # staging holds synthetic data only; Supabase's own daily backup is enough

@@ -427,6 +427,310 @@ class HmApi {
     ),
   );
 
+  // ------------------------------------------------------------------ exam hall (§10.6, INT-002-S10/S11)
+
+  /// `GET /v1/exams/{code}/structure` (contract `ExamStructure` JSON): papers carry the answer mode.
+  Future<Map<String, dynamic>> getExamStructure(String examCode) async =>
+      _map(await _get('/v1/exams/${Uri.encodeComponent(examCode)}/structure'));
+
+  /// `GET /v1/mocks?examCode=` (contract `MockList` JSON).
+  Future<Map<String, dynamic>> listMocks(String examCode) async => _map(
+    await _get('/v1/mocks?examCode=${Uri.encodeQueryComponent(examCode)}'),
+  );
+
+  /// `GET /v1/state-mock-sunday?examCode=` (contract `StateMockInfo` JSON).
+  Future<Map<String, dynamic>> getStateMockSunday(
+    String examCode,
+  ) async => _map(
+    await _get(
+      '/v1/state-mock-sunday?examCode=${Uri.encodeQueryComponent(examCode)}',
+    ),
+  );
+
+  /// `POST /v1/mocks/{id}/attempts` (contract `StartMockBody` → `MockAttemptState`). The caller owns the key
+  /// so a retried start resumes the same attempt (§34.3).
+  Future<Map<String, dynamic>> startMockAttempt(
+    String mockId, {
+    required String mode,
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/mocks/${Uri.encodeComponent(mockId)}/attempts',
+      body: {'mode': mode},
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `GET /v1/mock-attempts/{id}` (contract `MockAttemptState`).
+  Future<Map<String, dynamic>> getMockAttempt(String attemptId) async =>
+      _map(await _get('/v1/mock-attempts/${Uri.encodeComponent(attemptId)}'));
+
+  /// `PUT /v1/mock-attempts/{id}/answers` (contract `SaveMockAnswersBody` → `MockAnswersSaved`).
+  Future<Map<String, dynamic>> saveMockAnswers(
+    String attemptId,
+    Map<String, Object> body, {
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'PUT',
+      '/v1/mock-attempts/${Uri.encodeComponent(attemptId)}/answers',
+      body: body,
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `POST /v1/mock-attempts/{id}/submit` (contract `MockReport`).
+  Future<Map<String, dynamic>> submitMockAttempt(
+    String attemptId, {
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/mock-attempts/${Uri.encodeComponent(attemptId)}/submit',
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `GET /v1/mock-attempts/{id}/report` (contract `MockReport`).
+  Future<Map<String, dynamic>> getMockReport(String attemptId) async => _map(
+    await _get('/v1/mock-attempts/${Uri.encodeComponent(attemptId)}/report'),
+  );
+
+  // ------------------------------------------------------------------ mastery (§5.1, INT-002-S01..S04, BOLT-0017)
+
+  /// `GET /v1/me/topic-states?examCode=` (contract `TopicStatePage` JSON): `nextCheck` per lamp.
+  Future<Map<String, dynamic>> listMyTopicStates(String examCode) async => _map(
+    await _get(
+      '/v1/me/topic-states?examCode=${Uri.encodeQueryComponent(examCode)}&limit=500',
+    ),
+  );
+
+  /// `GET /v1/me/relight-queue` (contract `RelightQueue` JSON).
+  Future<Map<String, dynamic>> getRelightQueue() async =>
+      _map(await _get('/v1/me/relight-queue'));
+
+  /// `POST /v1/topics/{topicId}/checks` (contract `StartCheckBody` → `TopicCheck` JSON). The caller owns the key.
+  Future<Map<String, dynamic>> startTopicCheck(
+    String topicId, {
+    required String kind,
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/topics/${Uri.encodeComponent(topicId)}/checks',
+      body: {'kind': kind},
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `POST /v1/checks/{checkId}/submit` (contract `SubmitCheckBody` → `CheckResult` JSON).
+  Future<Map<String, dynamic>> submitTopicCheck(
+    String checkId,
+    List<Map<String, Object>> answers, {
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/checks/${Uri.encodeComponent(checkId)}/submit',
+      body: {'answers': answers},
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  // ------------------------------------------------------------------ practice (§10.6, §11, INT-002-S06..S09, BOLT-0017)
+
+  /// `POST /v1/practice/sessions` (contract `StartPracticeBody` → `PracticeSession` JSON).
+  Future<Map<String, dynamic>> startPracticeSession(
+    Map<String, Object> body, {
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/practice/sessions',
+      body: body,
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `POST /v1/practice/sessions/{id}/answers` (contract `PracticeAnswerBody` → `PracticeAnswerResult` JSON).
+  /// The key is the answer's `clientActionId`, the same id the outbox uses (§39).
+  Future<Map<String, dynamic>> answerPracticeQuestion(
+    String sessionId,
+    Map<String, Object> body, {
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/practice/sessions/${Uri.encodeComponent(sessionId)}/answers',
+      body: body,
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `GET /v1/me/practice/usage` (contract `PracticeUsage` JSON).
+  Future<Map<String, dynamic>> getPracticeUsage() async =>
+      _map(await _get('/v1/me/practice/usage'));
+
+  /// `GET /v1/me/mistakes` (contract `MistakePage` JSON).
+  Future<Map<String, dynamic>> listMyMistakes({String? cursor}) async => _map(
+    await _get(
+      '/v1/me/mistakes${cursor == null ? '' : '?cursor=${Uri.encodeQueryComponent(cursor)}'}',
+    ),
+  );
+
+  /// `GET /v1/me/drills` (contract `ConceptDrillList` JSON).
+  Future<Map<String, dynamic>> listMyDrills() async =>
+      _map(await _get('/v1/me/drills'));
+
+  /// `GET /v1/pyq/facets?examCode=` (contract `PyqFacets` JSON).
+  Future<Map<String, dynamic>> getPyqFacets(String examCode) async => _map(
+    await _get('/v1/pyq/facets?examCode=${Uri.encodeQueryComponent(examCode)}'),
+  );
+
+  /// `GET /v1/pyq` (contract `PyqPage` JSON), cursor-paginated (§37).
+  Future<Map<String, dynamic>> searchPyqs(
+    String examCode, {
+    int? year,
+    String? subjectCode,
+    int? difficulty,
+    String? cursor,
+    int limit = 20,
+  }) async {
+    final q = <String, String>{
+      'examCode': examCode,
+      'year': ?year?.toString(),
+      'subjectCode': ?subjectCode,
+      'difficulty': ?difficulty?.toString(),
+      'cursor': ?cursor,
+      'limit': '$limit',
+    };
+    return _map(await _get('/v1/pyq?${Uri(queryParameters: q).query}'));
+  }
+
+  /// `POST /v1/questions/{id}/reports` (contract `QuestionReportBody` → `QuestionReportAck`, §19.4 Q34).
+  Future<void> reportQuestion(
+    String questionId, {
+    required int questionVersion,
+    required String reason,
+  }) => _write(
+    'POST',
+    '/v1/questions/${Uri.encodeComponent(questionId)}/reports',
+    {'questionVersion': questionVersion, 'reason': reason},
+  );
+
+  // ------------------------------------------------------------------ plan (§10.6 Today, INT-002-S12/S13)
+
+  /// `GET /v1/me/today` (contract `TodayScreen` JSON).
+  Future<Map<String, dynamic>> getToday() async =>
+      _map(await _get('/v1/me/today'));
+
+  /// `GET /v1/me/plan/days?from=&to=` (contract `PlanDays` JSON). Dates are IST `YYYY-MM-DD`.
+  Future<Map<String, dynamic>> getPlanDays(
+    String from,
+    String to,
+  ) async => _map(
+    await _get(
+      '/v1/me/plan/days?${Uri(queryParameters: {'from': from, 'to': to}).query}',
+    ),
+  );
+
+  /// `POST /v1/me/plan/rebalance` (contract `Plan` JSON). The caller owns the key (§34.3).
+  Future<Map<String, dynamic>> rebalancePlan({
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/me/plan/rebalance',
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `PUT /v1/me/plan` (contract `PutPlanBody` → `Plan` JSON). The caller owns the key (§34.3).
+  Future<Map<String, dynamic>> putPlan(
+    Map<String, Object> body, {
+    required String idempotencyKey,
+  }) async => _map(
+    await _call(
+      'PUT',
+      '/v1/me/plan',
+      body: body,
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// `PUT /v1/me/exams` with the chosen attempt cycle per exam code (contract `UserExamsBody.attemptCycles`, R2).
+  Future<void> putMyExamsWithCycles(
+    String mainExamCode,
+    List<String> otherExamCodes,
+    Map<String, String> attemptCycles,
+  ) => _write('PUT', '/v1/me/exams', {
+    'mainExamCode': mainExamCode,
+    'otherExamCodes': otherExamCodes,
+    'attemptCycles': attemptCycles,
+  });
+
+  // ------------------------------------------------------------------ readiness (INT-002-S14/S15)
+
+  /// `GET /v1/me/readiness?examCode=` (contract `ReadinessMeter` JSON).
+  Future<Map<String, dynamic>> getReadiness(String examCode) async => _map(
+    await _get(
+      '/v1/me/readiness?examCode=${Uri.encodeQueryComponent(examCode)}',
+    ),
+  );
+
+  /// `GET /v1/me/sunday-reports` (contract `SundayReportPage` JSON).
+  Future<Map<String, dynamic>> listSundayReports({
+    String? cursor,
+  }) async => _map(
+    await _get(
+      '/v1/me/sunday-reports${cursor == null ? '' : '?cursor=${Uri.encodeQueryComponent(cursor)}'}',
+    ),
+  );
+
+  /// `GET /v1/me/sunday-reports/{id}` (contract `SundayReport` JSON).
+  Future<Map<String, dynamic>> getSundayReport(String reportId) async => _map(
+    await _get('/v1/me/sunday-reports/${Uri.encodeComponent(reportId)}'),
+  );
+
+  // ------------------------------------------------------------------ alerts (INT-002-S16/S17)
+
+  /// `GET /v1/me/exam-alerts` (contract `ExamAlertPage` JSON).
+  Future<Map<String, dynamic>> listMyExamAlerts({String? cursor}) async => _map(
+    await _get(
+      '/v1/me/exam-alerts${cursor == null ? '' : '?cursor=${Uri.encodeQueryComponent(cursor)}'}',
+    ),
+  );
+
+  /// `GET /v1/me/alert-settings` (contract `AlertSettings` JSON).
+  Future<Map<String, dynamic>> getAlertSettings() async =>
+      _map(await _get('/v1/me/alert-settings'));
+
+  /// `PUT /v1/me/alert-settings` (contract `PutAlertSettingsBody` → `AlertSettings` JSON).
+  Future<Map<String, dynamic>> putAlertSettings(
+    Map<String, Object> body,
+  ) async => _map(
+    await _call('PUT', '/v1/me/alert-settings', body: body, idempotent: true),
+  );
+
+  /// `POST /v1/me/push-tokens` (contract `RegisterPushTokenBody` → `PushTokenAck`).
+  Future<void> registerPushToken({
+    required String deviceId,
+    required String platform,
+    required String token,
+  }) => _write('POST', '/v1/me/push-tokens', {
+    'deviceId': deviceId,
+    'platform': platform,
+    'token': token,
+  });
+
+  /// `DELETE /v1/me/push-tokens/{deviceId}` (logout removes this device's token).
+  Future<void> deletePushToken(String deviceId) => _write(
+    'DELETE',
+    '/v1/me/push-tokens/${Uri.encodeComponent(deviceId)}',
+    null,
+  );
+
   void dispose() {
     _http.close();
     updateRequired.dispose();

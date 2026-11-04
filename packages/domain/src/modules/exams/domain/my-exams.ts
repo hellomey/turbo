@@ -6,6 +6,8 @@ export type UserExamsInput = z.input<typeof UserExamsBody>;
 export interface ExamChoice {
   examCode: string;
   isMain: boolean;
+  /** R2 (BOLT-0012): the attempt cycle I prepare for; null = not chosen (the current cycle is used). */
+  attemptCycleId?: string | null;
 }
 
 export const MAX_OTHER_EXAMS = 2;
@@ -25,5 +27,16 @@ export function validateExamChoice(input: UserExamsInput): ExamChoice[] {
   if (new Set(others).size !== others.length) {
     throw new DomainError("VALIDATION_FAILED", { field: "otherExamCodes", reason: "duplicate exam" });
   }
-  return [{ examCode: input.mainExamCode, isMain: true }, ...others.map((examCode) => ({ examCode, isMain: false }))];
+  const cycles = input.attemptCycles ?? {};
+  const chosen = new Set([input.mainExamCode, ...others]);
+  const stray = Object.keys(cycles).filter((code) => !chosen.has(code));
+  if (stray.length) {
+    throw new DomainError("VALIDATION_FAILED", { field: "attemptCycles", reason: "cycle for an exam that is not chosen" });
+  }
+  // Without attemptCycles the shape stays exactly as in Phase 1 (no attemptCycleId key).
+  const choice = (examCode: string, isMain: boolean): ExamChoice => {
+    const id = cycles[examCode];
+    return id ? { examCode, isMain, attemptCycleId: id } : { examCode, isMain };
+  };
+  return [choice(input.mainExamCode, true), ...others.map((examCode) => choice(examCode, false))];
 }

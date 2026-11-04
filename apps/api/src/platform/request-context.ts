@@ -8,6 +8,8 @@ export interface AuthContext {
   sessionId: string;
   roles: Role[];
   isDesk: boolean;
+  /** Device the session is bound to (SEC-P2-L1 push-token proof). */
+  deviceId?: string;
 }
 
 export interface AccessTokenVerifier {

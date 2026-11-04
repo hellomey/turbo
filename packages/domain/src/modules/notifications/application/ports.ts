@@ -8,7 +8,14 @@ export interface PushTokenRow {
 
 /** Port: device push tokens, one per (user, device). */
 export interface PushTokenRepository {
-  upsert(input: { userId: string; deviceId: string; platform: "android" | "ios"; token: string; at: Date }): Promise<void>;
+  /**
+   * Inside one transaction: if the token is held by another (user, device), call `canTakeFrom(owner)`; when it says
+   * no, change nothing and return "refused". Otherwise drop the other row and upsert (SEC-P2-L1).
+   */
+  upsert(
+    input: { userId: string; deviceId: string; platform: "android" | "ios"; token: string; at: Date },
+    canTakeFrom: (owner: { userId: string; deviceId: string }) => boolean,
+  ): Promise<"ok" | "refused">;
   /** Hard delete of the device's token. Returns true when a row existed. */
   remove(userId: string, deviceId: string): Promise<boolean>;
   removeAllForUser(userId: string): Promise<number>;

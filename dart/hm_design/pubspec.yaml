@@ -1,5 +1,5 @@
 name: hm_design
-description: "Design tokens (blueprint §10.3), themes (dark default, light, high-contrast), core widgets, Rive loader."
+description: "Design system v2 (BOLT-0021): tokens (§10.3), light/dark/high-contrast themes, gamified widgets, bundled Nunito font."
 publish_to: none
 resolution: workspace
 
@@ -11,7 +11,21 @@ dependencies:
   flutter:
     sdk: flutter
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter:
+  # Bundled so the app works offline; never fetched at runtime (BOLT-0021). Licence: assets/fonts/OFL.txt.
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Nunito-Black.ttf
+          weight: 900

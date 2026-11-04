@@ -82,11 +82,17 @@ class RingCounts {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "RingCounts[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "RingCounts[$key]" has a null value in JSON.');
         });
+        assert(json[r'totalLamps'] != null, 'Required key "RingCounts[totalLamps]" has a null value in JSON.');
+        assert(json[r'lit'] != null, 'Required key "RingCounts[lit]" has a null value in JSON.');
+        assert(json[r'steady'] != null, 'Required key "RingCounts[steady]" has a null value in JSON.');
+        assert(json[r'gold'] != null, 'Required key "RingCounts[gold]" has a null value in JSON.');
+        assert(json[r'dimming'] != null, 'Required key "RingCounts[dimming]" has a null value in JSON.');
+        assert(json[r'dim'] != null, 'Required key "RingCounts[dim]" has a null value in JSON.');
         return true;
       }());
 

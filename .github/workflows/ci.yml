@@ -100,7 +100,7 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with: { node-version: 24, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run lint typecheck build --filter=@heymey/marketing
+      - run: pnpm turbo run lint typecheck build --filter=./apps/marketing
 
   security:
     name: security (semgrep · osv · gitleaks · audit)
@@ -126,11 +126,11 @@ jobs:
     name: infra (compose config · Caddyfile)
     runs-on: ubuntu-latest
     defaults: { run: { working-directory: infra/compose } }
-    env: { APP_VERSION: ci, POSTGRES_PASSWORD: ci, VALKEY_PASSWORD: ci }
+    env: { APP_VERSION: ci, VALKEY_PASSWORD: ci }
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - name: dummy secret files for validation only
-        run: touch ../secrets/production.env ../secrets/staging.env ../secrets/production.s3.json ../secrets/staging.s3.json
+        run: touch ../secrets/production.env ../secrets/staging.env
       - run: docker network create heymey-edge
       - run: |
           E="--env-file ports.env --env-file images.env"
@@ -153,10 +153,13 @@ jobs:
         run: |
           set -a; . ./images.env; set +a
           docker run --rm -e OPS_ALLOWLIST=10.0.0.0/8 -v "$PWD/../caddy/Caddyfile:/etc/caddy/Caddyfile:ro" "$CADDY_IMAGE" caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
-          docker run --rm -v "$PWD/../docker/desk.Caddyfile:/etc/caddy/Caddyfile:ro" "$CADDY_IMAGE" caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+      - name: desk firebase.json is valid JSON with an SPA rewrite
+        run: node -e "const c=require('../../apps/desk/firebase.json');if(!c.hosting.every(h=>h.rewrites.some(r=>r.destination==='/index.html')))process.exit(1)"
+      - name: marketing vercel.json is valid JSON (marketing on Vercel, D-2026-11-04-01)
+        run: node -e "const c=require('../../apps/marketing/vercel.json');if(!c.buildCommand||!c.ignoreCommand)process.exit(1)"
 
   images:
-    name: images (server runtime · migrator · marketing)
+    name: images (server runtime · migrator · backup)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -177,13 +180,11 @@ jobs:
           target: migrator
           tags: heymey/migrator:ci
           cache-from: type=gha,scope=server
-      - name: marketing
+      - name: backup (pg_dump -> age -> R2)
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
-          file: infra/docker/marketing.Dockerfile
-          tags: heymey/marketing:ci
-          cache-from: type=gha,scope=marketing
-          cache-to: type=gha,mode=max,scope=marketing
+          file: infra/docker/backup.Dockerfile
+          tags: heymey/backup:ci
       - name: server bundle resolves (stops only on the missing environment)
         run: |
           out=$(docker run --rm heymey/server:ci 2>&1 || true)

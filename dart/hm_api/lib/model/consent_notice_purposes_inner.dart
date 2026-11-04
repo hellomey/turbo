@@ -64,11 +64,15 @@ class ConsentNoticePurposesInner {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "ConsentNoticePurposesInner[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ConsentNoticePurposesInner[$key]" has a null value in JSON.');
         });
+        assert(json[r'purpose'] != null, 'Required key "ConsentNoticePurposesInner[purpose]" has a null value in JSON.');
+        assert(json[r'required'] != null, 'Required key "ConsentNoticePurposesInner[required]" has a null value in JSON.');
+        assert(json[r'title'] != null, 'Required key "ConsentNoticePurposesInner[title]" has a null value in JSON.');
+        assert(json[r'description'] != null, 'Required key "ConsentNoticePurposesInner[description]" has a null value in JSON.');
         return true;
       }());
 

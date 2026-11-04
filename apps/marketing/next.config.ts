@@ -2,9 +2,8 @@ import path from "node:path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Monorepo: standalone server for the Docker image (infra/docker/marketing.Dockerfile), traced from the repo root.
-  output: "standalone",
-  outputFileTracingRoot: path.join(process.cwd(), "../.."),
+  // pnpm monorepo: resolve `next` from the repo root (Vercel Root Directory = apps/marketing, D-2026-11-04-01).
+  turbopack: { root: path.join(process.cwd(), "../..") },
   images: {
     formats: ["image/avif", "image/webp"],
   },

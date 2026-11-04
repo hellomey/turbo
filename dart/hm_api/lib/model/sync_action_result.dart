@@ -62,11 +62,13 @@ class SyncActionResult {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "SyncActionResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SyncActionResult[$key]" has a null value in JSON.');
         });
+        assert(json[r'clientActionId'] != null, 'Required key "SyncActionResult[clientActionId]" has a null value in JSON.');
+        assert(json[r'status'] != null, 'Required key "SyncActionResult[status]" has a null value in JSON.');
         return true;
       }());
 

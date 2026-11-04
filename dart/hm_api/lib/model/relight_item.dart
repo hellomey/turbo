@@ -76,11 +76,17 @@ class RelightItem {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "RelightItem[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "RelightItem[$key]" has a null value in JSON.');
         });
+        assert(json[r'topicId'] != null, 'Required key "RelightItem[topicId]" has a null value in JSON.');
+        assert(json[r'topicName'] != null, 'Required key "RelightItem[topicName]" has a null value in JSON.');
+        assert(json[r'subjectCode'] != null, 'Required key "RelightItem[subjectCode]" has a null value in JSON.');
+        assert(json[r'dim'] != null, 'Required key "RelightItem[dim]" has a null value in JSON.');
+        assert(json[r'overdueSince'] != null, 'Required key "RelightItem[overdueSince]" has a null value in JSON.');
+        assert(json[r'minutes'] != null, 'Required key "RelightItem[minutes]" has a null value in JSON.');
         return true;
       }());
 

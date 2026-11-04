@@ -40,7 +40,7 @@ infra/secrets
 **/test-results
 **/playwright-report
 
-# Flutter / Dart: not needed by the Node images. desk.Dockerfile needs apps/desk/build/web, so keep that.
+# Flutter / Dart: not needed by the Node images. (desk is on Firebase Hosting since BOLT-0023.)
 **/.dart_tool
 **/.flutter-plugins
 **/.flutter-plugins-dependencies

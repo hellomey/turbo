@@ -106,11 +106,22 @@ class MockAttemptState {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "MockAttemptState[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MockAttemptState[$key]" has a null value in JSON.');
         });
+        assert(json[r'attemptId'] != null, 'Required key "MockAttemptState[attemptId]" has a null value in JSON.');
+        assert(json[r'mock'] != null, 'Required key "MockAttemptState[mock]" has a null value in JSON.');
+        assert(json[r'mode'] != null, 'Required key "MockAttemptState[mode]" has a null value in JSON.');
+        assert(json[r'status'] != null, 'Required key "MockAttemptState[status]" has a null value in JSON.');
+        assert(json[r'startedAt'] != null, 'Required key "MockAttemptState[startedAt]" has a null value in JSON.');
+        assert(json[r'deadlineAt'] != null, 'Required key "MockAttemptState[deadlineAt]" has a null value in JSON.');
+        assert(json[r'serverNow'] != null, 'Required key "MockAttemptState[serverNow]" has a null value in JSON.');
+        assert(json[r'sections'] != null, 'Required key "MockAttemptState[sections]" has a null value in JSON.');
+        assert(json[r'questions'] != null, 'Required key "MockAttemptState[questions]" has a null value in JSON.');
+        assert(json[r'answers'] != null, 'Required key "MockAttemptState[answers]" has a null value in JSON.');
+        assert(json[r'ranked'] != null, 'Required key "MockAttemptState[ranked]" has a null value in JSON.');
         return true;
       }());
 

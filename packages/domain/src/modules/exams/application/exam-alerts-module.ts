@@ -10,8 +10,9 @@ import * as uc from "./exam-alerts.js";
 export interface ExamAlertsApi {
   receiveSiteChange(secret: string | undefined, parse: () => z.infer<typeof SiteChangeWebhookBody>): Promise<{ received: boolean }>;
   listChanges(q: { status: ExamChangeStatus; cursor?: string | undefined; limit: number }): Promise<uc.Page<ExamChangeDto>>;
-  approve(reviewerId: string, changeId: string, body: z.infer<typeof ApproveExamChangeBody>): Promise<ExamChangeDto>;
-  reject(reviewerId: string, changeId: string, reason: string): Promise<ExamChangeDto>;
+  /** `inTx` runs inside the review transaction (audit row, SEC-P2-M1). */
+  approve(reviewerId: string, changeId: string, body: z.infer<typeof ApproveExamChangeBody>, inTx?: uc.ReviewTxHook): Promise<ExamChangeDto>;
+  reject(reviewerId: string, changeId: string, reason: string, inTx?: uc.ReviewTxHook): Promise<ExamChangeDto>;
   myAlerts(userId: string, q: { cursor?: string | undefined; limit: number }): Promise<uc.Page<ExamAlertDto>>;
   /** Worker composition root: who follows an exam (UserExamChoice). */
   followersOf(examCode: string): Promise<string[]>;
@@ -31,8 +32,8 @@ export function createExamAlertsModule(
   return {
     receiveSiteChange: (s, p) => uc.receiveSiteChange(d, s, p),
     listChanges: (q) => uc.listChanges(d, q),
-    approve: (r, id, b) => uc.approveChange(d, r, id, b),
-    reject: (r, id, reason) => uc.rejectChange(d, r, id, reason),
+    approve: (r, id, b, h) => uc.approveChange(d, r, id, b, h),
+    reject: (r, id, reason, h) => uc.rejectChange(d, r, id, reason, h),
     myAlerts: (u, q) => uc.myExamAlerts(d, u, q),
     followersOf: (code) => repo.followersOf(code),
   };

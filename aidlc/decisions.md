@@ -253,3 +253,40 @@ free packs only. Packs contain answers (study only; ranked play never runs offli
 
 ### D-2026-10-22-35 PROVISIONAL (founder to confirm) · Q26 Exam-family model now
 Yes: BOLT-0008 adds the exam-family schema (ADR-0013) with TN data only, plus ADR-0012 (`exam-hall` depends on `exams`).
+
+## D-2026-10-23-01 PROVISIONAL (founder to confirm): design system v2 (BOLT-0021)
+Founder asked for a premium, gamified (Duolingo-like) UI in light and dark. Changes to §10.3/§10.4:
+interface font Nunito (bundled, OFL) replaces Plus Jakarta Sans/Sora; primary action colour Peacock Teal (#19B5AE light / #2DD4C8 dark);
+Temple Gold becomes the reward colour (lamps, Gold, XP); dark background #100D2B. All pairs WCAG AA (tested).
+
+## 2026-11-01
+
+### D-2026-11-01-01 PROVISIONAL (founder to confirm) · T2 · Free-tier launch architecture
+Launch on free/starter tiers; pay only once revenue comes in. Postgres → Supabase (Free; **Pro $25/mo before public
+launch**; app via transaction pooler 6543, migrations via direct URL; Prisma stays; Supabase Auth NOT adopted).
+Files/packs → Cloudflare R2 (`cdn.heymey.app`). Marketing → Cloudflare Workers (`@opennextjs/cloudflare`; not Vercel Hobby).
+Desk → Firebase Hosting. api/worker/scheduler/realtime/valkey/caddy/changedetection → one VM (Oracle Always Free ARM;
+fallback Hetzner CX22), ports 4567+ unchanged. SES email, FCM push, Sentry + Grafana Cloud free (or self-hosted), Cloudflare DNS/WAF.
+Nightly `pg_dump` → R2 always. T2 because it moves personal data to new processors (Supabase, Cloudflare): **security +
+compliance review required; privacy-notice processor list must be updated**. Changes blueprint decision 5, §14.1, §20.2,
+§20.3, §21, §23, §25, §42 and the pitch deck (marked in place). AGENTS.md §2 "one VPS" wording change pending founder.
+Decided by: founder (request) + main session + architect. See ADR-0014. Infra: devops (parallel).
+
+## 2026-11-04
+
+### D-2026-11-04-01 · Marketing on Vercel (amends D-2026-11-01-01)
+Founder decision: `apps/marketing` (Next.js) is hosted on **Vercel** at heymey.app, deployed by Vercel's GitHub
+integration (Root Directory `apps/marketing`, `vercel.json`, `turbo-ignore`). Replaces Cloudflare Workers /
+`@opennextjs/cloudflare` from BOLT-0023. Supabase, R2, Firebase Hosting (Desk) and the one VM are unchanged.
+**Open for the founder:** the Vercel Hobby plan forbids commercial use, so the commercial site needs **Vercel Pro
+($20/mo)**; founder's choice. Recorded in ADR-0014 (amendment 2026-11-04), blueprint §1/§5/§20.3/§25/§42 marked in place.
+Decided by: founder. Implemented by: devops (BOLT-0023 amendment).
+
+
+## 2026-11-04 — SEC-P2-L2 follow-up: per-user clientActionId dedupe for RingEvent and PracticeAnswer (PENDING ARCHITECT APPROVAL)
+`RingEvent.clientActionId` was globally unique and `PracticeAnswer.id` was the client's UUID (global PK). Both now dedupe
+on `(userId, clientActionId)` like `StudyLog` (BOLT-0020). Migration `20261104010000_ring_event_practice_client_action_per_user`:
+creates `RingEvent_userId_clientActionId_key` then drops `RingEvent_clientActionId_key`; adds `PracticeAnswer.clientActionId`
+(backfilled from `id`, NOT NULL) + `PracticeAnswer_userId_clientActionId_key`; new answer ids are server-generated.
+Open: `SyncReceipt.clientActionId` is a global PK but no code uses the table; architect to decide (drop or re-key).
+**Needs: architect approval of the schema/migration (owner of `packages/db/prisma`).** Implemented by: backend.

@@ -4,8 +4,6 @@ import 'package:hm_api/api.dart' as api;
 import 'package:hm_core/hm_core.dart';
 import 'package:http/http.dart' as http;
 
-import 'wire.dart';
-
 /// Server side of the outbox: `POST /v1/sync/study-actions` (§39, contract `sync.ts`).
 abstract interface class StudySyncGateway {
   /// Sends one batch. [idempotencyKey] is the same on every retry of the same batch (§34.3).
@@ -46,10 +44,13 @@ class HmApiSyncGateway implements StudySyncGateway, PackCatalogGateway {
     HmApiException.unknownMessage,
   );
 
-  static T _parse<T>(T Function() read) {
+  /// Generated `fromJson` returns null for a non-object and throws on a wrong-typed field.
+  static T _parse<T>(T? Function() read) {
     try {
-      return read();
+      return read() ?? (throw _unknown);
     } on FormatException {
+      throw _unknown;
+    } on TypeError {
       throw _unknown;
     }
   }
@@ -64,13 +65,13 @@ class HmApiSyncGateway implements StudySyncGateway, PackCatalogGateway {
       'deviceId': deviceId,
       'actions': actions,
     }, idempotencyKey: idempotencyKey);
-    return _parse(() => Wire.syncBatchResult(json));
+    return _parse(() => api.SyncBatchResult.fromJson(json));
   }
 
   @override
   Future<List<api.ContentPack>> listPacks(String examCode) async {
     final json = await _api.listContentPacks(examCode);
-    return _parse(() => Wire.contentPacks(json));
+    return _parse(() => api.ContentPackList.fromJson(json)?.items);
   }
 }
 

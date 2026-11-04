@@ -8,6 +8,8 @@ export interface AccessContext {
   sessionId: string;
   roles: Role[];
   isDesk: boolean;
+  /** Device the session is bound to (set by verifyAccessToken; SEC-P2-L1). */
+  deviceId?: string;
 }
 
 export interface OtpRecord {

@@ -9,6 +9,9 @@
     "FW-006": "The Sparks ledger accepts only purchase, milestone, spend and reversal sources (never a game)",
     "FW-007": "Earned (milestone) Sparks are capped at 50 a month",
     "FW-008": "The games module never references entitlements, billing, Pro or passes (no paid game advantage)",
-    "FW-009": "Ranked duel cap is 10 a day and is a constant, identical for every player"
+    "FW-009": "Ranked duel cap is 10 a day and is a constant, identical for every player",
+    "FW-020": "Career Ladder rank is computed only from ring counts; Pro entitlement or purchases do not change it",
+    "FW-021": "XP has no ledger and no conversion path to Points, Sparks or anything bought",
+    "FW-022": "Offline-synced study actions never produce ranked rewards (only study progress)"
   }
 }

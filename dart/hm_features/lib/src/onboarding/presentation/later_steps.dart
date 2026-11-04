@@ -46,6 +46,7 @@ class PickExamsStep extends ConsumerWidget {
     final full = state.otherExams.length >= OnboardingState.maxOtherExams;
     return OnboardingPage(
       title: 'Pick your main exam',
+      illustration: HmIllustrationKind.trophy,
       subtitle:
           'Your Study Map is built for this exam. You can change it later.',
       children: [
@@ -53,17 +54,21 @@ class PickExamsStep extends ConsumerWidget {
           Semantics(
             inMutuallyExclusiveGroup: true,
             checked: state.mainExam == e.code,
-            child: ListTile(
-              key: Key('main-${e.code}'),
-              minTileHeight: 48,
-              leading: Icon(
-                state.mainExam == e.code
-                    ? Icons.radio_button_checked
-                    : Icons.radio_button_unchecked,
+            child: ChoiceBox(
+              selected: state.mainExam == e.code,
+              child: ListTile(
+                key: Key('main-${e.code}'),
+                minTileHeight: 48,
+                leading: Icon(
+                  state.mainExam == e.code
+                      ? Icons.radio_button_checked
+                      : Icons.radio_button_unchecked,
+                  color: state.mainExam == e.code ? context.hm.primary : null,
+                ),
+                title: Text(e.name, style: text.titleSmall),
+                subtitle: Text(e.conductingBody),
+                onTap: () => c.chooseMainExam(e.code),
               ),
-              title: Text(e.name),
-              subtitle: Text(e.conductingBody),
-              onTap: () => c.chooseMainExam(e.code),
             ),
           ),
         if (exams.length > 1) ...[
@@ -72,14 +77,18 @@ class PickExamsStep extends ConsumerWidget {
             header: true,
             child: Text('Add up to 2 more (optional)', style: text.titleMedium),
           ),
+          const SizedBox(height: HmSpace.sm),
           for (final e in exams.where((e) => e.code != state.mainExam))
-            CheckboxListTile(
-              key: Key('other-${e.code}'),
-              value: state.otherExams.contains(e.code),
-              title: Text(e.name),
-              onChanged: full && !state.otherExams.contains(e.code)
-                  ? null
-                  : (_) => c.toggleOtherExam(e.code),
+            ChoiceBox(
+              selected: state.otherExams.contains(e.code),
+              child: CheckboxListTile(
+                key: Key('other-${e.code}'),
+                value: state.otherExams.contains(e.code),
+                title: Text(e.name),
+                onChanged: full && !state.otherExams.contains(e.code)
+                    ? null
+                    : (_) => c.toggleOtherExam(e.code),
+              ),
             ),
         ],
         const SizedBox(height: 16),
@@ -111,7 +120,7 @@ class MapPreviewStep extends ConsumerWidget {
           Expanded(
             child: map.when(
               loading: () =>
-                  const HmLoadingView(label: 'Loading your Study Map'),
+                  const HmSkeletonList(label: 'Loading your Study Map'),
               error: (e, _) => HmErrorView(
                 message: messageOf(e),
                 onRetry: () =>
@@ -188,6 +197,7 @@ class _EmailStepState extends ConsumerState<EmailStep> {
     final c = ref.read(onboardingControllerProvider.notifier);
     return OnboardingPage(
       title: state.signInOnly ? 'Sign in' : 'Save your progress',
+      illustration: HmIllustrationKind.shield,
       subtitle:
           'We will send a 6-digit code to your email. You do not need a password.',
       children: [
@@ -199,7 +209,7 @@ class _EmailStepState extends ConsumerState<EmailStep> {
           autocorrect: false,
           decoration: const InputDecoration(
             labelText: 'Email',
-            border: OutlineInputBorder(),
+            prefixIcon: Icon(Icons.mail_outline_rounded),
           ),
           onSubmitted: (_) => c.requestCode(_controller.text),
         ),
@@ -228,6 +238,7 @@ class CodeStep extends ConsumerWidget {
     final c = ref.read(onboardingControllerProvider.notifier);
     return OnboardingPage(
       title: 'Enter your code',
+      illustration: HmIllustrationKind.bell,
       subtitle:
           'We sent a 6-digit code to ${state.email}. It works for 10 minutes.',
       children: [
@@ -262,18 +273,24 @@ class ConsentStep extends ConsumerWidget {
     final required = notice.purposes.where((p) => p.required).toList();
     final optional = notice.purposes.where((p) => !p.required).toList();
 
-    Widget tile(ConsentPurposeInfo p, {required bool isRequired}) =>
-        CheckboxListTile(
-          key: Key('consent-${p.purpose}'),
-          value: state.consents[p.purpose] == true,
-          controlAffinity: ListTileControlAffinity.leading,
-          title: Text(isRequired ? '${p.title} (needed)' : p.title),
-          subtitle: Text(p.description),
-          onChanged: (v) => c.setConsent(p.purpose, v ?? false),
-        );
+    Widget tile(ConsentPurposeInfo p, {required bool isRequired}) => ChoiceBox(
+      selected: state.consents[p.purpose] == true,
+      child: CheckboxListTile(
+        key: Key('consent-${p.purpose}'),
+        value: state.consents[p.purpose] == true,
+        controlAffinity: ListTileControlAffinity.leading,
+        title: Text(
+          isRequired ? '${p.title} (needed)' : p.title,
+          style: text.titleSmall,
+        ),
+        subtitle: Text(p.description),
+        onChanged: (v) => c.setConsent(p.purpose, v ?? false),
+      ),
+    );
 
     return OnboardingPage(
       title: 'Your data, your choice',
+      illustration: HmIllustrationKind.shield,
       subtitle: 'Please read and choose. Nothing is ticked for you.',
       children: [
         if (required.isNotEmpty) ...[
@@ -295,7 +312,7 @@ class ConsentStep extends ConsumerWidget {
         Text(
           consentFooter,
           key: const Key('consent-footer'),
-          style: text.bodyMedium,
+          style: text.bodyMedium?.copyWith(color: context.hm.textMuted),
         ),
         Align(
           alignment: Alignment.centerLeft,

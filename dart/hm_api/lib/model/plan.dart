@@ -112,11 +112,19 @@ class Plan {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "Plan[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Plan[$key]" has a null value in JSON.');
         });
+        assert(json[r'id'] != null, 'Required key "Plan[id]" has a null value in JSON.');
+        assert(json[r'weekdayMinutes'] != null, 'Required key "Plan[weekdayMinutes]" has a null value in JSON.');
+        assert(json[r'weekendMinutes'] != null, 'Required key "Plan[weekendMinutes]" has a null value in JSON.');
+        assert(json[r'pocketMinutes'] != null, 'Required key "Plan[pocketMinutes]" has a null value in JSON.');
+        assert(json[r'balance'] != null, 'Required key "Plan[balance]" has a null value in JSON.');
+        assert(json[r'exams'] != null, 'Required key "Plan[exams]" has a null value in JSON.');
+        assert(json[r'stretch'] != null, 'Required key "Plan[stretch]" has a null value in JSON.');
+        assert(json[r'configVersion'] != null, 'Required key "Plan[configVersion]" has a null value in JSON.');
         return true;
       }());
 

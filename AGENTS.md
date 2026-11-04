@@ -23,14 +23,14 @@ use `graphify explain "<symbol>"` and `graphify path "<A>" "<B>"` for focused co
 ## 2. What this repo is
 
 HeyMey: a gamified government-exam preparation app for Tamil Nadu aspirants. One Flutter codebase (mobile app for
-everyone + HeyMey Desk web for partners/staff), a TypeScript backend, a Next.js marketing site, all on **one VPS in Docker**.
+everyone + HeyMey Desk web for partners/staff), a TypeScript backend, a Next.js marketing site. **At launch (ADR-0014) it runs on free/starter tiers:** Postgres on Supabase, files and packs on Cloudflare R2, marketing on Vercel, Desk on Firebase Hosting, and api/realtime/worker/scheduler/Valkey on **one small VM in Docker Compose**. Paid plans or a dedicated VPS come only once revenue comes in.
 
 ```
 apps/
   api/          NestJS HTTP API (Fastify)               :4567  api.heymey.app
   realtime/     Socket.IO gateway, game rooms            :4568  rt.heymey.app
-  desk/         Flutter web: HeyMey Desk (staff/partner) :4569  desk.heymey.app
-  marketing/    Next.js marketing + legal pages          :4570  heymey.app
+  desk/         Flutter web: HeyMey Desk (staff/partner) :4569  desk.heymey.app (Firebase Hosting in prod)
+  marketing/    Next.js marketing + legal pages          :4570  heymey.app (Vercel in prod)
   worker/       BullMQ workers :4571 + scheduler :4572   (internal)
   mobile/       Flutter app, Android + iOS               (stores)
 packages/       TypeScript libraries (@heymey/*)

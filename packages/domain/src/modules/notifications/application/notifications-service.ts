@@ -2,6 +2,7 @@ import type { AlertSettings, RegisterPushTokenBody, z } from "@heymey/contracts"
 import { DomainError } from "../../../shared/errors.js";
 import { istDayKey, type Clock } from "../../../shared/clock.js";
 import {
+  pushTokenMoveAllowed,
   clampDailyLimit,
   decideSend,
   defaultPrefs,
@@ -34,9 +35,12 @@ export interface NotificationsDeps {
 
 // ------------------------------------------------------------------ tokens (S16, invariant 7)
 
-export async function registerToken(d: NotificationsDeps, userId: string, body: z.infer<typeof RegisterPushTokenBody>) {
+export async function registerToken(d: NotificationsDeps, userId: string, body: z.infer<typeof RegisterPushTokenBody>, sessionDeviceId?: string) {
   const at = d.clock.now();
-  await d.tokens.upsert({ userId, deviceId: body.deviceId, platform: body.platform, token: body.token, at });
+  const res = await d.tokens.upsert({ userId, deviceId: body.deviceId, platform: body.platform, token: body.token, at }, (owner) =>
+    pushTokenMoveAllowed(owner, { userId, deviceId: body.deviceId, sessionDeviceId }),
+  );
+  if (res === "refused") throw new DomainError("FORBIDDEN"); // SEC-P2-L1
   return { deviceId: body.deviceId, registeredAt: at.toISOString() };
 }
 

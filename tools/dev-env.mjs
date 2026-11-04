@@ -3,14 +3,15 @@
 // series and freshly generated keys. Never used in staging/production (those use SOPS).
 //   pnpm env:dev            create .env if missing
 //   pnpm env:dev --force    regenerate (signs everyone out locally)
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+//   pnpm env:dev --append   add keys a newer version introduced (e.g. DIRECT_URL, S3_*), keep existing values
+import { appendFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { generateKeyPairSync, randomBytes } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const file = join(root, ".env");
-if (existsSync(file) && !process.argv.includes("--force")) {
+if (existsSync(file) && !process.argv.includes("--force") && !process.argv.includes("--append")) {
   console.log(".env exists (use --force to regenerate)");
   process.exit(0);
 }
@@ -30,11 +31,13 @@ const env = {
   NODE_ENV: "development",
   LOG_LEVEL: "debug",
   DATABASE_URL: `postgresql://heymey:heymey@localhost:${ports.POSTGRES_PORT}/heymey`,
+  // BOLT-0023: migrations use DIRECT_URL (Supabase session/direct in prod); locally the same Postgres.
+  DIRECT_URL: `postgresql://heymey:heymey@localhost:${ports.POSTGRES_PORT}/heymey`,
   VALKEY_URL: `redis://localhost:${ports.VALKEY_PORT}`,
   SMTP_HOST: "localhost",
   SMTP_PORT: ports.MAIL_SMTP_PORT,
   SMTP_SECURE: "false",
-  MAIL_FROM: '"HeyMey <no-reply@mail.heymey.app>"',
+  MAIL_FROM: '"HeyMey <notification@heymey.app>"',
   JWT_ISSUER: `http://localhost:${ports.API_PORT}`,
   JWT_PRIVATE_KEY: `"${oneLine(privateKey.export({ type: "pkcs8", format: "pem" }))}"`,
   JWT_PUBLIC_KEY: `"${oneLine(publicKey.export({ type: "spki", format: "pem" }))}"`,
@@ -43,7 +46,29 @@ const env = {
   CHANGEDETECTION_WEBHOOK_SECRET: randomBytes(32).toString("hex"),
   CORS_ORIGINS: `http://localhost:${ports.DESK_PORT},http://127.0.0.1:${ports.DESK_PORT},http://localhost:${ports.MARKETING_PORT}`,
   MIN_APP_VERSION: "1.0.0",
+  // Endpoint-agnostic S3 (BOLT-0023): local SeaweedFS here, Cloudflare R2 in staging/production.
+  S3_ENDPOINT: `http://localhost:${ports.S3_PORT}`,
+  S3_REGION: "auto",
+  S3_BUCKET: "heymey-content",
+  S3_ACCESS_KEY: "heymey",
+  S3_SECRET_KEY: "heymey-local-only",
+  S3_PUBLIC_BASE_URL: `http://localhost:${ports.S3_PORT}/heymey-content`,
 };
+
+// Append-safe: an existing .env (without --force) only gets keys it is missing, never rewritten or read back out.
+if (existsSync(file) && process.argv.includes("--append")) {
+  const have = new Set(
+    readFileSync(file, "utf8").split("
+").map((l) => l.split("=")[0].trim()).filter(Boolean),
+  );
+  const missing = Object.entries(env).filter(([k]) => !have.has(k) && !/^(JWT_|OTP_|TOTP_|CHANGEDETECTION_)/.test(k));
+  if (missing.length) appendFileSync(file, "
+" + missing.map(([k, v]) => `${k}=${v}`).join("
+") + "
+");
+  console.log(`appended ${missing.length} missing key(s) to .env: ${missing.map(([k]) => k).join(", ") || "none"}`);
+  process.exit(0);
+}
 
 writeFileSync(
   file,

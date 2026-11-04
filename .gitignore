@@ -44,3 +44,11 @@ Thumbs.db
 .claude/settings.local.json
 *.iml
 graphify-out/cache/
+
+# Firebase (BOLT-0023): local project binding + CLI cache
+.firebaserc
+.firebase/
+firebase-debug.log
+
+# Vercel CLI link folder (marketing on Vercel, D-2026-11-04-01)
+.vercel/

@@ -83,11 +83,18 @@ class MarkingScheme {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "MarkingScheme[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MarkingScheme[$key]" has a null value in JSON.');
         });
+        assert(json[r'version'] != null, 'Required key "MarkingScheme[version]" has a null value in JSON.');
+        assert(json[r'durationMinutes'] != null, 'Required key "MarkingScheme[durationMinutes]" has a null value in JSON.');
+        assert(json[r'totalQuestions'] != null, 'Required key "MarkingScheme[totalQuestions]" has a null value in JSON.');
+        assert(json[r'totalMarks'] != null, 'Required key "MarkingScheme[totalMarks]" has a null value in JSON.');
+        assert(json[r'sections'] != null, 'Required key "MarkingScheme[sections]" has a null value in JSON.');
+        assert(json[r'verified'] != null, 'Required key "MarkingScheme[verified]" has a null value in JSON.');
+        assert(json[r'sourceUrl'] != null, 'Required key "MarkingScheme[sourceUrl]" has a null value in JSON.');
         return true;
       }());
 

@@ -13,5 +13,11 @@ export const READINESS_CONFIG = {
   examPerformanceLastMocks: 3,
   freeBars: ["coverage", "memory"] as const,
   /** Q15: Sunday 08:00 IST, template text only in Phase 2 (AI notes need `ai`, Phase 3). */
-  sundayReport: { cron: "0 8 * * 0", aiNotes: false },
+  sundayReport: { cron: "0 8 * * 0", aiNotes: false, activeWithinDays: 14, batchSize: 500 },
+  /** Q27: label rules are TN-only in Phase 2. Other exams show their bars with label not_yet until their wave. */
+  labelledConductingBodies: ["TNPSC", "TNUSRB", "TRB"] as readonly string[],
+  /** How far back the meter looks in mock history for this exam's last N submitted mocks. */
+  mockHistoryScan: 50,
+  /** Snapshots are kept 400 days (logical design "Data"). Trend windows (§19.5): 7, 30, 90 days. */
+  snapshotRetentionDays: 400,
 } as const;
