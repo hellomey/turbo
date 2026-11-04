@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="faq6_gold" x1="20" y1="16" x2="44" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF9A6" />
+      <stop offset="40%" stop-color="#FFCA28" />
+      <stop offset="100%" stop-color="#F57C00" />
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="#FAF5FF" stroke="#D8B4FE" stroke-width="1.5" />
+  <!-- Handles -->
+  <path d="M24 24 C18 24 18 34 24 35" stroke="url(#faq6_gold)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <path d="M40 24 C46 24 46 34 40 35" stroke="url(#faq6_gold)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <!-- Cup -->
+  <path d="M22 20 C22 20 21 32 27 38 C29 40 35 40 37 38 C43 32 42 20 42 20 Z" fill="url(#faq6_gold)" />
+  <ellipse cx="32" cy="20" rx="10" ry="2.5" fill="#FFE082" />
+  <!-- Stem & Base -->
+  <rect x="30" y="38" width="4" height="5" fill="#B45309" />
+  <rect x="25" y="43" width="14" height="5" rx="1.5" fill="#1E1B4B" />
+  <rect x="28" y="44.5" width="8" height="2" rx="0.5" fill="#FEF08A" />
+</svg>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="100%" height="100%" fill="none">
+  <defs>
+    <clipPath id="syl_clip">
+      <circle cx="40" cy="40" r="40" />
+    </clipPath>
+    <!-- Background Gradient -->
+    <linearGradient id="syl_bg" x1="10" y1="10" x2="70" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFEADE" />
+      <stop offset="100%" stop-color="#FFC2A2" />
+    </linearGradient>
+    <!-- Cover Gradient -->
+    <linearGradient id="book_cover" x1="20" y1="16" x2="60" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#333A66" />
+      <stop offset="50%" stop-color="#222744" />
+      <stop offset="100%" stop-color="#14172C" />
+    </linearGradient>
+    <!-- Gold Foil Gradient -->
+    <linearGradient id="gold_foil" x1="25" y1="20" x2="55" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF099" />
+      <stop offset="40%" stop-color="#FFC72C" />
+      <stop offset="100%" stop-color="#D98A00" />
+    </linearGradient>
+    <!-- Pages Block Gradient -->
+    <linearGradient id="pages_side" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E2D4BC" />
+      <stop offset="50%" stop-color="#FFFDF7" />
+      <stop offset="100%" stop-color="#DFCEB0" />
+    </linearGradient>
+    <!-- Soft Drop Shadow -->
+    <filter id="book_shadow" x="10" y="12" width="60" height="60" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4.5" stdDeviation="3.5" flood-color="#732D0A" flood-opacity="0.28" />
+    </filter>
+  </defs>
+
+  <g clip-path="url(#syl_clip)">
+    <!-- Base Gamified Circle -->
+    <circle cx="40" cy="40" r="40" fill="url(#syl_bg)" />
+
+    <!-- Ambient Glow behind the book -->
+    <circle cx="40" cy="40" r="26" fill="#FFB088" opacity="0.3" filter="blur(6px)" />
+
+    <!-- 3D Chunky Gamified Syllabus Tome -->
+    <g filter="url(#book_shadow)">
+      <!-- Back Cover (isometric bottom edge) -->
+      <path d="M22 25 L58 17 L62 55 L26 63 Z" fill="#121526" />
+
+      <!-- Thick Gilded Pages Block -->
+      <path d="M25 28 L57 20.5 L60 54 L28 61.5 Z" fill="url(#pages_side)" />
+      <!-- Page Layer Texture Lines -->
+      <path d="M27.5 59.5 L58.5 52.5" stroke="#C4B08F" stroke-width="0.8" opacity="0.8" />
+      <path d="M27 57.5 L58 50.5" stroke="#C4B08F" stroke-width="0.8" opacity="0.8" />
+      <path d="M26.5 55.5 L57.5 48.5" stroke="#C4B08F" stroke-width="0.8" opacity="0.8" />
+
+      <!-- Front Cover with Rounded Corners -->
+      <path d="M20 23 C20 21.5 21.5 20.8 23 20.4 L56 13.5 C58 13.1 60 14.5 60 16.5 L58 52 C58 53.8 56.5 55 54.5 55.4 L22 62 C20.5 62.3 19 61.2 19 59.5 Z" fill="url(#book_cover)" stroke="#4A548C" stroke-width="1.2" />
+
+      <!-- Leather Spine Highlight Arc -->
+      <path d="M20 23 L19 59.5" stroke="#6875BE" stroke-width="2.5" stroke-linecap="round" opacity="0.7" />
+
+      <!-- Golden Corner Reinforcements -->
+      <path d="M54 14 L59.5 15.2 L59 22 Z" fill="url(#gold_foil)" />
+      <path d="M57.5 46.5 L58 52 L52.5 53.2 Z" fill="url(#gold_foil)" />
+      <path d="M20 54 L19 59.5 L25 58 Z" fill="url(#gold_foil)" />
+
+      <!-- Silk Emerald Bookmark Ribbon draped over page bottom -->
+      <path d="M37 20 L40 65 L43.5 61 L47 65 L44 20 Z" fill="#10B981" />
+      <path d="M37 20 L40 65 L42 63 L40.5 20 Z" fill="#059669" />
+
+      <!-- Embossed Golden HeyMey Syllabus Crest on Book Cover -->
+      <g transform="translate(39, 35) rotate(-12)">
+        <!-- Outer Gold Shield / Medallion -->
+        <circle cx="0" cy="0" r="11" fill="url(#gold_foil)" />
+        <circle cx="0" cy="0" r="9.2" fill="#20253E" />
+        <!-- Illuminated Flame & Lamp Mark inside Shield -->
+        <path d="M0 -6 C-2 -2 -3.5 -0.5 -2.5 2.5 C-1.8 4.2 0 4.8 1.5 4 C3 3.2 3.8 1.5 2.8 -0.5 C2.2 -1.8 1.2 -3.8 0 -6 Z" fill="url(#gold_foil)" />
+        <circle cx="0" cy="0.5" r="1.5" fill="#FFFBEB" />
+        <rect x="-3" y="4.5" width="6" height="1.5" rx="0.75" fill="url(#gold_foil)" />
+      </g>
+    </g>
+
+    <!-- Floating Gamified Sparkles / Magic Study Stars -->
+    <path d="M60 26 L61.5 29.5 L65 31 L61.5 32.5 L60 36 L58.5 32.5 L55 31 L58.5 29.5 Z" fill="#FFE58F" />
+    <circle cx="64" cy="23" r="1.5" fill="#FFFFFF" />
+    <circle cx="21" cy="18" r="2" fill="#FFE58F" />
+    <path d="M24 13 L24.8 15 L27 15.8 L24.8 16.6 L24 18.6 L23.2 16.6 L21 15.8 L23.2 15 Z" fill="#FFFFFF" />
+  </g>
+</svg>

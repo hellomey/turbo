@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="faq7_gold" x1="20" y1="14" x2="44" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF9A6" />
+      <stop offset="40%" stop-color="#FFCA28" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="#FEFCE8" stroke="#FDE047" stroke-width="1.5" />
+  <!-- Shield Outline -->
+  <path d="M32 16 L46 22 C46 34 39 44 32 48 C25 44 18 34 18 22 Z" fill="url(#faq7_gold)" />
+  <path d="M32 19 L43 24 C43 33 37 41 32 44.5 C27 41 21 33 21 24 Z" fill="#1E293B" />
+  <!-- Center Star -->
+  <path d="M32 24 L34 29 L39 29.5 L35 33 L36.5 38 L32 35 L27.5 38 L29 33 L25 29.5 L30 29 Z" fill="#FDE047" />
+  <circle cx="32" cy="31.5" r="1.5" fill="#FFFFFF" />
+</svg>
