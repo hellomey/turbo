@@ -110,11 +110,21 @@ class ContentPack {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "ContentPack[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ContentPack[$key]" has a null value in JSON.');
         });
+        assert(json[r'id'] != null, 'Required key "ContentPack[id]" has a null value in JSON.');
+        assert(json[r'code'] != null, 'Required key "ContentPack[code]" has a null value in JSON.');
+        assert(json[r'examCode'] != null, 'Required key "ContentPack[examCode]" has a null value in JSON.');
+        assert(json[r'version'] != null, 'Required key "ContentPack[version]" has a null value in JSON.');
+        assert(json[r'url'] != null, 'Required key "ContentPack[url]" has a null value in JSON.');
+        assert(json[r'sha256'] != null, 'Required key "ContentPack[sha256]" has a null value in JSON.');
+        assert(json[r'sizeBytes'] != null, 'Required key "ContentPack[sizeBytes]" has a null value in JSON.');
+        assert(json[r'tier'] != null, 'Required key "ContentPack[tier]" has a null value in JSON.');
+        assert(json[r'locked'] != null, 'Required key "ContentPack[locked]" has a null value in JSON.');
+        assert(json[r'publishedAt'] != null, 'Required key "ContentPack[publishedAt]" has a null value in JSON.');
         return true;
       }());
 

@@ -15,7 +15,7 @@ const prisma = createPrismaClient(url);
 
 type Seeder = { name: string; run: (p: typeof prisma) => Promise<string> };
 const seeders: Seeder[] = [];
-for (const file of ["./seed/catalog.ts", "./seed/identity.ts"]) {
+for (const file of ["./seed/catalog.ts", "./seed/identity.ts", "./seed/exam-hall.ts"]) {
   try {
     const mod = (await import(file)) as { seeder?: Seeder };
     if (mod.seeder) seeders.push(mod.seeder);

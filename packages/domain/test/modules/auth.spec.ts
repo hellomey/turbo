@@ -100,7 +100,7 @@ describe("auth: OTP verify", () => {
     expect(session.expiresAt.getTime() - h.clock.now().getTime()).toBe(60 * 24 * 3600_000);
     expect(new Date(res.tokens.accessTokenExpiresAt).getTime() - h.clock.now().getTime()).toBe(15 * 60_000);
     const ctx = await h.auth.verifyAccessToken(res.tokens.accessToken);
-    expect(ctx).toEqual({ userId: user.id, sessionId: session.id, roles: ["ASPIRANT"], isDesk: false });
+    expect(ctx).toEqual({ userId: user.id, sessionId: session.id, roles: ["ASPIRANT"], isDesk: false, deviceId: session.deviceId });
   });
 
   it("second sign-in is not a new user and does not grant again", async () => {

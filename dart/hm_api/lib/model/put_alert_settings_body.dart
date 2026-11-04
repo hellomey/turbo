@@ -80,11 +80,17 @@ class PutAlertSettingsBody {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "PutAlertSettingsBody[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PutAlertSettingsBody[$key]" has a null value in JSON.');
         });
+        assert(json[r'studyReminders'] != null, 'Required key "PutAlertSettingsBody[studyReminders]" has a null value in JSON.');
+        assert(json[r'examAlerts'] != null, 'Required key "PutAlertSettingsBody[examAlerts]" has a null value in JSON.');
+        assert(json[r'offers'] != null, 'Required key "PutAlertSettingsBody[offers]" has a null value in JSON.');
+        assert(json[r'quietHours'] != null, 'Required key "PutAlertSettingsBody[quietHours]" has a null value in JSON.');
+        assert(json[r'morningAlertMinute'] != null, 'Required key "PutAlertSettingsBody[morningAlertMinute]" has a null value in JSON.');
+        assert(json[r'dailyLimit'] != null, 'Required key "PutAlertSettingsBody[dailyLimit]" has a null value in JSON.');
         return true;
       }());
 

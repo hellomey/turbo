@@ -126,11 +126,25 @@ class SyncAction {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "SyncAction[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SyncAction[$key]" has a null value in JSON.');
         });
+        assert(json[r'clientActionId'] != null, 'Required key "SyncAction[clientActionId]" has a null value in JSON.');
+        assert(json[r'clientAt'] != null, 'Required key "SyncAction[clientAt]" has a null value in JSON.');
+        assert(json[r'kind'] != null, 'Required key "SyncAction[kind]" has a null value in JSON.');
+        assert(json[r'questionId'] != null, 'Required key "SyncAction[questionId]" has a null value in JSON.');
+        assert(json[r'questionVersion'] != null, 'Required key "SyncAction[questionVersion]" has a null value in JSON.');
+        assert(json[r'chosenOptionIds'] != null, 'Required key "SyncAction[chosenOptionIds]" has a null value in JSON.');
+        assert(json[r'timeMs'] != null, 'Required key "SyncAction[timeMs]" has a null value in JSON.');
+        assert(json[r'mode'] != null, 'Required key "SyncAction[mode]" has a null value in JSON.');
+        assert(json[r'topicId'] != null, 'Required key "SyncAction[topicId]" has a null value in JSON.');
+        assert(json[r'via'] != null, 'Required key "SyncAction[via]" has a null value in JSON.');
+        assert(json[r'checkKind'] != null, 'Required key "SyncAction[checkKind]" has a null value in JSON.');
+        assert(json[r'answers'] != null, 'Required key "SyncAction[answers]" has a null value in JSON.');
+        assert(json[r'itemId'] != null, 'Required key "SyncAction[itemId]" has a null value in JSON.');
+        assert(json[r'status'] != null, 'Required key "SyncAction[status]" has a null value in JSON.');
         return true;
       }());
 

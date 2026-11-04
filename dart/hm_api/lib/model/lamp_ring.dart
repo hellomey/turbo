@@ -66,11 +66,15 @@ class LampRing {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "LampRing[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "LampRing[$key]" has a null value in JSON.');
         });
+        assert(json[r'lit'] != null, 'Required key "LampRing[lit]" has a null value in JSON.');
+        assert(json[r'steadyLevel'] != null, 'Required key "LampRing[steadyLevel]" has a null value in JSON.');
+        assert(json[r'gold'] != null, 'Required key "LampRing[gold]" has a null value in JSON.');
+        assert(json[r'dim'] != null, 'Required key "LampRing[dim]" has a null value in JSON.');
         return true;
       }());
 

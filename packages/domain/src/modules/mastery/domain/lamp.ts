@@ -107,7 +107,8 @@ export function canStart(kind: CheckKind, s: LampState, now: Date): boolean {
     case "lit":
       return s.lessonCompletedAt !== null && s.litAt === null;
     case "recall":
-      return s.dimState === "bright" && isDue(s, now);
+      // A due recall stays open while the lamp is dimming (the job dims at due time); a dim lamp needs a relight.
+      return s.dimState !== "dim" && isDue(s, now);
     case "relight":
       return s.litAt !== null && s.dimState !== "bright";
     case "gold":
@@ -161,7 +162,7 @@ export function applyCheck(kind: CheckKind, passed: boolean, s: LampState, now: 
     }
     case "recall": {
       if (!s.litAt) return logOnly("not_lit");
-      if (s.dimState !== "bright") return logOnly("needs_relight");
+      if (s.dimState === "dim") return logOnly("needs_relight");
       if (!isDue(s, now)) return logOnly("not_due");
       if (passed) return { next: passRecall(s, now), events: [{ kind: "recall_pass", details: { level: Math.min(s.steadyLevel + 1, 4) } }] };
       const level = Math.max(s.steadyLevel - MASTERY_CONFIG.recall.failStepsBack, 0);

@@ -43,17 +43,13 @@
 }
 
 # ---------------- production ----------------
-heymey.app, www.heymey.app {
-	import security_headers
-	reverse_proxy production-marketing:4570 {
-		header_up X-Forwarded-For {client_ip}
-	}
-}
-
+# BOLT-0023 / ADR-0014: heymey.app + www (Vercel, D-2026-11-04-01), desk.heymey.app (Firebase Hosting) and cdn.heymey.app
+# (R2 custom domain) are served off this VM; their DNS records point at those platforms, not here.
 api.heymey.app {
 	import security_headers
 	# Desk admin + ops APIs are reachable only from the protected access layer (bare path and sub-paths).
-	@deskAdmin path /v1/desk/admin /v1/desk/admin/* /v1/desk/ops /v1/desk/ops/*
+	# SEC-P2-M2: exam-change approvals are ops-only too.
+	@deskAdmin path /v1/desk/admin /v1/desk/admin/* /v1/desk/ops /v1/desk/ops/* /v1/desk/exam-changes /v1/desk/exam-changes/*
 	handle @deskAdmin {
 		import ops_only
 		reverse_proxy production-api:4567 {
@@ -75,47 +71,6 @@ rt.heymey.app {
 		lb_policy client_ip_hash
 		health_uri /health
 		header_up X-Forwarded-For {client_ip}
-	}
-}
-
-desk.heymey.app {
-	import security_headers
-	header Content-Security-Policy "frame-ancestors 'none'"
-	reverse_proxy production-desk:4569 {
-		header_up X-Forwarded-For {client_ip}
-	}
-}
-
-cdn.heymey.app {
-	import security_headers
-	# Content-pack CDN (BOLT-0015, blueprint §39 offline packs, §21). Cloudflare caches in front; this origin serves
-	# ONLY immutable, checksum-named FREE pack files from bucket heymey-content (layout: infra/content-cdn/README.md):
-	#   GET /packs/free/<exam>/<pack-code>/v<version>.<sha256>.pack  ->  s3://heymey-content/packs/free/...
-	# Anything else (bucket listing, other buckets, pro packs, writes) -> 404/405. Pro packs are never public.
-	@write not method GET HEAD
-	respond @write 405
-	@pack {
-		method GET HEAD
-		path_regexp pack ^/packs/free/[a-z0-9-]+/[a-z0-9.-]+/v[0-9]+\.[a-f0-9]{64}\.pack$
-	}
-	handle @pack {
-		rewrite * /heymey-content{path}
-		reverse_proxy production-seaweedfs:8333 {
-			header_up X-Forwarded-For {client_ip}
-			header_up -Authorization
-			header_up -Cookie
-			header_down -Set-Cookie
-			header_down -X-Amz-*
-			header_down -Server
-			# The name contains the checksum: the bytes behind a URL never change.
-			header_down Cache-Control "public, max-age=31536000, immutable"
-			header_down Content-Type "application/octet-stream"
-			header_down Access-Control-Allow-Origin "*"
-		}
-	}
-	handle {
-		header Cache-Control "public, max-age=60"
-		respond 404
 	}
 }
 
@@ -150,13 +105,6 @@ ops.heymey.app {
 }
 
 # ---------------- staging (same VPS, separate compose project; never real personal data) ----------------
-staging.heymey.app {
-	import ops_only
-	reverse_proxy staging-marketing:4570 {
-		header_up X-Forwarded-For {client_ip}
-	}
-}
-
 staging-api.heymey.app {
 	import staging_only
 	reverse_proxy staging-api:4567 {
@@ -167,13 +115,6 @@ staging-api.heymey.app {
 staging-rt.heymey.app {
 	import staging_only
 	reverse_proxy staging-realtime:4568 {
-		header_up X-Forwarded-For {client_ip}
-	}
-}
-
-staging-desk.heymey.app {
-	import ops_only
-	reverse_proxy staging-desk:4569 {
 		header_up X-Forwarded-For {client_ip}
 	}
 }

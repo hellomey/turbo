@@ -27,12 +27,12 @@ const result = (clientActionId: string, status: SyncActionResultDto["status"], e
 });
 
 /**
- * One offline action (§39, S18): accepted ONCE per clientActionId (unique RingEvent.clientActionId, inv. 16); older than
+ * One offline action (§39, S18): accepted ONCE per (userId, clientActionId) (unique RingEvent(userId, clientActionId), inv. 16, SEC-P2-L2); older than
  * 7 days -> study log only, no ring change (inv. 14); check answers are re-graded on the server (inv. 15). Offline
  * actions never produce rank-ups or any reward (FW-022): rank is not recomputed here.
  */
 export async function syncMasteryAction(deps: MasteryDeps, userId: string, a: MasterySyncAction): Promise<SyncActionResultDto> {
-  if (await deps.repo.hasClientAction(a.clientActionId)) return result(a.clientActionId, "duplicate");
+  if (await deps.repo.hasClientAction(userId, a.clientActionId)) return result(a.clientActionId, "duplicate");
   if (!(await deps.syllabus.topic(a.topicId))) return result(a.clientActionId, "rejected", "TOPIC_NOT_FOUND");
   const base = { userId, topicId: a.topicId, source: "offline_sync" as const, clientActionId: a.clientActionId };
   const now = deps.clock.now();

@@ -11,6 +11,8 @@ export interface TopicRow {
   order: number;
   subject: { code: string; name: string; order: number };
   examCodes: string[];
+  /** BOLT-0012: TopicExamTag.priority per exam code (2 = critical, Final Stretch §17.3). Absent = 0. */
+  priorities?: Record<string, number>;
 }
 
 /** Phase 1: every lamp is unlit. Per-user rings arrive with `mastery` in Phase 2 (D-2026-10-20-14). */

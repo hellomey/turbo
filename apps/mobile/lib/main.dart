@@ -43,8 +43,12 @@ class HeyMeyApp extends ConsumerWidget {
       darkTheme: HmTheme.dark(),
       themeMode: ThemeMode.dark, // dark is the default (§10.3)
       routerConfig: ref.watch(routerProvider),
-      builder: (context, child) =>
-          updateRequired ? const UpdateRequiredView() : child!,
+      // Calm Mode (§10.7) and Lite Mode (§10.8) switch off celebrations and decorative motion.
+      builder: (context, child) => HmModes(
+        calm: ref.watch(meProvider).value?.calmMode ?? false,
+        lite: ref.watch(liteModeProvider),
+        child: updateRequired ? const UpdateRequiredView() : child!,
+      ),
     );
   }
 }

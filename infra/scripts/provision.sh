@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# One-time VPS provisioning (Ubuntu 24.04 LTS, Indian data centre). Blueprint §20.3, §23.
+# One-time VM provisioning (Ubuntu 24.04 LTS, Indian data centre: Oracle Always Free Ampere A1 (arm64) in
+# Mumbai/Hyderabad, or Hetzner (amd64); BOLT-0023). Blueprint §20.3, §23.
 # Run as root on a fresh box:  bash provision.sh <deploy-user> <ssh-port>
 # Idempotent: safe to re-run. Also step 1 of the "new VPS" runbook (docs/runbooks/vps-rebuild.md).
 set -euo pipefail
@@ -83,6 +84,22 @@ EOF
   systemctl daemon-reload
   systemctl enable --now heymey-cf-origin.service
 }
+
+# Oracle Cloud images (BOLT-0023) ship their own iptables REJECT rules in /etc/iptables/rules.v4 that block 80/443
+# even when ufw allows them. Open them in the host rules too (also open 80/443 in the OCI subnet security list).
+if [ -f /etc/iptables/rules.v4 ] && grep -q "REJECT" /etc/iptables/rules.v4; then
+  for p in 80 443; do
+    iptables -C INPUT -p tcp --dport "$p" -j ACCEPT 2>/dev/null || iptables -I INPUT 5 -p tcp --dport "$p" -j ACCEPT
+  done
+  iptables -C INPUT -p udp --dport 443 -j ACCEPT 2>/dev/null || iptables -I INPUT 5 -p udp --dport 443 -j ACCEPT
+  command -v netfilter-persistent >/dev/null && netfilter-persistent save
+fi
+
+# Small VMs: 4 GB swap so a build spike never OOM-kills Valkey (no-op if swap exists).
+if ! swapon --show | grep -q .; then
+  fallocate -l 4G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
+  grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
 
 # CrowdSec (bouncer on the host firewall)
 curl -s https://install.crowdsec.net | bash

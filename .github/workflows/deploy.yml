@@ -1,4 +1,10 @@
-# On merge to main: build images -> deploy STAGING -> smoke + k6 quick -> manual Promote -> PRODUCTION (blueprint §42).
+# BOLT-0023 free tier (ADR-0014): API stack on one VM (SSH + infra/scripts/deploy.sh), desk on Firebase Hosting,
+# Postgres on Supabase, storage on R2. Marketing (heymey.app) is NOT deployed here: Vercel's GitHub integration builds
+# it (apps/marketing/vercel.json; D-2026-11-04-01).
+# On merge to main: build -> deploy STAGING (api, desk) -> smoke + k6 quick -> manual Promote -> PRODUCTION
+# in order: backup + migrate + api -> desk (blueprint §42; docs/runbooks/free-tier-setup.md).
+# Every action is pinned by full commit SHA (tag in the trailing comment). Secrets are passed only via `with:`/`env:`
+# and never echoed.
 name: deploy
 
 on:
@@ -9,60 +15,103 @@ concurrency:
   group: deploy
   cancel-in-progress: false
 
+# Least privilege: packages:write only on the job that pushes images.
 permissions:
   contents: read
-  packages: write
 
 jobs:
   images:
     runs-on: ubuntu-latest
+    permissions: { contents: read, packages: write }
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      # Multi-arch: linux/amd64 (Hetzner) + linux/arm64 (Oracle Always Free Ampere A1).
+      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
       - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
       - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
         with: { registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}" }
       - name: server (api, realtime, worker, scheduler)
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
-        with: { file: infra/docker/server.Dockerfile, target: runtime, push: true, tags: "ghcr.io/heymey/server:${{ github.sha }}" }
+        with:
+          file: infra/docker/server.Dockerfile
+          target: runtime
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: "ghcr.io/heymey/server:${{ github.sha }}"
+          cache-from: type=gha,scope=server
+          cache-to: type=gha,scope=server,mode=max
       - name: migrator
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
-        with: { file: infra/docker/server.Dockerfile, target: migrator, push: true, tags: "ghcr.io/heymey/migrator:${{ github.sha }}" }
-      - name: marketing
+        with:
+          file: infra/docker/server.Dockerfile
+          target: migrator
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: "ghcr.io/heymey/migrator:${{ github.sha }}"
+          cache-from: type=gha,scope=server
+      - name: backup (pg_dump -> age -> R2)
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
-        with: { file: infra/docker/marketing.Dockerfile, push: true, tags: "ghcr.io/heymey/marketing:${{ github.sha }}" }
+        with:
+          file: infra/docker/backup.Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: "ghcr.io/heymey/backup:${{ github.sha }}"
+
+  # Desk (Flutter web) for Firebase Hosting. API base URL is a build-time --dart-define (no secret in the bundle).
+  desk-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { stack: staging, api: "https://staging-api.heymey.app" }
+          - { stack: production, api: "https://api.heymey.app" }
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with: { channel: stable, cache: true }
-      - name: desk (flutter web)
+      - name: flutter build web
+        env: { API_BASE_URL: "${{ matrix.api }}" }
         run: |
           flutter pub get
-          cd apps/desk && flutter build web --release --no-web-resources-cdn
-      - uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
-        with: { context: ., file: infra/docker/desk.Dockerfile, push: true, tags: "ghcr.io/heymey/desk:${{ github.sha }}" }
+          cd apps/desk
+          flutter build web --release --no-web-resources-cdn --dart-define=API_BASE_URL="$API_BASE_URL"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with: { name: "desk-${{ matrix.stack }}", path: apps/desk/build/web, retention-days: 7 }
 
   staging:
-    needs: images
+    needs: [images, desk-build]
     runs-on: ubuntu-latest
     environment: staging
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
-      - name: deploy to staging
+      - name: api stack -> VM (staging)
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1
         with:
           host: ${{ secrets.VPS_HOST }}
           port: ${{ secrets.VPS_SSH_PORT }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          fingerprint: ${{ secrets.VPS_HOST_FINGERPRINT }} # SHA256 of the VPS host key: refuse an impostor host (SEC-L4)
+          fingerprint: ${{ secrets.VPS_HOST_FINGERPRINT }} # SHA256 of the VM host key: refuse an impostor host (SEC-L4)
           script: cd /srv/heymey && git fetch --depth=1 origin ${{ github.sha }} && git checkout ${{ github.sha }} && infra/scripts/deploy.sh staging ${{ github.sha }}
       - name: smoke
         # staging-api is ops-allowlist-only (SEC-L1); the pipeline passes the edge key (Caddyfile staging_only).
         env: { STAGING_ACCESS_KEY: "${{ secrets.STAGING_ACCESS_KEY }}" }
         run: |
-          curl -fsS -H "X-HeyMey-Staging-Key: $STAGING_ACCESS_KEY" https://staging-api.heymey.app/v1/health
+          curl -fsS -o /dev/null -H "X-HeyMey-Staging-Key: $STAGING_ACCESS_KEY" https://staging-api.heymey.app/v1/health
       - name: k6 quick load test
         uses: grafana/run-k6-action@4082a08c7e40cf6d65863911077dfb60ae0a4f04 # v1
         with: { path: infra/k6/quick.js }
         env: { BASE_URL: "https://staging-api.heymey.app", STAGING_ACCESS_KEY: "${{ secrets.STAGING_ACCESS_KEY }}" }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with: { name: desk-staging, path: apps/desk/build/web }
+      - name: desk -> Firebase Hosting (staging site)
+        uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ vars.FIREBASE_PROJECT_ID }}
+          entryPoint: apps/desk
+          target: desk-staging
+          channelId: live
 
   production:
     needs: staging
@@ -70,14 +119,30 @@ jobs:
     # "Promote" button: the `production` environment requires the founder's approval in GitHub settings.
     environment: production
     steps:
-      - name: deploy to production
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      # 1. backup -> migrate (DIRECT_URL) -> api/realtime/worker/scheduler, with automatic rollback (deploy.sh).
+      - name: api stack -> VM (production)
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1
         with:
           host: ${{ secrets.VPS_HOST }}
           port: ${{ secrets.VPS_SSH_PORT }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          fingerprint: ${{ secrets.VPS_HOST_FINGERPRINT }} # SHA256 of the VPS host key: refuse an impostor host (SEC-L4)
+          fingerprint: ${{ secrets.VPS_HOST_FINGERPRINT }} # SHA256 of the VM host key: refuse an impostor host (SEC-L4)
           script: cd /srv/heymey && git fetch --depth=1 origin ${{ github.sha }} && git checkout ${{ github.sha }} && infra/scripts/deploy.sh production ${{ github.sha }}
-      - name: smoke
-        run: curl -fsS https://api.heymey.app/v1/health
+      - name: smoke (api)
+        run: curl -fsS -o /dev/null https://api.heymey.app/v1/health
+      # 2. desk
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with: { name: desk-production, path: apps/desk/build/web }
+      - name: desk -> Firebase Hosting (desk.heymey.app)
+        uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ vars.FIREBASE_PROJECT_ID }}
+          entryPoint: apps/desk
+          target: desk
+          channelId: live
+      - name: smoke (desk; marketing is checked by Vercel + the uptime monitor)
+        run: |
+          curl -fsS -o /dev/null https://desk.heymey.app/

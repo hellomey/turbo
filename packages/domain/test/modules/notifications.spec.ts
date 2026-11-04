@@ -11,6 +11,7 @@ import {
   inQuietHours,
   istMinuteOfDay,
   NOTIFICATIONS_CONFIG,
+  pushTokenMoveAllowed,
   type AlertPrefs,
   type AlertPreferenceRepository,
   type PushTokenRepository,
@@ -101,9 +102,12 @@ describe("policy: decideSend", () => {
 
 class MemTokens implements PushTokenRepository {
   rows: (PushTokenRow & { userId: string; revoked: boolean })[] = [];
-  async upsert(i: { userId: string; deviceId: string; platform: "android" | "ios"; token: string }) {
+  async upsert(i: { userId: string; deviceId: string; platform: "android" | "ios"; token: string }, canTakeFrom: (o: { userId: string; deviceId: string }) => boolean) {
+    const owner = this.rows.find((r) => r.token === i.token);
+    if (owner && !(owner.userId === i.userId && owner.deviceId === i.deviceId) && !canTakeFrom(owner)) return "refused" as const;
     this.rows = this.rows.filter((r) => r.token !== i.token && !(r.userId === i.userId && r.deviceId === i.deviceId));
     this.rows.push({ userId: i.userId, deviceId: i.deviceId, platform: i.platform, token: i.token, revoked: false });
+    return "ok" as const;
   }
   async remove(userId: string, deviceId: string) {
     const n = this.rows.length;
@@ -170,7 +174,11 @@ function setup(at = NOON_IST, consent = false) {
     repositories: { tokens, prefs, sendLog },
     clock,
     consent: { offersGranted: async () => consent },
-    sender: { send: async (m) => (sent.push(m.deviceId), senderResult) },
+    sender: { send: async (m) => {
+        sent.push(m.deviceId);
+        return senderResult;
+      },
+    },
     dispatcher: { dispatch: async (id) => void dispatched.push(id) },
   });
   return { api, clock, tokens, prefs, sendLog, dispatched, sent, setSender: (r: "sent" | "invalid_token") => (senderResult = r) };
@@ -188,6 +196,20 @@ describe("tokens (invariant 7)", () => {
     expect(await s.api.deleteToken(U, "device-0001")).toEqual({ ok: true }); // idempotent
     expect(await s.api.forgetUser(U)).toBe(1);
     expect(s.tokens.rows).toHaveLength(0);
+  });
+
+  it("SEC-P2-L1: another user's token moves only with the same deviceId AND a session on that device", async () => {
+    const s = setup();
+    const V = "00000000-0000-7000-8000-0000000000bb";
+    const tok = "w".repeat(20);
+    await s.api.registerToken(U, { deviceId: "device-0001", platform: "android", token: tok }, "device-0001");
+    await expect(s.api.registerToken(V, { deviceId: "device-0009", platform: "android", token: tok }, "device-0009")).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(s.api.registerToken(V, { deviceId: "device-0001", platform: "android", token: tok }, "device-0009")).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(s.api.registerToken(V, { deviceId: "device-0001", platform: "android", token: tok })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    expect(s.tokens.rows).toEqual([expect.objectContaining({ userId: U, deviceId: "device-0001", token: tok })]);
+    await s.api.registerToken(V, { deviceId: "device-0001", platform: "android", token: tok }, "device-0001");
+    expect(s.tokens.rows).toEqual([expect.objectContaining({ userId: V, deviceId: "device-0001", token: tok })]);
+    expect(pushTokenMoveAllowed({ userId: U, deviceId: "a" }, { userId: U, deviceId: "b", sessionDeviceId: undefined })).toBe(true);
   });
 });
 

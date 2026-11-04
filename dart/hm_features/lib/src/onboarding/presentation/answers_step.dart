@@ -19,15 +19,26 @@ class AnswersStep extends ConsumerWidget {
     final text = Theme.of(context).textTheme;
 
     Widget section(String title, Widget child, {String? help}) => Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Semantics(header: true, child: Text(title, style: text.titleMedium)),
-          if (help != null) Text(help, style: text.bodySmall),
-          const SizedBox(height: 8),
-          child,
-        ],
+      padding: const EdgeInsets.only(bottom: HmSpace.lg),
+      child: HmCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Semantics(
+              header: true,
+              child: Text(title, style: text.titleMedium),
+            ),
+            if (help != null) ...[
+              const SizedBox(height: HmSpace.xs),
+              Text(
+                help,
+                style: text.bodySmall?.copyWith(color: context.hm.textMuted),
+              ),
+            ],
+            const SizedBox(height: HmSpace.md),
+            child,
+          ],
+        ),
       ),
     );
 
@@ -61,7 +72,6 @@ class AnswersStep extends ConsumerWidget {
               maxLength: 80,
               decoration: const InputDecoration(
                 labelText: 'For example: Mathematics',
-                border: OutlineInputBorder(),
               ),
               onChanged: c.setDegreeSubject,
             ),
@@ -127,7 +137,7 @@ class AnswersStep extends ConsumerWidget {
               'Tap any that apply. We use this only to check age relaxations. You can skip this.',
         ),
         StepError(state.error),
-        const SizedBox(height: 8),
+        const SizedBox(height: HmSpace.lg),
         HmPrimaryButton(
           key: const Key('answers-check'),
           label: 'Check my exams',

@@ -68,11 +68,14 @@ class MockSectionView {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "MockSectionView[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MockSectionView[$key]" has a null value in JSON.');
         });
+        assert(json[r'code'] != null, 'Required key "MockSectionView[code]" has a null value in JSON.');
+        assert(json[r'name'] != null, 'Required key "MockSectionView[name]" has a null value in JSON.');
+        assert(json[r'questionIds'] != null, 'Required key "MockSectionView[questionIds]" has a null value in JSON.');
         return true;
       }());
 

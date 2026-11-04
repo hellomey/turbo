@@ -1,11 +1,11 @@
-import type { PrismaClient } from "@heymey/db";
+import type { Prisma, PrismaClient } from "@heymey/db";
 import type { AuditRepository } from "../application/record-audit.js";
 import type { AuditEntry } from "../domain/audit-entry.js";
 
 const json = (v: unknown) => (v === undefined ? undefined : (JSON.parse(JSON.stringify(v)) as object));
 
 export class PrismaAuditRepository implements AuditRepository {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaClient | Prisma.TransactionClient) {}
 
   async append(entry: AuditEntry): Promise<void> {
     await this.prisma.auditLog.create({

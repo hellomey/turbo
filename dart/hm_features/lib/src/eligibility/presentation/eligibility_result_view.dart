@@ -26,10 +26,19 @@ class EligibilityResultView extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     final scheme = Theme.of(context).colorScheme;
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(
+        HmSpace.xl,
+        HmSpace.sm,
+        HmSpace.xl,
+        HmSpace.xxl,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const Center(
+            child: HmIllustration(kind: HmIllustrationKind.trophy, size: 104),
+          ),
+          const SizedBox(height: HmSpace.lg),
           Semantics(
             header: true,
             child: Text(

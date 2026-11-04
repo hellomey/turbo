@@ -88,11 +88,19 @@ class ExamEligibility {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "ExamEligibility[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ExamEligibility[$key]" has a null value in JSON.');
         });
+        assert(json[r'examCode'] != null, 'Required key "ExamEligibility[examCode]" has a null value in JSON.');
+        assert(json[r'examName'] != null, 'Required key "ExamEligibility[examName]" has a null value in JSON.');
+        assert(json[r'conductingBody'] != null, 'Required key "ExamEligibility[conductingBody]" has a null value in JSON.');
+        assert(json[r'eligible'] != null, 'Required key "ExamEligibility[eligible]" has a null value in JSON.');
+        assert(json[r'fitRank'] != null, 'Required key "ExamEligibility[fitRank]" has a null value in JSON.');
+        assert(json[r'reasons'] != null, 'Required key "ExamEligibility[reasons]" has a null value in JSON.');
+        assert(json[r'ageLimit'] != null, 'Required key "ExamEligibility[ageLimit]" has a null value in JSON.');
+        assert(json[r'officialNotificationUrl'] != null, 'Required key "ExamEligibility[officialNotificationUrl]" has a null value in JSON.');
         return true;
       }());
 

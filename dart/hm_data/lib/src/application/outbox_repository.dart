@@ -4,7 +4,6 @@ import 'package:hm_api/api.dart' as api;
 import 'package:uuid/uuid.dart';
 
 import '../data/local_stores.dart';
-import '../data/wire.dart';
 import '../domain/outbox_entry.dart';
 import '../domain/study_action.dart';
 
@@ -49,14 +48,19 @@ class OutboxRepository {
   Future<void> dismissRejected(String clientActionId) =>
       _outbox.remove([clientActionId]);
 
+  /// Drops an entry the server already has (the online path sent it directly with the same id) or one the
+  /// server refused as a whole before storing anything (for example the free daily limit). BOLT-0017.
+  Future<void> markHandled(String clientActionId) =>
+      _outbox.remove([clientActionId]);
+
   /// The server's last known lamp for [topicId] (never an optimistic local guess, §39).
   Future<api.TopicState?> topicState(String topicId) async {
     final row = await _topics.get(topicId);
-    return row == null ? null : Wire.topicState(jsonDecode(row.json));
+    return row == null ? null : api.TopicState.fromJson(jsonDecode(row.json));
   }
 
   Future<List<api.TopicState>> topicStates() async => [
     for (final row in await _topics.all())
-      Wire.topicState(jsonDecode(row.json)),
+      ?api.TopicState.fromJson(jsonDecode(row.json)),
   ];
 }

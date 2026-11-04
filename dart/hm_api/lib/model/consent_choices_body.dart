@@ -52,11 +52,13 @@ class ConsentChoicesBody {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "ConsentChoicesBody[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ConsentChoicesBody[$key]" has a null value in JSON.');
         });
+        assert(json[r'noticeVersion'] != null, 'Required key "ConsentChoicesBody[noticeVersion]" has a null value in JSON.');
+        assert(json[r'choices'] != null, 'Required key "ConsentChoicesBody[choices]" has a null value in JSON.');
         return true;
       }());
 

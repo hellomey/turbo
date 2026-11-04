@@ -12,6 +12,8 @@ import type { QuestionReader } from "./domain/question.js";
 import { PrismaQuestionReader } from "./infrastructure/prisma-question-reader.js";
 import { questionBank, type QuestionBank } from "./application/question-bank.js";
 import { PrismaQuestionCandidates } from "./infrastructure/prisma-question-candidates.js";
+import { practiceContent, type PracticeContentApi } from "./application/practice-content.js";
+import { PrismaPracticeContentStore } from "./infrastructure/prisma-practice-content-store.js";
 
 export const ContentModule = { name: "content" } as const;
 
@@ -51,4 +53,26 @@ export { isCorrect, shuffle } from "./domain/question.js";
 /** Question picking (CSPRNG injected: node:crypto randomInt in apps) and grading for mastery checks. */
 export function createQuestionBank(deps: { prisma: PrismaClient; randomInt: (maxExclusive: number) => number }): QuestionBank {
   return questionBank(new PrismaQuestionReader(deps.prisma), new PrismaQuestionCandidates(deps.prisma), deps.randomInt);
+}
+
+// ---- BOLT-0010 (practice): practice questions, PYQ Vault, reports, packs. Additive.
+export type {
+  ContentPackDto,
+  PackRow,
+  PracticeContentApi,
+  PracticeContentStore,
+  PyqFilter,
+  QuestionReportAckDto,
+  QuestionReportInput,
+} from "./application/practice-content.js";
+export { practiceContent };
+export { gradeWithKey } from "./domain/question.js";
+
+/** Questions for practice/PYQ (CSPRNG injected), reports and packs over content-owned tables (§10.6, §19.4, §39). */
+export function createPracticeContent(deps: {
+  prisma: PrismaClient;
+  syllabus: Pick<SyllabusApi, "topicsForExam" | "topic">;
+  randomInt: (maxExclusive: number) => number;
+}): PracticeContentApi {
+  return practiceContent({ store: new PrismaPracticeContentStore(deps.prisma), syllabus: deps.syllabus, randomInt: deps.randomInt });
 }

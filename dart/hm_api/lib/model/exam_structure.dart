@@ -70,11 +70,16 @@ class ExamStructure {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "ExamStructure[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ExamStructure[$key]" has a null value in JSON.');
         });
+        assert(json[r'examCode'] != null, 'Required key "ExamStructure[examCode]" has a null value in JSON.');
+        assert(json[r'family'] != null, 'Required key "ExamStructure[family]" has a null value in JSON.');
+        assert(json[r'stages'] != null, 'Required key "ExamStructure[stages]" has a null value in JSON.');
+        assert(json[r'attemptCycles'] != null, 'Required key "ExamStructure[attemptCycles]" has a null value in JSON.');
+        assert(json[r'disclaimer'] != null, 'Required key "ExamStructure[disclaimer]" has a null value in JSON.');
         return true;
       }());
 

@@ -76,11 +76,17 @@ class ConceptDrill {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "ConceptDrill[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ConceptDrill[$key]" has a null value in JSON.');
         });
+        assert(json[r'id'] != null, 'Required key "ConceptDrill[id]" has a null value in JSON.');
+        assert(json[r'topicId'] != null, 'Required key "ConceptDrill[topicId]" has a null value in JSON.');
+        assert(json[r'reason'] != null, 'Required key "ConceptDrill[reason]" has a null value in JSON.');
+        assert(json[r'questionCount'] != null, 'Required key "ConceptDrill[questionCount]" has a null value in JSON.');
+        assert(json[r'createdAt'] != null, 'Required key "ConceptDrill[createdAt]" has a null value in JSON.');
+        assert(json[r'status'] != null, 'Required key "ConceptDrill[status]" has a null value in JSON.');
         return true;
       }());
 

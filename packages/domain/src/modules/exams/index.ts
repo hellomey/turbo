@@ -8,6 +8,7 @@ import type { Clock } from "../../shared/clock.js";
 import { checkEligibility } from "./application/check-eligibility.js";
 import { getExam, listExams, publishedExamCodes } from "./application/exam-catalog.js";
 import { getMyExams, setMyExams, type UserExamsDto } from "./application/my-exams.js";
+import { planTargets, type PlanTargetDto } from "./application/plan-targets.js";
 import type { ExamsRepository } from "./application/ports.js";
 import type { Answers, EligibilityResultDto } from "./domain/eligibility.js";
 import type { ExamDetailDto, ExamSummaryDto } from "./domain/exam.js";
@@ -21,6 +22,7 @@ export type { ExamRecord, ExamDetailDto, ExamSummaryDto } from "./domain/exam.js
 export type { Answers, EligibilityResultDto, EligibilityRuleRecord, ExamWithRule } from "./domain/eligibility.js";
 export type { ExamChoice, UserExamsInput } from "./domain/my-exams.js";
 export type { UserExamsDto } from "./application/my-exams.js";
+export { nextStageDate, pickCycle, type CycleRecord, type PlanTargetDto } from "./application/plan-targets.js";
 export {
   checkEligibility as evaluateEligibility,
   completedYears,
@@ -37,6 +39,8 @@ export interface ExamsApi {
   publishedCodes(): Promise<Set<string>>;
   getMyExams(userId: string): Promise<UserExamsDto>;
   setMyExams(userId: string, input: UserExamsInput): Promise<UserExamsDto>;
+  /** BOLT-0012 (R2): my exams with attempt cycle + next stage date, for plan. */
+  planTargets(userId: string): Promise<PlanTargetDto[]>;
 }
 
 export function createExamsModule(
@@ -50,12 +54,13 @@ export function createExamsModule(
     publishedCodes: () => publishedExamCodes(repo),
     getMyExams: (userId) => getMyExams(repo, userId),
     setMyExams: (userId, input) => setMyExams(repo, userId, input),
+    planTargets: (userId) => planTargets(repo, deps.clock, userId),
   };
 }
 
 // ---------------------------------------------------------------- Exam Alerts (BOLT-0014, §19.1 Q7, §17.5, §20.2)
 export { createExamAlertsModule, type ExamAlertsApi } from "./application/exam-alerts-module.js";
-export type { ExamAlertsRepository, Page } from "./application/exam-alerts.js";
+export type { ExamAlertsRepository, Page, ReviewTxHook } from "./application/exam-alerts.js";
 export {
   EXAM_CHANGE_REVIEW_ROLES,
   applyStageDate,

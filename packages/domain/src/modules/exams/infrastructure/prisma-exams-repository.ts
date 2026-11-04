@@ -4,6 +4,7 @@ import type { ExamsRepository } from "../application/ports.js";
 import type { ExamRecord } from "../domain/exam.js";
 import type { EligibilityRuleRecord, ExamWithRule } from "../domain/eligibility.js";
 import type { ExamChoice } from "../domain/my-exams.js";
+import type { CycleRecord } from "../domain/cycle.js";
 
 const Qualification = z.enum(QUALIFICATIONS);
 const MaxAgeByCommunity = z.partialRecord(z.enum(COMMUNITIES), z.number().int().nonnegative().nullable());
@@ -78,13 +79,34 @@ export class PrismaExamsRepository implements ExamsRepository {
 
   async getChoices(userId: string): Promise<ExamChoice[]> {
     const rows = await this.prisma.userExamChoice.findMany({ where: { userId }, orderBy: { createdAt: "asc" } });
-    return rows.map((r) => ({ examCode: r.examCode, isMain: r.isMain }));
+    return rows.map((r) => (r.attemptCycleId ? { examCode: r.examCode, isMain: r.isMain, attemptCycleId: r.attemptCycleId } : { examCode: r.examCode, isMain: r.isMain }));
   }
 
   async replaceChoices(userId: string, choices: ExamChoice[]): Promise<void> {
     await this.prisma.$transaction([
       this.prisma.userExamChoice.deleteMany({ where: { userId } }),
-      this.prisma.userExamChoice.createMany({ data: choices.map((c) => ({ userId, examCode: c.examCode, isMain: c.isMain })) }),
+      this.prisma.userExamChoice.createMany({ data: choices.map((c) => ({ userId, examCode: c.examCode, isMain: c.isMain, attemptCycleId: c.attemptCycleId ?? null })) }),
     ]);
+  }
+
+  /** BOLT-0012: cycles of these exams (any status; the caller picks). stageDates is DATA: [{ stageCode, date }]. */
+  async cyclesForExams(examCodes: string[]): Promise<CycleRecord[]> {
+    if (!examCodes.length) return [];
+    const rows = await this.prisma.examAttemptCycle.findMany({
+      where: { exam: { code: { in: examCodes } } },
+      include: { exam: { select: { code: true } } },
+      orderBy: { code: "asc" },
+    });
+    return rows.map((r) => ({
+      id: r.id,
+      examCode: r.exam.code,
+      status: r.status,
+      stageDates: Array.isArray(r.stageDates)
+        ? (r.stageDates as { stageCode?: unknown; date?: unknown }[]).map((d) => ({
+            stageCode: String(d.stageCode ?? ""),
+            date: typeof d.date === "string" ? d.date : null,
+          }))
+        : [],
+    }));
   }
 }

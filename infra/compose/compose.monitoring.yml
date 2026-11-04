@@ -59,7 +59,7 @@ services:
   postgres-exporter:
     <<: *ops
     image: ${POSTGRES_EXPORTER_IMAGE}
-    env_file: [../secrets/production.env] # DATA_SOURCE_NAME (read-only monitoring role)
+    env_file: [../secrets/production.env] # DATA_SOURCE_NAME: read-only monitoring role on Supabase (direct/session URL, sslmode=require; BOLT-0023)
 
   glitchtip:
     <<: *ops

@@ -21,6 +21,7 @@ import { syncMasteryAction, topicStatesFor, type MasterySyncAction, type SyncAct
 import type { TopicStateDto } from "./domain/dto.js";
 import type { CheckKind } from "./domain/lamp.js";
 import { PrismaMasteryRepository } from "./infrastructure/prisma-mastery-repository.js";
+import { PrismaMasteryActivity, type MasteryWeekCounts } from "./infrastructure/prisma-mastery-activity.js";
 
 export const MasteryModule = { name: "mastery" } as const;
 
@@ -101,4 +102,19 @@ export function createMasteryModule(
 export function createMasteryDimming(deps: { prisma: PrismaClient; clock: Clock; events?: EventPublisher }): { run(): Promise<DimmingRunResult> } {
   const repo = new PrismaMasteryRepository(deps.prisma);
   return { run: () => runDimming({ repo, clock: deps.clock, events: deps.events ?? noEvents }) };
+}
+
+// ---------------------------------------------------------------- read-only activity view (added by BOLT-0013 for readiness)
+export type { MasteryWeekCounts } from "./infrastructure/prisma-mastery-activity.js";
+
+export interface MasteryActivityApi {
+  /** Users with any lamp event since `since`, keyset-paged by userId. */
+  activeUserIds(q: { since: Date; afterUserId: string | null; limit: number }): Promise<string[]>;
+  /** Lamp events of one user in [from, to): lit, Steady steps, Gold, relit. */
+  weekCounts(userId: string, from: Date, to: Date): Promise<MasteryWeekCounts>;
+}
+
+export function createMasteryActivity(deps: { prisma: PrismaClient }): MasteryActivityApi {
+  const a = new PrismaMasteryActivity(deps.prisma);
+  return { activeUserIds: (q) => a.activeUserIds(q), weekCounts: (u, f, t) => a.weekCounts(u, f, t) };
 }

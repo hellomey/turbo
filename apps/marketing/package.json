@@ -37,6 +37,5 @@
     "pngjs": "^7.0.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5"
-  },
-  "description": "Marketing site + legal pages (Next.js). heymey.app - port 4570."
+  }
 }

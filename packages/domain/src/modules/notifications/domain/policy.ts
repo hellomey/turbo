@@ -5,6 +5,20 @@ import { NOTIFICATIONS_CONFIG } from "./config.js";
 export type AlertCategory = "study" | "exam" | "offer" | "system";
 
 /**
+ * SEC-P2-L1: may a push token registered to (owner.userId, owner.deviceId) be registered by the caller?
+ * Same user: yes (moved between that user's own devices). Another user: only when the caller proves the device:
+ * the body's deviceId is the owner's deviceId AND the caller's session is bound to that same device (a new sign-in
+ * on the same install). Otherwise refuse; never silently redirect another user's pushes.
+ */
+export function pushTokenMoveAllowed(
+  owner: { userId: string; deviceId: string },
+  caller: { userId: string; deviceId: string; sessionDeviceId: string | undefined },
+): boolean {
+  if (owner.userId === caller.userId) return true;
+  return owner.deviceId === caller.deviceId && caller.sessionDeviceId === caller.deviceId;
+}
+
+/**
  * Every outcome is written to SendLog. `dropped_quiet` (non-exam alert inside quiet hours) and `dropped_opted_out`
  * (category switched off) extend the status list in notifications.prisma (free-text column, BOLT-0014).
  */

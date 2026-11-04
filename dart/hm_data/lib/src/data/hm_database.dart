@@ -53,6 +53,18 @@ class HmDatabase extends GeneratedDatabase {
           'size_bytes INTEGER NOT NULL, '
           'tier TEXT NOT NULL)',
     ],
+    // v1 -> v2 (BOLT-0019): Exam Hall answers saved on the phone first (D-2026-10-22-24).
+    [
+      'CREATE TABLE IF NOT EXISTS mock_answers ('
+          'attempt_id TEXT NOT NULL, '
+          'question_id TEXT NOT NULL, '
+          'chosen TEXT NOT NULL, '
+          'marked INTEGER NOT NULL, '
+          'client_at INTEGER NOT NULL, '
+          'synced INTEGER NOT NULL DEFAULT 0, '
+          'PRIMARY KEY (attempt_id, question_id))',
+      'CREATE TABLE IF NOT EXISTS kv (key TEXT PRIMARY KEY, value TEXT NOT NULL)',
+    ],
   ];
 
   @override

@@ -1,8 +1,6 @@
-/// Feature: pyq_vault - Previous-year questions with filters
-///
-/// Layers (blueprint §35), created as the feature is built:
-///   presentation/  widgets + screens (no logic beyond layout)
-///   application/   Riverpod controllers (state + intents)
-///   domain/        feature models
-///   data/          repositories over hm_api (online) + hm_data (offline)
+/// Feature: pyq_vault - Previous-year questions with filters (§19.4 Q31, §11). BOLT-0017.
 library;
+
+export 'application/pyq_providers.dart';
+export 'data/pyq_repository.dart';
+export 'presentation/pyq_vault_screen.dart';

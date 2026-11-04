@@ -76,11 +76,17 @@ class OtpVerifyResponse {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "OtpVerifyResponse[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "OtpVerifyResponse[$key]" has a null value in JSON.');
         });
+        assert(json[r'kind'] != null, 'Required key "OtpVerifyResponse[kind]" has a null value in JSON.');
+        assert(json[r'tokens'] != null, 'Required key "OtpVerifyResponse[tokens]" has a null value in JSON.');
+        assert(json[r'isNewUser'] != null, 'Required key "OtpVerifyResponse[isNewUser]" has a null value in JSON.');
+        assert(json[r'deletionCancelled'] != null, 'Required key "OtpVerifyResponse[deletionCancelled]" has a null value in JSON.');
+        assert(json[r'challengeToken'] != null, 'Required key "OtpVerifyResponse[challengeToken]" has a null value in JSON.');
+        assert(json[r'totpEnrolled'] != null, 'Required key "OtpVerifyResponse[totpEnrolled]" has a null value in JSON.');
         return true;
       }());
 

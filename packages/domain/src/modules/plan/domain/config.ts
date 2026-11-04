@@ -20,4 +20,12 @@ export const PLAN_CONFIG = {
   criticalPriority: 2,
   /** Q24: one daily budget; main exam share, others split the rest; nearest date gets this boost inside 60 days. */
   multiExam: { mainSharePercent: 60, nearestDateBoostPercent: 15, nearestDateWindowDays: 60 },
+  /** BOLT-0012 (logical design "Data"): items are generated for a rolling horizon of this many IST days. */
+  horizonDays: 14,
+  /** GET /v1/me/plan/days: at most this many days per request. */
+  maxDaysPerRequest: 62,
+  /** §39: offline plan_item_status older than this is kept as study history only. */
+  offlineMaxAgeDays: 7,
+  /** Size of one generated item (minutes). Same for every exam (R1). */
+  itemMinutes: { lesson: 10, litCheck: 5, minBlock: 5, mockMin: 20, checklist: 10 },
 } as const;

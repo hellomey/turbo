@@ -24,8 +24,9 @@ model PracticeSession {
 
 /// One graded answer ("PracticeAttempt" / "Answer" in §22). id = the client action UUID: accepted once (§39).
 model PracticeAnswer {
-  id              String       @id @db.Uuid
+  id              String       @id @default(uuid(7)) @db.Uuid
   userId          String       @db.Uuid
+  clientActionId  String       @db.Uuid // SEC-P2-L2: offline dedupe key, unique per user (was the global row id)
   sessionId       String?      @db.Uuid // null for offline-synced answers
   questionId      String       @db.Uuid
   questionVersion Int
@@ -42,6 +43,7 @@ model PracticeAnswer {
   source          String       @default("online") // online | offline_sync
   createdAt       DateTime     @default(now())
 
+  @@unique([userId, clientActionId])
   @@index([userId, istDay])
   @@index([userId, correct, answeredAt])
   @@index([userId, topicId])

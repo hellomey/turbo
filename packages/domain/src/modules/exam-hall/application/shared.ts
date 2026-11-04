@@ -46,11 +46,11 @@ export function toSummary(mock: MockRecord, paper: PaperView, locked: boolean, m
   };
 }
 
-/** Load an attempt the caller owns. Unknown -> NOT_FOUND; someone else's -> FORBIDDEN (owner only, design API tests). */
+/** Load an attempt the caller owns. Unknown OR someone else's -> NOT_FOUND (no existence leak, SEC-P2-L3). */
 export async function ownedAttempt(deps: ExamHallDeps, userId: string, attemptId: string): Promise<AttemptRecord> {
   const attempt = await deps.repo.findAttempt(attemptId);
   if (!attempt) throw new DomainError("NOT_FOUND", { attemptId });
-  if (attempt.userId !== userId) throw new DomainError("FORBIDDEN");
+  if (attempt.userId !== userId) throw new DomainError("NOT_FOUND", { attemptId });
   return attempt;
 }
 

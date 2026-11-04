@@ -8,7 +8,7 @@ The peak load of the month (blueprint §25).
 - [ ] Mock content verified; answer key ready; feature flags set; games quiet during the mock window.
 
 **Day of**
-- [ ] Watch Grafana: api p95, 5xx, Valkey memory, Postgres connections (pgbouncer), queue depth.
+- [ ] Watch Grafana: api p95, 5xx, Valkey memory, Postgres connections (Supabase → Reports → Database; pooler 6543 client count), queue depth.
 - [ ] Support on standby for payment issues (4-hour target).
 - [ ] Statewide rank computed by the worker after the window closes; spot-check before publishing.
 

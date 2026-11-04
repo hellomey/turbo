@@ -1,7 +1,7 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import type { PrismaClient } from "@heymey/db";
 import { DomainError } from "../../../shared/errors.js";
-import type { ExamAlertsRepository } from "../application/exam-alerts.js";
+import type { ExamAlertsRepository, ReviewTxHook } from "../application/exam-alerts.js";
 import { applyStageDate, type ExamAlertKind, type ExamAlertRecord, type ExamChangeRecord, type ExamChangeStatus, type StageDateEntry } from "../domain/exam-alerts.js";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -66,7 +66,7 @@ export class PrismaExamAlertsRepository implements ExamAlertsRepository {
     return e && e.status === "published" ? e.id : null;
   }
 
-  async approve(i: Parameters<ExamAlertsRepository["approve"]>[0]) {
+  async approve(i: Parameters<ExamAlertsRepository["approve"]>[0], inTx?: ReviewTxHook) {
     return this.prisma.$transaction(async (tx) => {
       const claimed = await tx.examWatchChange.updateMany({
         where: { id: i.changeId, status: "pending" },
@@ -94,17 +94,23 @@ export class PrismaExamAlertsRepository implements ExamAlertsRepository {
           break;
         }
       }
+      if (inTx) await inTx(tx, { alertId: alert.id });
       const rec: ExamAlertRecord = { ...alert, kind: alert.kind as ExamAlertKind, examCode: i.alert.examCode };
       return { change: { ...change, status: "approved" as const, examCode: i.alert.examCode }, alert: rec, cycleId };
     });
   }
 
-  async reject(i: { changeId: string; reviewerId: string; at: Date; note: string }) {
-    const res = await this.prisma.examWatchChange.updateMany({
-      where: { id: i.changeId, status: "pending" },
-      data: { status: "rejected", reviewedBy: i.reviewerId, reviewedAt: i.at, reviewNote: i.note },
+  async reject(i: { changeId: string; reviewerId: string; at: Date; note: string }, inTx?: ReviewTxHook) {
+    const done = await this.prisma.$transaction(async (tx) => {
+      const res = await tx.examWatchChange.updateMany({
+        where: { id: i.changeId, status: "pending" },
+        data: { status: "rejected", reviewedBy: i.reviewerId, reviewedAt: i.at, reviewNote: i.note },
+      });
+      if (res.count !== 1) return false;
+      if (inTx) await inTx(tx, { alertId: null });
+      return true;
     });
-    if (res.count !== 1) return null;
+    if (!done) return null;
     return this.findChange(i.changeId);
   }
 

@@ -64,11 +64,15 @@ class SaveMockAnswersBodyAnswersInner {
       // Ensure that the map contains the required keys.
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
+      // HeyMey override (tools/dart-api-codegen-templates): required-but-nullable keys must be present but may be null.
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key), 'Required key "SaveMockAnswersBodyAnswersInner[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SaveMockAnswersBodyAnswersInner[$key]" has a null value in JSON.');
         });
+        assert(json[r'questionId'] != null, 'Required key "SaveMockAnswersBodyAnswersInner[questionId]" has a null value in JSON.');
+        assert(json[r'chosenOptionIds'] != null, 'Required key "SaveMockAnswersBodyAnswersInner[chosenOptionIds]" has a null value in JSON.');
+        assert(json[r'markedForReview'] != null, 'Required key "SaveMockAnswersBodyAnswersInner[markedForReview]" has a null value in JSON.');
+        assert(json[r'clientAt'] != null, 'Required key "SaveMockAnswersBodyAnswersInner[clientAt]" has a null value in JSON.');
         return true;
       }());
 

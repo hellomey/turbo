@@ -1,6 +1,6 @@
 # HeyMey — Master Document v1.2
 
-**Company:** HeyMey Technologies Pvt Ltd (to be incorporated) · **Domain:** heymey.app · **Product:** one Flutter codebase → mobile app (Android + iOS) for everyone, plus a web "Desk" for partners and staff · **Market:** Indian competitive and professional exam aspirants; **launch wedge: Tamil Nadu government-job aspirants**, 18–35 first (Calm Mode for 35+), then more exam families in waves (§1a) *(changed 2026-10-22, D-2026-10-22-01)* · **Language:** English-first interface, in simple English (exam content follows the paper's language, §1 decision 3) · **Hosting:** one VPS, everything in Docker, open source first · **Login:** email OTP over SMTP · **Payments:** app stores + Razorpay · **AI:** OpenRouter (one API, many fallback models) · **Built by:** AI agents, with the founder as product owner
+**Company:** HeyMey Technologies Pvt Ltd (to be incorporated) · **Domain:** heymey.app · **Product:** one Flutter codebase → mobile app (Android + iOS) for everyone, plus a web "Desk" for partners and staff · **Market:** Indian competitive and professional exam aspirants; **launch wedge: Tamil Nadu government-job aspirants**, 18–35 first (Calm Mode for 35+), then more exam families in waves (§1a) *(changed 2026-10-22, D-2026-10-22-01)* · **Language:** English-first interface, in simple English (exam content follows the paper's language, §1 decision 3) · **Hosting:** free/starter tiers at launch: Supabase Postgres, Cloudflare R2, Vercel (marketing) *(changed 2026-11-04, D-2026-11-04-01)*, Firebase Hosting (Desk), one small VM in Docker for api/realtime/worker (ADR-0014) *(changed 2026-11-01, D-2026-11-01-01)* · **Login:** email OTP over SMTP · **Payments:** app stores + Razorpay · **AI:** OpenRouter (one API, many fallback models) · **Built by:** AI agents, with the founder as product owner
 
 > This is the master document for the product, the business, and the engineering. Older documents are in `docs-archive/` for reference only and do not override anything here.
 
@@ -9,7 +9,7 @@
 - **D-2026-10-22-02 Study Rooms:** live group study with server-timed focus hours and study-hours boards. New §9.11. Marked *(changed 2026-10-22, D-2026-10-22-02)*.
 
 **What changed in v1.2:**
-- **One VPS:** the whole stack runs in Docker Compose on a single server.
+- **Hosting:** at launch, managed free tiers plus one small VM in Docker Compose; one dedicated VPS once revenue justifies it (ADR-0014) *(changed 2026-11-01, D-2026-11-01-01)*.
 - **Email OTP over SMTP** replaces SMS OTP, so DLT registration is no longer needed.
 - **Build plan:** about 4 weeks of engineering, with content and legal work in parallel.
 - **New Part J:** the full engineering specification (repository, modules, APIs, auth, sync, real-time, deployment, CI/CD, testing, migration from the old Next.js app, definition of done).
@@ -32,7 +32,7 @@
 | 2 | Platform | **One Flutter codebase.** It builds (a) the **HeyMey mobile app** for Android + iOS, used by every aspirant and everyone else, and (b) the **HeyMey Desk** web build, used **only** by partners and staff for heavy desk work (Section 15). **There is no web version for aspirants.** |
 | 3 | Language | **English-first, written in simple English.** The **interface** is English only: no Tamil (or other Indian-language) words or letters in interface text. **Study content follows the language of the exam paper**, set per paper in the exam data: a paper that *tests* a language (for example, the **Tamil Language paper** in TNPSC Group 4) keeps its content in that language; every other paper's content is in English in version 1. Other languages for other exam families (for example, a language paper in another family, or Hindi-medium content) are decided per family before that wave starts (INT-006). This is study content, never interface text. *(changed 2026-10-22, D-2026-10-22-01)* |
 | 4 | Backend | **TypeScript** (the founder's strength), on Node.js. |
-| 5 | Hosting | **One VPS in an Indian data centre, with every service in Docker Compose.** Everything we can self-host is open source. We pay only for what can't be replaced: app stores, the SMTP email service, Razorpay, and OpenRouter. |
+| 5 | Hosting | **At launch: managed free tiers (Supabase Postgres, Cloudflare R2, Vercel for marketing *(changed 2026-11-04, D-2026-11-04-01)*, Firebase Hosting) plus one small always-on VM running the long-lived services in Docker Compose; paid plans only once revenue comes in (ADR-0014)** *(changed 2026-11-01, D-2026-11-01-01)*. *Original:* **One VPS in an Indian data centre, with every service in Docker Compose.** Everything we can self-host is open source. We pay only for what can't be replaced: app stores, the SMTP email service, Razorpay, and OpenRouter. |
 | 5a | Login | **Email + 6-digit OTP** sent over SMTP. No passwords and no SMS. |
 | 6 | AI | **OpenRouter**: one API key on the server, with a fallback model list for every task. |
 | 7 | Who builds it | **AI agents** write code, tests, and content drafts. The founder approves releases, prices, legal text, and anything touching money or personal data. |
@@ -554,15 +554,15 @@ These are banned by India's **Dark Patterns Guidelines 2023** (Section 30). Ever
 
 | Item | ₹ / month |
 |---|---|
-| One VPS (16 vCPU / 64 GB / NVMe) in an Indian data centre | 9,000 |
-| Off-site backup storage | 1,000 |
+| Hosting at launch: Oracle Always Free VM + Supabase (Free → Pro $25 before public launch) + Cloudflare R2 + Vercel (marketing; Pro $20/mo if commercial use) + Firebase Hosting (ADR-0014) *(changed 2026-11-01, D-2026-11-01-01; marketing changed 2026-11-04, D-2026-11-04-01)* | ≈ 0 – 2,200 |
+| Off-site backup storage (nightly pg_dump in Cloudflare R2, inside free 10 GB) *(changed 2026-11-01, D-2026-11-01-01)* | 0 |
 | OpenRouter (in-app AI + content pipeline) | 30,000 |
 | AI development agents | 40,000 |
 | SMTP email service for OTP + transactional mail | 2,000 |
 | Part-time subject reviewers (paid per item) | 60,000 |
 | Launch marketing (education creators, library and study-hall posters, Telegram groups) | 1,00,000 |
 | Domain, small tools | 5,000 |
-| **Total** | **≈ ₹2.47 lakh** |
+| **Total** | **≈ ₹2.39 lakh** (was ≈ ₹2.47 lakh with the VPS) *(changed 2026-11-01, D-2026-11-01-01)* |
 
 ### 14.2 What we keep from each sale
 App stores take **15%** from developers earning under $1M a year (Google Play, and Apple's Small Business Program). 18% GST is inside the price.
@@ -975,7 +975,7 @@ App stores take **15%** from developers earning under $1M a year (Google Play, a
 | Cache, rate limits, leaderboards, game-room state | **Valkey 8** (fully open-source Redis-compatible) | Open source (BSD) |
 | Background jobs + schedules | **BullMQ** (on Valkey) | Open source (MIT) |
 | Search + duplicate detection | **PostgreSQL full-text search + pg_trgm** (no separate search server needed) | Open source |
-| File storage (content packs, audio, images) | **SeaweedFS** (S3-compatible) | Open source (Apache 2.0) |
+| File storage (content packs, audio, images) | **Cloudflare R2** (S3-compatible, zero egress) at launch *(changed 2026-11-01, D-2026-11-01-01)*; SeaweedFS later if self-hosting | Open source (Apache 2.0) |
 | Request validation | **Zod** (via nestjs-zod), with the **OpenAPI** spec generated from it | Open source (MIT) |
 | Auth | Our own auth module: **email OTP** sent through **Nodemailer** over SMTP, **jose** JWT access tokens + rotating refresh tokens (hashed in the database), **TOTP** second factor (otplib) for Desk users. Only email login, so **Sign in with Apple isn't required** (Apple requires it only when third-party logins like Google are offered). | Open source libraries |
 | Email delivery | A transactional **SMTP provider** (for example Zoho ZeptoMail, Amazon SES, or Brevo) on the `mail.heymey.app` subdomain, with **SPF, DKIM, and DMARC** set up. We send through SMTP but don't run our own mail server, because OTP codes must reach the inbox, not spam. | Small cost |
@@ -985,6 +985,8 @@ App stores take **15%** from developers earning under $1M a year (Google Play, a
 | Transactional email (invoices, partner mail) | Same SMTP provider as the OTP emails | Included above |
 
 ### 20.3 Infrastructure: VPS
+
+> **Launch tier** *(changed 2026-11-01, D-2026-11-01-01)*: see ADR-0014. Postgres runs on **Supabase** (transaction pooler 6543 for the app, direct URL for migrations; Supabase Auth not used); files and packs on **Cloudflare R2** via `cdn.heymey.app`; marketing on **Vercel** (GitHub integration) *(changed 2026-11-04, D-2026-11-04-01)*; Desk on **Firebase Hosting**; api, realtime, worker, scheduler, Valkey, Caddy and changedetection on **one small VM** (Oracle Cloud Always Free ARM 4 OCPU / 24 GB; fallback Hetzner CX22). Errors/metrics: Sentry free + Grafana Cloud free, or self-hosted on the VM if RAM allows. Backups: nightly `pg_dump` to R2 (plus Supabase backups on Pro). The table below is the **target once revenue justifies a dedicated VPS**.
 
 | Need | Choice | Licence |
 |---|---|---|
@@ -1025,6 +1027,8 @@ App stores take **15%** from developers earning under $1M a year (Google Play, a
 Some tools (Grafana, Loki, Metabase, GlitchTip parts) use AGPL or similar licences. **Using them internally without changing and distributing them is fine.** Never copy their code into the HeyMey app.
 
 ## 21. Architecture: one VPS, everything in Docker
+
+> At launch only api, realtime, worker, scheduler, Valkey, Caddy and changedetection run on one small VM; Postgres, file storage, marketing and Desk run on managed free tiers (ADR-0014). *(changed 2026-11-01, D-2026-11-01-01)* The diagram below is the target dedicated-VPS layout.
 
 ```
             Cloudflare (DNS · CDN cache · DDoS · Desk access protection)
@@ -1108,7 +1112,7 @@ AiTask, AiModelRoute, AiUsage, AnalyticsEvent (partitioned)
 - **DPDP:** consent records, clear purpose, access/correct/delete in Settings, a grievance officer, a breach plan. We **don't collect** contacts or location (the user picks their district).
 - **Desk:** a second factor, admin pages behind protected access, short sessions, audit logs, and two-person approval for money and data actions.
 - **Backups:** continuous, off-site, encrypted, and **restore-tested every month**.
-- The database is never exposed to the internet. Servers talk over a private network only.
+- The database is never exposed to the internet. Servers talk over a private network only. At launch (Supabase, ADR-0014) the database is reached only over TLS with strong credentials, Supabase network restrictions limited to the VM IP and CI, and no public Data API (PostgREST disabled) *(changed 2026-11-01, D-2026-11-01-01)*.
 
 ## 24. Performance budgets
 
@@ -1124,7 +1128,8 @@ AiTask, AiModelRoute, AiUsage, AnalyticsEvent (partitioned)
 
 | Monthly users | Setup |
 |---|---|
-| Up to ~1.5 lakh | **The single VPS above.** Scale by adding replicas inside Compose. |
+| Launch → ~10k | **Free/starter tiers (ADR-0014)** *(changed 2026-11-01, D-2026-11-01-01)*: one small VM + Supabase + Cloudflare R2 + Vercel (marketing) *(changed 2026-11-04, D-2026-11-04-01)* + Firebase Hosting. |
+| Up to ~1.5 lakh | **The single VPS above** (or a bigger VM + Supabase Pro compute add-on). Scale by adding replicas inside Compose. |
 | 1.5–5 lakh | Move **PostgreSQL to its own VPS** (the same Compose files, just a different host), and add a **streaming replica** on a third VPS for reads and failover. |
 | 5 lakh+ | Separate VPS machines for API, real-time, and workers behind Caddy/Cloudflare load balancing. **Patroni** for automatic database failover. Table partitioning. Optionally move to **k3s**. |
 
@@ -1467,8 +1472,8 @@ heymey/                               (single Git repository)
 | Environment | Where | Data |
 |---|---|---|
 | `local` | The developer's or agent's machine (Docker Compose) | Seed data |
-| `staging` | The same VPS, a separate Compose project with low limits | Anonymised copy or seed data. Never real personal data. |
-| `production` | VPS | Real |
+| `staging` | The same VM, a separate Compose project with low limits; its own Supabase project *(changed 2026-11-01, D-2026-11-01-01)* | Anonymised copy or seed data. Never real personal data. |
+| `production` | VM (api/realtime/worker) + Supabase + Cloudflare R2 + Vercel (marketing) + Firebase Hosting *(changed 2026-11-01, D-2026-11-01-01; marketing changed 2026-11-04, D-2026-11-04-01)* | Real |
 
 **Pipeline (GitHub Actions):**
 
@@ -1486,8 +1491,8 @@ On merge to main (after founder approval):
   → deploy to STAGING (ssh: docker compose pull && up -d, run migrations)
   → smoke tests + k6 quick load test against staging
   → manual "Promote" button → deploy to PRODUCTION:
-       1. pgBackRest snapshot
-       2. prisma migrate deploy (only backward-compatible migrations: expand → migrate → contract)
+       1. pg_dump to R2 (was: pgBackRest snapshot) (changed 2026-11-01, D-2026-11-01-01)
+       2. prisma migrate deploy over the Supabase direct URL (only backward-compatible migrations: expand → migrate → contract)
        3. rolling restart of api/realtime/worker containers one by one (zero downtime behind Caddy)
        4. health checks; automatic rollback to the previous image tag if they fail
 
@@ -1495,7 +1500,8 @@ Mobile releases:
   fastlane builds Android (AAB) + iOS (IPA, on a macOS runner / Codemagic)
   → internal testing tracks (Play internal testing, TestFlight)
   → staged rollout in production: 10% → 50% → 100%, watching crash-free rate ≥ 99.5%
-Desk web: built in CI → static files deployed to the desk container
+Desk web: built in CI → static files deployed to Firebase Hosting (was: the desk container) (changed 2026-11-01, D-2026-11-01-01)
+Marketing: built and deployed by Vercel's GitHub integration (Preview per PR, Production on main) (changed 2026-11-04, D-2026-11-04-01)
 ```
 
 **Rules:**

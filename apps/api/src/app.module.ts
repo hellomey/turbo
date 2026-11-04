@@ -4,8 +4,13 @@ import { HealthController } from "./health/health.controller.js";
 import { AuditHttpModule } from "./http/audit/audit.http-module.js";
 import { AuthHttpModule } from "./http/auth/auth.http-module.js";
 import { ContentHttpModule } from "./http/content/content.http-module.js";
+import { ExamHallHttpModule } from "./http/exam-hall/exam-hall.http-module.js";
 import { ExamAlertsHttpModule } from "./http/exams/exam-alerts.http-module.js";
 import { ExamsHttpModule } from "./http/exams/exams.http-module.js";
+import { MasteryHttpModule } from "./http/mastery/mastery.http-module.js";
+import { PlanHttpModule } from "./http/plan/plan.http-module.js";
+import { PracticeHttpModule } from "./http/practice/practice.http-module.js";
+import { ReadinessHttpModule } from "./http/readiness/readiness.http-module.js";
 import { NotificationsHttpModule } from "./http/notifications/notifications.http-module.js";
 import { RolesHttpModule } from "./http/roles/roles.http-module.js";
 import { SyllabusHttpModule } from "./http/syllabus/syllabus.http-module.js";
@@ -29,10 +34,15 @@ import { PlatformGuard } from "./platform/platform.guard.js";
     RolesHttpModule,
     AuthHttpModule,
     ExamsHttpModule,
+    ExamHallHttpModule,
     ExamAlertsHttpModule,
     NotificationsHttpModule,
     SyllabusHttpModule,
     ContentHttpModule,
+    MasteryHttpModule,
+    PracticeHttpModule,
+    ReadinessHttpModule,
+    PlanHttpModule, // BOLT-0012
   ],
   controllers: [HealthController],
   providers: [

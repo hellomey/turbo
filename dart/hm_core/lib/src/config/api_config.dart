@@ -22,7 +22,7 @@ class ApiConfig {
   final String appVersion;
 
   factory ApiConfig.fromEnvironment({
-    String appVersion = '0.1.0',
+    String appVersion = '1.0.0',
     TargetPlatform? platform,
     bool? isWeb,
   }) {

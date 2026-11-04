@@ -84,14 +84,13 @@ void main() {
           ),
         ),
       );
-      expect(
-        tester.getSize(find.byType(FilledButton)).height,
-        greaterThanOrEqualTo(48),
-      );
-      expect(
-        tester.getSize(find.byType(OutlinedButton)).height,
-        greaterThanOrEqualTo(48),
-      );
+      for (final b in find.byType(HmChunkyButton).evaluate()) {
+        expect(
+          tester.getSize(find.byWidget(b.widget)).height,
+          greaterThanOrEqualTo(48),
+        );
+      }
+      expect(find.byType(HmChunkyButton), findsNWidgets(2));
     });
 
     testWidgets('error view shows the message and a retry', (tester) async {
@@ -127,10 +126,10 @@ void main() {
       await tester.pumpWidget(
         _wrap(HmCodeEntry(onSubmit: (_) {}, onResend: () async => resent++)),
       );
-      OutlinedButton resend() => tester.widget<OutlinedButton>(
+      HmChunkyButton resend() => tester.widget<HmChunkyButton>(
         find.descendant(
           of: find.byKey(const Key('hm-code-resend')),
-          matching: find.byType(OutlinedButton),
+          matching: find.byType(HmChunkyButton),
         ),
       );
       expect(resend().onPressed, isNull);
@@ -170,7 +169,7 @@ void main() {
       await tester.pump();
       expect(find.text('123'), findsOneWidget);
       expect(
-        tester.widget<FilledButton>(find.byType(FilledButton)).onPressed,
+        tester.widget<HmChunkyButton>(find.byType(HmChunkyButton)).onPressed,
         isNull,
       );
       // Keep the analyzer honest about the services import used by formatters.

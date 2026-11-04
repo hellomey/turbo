@@ -1,0 +1,46 @@
+# BOLT-0020 security review: Phase 2 (INT-002) + hosting (ADR-0014 / BOLT-0023)
+
+Reviewer: `security` agent, 2026-11-04. Scope: Phase 2 routes, changedetection webhook, Desk Exam Alert approval,
+server-authoritative checks, CSPRNG, push tokens, hosting (Supabase, R2, Firebase Desk, CI, backups), secrets.
+
+**Verdict: APPROVE WITH FINDINGS** (no High; M1 and M2 to be fixed before Phase 2 goes live in production).
+
+## Findings
+
+| ID | Sev | Where | Finding | Fix |
+|---|---|---|---|---|
+| SEC-P2-M1 | Medium | `apps/api/src/http/exams/exam-alerts.controller.ts:68-75, 84-86` | Approve/reject commit first, then write the audit row in a separate call. If `audit.record` fails, the change is approved (and pushes fan out) with no audit entry. §38/§16 require an audit trail for every Desk action. | Write audit in the same transaction (outbox event / pass a tx), or record intent before acting and fail closed. |
+| SEC-P2-M2 | Medium | `infra/caddy/Caddyfile:51` + `apps/api/.../exam-alerts.controller.ts:57-89` | `/v1/desk/exam-changes/*` is not under `/v1/desk/ops` or `/v1/desk/admin`, so the Caddy ops allowlist does not cover it. An approval sends a push to every follower of an exam (ops-grade action). It is protected by Desk 2FA + OPS/ADMIN role only. | Move it under `/v1/desk/ops/` (contract change) or add the path to `@deskAdmin`. Founder: confirm the single-approver exception (D-2026-10-22-32) vs the §16 two-person rule. |
+| SEC-P2-M3 | Medium | `packages/db/src/index.ts`, `packages/config/src/env.ts:23` | Supabase TLS depends only on the URL text (`sslmode=require`); there is no `ssl` option and the env schema does not reject a production `DATABASE_URL`/`DIRECT_URL` without `sslmode`. One edited secret silently sends traffic in plaintext. | In staging/production, require `sslmode=require` or `verify-full` in the env schema (or set `ssl` explicitly in the pool). |
+| SEC-P2-L1 | Low | `packages/domain/src/modules/notifications/infrastructure/*push*repository*.ts:18` | Registering a token that already belongs to another user moves it to the caller (`deleteMany` on other owners). Anyone who learns a victim's FCM token can redirect that device's pushes to their own account. FCM tokens are hard to get, so the risk is low. | Acceptable for v1. Log the reassignment (hashed) and rate-limit `registerPushToken` per user. |
+| SEC-P2-L2 | Low | `packages/domain/src/modules/plan/application/plan-service.ts:283` | `hasClientAction(clientActionId)` is global, not per user. A user who guesses or replays another user's `clientActionId` gets `duplicate` and blocks that action. The IDs are client UUIDs, so the risk is low. | Key the dedupe on `(userId, clientActionId)`. |
+| SEC-P2-L3 | Low | `packages/domain/src/modules/exam-hall/application/shared.ts:52-53` | It returns `NOT_FOUND` for a missing attempt and `FORBIDDEN` for someone else's, which leaks whether an attempt exists (UUIDs). Readiness and plan correctly return NOT_FOUND. | Return NOT_FOUND in both cases. |
+| SEC-P2-L4 | Low | `apps/desk/firebase.json` (both targets) | Production and staging Desk share one CSP: production `connect-src` allows `staging-api.heymey.app`, and staging allows the production API. | Use a separate CSP for each target. |
+| SEC-P2-I1 | Info | `infra/caddy;C` | Stray untracked directory, probably from a bad shell redirect. | Delete it. |
+| SEC-P2-I2 | Info | — | gitleaks did not run: the Docker pipe was unreachable from this shell. | CI `gitleaks` job (`ci.yml:108`) must be green on the PR. |
+
+## Checked and OK
+- **IDOR**: mock attempts (`ownedAttempt`), Sunday reports (`reports.ts:34`), plan items + sync (`plan-service.ts:261,285`), push-token delete (scoped `userId, deviceId`), mistakes/`me` routes use `requireAuth().userId` only.
+- **Idempotency / rate limits**: every POST/PUT/DELETE in `routes-study.ts` is idempotent except the machine webhook (dedupe `(watchUuid, changeId)` -> 409). `PlatformGuard` applies DEFAULT_RATE_LIMIT + route rules; the webhook has 60/IP/min.
+- **Webhook**: the secret is checked before parsing; it is a SHA-256 + `timingSafeEqual` compare (no length leak); a missing secret config always refuses; refusals log a hashed IP + request id, never the secret or body.
+- **Server authority**: deadline/grace are classified on the server clock; a future `clientAt` cannot extend time (`clientAt > deadline` → late/unranked; past grace → ignored). Sync clamps future `clientAt` to now and applies the 7-day window. The free monthly mock limit is race-safe (unique `MockAllowanceUse` → P2002 → `MOCK_MONTHLY_LIMIT`), and the advisory xact lock works under the transaction pooler.
+- **CSPRNG**: question picks are Fisher-Yates using `node:crypto.randomInt` (`mastery/practice .http-module.ts`). No `Math.random` in domain code.
+- **Hosting**: R2 pro packs are blocked by the WAF allow-only rule, and r2.dev is disabled (`infra/content-cdn/README.md:34-36`). Backups are `pg_dump | age -r` with the identity kept offline, plus a restore drill runbook. Only 80/443 are published; dev ports are bound to 127.0.0.1. Migrations use DIRECT_URL. The Desk CSP is strict (no unsafe-eval, frame-ancestors none, HSTS, nosniff).
+- **CI**: every `uses:` is pinned to a 40-char SHA. Permissions are set at the top level with per-job elevation. SSH pins the host fingerprint. Secrets go only through `secrets.*`, and there is no `pull_request_target`.
+- **Secrets**: tracked `.env`-like files are only `infra/secrets/.env.example` (FAKE placeholders), `infra/compose/images.env` and `ports.env`. The pattern scan (AWS, PEM, OpenRouter, Google, age, GitHub, Slack) found no real keys.
+- **Vercel (D-2026-11-04-01)**: not landed in this tree. Marketing is still Cloudflare Workers, so it was not reviewed.
+
+## Fix status (backend, 2026-11-04)
+- **SEC-P2-M1 — Fixed.** `ExamAlertsApi.approve/reject` take an in-transaction hook (`ReviewTxHook`); the controller writes the audit row via new `AuditApi.recordIn(tx, entry)` inside the approve/reject transaction (reject now runs in a transaction too). Events/pushes are published only after commit. Test: `apps/api/test/integration/notifications.int.spec.ts` "SEC-P2-M1" forces an audit failure with a DB trigger → 500, change still pending, no alert, no audit row, no job queued. Audit write-only guard test updated to allow exactly `record` + `recordIn`.
+- **SEC-P2-M3 — Fixed.** `loadEnv` refuses to start in staging/production when a non-localhost `DATABASE_URL`/`DIRECT_URL` lacks `sslmode=require|verify-ca|verify-full` (`databaseTlsIssues`, message names the variable, never the value). `parseDatabaseUrl` sets `ssl: { rejectUnauthorized: true }` on the pg pool when sslmode asks for TLS. Tests: `packages/config/test/env.spec.ts`, `packages/db/test/database-url.spec.ts`.
+- **SEC-P2-L1 — Fixed.** Another user's push token moves only when body `deviceId` equals the owner's deviceId AND the caller's session is bound to that device (`AccessContext.deviceId` from `verifyAccessToken`); otherwise 403 FORBIDDEN, nothing changes (`pushTokenMoveAllowed`, checked inside the upsert transaction). Test in `packages/domain/test/modules/notifications.spec.ts`.
+- **SEC-P2-L2 — Fixed.** Dedupe is `(userId, clientActionId)`: `hasClientAction(userId, id)`; schema `@@unique([userId, clientActionId])`; migration `20261104000000_study_log_client_action_per_user` creates the composite index before dropping the global one (relaxes only). Test in `plan.spec.ts`. Note: `mastery` has the same global pattern (`mastery/application/sync.ts:35`), not in this finding — raise separately.
+- **SEC-P2-L3 — Fixed.** `ownedAttempt` returns NOT_FOUND for another user's attempt; unit + integration tests updated (403 → 404).
+
+## Fix status (devops, 2026-11-04)
+- SEC-P2-M2 fixed: `/v1/desk/exam-changes` + `/*` added to `@deskAdmin` (ops_only, client_ip) in `infra/caddy/Caddyfile`; `caddy validate` passed.
+- SEC-P2-L4 fixed: `apps/desk/firebase.json` prod connect-src = api/rt.heymey.app only; staging = staging-api/staging-rt only.
+- Marketing CSP added (enforcing) in `apps/marketing/vercel.json`. Note: `script-src 'unsafe-inline'` is required because static Next.js emits inline bootstrap scripts (no nonce possible on static export); media-src allows the hero video CDN. Follow-up: hash-based script-src. Build passes.
+
+## Fix status (backend, 2026-11-04): SEC-P2-L2 follow-up (mastery + practice)
+- **SEC-P2-L2 follow-up — Fixed.** `RingEvent` dedupe is `(userId, clientActionId)`: `hasClientAction(userId, id)` in `mastery/application/sync.ts`; schema `@@unique([userId, clientActionId])`. `PracticeAnswer` used the client UUID as its global primary key: it now has a `clientActionId` column (backfilled from `id`), `@@unique([userId, clientActionId])`, server-generated `id`; `findAnswer(userId, clientActionId)`. Another user's reused UUID is now accepted, not rejected/duplicate. Migration `20261104010000_ring_event_practice_client_action_per_user` (composite index first, then drop of the global one). Tests: `mastery.int.spec.ts` (two users, same id, both accepted), `practice.spec.ts` (online + offline). `SyncReceipt` (`_platform.prisma`, PK `clientActionId`) is also global but unused by code: left as is, flagged for the architect. `pnpm verify` + `pnpm test:integration` green. **Migration pending architect approval** (`aidlc/decisions.md`).

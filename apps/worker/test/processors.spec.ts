@@ -76,7 +76,9 @@ describe("queue wiring", () => {
   it("only registered queues are implemented; users.deletion is the daily IST job", () => {
     for (const q of IMPLEMENTED_QUEUES) expect(QUEUES.map((x) => x.name)).toContain(q);
     expect(isImplemented("email.otp")).toBe(true);
-    expect(isImplemented("push.send")).toBe(false);
+    // push.send became implemented in BOLT-0014; billing is still a later phase.
+    expect(isImplemented("push.send")).toBe(true);
+    expect(isImplemented("billing.receipt-recheck")).toBe(false);
     expect(QUEUES.find((q) => q.name === "users.deletion")).toMatchObject({ owner: "users", repeat: "0 3 * * *" });
     expect(QUEUES.find((q) => q.name === "email.otp")).toMatchObject({ owner: "auth" });
   });

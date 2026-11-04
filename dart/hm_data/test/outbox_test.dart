@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hm_api/api.dart' as api;
 import 'package:hm_core/hm_core.dart';
 import 'package:hm_data/hm_data.dart';
-import 'package:hm_data/src/data/wire.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
@@ -56,16 +55,17 @@ class FakeSyncApi implements StudySyncGateway {
   }
 }
 
-api.TopicState topic(String id, {required bool lit}) => Wire.topicState({
-  'topicId': id,
-  'ring': {'lit': lit, 'steadyLevel': 0, 'gold': false, 'dim': 'bright'},
-  'litAt': null,
-  'goldAt': null,
-  'lessonCompletedAt': null,
-  'nextDueAt': null,
-  'nextCheck': 'recall',
-  'updatedAt': '2026-10-22T00:00:00.000Z',
-});
+api.TopicState topic(String id, {required bool lit}) =>
+    api.TopicState.fromJson({
+      'topicId': id,
+      'ring': {'lit': lit, 'steadyLevel': 0, 'gold': false, 'dim': 'bright'},
+      'litAt': null,
+      'goldAt': null,
+      'lessonCompletedAt': null,
+      'nextDueAt': null,
+      'nextCheck': 'recall',
+      'updatedAt': '2026-10-22T00:00:00.000Z',
+    })!;
 
 void main() {
   late FakeClock clock;

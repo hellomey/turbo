@@ -13,20 +13,69 @@ export const baseEnv = z.object({
   GLITCHTIP_DSN: z.url().optional(),
 });
 
+/**
+ * DATABASE_URL: what the app uses. Staging/production: the Supabase TRANSACTION pooler (:6543,
+ * `?pgbouncer=true&connection_limit=N`); createPrismaClient strips the hints and maps connection_limit to the pool.
+ * DIRECT_URL: session/direct connection for `prisma migrate` only (prisma.config.ts). Defaults to DATABASE_URL
+ * (local dev, tests). BOLT-0023, ADR-0014.
+ */
 export const databaseEnv = z.object({
-  /** Through pgbouncer in staging/production. */
   DATABASE_URL: z.url(),
+  DIRECT_URL: z.url().optional(),
 });
+
+const LOCAL_DB_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]", "::1"]);
+const TLS_SSLMODES = new Set(["require", "verify-ca", "verify-full"]);
+
+/**
+ * SEC-P2-M3: in staging/production every non-localhost DATABASE_URL / DIRECT_URL must ask for TLS
+ * (`sslmode=require|verify-ca|verify-full`). Returns one message per bad variable. Messages name the variable,
+ * NEVER its value (it holds the DB password).
+ */
+export function databaseTlsIssues(env: Record<string, unknown>): string[] {
+  if (env.HEYMEY_ENV !== "production" && env.HEYMEY_ENV !== "staging") return [];
+  const issues: string[] = [];
+  for (const name of ["DATABASE_URL", "DIRECT_URL"] as const) {
+    const v = env[name];
+    if (typeof v !== "string" || v === "") continue;
+    let u: URL;
+    try {
+      u = new URL(v);
+    } catch {
+      issues.push(`${name}: is not a valid URL`);
+      continue;
+    }
+    if (LOCAL_DB_HOSTS.has(u.hostname)) continue;
+    if (!TLS_SSLMODES.has(u.searchParams.get("sslmode") ?? "")) {
+      issues.push(`${name}: must include sslmode=require (or verify-ca / verify-full) in ${String(env.HEYMEY_ENV)}`);
+    }
+  }
+  return issues;
+}
+
+/** The migration URL: DIRECT_URL, else DATABASE_URL (local dev, where both are the same Postgres). */
+export const directUrl = (e: { DATABASE_URL: string; DIRECT_URL?: string | undefined }): string => e.DIRECT_URL ?? e.DATABASE_URL;
 
 export const valkeyEnv = z.object({
   VALKEY_URL: z.url(),
 });
 
+/**
+ * Endpoint-agnostic S3 (BOLT-0023): local SeaweedFS (:4583) or Cloudflare R2
+ * (`https://<account>.r2.cloudflarestorage.com`, region `auto`). S3_PUBLIC_BASE_URL is the public origin for
+ * `packs/free/` only (production: https://cdn.heymey.app, an R2 custom domain). Layout: infra/content-cdn/README.md.
+ */
 export const s3Env = z.object({
   S3_ENDPOINT: z.url(),
-  S3_BUCKET_CONTENT: z.string().default("heymey-content"),
+  S3_REGION: z.string().default("auto"),
+  S3_BUCKET: z.string().default("heymey-content"),
+  /** @deprecated use S3_BUCKET; kept so existing env files still parse. */
+  S3_BUCKET_CONTENT: z.string().optional(),
   S3_ACCESS_KEY: z.string(),
   S3_SECRET_KEY: z.string(),
+  S3_PUBLIC_BASE_URL: z.url().optional(),
+  /** true for SeaweedFS/MinIO (path-style); R2 works with either. */
+  S3_FORCE_PATH_STYLE: z.stringbool().default(true),
 });
 
 const pem = (label: string) =>
@@ -52,7 +101,7 @@ export const smtpEnv = z.object({
   SMTP_SECURE: z.stringbool().default(false),
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
-  MAIL_FROM: z.string().default("HeyMey <no-reply@mail.heymey.app>"),
+  MAIL_FROM: z.string().default("HeyMey <notification@heymey.app>"),
 });
 
 export const httpEnv = z.object({
@@ -90,6 +139,8 @@ export function loadEnv<T extends z.ZodType>(schema: T, source: Record<string, s
     const issues = parsed.error.issues.map((i) => `  - ${i.path.join(".")}: ${i.message}`).join("\n");
     throw new Error(`Invalid environment:\n${issues}\n(local development: run \`pnpm env:dev\` once)`);
   }
+  const tls = databaseTlsIssues(parsed.data as Record<string, unknown>);
+  if (tls.length > 0) throw new Error(`Invalid environment:\n${tls.map((m) => `  - ${m}`).join("\n")}`);
   return parsed.data;
 }
 

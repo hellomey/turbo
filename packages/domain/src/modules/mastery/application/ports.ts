@@ -65,7 +65,7 @@ export interface MasteryRepository {
   createCheck(c: NewCheck): Promise<CheckRecord>;
   getCheck(checkId: string): Promise<CheckRecord | null>;
   countChecksSince(userId: string, topicId: string, kind: CheckKind, since: Date): Promise<number>;
-  hasClientAction(clientActionId: string): Promise<boolean>;
+  hasClientAction(userId: string, clientActionId: string): Promise<boolean>;
   /**
    * Lit lamps the dimming job may change, keyset-paged by (userId, topicId): bright with nextDueAt <= now, or dimming
    * with nextDueAt <= dimCutoff (= now - steadyLostAfterOverdueDays).

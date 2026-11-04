@@ -10,9 +10,12 @@ import '../domain/markdown.dart';
 
 /// A clean reading view with Listen, the textbook reference and the source (§10.6). Calm, no game styling.
 class LessonScreen extends ConsumerWidget {
-  const LessonScreen({super.key, required this.topicId});
+  const LessonScreen({super.key, required this.topicId, this.onFinished});
 
   final String topicId;
+
+  /// "I've finished" → the 3-question Lit check (§5.1, INT-002-S01, BOLT-0017).
+  final VoidCallback? onFinished;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,21 +23,22 @@ class LessonScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Lesson')),
       body: lesson.when(
-        loading: () => const HmLoadingView(label: 'Loading the lesson'),
+        loading: () => const HmSkeletonList(label: 'Loading the lesson'),
         error: (e, _) => HmErrorView(
           message: messageOf(e),
           onRetry: () => ref.invalidate(lessonProvider(topicId)),
         ),
-        data: (l) => LessonBody(lesson: l),
+        data: (l) => LessonBody(lesson: l, onFinished: onFinished),
       ),
     );
   }
 }
 
 class LessonBody extends ConsumerWidget {
-  const LessonBody({super.key, required this.lesson});
+  const LessonBody({super.key, required this.lesson, this.onFinished});
 
   final LessonView lesson;
+  final VoidCallback? onFinished;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,15 +47,29 @@ class LessonBody extends ConsumerWidget {
     final listen = ref.read(listenControllerProvider.notifier);
     final opener = ref.read(linkOpenerProvider);
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+      padding: const EdgeInsets.fromLTRB(
+        HmSpace.xl,
+        HmSpace.lg,
+        HmSpace.xl,
+        HmSpace.xxl,
+      ),
       children: [
         Semantics(
           header: true,
           child: Text(lesson.title, style: text.headlineSmall),
         ),
-        const SizedBox(height: 4),
-        Text('${lesson.readingMinutes} min read', style: text.bodySmall),
-        const SizedBox(height: 12),
+        const SizedBox(height: HmSpace.sm),
+        Row(
+          children: [
+            Icon(Icons.schedule_rounded, size: 18, color: context.hm.textMuted),
+            const SizedBox(width: HmSpace.xs),
+            Text(
+              '${lesson.readingMinutes} min read',
+              style: text.bodySmall?.copyWith(color: context.hm.textMuted),
+            ),
+          ],
+        ),
+        const SizedBox(height: HmSpace.lg),
         if (status == ListenStatus.speaking)
           HmSecondaryButton(
             key: const Key('lesson-stop'),
@@ -103,6 +121,14 @@ class LessonBody extends ConsumerWidget {
               child: const Text('Open source'),
             ),
           ),
+        if (onFinished != null) ...[
+          const SizedBox(height: 24),
+          HmPrimaryButton(
+            key: const Key('lesson-done'),
+            label: "I've finished",
+            onPressed: onFinished,
+          ),
+        ],
       ],
     );
   }
