@@ -8,7 +8,7 @@ autoInstallPeers: true
 engineStrict: true
 
 # Supply-chain hardening (semgrep pnpm rules, BOLT-0076).
-minimumReleaseAge: 1440
+minimumReleaseAge: 10080
 trustPolicy: no-downgrade
 blockExoticSubdeps: true
 # Exact versions published without provenance that earlier releases had. Kaaval to confirm prisma@7.10.1 (BOLT-0076).
