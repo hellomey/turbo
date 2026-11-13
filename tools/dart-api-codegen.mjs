@@ -28,7 +28,9 @@ const GENERATOR_IMAGE = "openapitools/openapi-generator-cli:v7.17.0";
 const r = spawnSync(
   "docker",
   [
-    "run", "--rm", "-v", `${root}:/local`, GENERATOR_IMAGE, "generate",
+    // Run as the host user on Linux so generated files are not root-owned (CI cleanup failed with EACCES).
+    "run", "--rm", ...(process.getuid ? ["--user", `${process.getuid()}:${process.getgid()}`] : []),
+    "-v", `${root}:/local`, GENERATOR_IMAGE, "generate",
     "-i", "/local/packages/contracts/openapi/openapi.json",
     "-g", "dart",
     "-o", "/local/dart/hm_api",

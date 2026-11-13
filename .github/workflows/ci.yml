@@ -82,7 +82,8 @@ jobs:
         with: { node-version: 24, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: flutter pub get
-      - run: dart format --output=none --set-exit-if-changed apps/mobile/lib apps/mobile/test apps/desk/lib apps/desk/test dart
+      # Generated dart/hm_api is excluded (same list as dart/package.json lint); the drift step below guards it.
+      - run: dart format --output=none --set-exit-if-changed apps/mobile/lib apps/mobile/test apps/desk/lib apps/desk/test dart/hm_design dart/hm_core dart/hm_data dart/hm_games dart/hm_features dart/hm_desk
       - run: flutter analyze
       - run: node tools/flutter-test-all.mjs
       - name: Regenerate hm_api from the contract and fail if stale
@@ -105,13 +106,25 @@ jobs:
   security:
     name: security (semgrep · osv · gitleaks · audit)
     runs-on: ubuntu-latest
-    permissions: { contents: read, pull-requests: read } # gitleaks-action lists the PR's commits
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with: { fetch-depth: 0 }
+      # gitleaks CLI instead of gitleaks-action, which needs a paid license on org repos. Pinned and checksum-verified.
+      # Scans the same commit range the action did; .gitleaks.toml at the repo root is auto-loaded when present.
       - name: gitleaks
-        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
-        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        env:
+          GITLEAKS_VERSION: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          tgz="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL -o "$RUNNER_TEMP/$tgz" "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/$tgz"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$tgz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$tgz" -C "$RUNNER_TEMP" gitleaks
+          # A new branch push has no "before" commit (all zeros): scan full history then.
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then opts=""; else opts="$BASE..$HEAD"; fi
+          "$RUNNER_TEMP/gitleaks" git --redact --verbose --exit-code 1 ${opts:+--log-opts="$opts"} .
       - name: semgrep
         run: pipx run semgrep scan --config p/default --config p/typescript --config p/secrets --error
       - name: osv-scanner
@@ -156,7 +169,7 @@ jobs:
       - name: desk firebase.json is valid JSON with an SPA rewrite
         run: node -e "const c=require('../../apps/desk/firebase.json');if(!c.hosting.every(h=>h.rewrites.some(r=>r.destination==='/index.html')))process.exit(1)"
       - name: marketing vercel.json is valid JSON (marketing on Vercel, D-2026-11-04-01)
-        run: node -e "const c=require('../../apps/marketing/vercel.json');if(!c.buildCommand||!c.ignoreCommand)process.exit(1)"
+        run: node -e "const c=require('../../apps/marketing/vercel.json');if(!c.buildCommand||!c.installCommand)process.exit(1)"
 
   images:
     name: images (server runtime · migrator · backup)
