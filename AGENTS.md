@@ -1,149 +1,65 @@
-# AGENTS.md: HeyMey monorepo
+# AGENTS.md: the HeyMey crew
 
-Instructions for every AI agent working in this repository. Read this file fully before your first change.
-A closer `AGENTS.md` in a sub-folder adds rules for that folder; when they conflict, the closer one wins,
-**except for the Non-negotiables below, which no file can override.**
+Fifteen agents build HeyMey. Each one owns paths, uses named skills and hands work to named reviewers. Rules, architecture
+and dates are in `CLAUDE.md`; read it first. The names are Tamil words that match each job, so the team can say
+"ask Thedal" or "Kaaval blocked it" in standups.
 
-## 1. Read order
+Update `.claude/agents/*.md` so the 14 existing definitions are renamed and merged into the roster below. Keep their useful
+instructions and add **Vilaiyattu** (games) as the 15th. The frontmatter of each file lists its tools and the skills it loads.
 
-1. **This file.**
-2. [`aidlc/README.md`](aidlc/README.md): the development lifecycle (phases, gates, bolts, risk tiers, stop-and-ask).
-3. [`aidlc/state.md`](aidlc/state.md): what is in progress right now and what is waiting on whom.
-4. The **blueprint sections** your task cites: [`docs/HEYMEY_PRODUCT_BLUEPRINT.md`](docs/HEYMEY_PRODUCT_BLUEPRINT.md). It is the spec. Part J (§34–§46) is the engineering spec.
-5. For backend work: the module's `MODULE.md` + `module.json` in `packages/domain/src/modules/<module>/`.
-6. The nested `AGENTS.md` of every folder you will touch.
+## Roster
 
-**Navigate code through the knowledge graph (Graphify), not raw search.** The repo has a graph in `graphify-out/`
-(rebuilt by git hooks on commit/checkout). Before your first grep or source read, run `graphify query "<question>"`;
-use `graphify explain "<symbol>"` and `graphify path "<A>" "<B>"` for focused context. After changing code run
-`graphify update .` (AST-only, free). The Claude Code skill is `.claude/skills/graphify`; other tools use `.agents/skills/graphify`.
+| Agent | Meaning | Role | Owns | Main skills | Reviewed by |
+| --- | --- | --- | --- | --- | --- |
+| **Kural** | voice | Orchestrator and tech lead. Splits work into bolts, assigns them, merges, keeps `aidlc/status` true, sends the founder one daily approval list. | `aidlc/`, `docs/adr/`, release checklist | gstack, andrej-karpathy-skills, adhd, claude-mem, headroom | Founder |
+| **Paalam** | bridge | Platform and DevOps. Vercel projects, Supabase staging and production, migrations, pg_cron and queues, CI/CD, APK signing, `dl.heymey.app`, backups, restore drill, Docker removal. | `infra/`, `.github/`, `packages/config`, `packages/db` (migrations) | ecc, security-audit-skill, archify | Kaaval, Vizhi |
+| **Thoon** | pillar | Backend. NestJS on Vercel Functions, the domain modules, job endpoints that replace BullMQ, Postgres-based rate limits and idempotency. | `apps/api`, `packages/domain`, `packages/contracts` | mattpocock/skills, ecc, ponytail, andrej-karpathy-skills | Vizhi, Kaaval |
+| **Kalai** | art | Flutter UI and UX. Design system, bento layouts, motion, celebrations, accessibility, goldens, the web build. | `dart/hm_design`, `dart/hm_features`, `apps/mobile`, `apps/desk` UI | ui-ux-pro-max-skill, taste-skill, impeccable, diagram-design | Vizhi |
+| **Vilaiyattu** | play | Games. Flame client in `hm_games`, server-authoritative game logic, Supabase Realtime channels, odds display. | `dart/hm_games`, `packages/domain/games`, realtime channel config | ecc, mattpocock/skills, taste-skill | Kanakku (firewall), Kaaval, Vizhi |
+| **Kanakku** | accounts | Economy and billing. Sparks ledger, Points, XP, Trophies, Season Pass, cosmetics store, Razorpay (test mode), Play Billing, entitlements, spending limits. Guardian of the firewall. | `packages/domain/economy`, `packages/domain/billing` | security-audit-skill, mattpocock/skills, ponytail | Kaaval, Founder |
+| **Koottam** | gathering | Social. Squads, chat, Help Requests, Squad Battles, Study Rooms (`focus` module), hours boards, privacy toggles. | `packages/domain/squads`, `packages/domain/focus`, `hm_features/squad` | ecc, mattpocock/skills | Kaaval (moderation, privacy), Vizhi |
+| **Arivu** | knowledge | AI. `packages/ai-gateway`, AI doubt help, budgets, fallbacks, safety filters, content-drafting prompts. | `packages/ai-gateway`, `packages/domain/ai` | andrej-karpathy-skills, ecc, Understand-Anything | Kaaval |
+| **Medai** | stage | Desk. All staff roles, Exam Alert approval, content review queue, sticker-code check, moderation and support tools. | `dart/hm_desk`, `apps/desk`, `packages/domain/support`, `moderation`, `liveops`, `institutions`, `marketplace` | ui-ux-pro-max-skill, impeccable, mattpocock/skills | Kaaval, Vizhi |
+| **Thedal** | search | Research and scraping. Official TNPSC notifications, syllabi, past papers, answer keys, eligibility rules, exam patterns; the daily watcher. Allowed sources only. | `scripts/content/scrape-*`, `content/raw/` (git-ignored), `content/sources.md` | agent-reach, last30days-skill, Understand-Anything | Thirutham |
+| **Ezhuthu** | writing | Content author. Original lessons, explanations, glossary, Final Stretch checklist, Expo Challenge sets, all in the `content/` schema. | `content/` | humanizer, Understand-Anything | Thirutham |
+| **Thirutham** | correction | Content verifier. Checks every question and answer against its source and answer key, marks `verified`, runs the Correction Log, seeds staging and then production. | `content/review/`, seed scripts, Correction Log | Understand-Anything, humanizer | Founder spot-checks |
+| **Vizhi** | eye | QA. Test plans, integration tests on staging Supabase, Patrol end-to-end tests, k6 load tests, goldens, low-end phone pass, release smoke tests. | `packages/testing`, `**/test/`, `**/integration_test/` | ecc, mattpocock/skills | Kural |
+| **Kaaval** | guard | Security and compliance. Security audit on every risky PR, DPDP, the under-18 gate, consent, policies, Game Rules & Odds page, processor list, secret hygiene. Can block any merge. | `docs/compliance/`, `apps/marketing/app/(legal)/` | security-audit-skill, humanizer (policy wording) | Founder, lawyer |
+| **Murasu** | drum | Marketing and stall. heymey.app on Vercel, `/try` install page, waitlist, flex banner, take-away posters, sticker art, store listing, demo video, launch emails. | `apps/marketing`, `marketing/assets/` | marketingskills, ppt-master, OpenMontage, hyperframes, humanizer, taste-skill | Kaaval (claims), Kalai (brand) |
 
-**Product phases:** Phase N = Week N of blueprint §43 (Phase 1 = INT-001 Foundation).
+caveman and headroom are for agent-to-agent notes only; claude-mem keeps cross-session memory without secrets or user data.
 
-## 2. What this repo is
+## How the crew works
 
-HeyMey: a gamified government-exam preparation app for Tamil Nadu aspirants. One Flutter codebase (mobile app for
-everyone + HeyMey Desk web for partners/staff), a TypeScript backend, a Next.js marketing site. **At launch (ADR-0014) it runs on free/starter tiers:** Postgres on Supabase, files and packs on Cloudflare R2, marketing on Vercel, Desk on Firebase Hosting, and api/realtime/worker/scheduler/Valkey on **one small VM in Docker Compose**. Paid plans or a dedicated VPS come only once revenue comes in.
+1. **One board.** Kural keeps `aidlc/status/board.md` with every bolt: owner, branch, state, blocker, due date. Agents update it
+   when they start, block or finish.
+2. **One worktree per agent.** Branch names `agent/<name>/<bolt-id>`. One bolt per PR. Never commit to `main` directly.
+3. **Contract first.** Any API change starts with Thoon updating `packages/contracts`. Kalai and the other client agents build
+   against the generated Dart client, not by hand.
+4. **Reviews are real.** Each PR needs its listed reviewers. Kaaval reviews anything touching auth, money, games, personal
+   data, uploads or Desk. Kanakku reviews anything that touches a currency or a prize.
+5. **Daily rhythm (IST).** 09:00 Kural posts the plan in `aidlc/standups/YYYY-MM-DD.md`. 18:00 each agent appends done,
+   next and blocked. 19:00 Kural sends the founder one approval list: gates, prices, legal text, money or data code.
+6. **Escalate, don't guess.** Questions about prices, legal wording, prize rules, the creator share, refund terms or anything
+   irreversible go to the founder through Kural's list, with a recommended answer.
+7. **Shared definition of done** is in `CLAUDE.md` section 10.
 
-```
-apps/
-  api/          NestJS HTTP API (Fastify)               :4567  api.heymey.app
-  realtime/     Socket.IO gateway, game rooms            :4568  rt.heymey.app
-  desk/         Flutter web: HeyMey Desk (staff/partner) :4569  desk.heymey.app (Firebase Hosting in prod)
-  marketing/    Next.js marketing + legal pages          :4570  heymey.app (Vercel in prod)
-  worker/       BullMQ workers :4571 + scheduler :4572   (internal)
-  mobile/       Flutter app, Android + iOS               (stores)
-packages/       TypeScript libraries (@heymey/*)
-  config/       ports.json (THE port list), env schemas
-  contracts/    Zod schemas -> OpenAPI 3.1 -> Dart client. The one contract.
-  domain/       24 business modules (framework-free) + the money/game firewall
-  db/           Prisma schema (one file per owning module), migrations, seed
-  ai-gateway/   the only way to call an AI model (OpenRouter)
-  testing/      fake clock, factories (tests only)
-  eslint-config/
-dart/           Flutter packages: hm_design, hm_api (generated), hm_core, hm_data, hm_games, hm_features, hm_desk
-content/        syllabus YAML + content pipeline
-infra/          compose stacks, Caddyfile, Dockerfiles, backups, monitoring, VPS scripts, encrypted secrets
-docs/           blueprint, architecture, ADRs, runbooks
-aidlc/          the lifecycle: intents, units, bolts, decisions, templates, status board
-tools/          repo scripts (ports, module generator, firewall guard, codegen)
-.claude/        agent definitions (agents/) and lifecycle skills (skills/)
-```
+## Deadlines by agent (from `CLAUDE.md` section 2)
 
-## 3. Non-negotiables
-
-These come from the blueprint and are enforced by CI where possible. Breaking one is never "a small fix".
-
-1. **Server is the source of truth** (§34.1). Scores, rewards, unlocks, timers, ranks, purchases are decided on the server. The app displays.
-2. **Money/game firewall** (§5.3, §18, §30). No conversion between Sparks and anything else; nothing bought with money enters or plays a game; no game rewards anything worth money; Pro/Season Pass give no game advantage.
-   Code: `packages/domain/src/modules/economy/domain/firewall.ts`. Tests `FW-001…` in `packages/domain/test/firewall/` may be **added to, never deleted, skipped or weakened** (`pnpm firewall:check`).
-3. **Every write is idempotent** (§34.3): `Idempotency-Key` on every state-changing request; ledgers keyed by unique idempotency keys.
-4. **One contract** (§34.4): routes and socket events are defined in `@heymey/contracts` first; OpenAPI and `dart/hm_api` are generated. Never hand-write API models twice; never edit `hm_api`.
-5. **Module ownership** (§34.8): a module owns its tables and is imported only via its `index.ts`, and only by modules listed in its `module.json` (`pnpm boundaries`). New dependency = ADR.
-6. **Server time, IST days** (§37): never `Date.now()` in domain code (inject `Clock`); day logic uses Asia/Kolkata; randomness for games uses the server CSPRNG.
-7. **Ports come from `packages/config/ports.json`** only. Never hard-code a new port. `pnpm ports:gen` after editing.
-8. **No secrets in code, apps, prompts or docs.** Secrets live in `infra/secrets/*.enc.env` (SOPS). The OpenRouter key never leaves the server. No personal data is ever sent to an AI model.
-9. **Simple English, no dark patterns** (§10.2, §13). Every paywall has "Not now"; no fake urgency; prices include GST. Tamil appears only inside Tamil Language paper content.
-10. **The founder approves** merges to `main`, prices, legal text, store submissions, odds changes, and any code touching money or personal data (§26.2 rule 4).
-
-## 4. How work flows (AIDLC, short version)
-
-```
-Intent (INT-xxx) -> stories -> units -> [G-I founder] -> domain model + logical design -> [G-D]
-  -> bolts: contract -> failing tests -> code -> pnpm verify -> reviews -> [G-C] -> release -> observe -> [G-O]
-```
-
-- Start every session by reading `aidlc/state.md`. Pick up only work that is on the board.
-- One bolt = one branch `bolt/BOLT-xxxx-<slug>` = one PR. Create the bolt file from `aidlc/templates/bolt.md` **before** coding.
-- Stay inside your unit's modules/features. Need something from another module? Use its public API, or raise it.
-- Update `aidlc/state.md` and the bolt file when you start, when you open the PR, and when you finish.
-- Risk tier T2 (money, personal data, game fairness, security, legal text) needs `security` + `compliance` review and founder approval at design and merge.
-- **Stop and ask** (write the question into the artefact, then ask) in every case listed in `aidlc/README.md` §6.
-
-## 5. Agent roster
-
-Definitions with full instructions: [`.claude/agents/`](.claude/agents). Other tools: read the same files as role prompts.
-
-| Agent | Owns (may change) | Reviews | Never touches |
-|---|---|---|---|
-| `conductor` | `aidlc/**` | gate readiness | product code |
-| `spec` | `aidlc/inception/**` | stories vs blueprint | code |
-| `architect` | `packages/contracts`, `packages/db/prisma`, `module.json`, `docs/adr`, `docs/architecture` | every design (G-D) | feature implementation |
-| `backend` | `packages/domain/src/modules/*` (assigned unit), `apps/api`, `apps/worker` | — | `dart/`, `infra/` |
-| `realtime` | `apps/realtime`, socket contracts, `games`/`squads` room logic | — | billing, economy ledgers |
-| `flutter-ui` | `apps/mobile`, `apps/desk`, `dart/hm_design`, `hm_core`, `hm_data`, `hm_features`, `hm_desk` | accessibility | `hm_api` (generated) |
-| `game` | `dart/hm_games`, `hm_features/lib/src/play`, Rive/Flame assets | game feel | odds values, rewards |
-| `ai-gateway` | `packages/ai-gateway`, `ai` module | AI cost/privacy | content publishing |
-| `qa` | tests anywhere, `infra/k6` | every PR | production code (only via findings) |
-| `security` | — (review only, may add tests) | T2 PRs, `infra/`, auth | — |
-| `devops` | `infra/**`, `.github/workflows/**`, `tools/**` | deploy safety | domain logic |
-| `content-writer` | `content/**` drafts | — | publishing, code |
-| `content-verifier` | verification reports in `content/` | every content item | writing the item it verifies |
-| `compliance` | — (review only) | offers, paywalls, game rules, legal text, store copy | — |
-
-## 6. Commands
-
-```bash
-pnpm install                 # Node 24, pnpm 12 (corepack)
-flutter pub get              # Dart workspace (root pubspec.yaml)
-pnpm env:dev                 # once: git-ignored .env with local URLs + generated keys (never read or share it)
-pnpm infra:up                # local Postgres :4580, Valkey :4582, S3 :4583, Mailpit :4584 (inbox :4585)
-pnpm db:migrate && pnpm db:seed
-pnpm codegen                 # Prisma client, OpenAPI (contracts), Dart client (needs Docker)
-pnpm dev                     # api, realtime, worker, desk, marketing on their ports
-pnpm test:integration        # real Postgres + Valkey via Testcontainers (needs Docker)
-graphify query "how does OTP login work"   # navigate code via the knowledge graph
-graphify update .            # after code changes
-pnpm verify                  # ports + firewall + boundaries + lint + typecheck + tests (run before every PR)
-pnpm gen:module <name> --summary "..."   # new backend module (then an ADR)
-pnpm --filter @heymey/domain test:firewall
-flutter analyze && node tools/flutter-test-all.mjs
-```
-
-## 7. Definition of done (every PR, blueprint §45)
-
-- [ ] Matches the blueprint (or the founder approved a change, logged in `aidlc/decisions.md`)
-- [ ] API in `@heymey/contracts`; OpenAPI + Dart client regenerated
-- [ ] Server-side permission checks + rate limits; idempotent writes
-- [ ] Tests at coverage targets (90%: economy, billing, mastery, exam-hall, games, auth; 70% elsewhere) + goldens for UI
-- [ ] Offline behaviour per §39 where applicable
-- [ ] Dark / light / high-contrast, Calm Mode, Lite Mode, 200% text checked; screen-reader labels on every control
-- [ ] Simple-English copy; Dark Patterns checklist for any offer text
-- [ ] Logs, metrics, errors visible (Grafana / GlitchTip); feature flag if risky
-- [ ] Performance budget met (§24)
-- [ ] Bolt file "Result" filled; `aidlc/state.md` updated
-
-## 8. Conventions
-
-- **Commits**: Conventional Commits with the bolt id: `feat(auth): rotate refresh tokens [BOLT-0012]`.
-- **Branches**: `bolt/BOLT-xxxx-<slug>`. Never commit to `main` directly.
-- **PR description**: traceability line `§38 → INT-001-S02 → U-auth → BOLT-0012`, risk tier, DoD checklist.
-- **TypeScript**: ESM, strict, `.js` import suffixes, no `any`, no floats for money (integer paise / integer Sparks).
-- **Errors**: throw `DomainError(code)` with a code from `@heymey/contracts` `ERROR_CODES`; add new codes, never rename.
-- **Dart**: feature layers `presentation/ → application/ → domain/ → data/`; Riverpod; no business rules in widgets.
-- **Docs**: when you make a lasting decision, write an ADR from `aidlc/templates/adr.md`.
-
-## 9. Nested AGENTS.md
-
-`apps/api` · `apps/realtime` · `apps/worker` · `apps/mobile` · `apps/desk` · `apps/marketing` · `packages/domain` ·
-`packages/db` · `packages/contracts` · `packages/ai-gateway` · `dart` · `infra` · `content`
+| Agent | By Nov 20 | By Nov 27 | By Dec 1 | Dec 2–8 |
+| --- | --- | --- | --- | --- |
+| Kural | Board, ADRs (Vercel serverless, Supabase Queues and Realtime, `focus` module, web app) | All bolts merged | Release candidate sign-off | Daily triage, stall build Dec 6 |
+| Paalam | Vercel + Supabase staging and production live, CI, backups, Docker retired | APK pipeline, `dl.heymey.app`, restore drill passed | Production deploy | Hotfix pipeline, monitoring |
+| Thoon | API on Vercel, jobs migrated | All backend modules complete | Bug fixes | Bug fixes |
+| Kalai | Bento and motion patterns in `hm_design` | All screens built, goldens | Polish pass | Stall flow (sticker screen) |
+| Vilaiyattu | Game engine and Realtime spike | 4 games + Squad Battles | Balance and odds check | Fixes |
+| Kanakku | Ledger design and ADR | Economy, store, billing (test mode) | Firewall audit | Fixes |
+| Koottam | Squads data model | Squads, chat, Study Rooms | Moderation pass | Fixes |
+| Arivu | Gateway with budgets | Doubt help | Safety tests | Fixes |
+| Medai | Desk shell and roles | All Desk screens | Staff walkthrough | Sticker-code page |
+| Thedal | Sources list, scrapers for TNPSC | Group 4 data and papers collected, watcher live | Group 2/2A collection | Daily watcher |
+| Ezhuthu | Group 4 lesson drafts begin | Group 4 lessons complete | Expo Challenge sets | Group 2/2A |
+| Thirutham | Review process and schema fields | Group 4 verified and seeded to staging | Production seed | Correction Log |
+| Vizhi | Test plan, staging suites | Patrol E2E, k6 | Release smoke tests | Stall build test on budget phones |
+| Kaaval | Policies drafted, under-18 gate spec | Security audits on all risky bolts | Compliance sign-off | Stall rules page |
+| Murasu | Site moved to Vercel, testimonials removed, FAQ fixed | `/try`, waitlist, legal pages live | Flex and poster files to printer by Dec 3 | Stickers, demo video, stall kit |

@@ -290,3 +290,28 @@ creates `RingEvent_userId_clientActionId_key` then drops `RingEvent_clientAction
 (backfilled from `id`, NOT NULL) + `PracticeAnswer_userId_clientActionId_key`; new answer ids are server-generated.
 Open: `SyncReceipt.clientActionId` is a global PK but no code uses the table; architect to decide (drop or re-key).
 **Needs: architect approval of the schema/migration (owner of `packages/db/prisma`).** Implemented by: backend.
+
+
+## 2026-11-13: Founder approvals on the crew setup (Kural)
+- D-2026-11-13-01. Vercel Hobby through the Dec 2 testing release (billing is test mode). Kural raises the move to Pro
+  the same day the first real payment or paid promotion is planned. Supersedes the open question in ADR-0014.
+- D-2026-11-13-02. `apps/marketing` stays a normal monorepo folder. Old standalone histories are kept as branches
+  `archive/marketing-standalone` (hellomey/hellomay-landing) and `archive/marketing-standalone-brittytino`
+  (brittytino/heymey-marketting). Never delete history to save space.
+- D-2026-11-13-03. Rejected skills confirmed: ecc, gstack, headroom, claude-mem, agent-reach, last30days-skill,
+  OpenMontage, hyperframes. Substitutes as wired in `.claude/agents/`.
+- D-2026-11-13-04. Until the lawyer answers on reproducing TNPSC papers, every question and explanation is original
+  content tied to an allowed source, never a close paraphrase of one past-paper item. Past papers are used to learn
+  coverage and style only.
+- D-2026-11-13-05. Game prizes are Points, XP and cosmetics only. The odds table is published on `/rules` and goes to
+  the founder for sign-off by Nov 22; no game ships with live odds before sign-off.
+- D-2026-11-13-06. Study Rooms (INT-007) provisional defaults accepted; each default is logged in the `focus` ADR so the
+  founder can challenge any one later.
+- D-2026-11-13-07. Vendored skills under `.claude/skills/` store binary and bulk asset files (svg, png, jpg, webp, wav,
+  ttf) in Git LFS. CI verifies LFS objects resolve.
+- D-2026-11-13-08. Kaaval may block a merge touching auth, money, games, personal data, uploads or Desk without asking
+  the founder; escalate only if the block would miss a date. Any bolt at risk of missing the Dec 1 freeze is reported to
+  the founder the same day.
+- D-2026-11-13-09. Third-party accounts (Vercel, Supabase, R2, Brevo, Resend, Firebase) are created by the founder:
+  sign-up accepts terms in the founder's name and needs email or phone verification. Paalam supplies the checklist.
+Decided by: founder. Recorded by: Kural.

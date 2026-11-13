@@ -20,6 +20,23 @@ env:
   FIREWALL_BASE_REF: origin/main
 
 jobs:
+  lfs:
+    name: lfs (pointers valid · sample pull)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with: { lfs: false }
+      # A sample keeps LFS bandwidth low; fsck checks every pointer without downloading.
+      - run: git lfs fsck --pointers
+      - run: |
+          files=$(git lfs ls-files -n | head -20)
+          test -n "$files"
+          git lfs pull --include="$(echo "$files" | paste -sd, -)"
+          echo "$files" | while read -r f; do
+            if head -c 40 "$f" | grep -q '^version https://git-lfs'; then echo "still a pointer: $f"; exit 1; fi
+          done
+          echo "LFS pull OK for $(echo "$files" | wc -l) files"
+
   guards:
     name: guards (ports · module docs · firewall · boundaries)
     runs-on: ubuntu-latest
