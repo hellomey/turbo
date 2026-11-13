@@ -37,6 +37,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | Bolt | Work | Depends | Reviewers | Due | State | Blocker |
 | --- | --- | --- | --- | --- | --- | --- |
 | BOLT-0026 | Vercel projects (marketing, web app, Desk, API in `bom1`), Supabase staging + production, pooler URLs, CI deploy from green `main` | 0024 | Kaaval, Vizhi | Nov 18 | todo | Founder creates accounts and adds secrets |
+| BOLT-0076 | Get CI green on `main`: gitleaks without the paid action, retire the Docker `infra` job, format generated `hm_api`, fix Dart codegen in `integration` | - | Kaaval, Vizhi | Nov 13 | doing | Blocks PR #4 and every later merge |
 | BOLT-0027 | Move Docker files to `infra/legacy-docker/` with README; `pnpm dev` against staging Supabase | - | Vizhi | Nov 17 | todo | - |
 | BOLT-0028 | Nightly `pg_dump` to Cloudflare R2; restore drill run and written up | 0026 | Kaaval, Vizhi | Nov 20 (drill passed by Nov 27) | todo | - |
 | BOLT-0029 | pgmq + `pg_cron` + `pg_net` wiring and request signing for `/internal/jobs/*` | 0026 | Kaaval | Nov 20 | todo | - |
