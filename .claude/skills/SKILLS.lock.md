@@ -16,12 +16,12 @@ commit, repeat the review, replace the folder, update this file in the same PR.
 | `ua-` | Egonex-AI/Understand-Anything | 5cc4aad9b8b43596dfedaee00755a7223825fe9b | Codebase and document understanding, onboarding, diff explain | PostToolUse auto-update and SessionStart hooks |
 | `uiux-` | nextlevelbuilder/ui-ux-pro-max-skill | 6ae86f61f520d6ca229d2f40e070410638c908c5 | UI/UX rules, styles, palettes, local search over bundled data | nothing |
 | `taste-` | leonxlnx/taste-skill | f6b76575f949707b4e3c37cd86cb44b0b98643e8 | Anti-generic frontend design taste | nothing |
-| `archify-` | tt-a1i/archify | 7e45f36c66de1254d5ad6ba1d878f6499ea269fd | Architecture and flow diagrams as local HTML | nothing |
+| `archify-` | tt-a1i/archify | 7e45f36c66de1254d5ad6ba1d878f6499ea269fd | Architecture and flow diagrams as local HTML | `scripts/check-update.mjs`, `scripts/delivery-update-child.mjs`, `references/update-awareness.md`; `bin/delivery-update.mjs` replaced by a stub (automatic upstream fetch + home-dir cache, found in Kaaval review) |
 | `impeccable-` | pbakaus/impeccable | c4cd1924c389f68d37c687d9c2bbf13f12547c41 | Design critique, polish, accessibility, motion | Cursor/Codex hooks |
-| `pptmaster-` | hugohe3/ppt-master | 01fe549371b98f44be22cd337bbc911013452f09 | Decks and print layouts (posters, flex) | `scripts/image_backends`, `scripts/image_sources`, `scripts/latex_render.py` (send prompts to outside image/LaTeX APIs) |
+| `pptmaster-` | hugohe3/ppt-master | 01fe549371b98f44be22cd337bbc911013452f09 | Decks and print layouts (posters, flex) | `scripts/image_backends`, `scripts/image_sources`, `scripts/latex_render.py`, `scripts/image_gen.py` (send prompts to outside image/LaTeX APIs; image_gen also read a home-dir .env) |
 | `diagram-` | cathrynlavery/diagram-design | f6db0decea96de66b901331a0f79a8d4b147ebae | Diagrams as HTML/SVG | nothing |
 | `adhd-` | uditakhourii/adhd | 47beee24e4842fb748bd30c55e66ae77d6bb22f9 | Parallel divergent ideation | nothing |
-| `mkt-` | coreyhaines31/marketingskills | 1f837447b20bb6f0e72d87b80ece1c221c362c7d | Copy, launch, events, ASO, analytics planning (Murasu) | nothing |
+| `mkt-` | coreyhaines31/marketingskills | 1f837447b20bb6f0e72d87b80ece1c221c362c7d | Copy, launch, events, ASO, analytics planning (Murasu) | nothing. `mkt-reverse-engineer-marketing/scripts/teardown.mjs` fetches public pages only when run by hand |
 | `humanizer-` | blader/humanizer | b48c832f0f809c1b5658edbb838c2521b72f2413 | Removes AI tells from user-facing copy | nothing |
 | `caveman-` | juliusbrussee/caveman | ad473752bdc86ca96d7289443228d4c53ec119a8 | Terse voice for agent-to-agent notes only | CLI, proxy, hooks, and every Caveman Cloud skill (telemetry on by default to the author's Supabase; compress sends files to a model) |
 
