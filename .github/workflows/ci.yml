@@ -30,11 +30,11 @@ jobs:
       - run: git lfs fsck --pointers
       - shell: bash
         run: |
-          files=$(git lfs ls-files -n | grep -v '[],*?[]' | head -20)
+          files=$(git lfs ls-files -n | awk '!/[],*?[]/ && n++ < 20')
           test -n "$files"
           echo "$files" | while read -r f; do git lfs pull --include="$f"; done
           echo "$files" | while read -r f; do
-            if head -c 40 "$f" | grep -q '^version https://git-lfs'; then echo "still a pointer: $f"; exit 1; fi
+            if [[ "$(head -c 40 "$f")" == "version https://git-lfs"* ]]; then echo "still a pointer: $f"; exit 1; fi
           done
           echo "LFS pull OK for $(echo "$files" | wc -l) files"
 
