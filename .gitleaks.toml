@@ -1,0 +1,11 @@
+[extend]
+useDefault = true
+
+# Reviewed false positives in vendored skills (2026-11-13): a 14-character placeholder key in an
+# upstream eval prompt, and PowerPoint animation preset names stored under "key".
+[allowlist]
+description = "Reviewed false positives in vendored skills"
+paths = [
+  '''^\.claude/skills/mkt-video/evals/evals\.json$''',
+  '''^\.claude/skills/pptmaster-ppt-master/scripts/pptx_animation_presets\.json$''',
+]
