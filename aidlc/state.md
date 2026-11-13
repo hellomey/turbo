@@ -1,5 +1,7 @@
 # AIDLC status board
 
+> **From 2026-11-13 the live board is [`status/board.md`](status/board.md).** This file keeps the history up to BOLT-0023.
+
 > The single source of truth for "what is happening". Every agent updates this file as part of each step.
 > Phases of the lifecycle: Inception (Capture → Elaborate → Decompose → **G-I**) · Construction (Design → **G-D** → Bolts → **G-C**) · Operations (Release → Observe → **G-O**)
 > Product phases (D-2026-10-20-08): **Phase N = Week N of blueprint §43.**
