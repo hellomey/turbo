@@ -56,7 +56,7 @@ export class AesGcmSecretBox implements SecretBox {
 
   seal(plain: string, aad: string): string {
     const iv = randomBytes(12);
-    const cipher = createCipheriv("aes-256-gcm", this.key, iv);
+    const cipher = createCipheriv("aes-256-gcm", this.key, iv, { authTagLength: 16 });
     cipher.setAAD(Buffer.from(aad, "utf8"));
     const ct = Buffer.concat([cipher.update(plain, "utf8"), cipher.final()]);
     return ["v2", iv.toString("base64url"), cipher.getAuthTag().toString("base64url"), ct.toString("base64url")].join(".");
@@ -65,7 +65,7 @@ export class AesGcmSecretBox implements SecretBox {
   open(sealed: string, aad: string): { plain: string; legacy: boolean } {
     const [v, iv, tag, ct] = sealed.split(".");
     if ((v !== "v1" && v !== "v2") || !iv || !tag || ct === undefined) throw new Error("bad sealed secret");
-    const decipher = createDecipheriv("aes-256-gcm", this.key, Buffer.from(iv, "base64url"));
+    const decipher = createDecipheriv("aes-256-gcm", this.key, Buffer.from(iv, "base64url"), { authTagLength: 16 });
     if (v === "v2") decipher.setAAD(Buffer.from(aad, "utf8"));
     decipher.setAuthTag(Buffer.from(tag, "base64url"));
     const plain = Buffer.concat([decipher.update(Buffer.from(ct, "base64url")), decipher.final()]).toString("utf8");

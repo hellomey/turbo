@@ -12,6 +12,7 @@ let failed = false;
 for (const m of members) {
   if (!existsSync(join(root, m, "test"))) continue;
   console.log(`\n> flutter test ${m}`);
+  // nosemgrep: javascript.lang.security.audit.spawn-shell-true.spawn-shell-true -- constant args, flutter.bat needs a shell on Windows
   const r = spawnSync("flutter", ["test"], { cwd: join(root, m), stdio: "inherit", shell: process.platform === "win32" });
   if (r.status !== 0) failed = true;
 }

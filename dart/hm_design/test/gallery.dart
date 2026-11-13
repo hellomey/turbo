@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hm_design/hm_design.dart';
 
 /// Every hm_design component on one screen, for the gallery goldens (BOLT-0021).

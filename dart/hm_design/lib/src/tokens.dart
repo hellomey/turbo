@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Brand colours from blueprint §10.3. Kept as named brand constants; screens should prefer the
 /// theme-aware [HmPalette] (`context.hm`) so light, dark and high contrast all work (BOLT-0021).

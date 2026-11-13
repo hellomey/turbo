@@ -1920,7 +1920,7 @@ export function initAllAnimations(): Lenis | undefined {
     try {
       fn();
     } catch (e) {
-      console.warn(`Init animation warning for ${name}:`, e);
+      console.warn("Init animation warning for %s:", name, e);
     }
   };
 

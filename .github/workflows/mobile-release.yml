@@ -24,7 +24,8 @@ jobs:
         with: { channel: stable, cache: true }
       - run: flutter pub get
       - run: cd apps/mobile && flutter build appbundle --release
-      - run: echo "fastlane android ${{ inputs.track }} (lane added in INT-004)"
+      - run: echo "fastlane android $TRACK (lane added in INT-004)"
+        env: { TRACK: "${{ inputs.track }}" }
 
   ios:
     runs-on: macos-latest
@@ -35,4 +36,5 @@ jobs:
         with: { channel: stable, cache: true }
       - run: flutter pub get
       - run: cd apps/mobile && flutter build ipa --release --no-codesign
-      - run: echo "fastlane ios ${{ inputs.track }} (lane added in INT-004)"
+      - run: echo "fastlane ios $TRACK (lane added in INT-004)"
+        env: { TRACK: "${{ inputs.track }}" }

@@ -7,6 +7,15 @@ packages:
 autoInstallPeers: true
 engineStrict: true
 
+# Supply-chain hardening (semgrep pnpm rules, BOLT-0076).
+minimumReleaseAge: 1440
+trustPolicy: no-downgrade
+blockExoticSubdeps: true
+# Exact versions published without provenance that earlier releases had. Kaaval to confirm prisma@7.10.1 (BOLT-0076).
+trustPolicyExclude:
+  - prisma@7.10.1
+  - semver@6.3.1
+
 # Supply-chain guard: pnpm refuses packages younger than minimumReleaseAge. Entries below were
 # explicitly accepted when the repo was scaffolded; remove them once those versions age past the window.
 

@@ -1,0 +1,2 @@
+# Dart client codegen templates: triple braces emit Dart source, not HTML (BOLT-0076).
+tools/dart-api-codegen-templates/

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hm_design/hm_design.dart';
 
 /// Squad (§10.5): squads arrive in Phase 3.

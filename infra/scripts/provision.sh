@@ -102,7 +102,7 @@ if ! swapon --show | grep -q .; then
 fi
 
 # CrowdSec (bouncer on the host firewall)
-curl -s https://install.crowdsec.net | bash
+curl -s https://install.crowdsec.net | bash  # nosemgrep: bash.curl.security.curl-pipe-bash.curl-pipe-bash -- retired VPS path (CLAUDE.md section 3); moves to infra/legacy-docker in BOLT-0027
 apt-get install -y crowdsec crowdsec-firewall-bouncer-iptables
 
 # Automatic security updates

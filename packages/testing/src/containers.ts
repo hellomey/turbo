@@ -22,6 +22,7 @@ export async function startPostgres(): Promise<StartedDb> {
     .withPassword("heymey")
     .start();
   const url = container.getConnectionUri();
+  // nosemgrep: javascript.lang.security.audit.spawn-shell-true.spawn-shell-true -- constant command, needed for pnpm.cmd on Windows
   const res = spawnSync("pnpm exec prisma migrate deploy", {
     cwd: join(repoRoot, "packages/db"),
     env: { ...process.env, DATABASE_URL: url },
