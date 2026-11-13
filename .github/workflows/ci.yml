@@ -28,10 +28,11 @@ jobs:
         with: { lfs: false }
       # A sample keeps LFS bandwidth low; fsck checks every pointer without downloading.
       - run: git lfs fsck --pointers
-      - run: |
-          files=$(git lfs ls-files -n | head -20)
+      - shell: bash
+        run: |
+          files=$(git lfs ls-files -n | grep -v '[],*?[]' | head -20)
           test -n "$files"
-          git lfs pull --include="$(echo "$files" | paste -sd, -)"
+          echo "$files" | while read -r f; do git lfs pull --include="$f"; done
           echo "$files" | while read -r f; do
             if head -c 40 "$f" | grep -q '^version https://git-lfs'; then echo "still a pointer: $f"; exit 1; fi
           done

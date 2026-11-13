@@ -151,20 +151,24 @@ Skills and plugins live in `.claude/skills/` (project skills) or are installed a
 `SKILL.md` and every script or hook it ships.** Reject anything that sends code, secrets or user data to an outside service,
 runs network calls you did not expect, or edits files outside this repo.
 
-| Use | Skills |
+| Use | Installed skills |
 | --- | --- |
-| Writing code | cloudflare/security-audit-skill, mattpocock/skills, affaan-m/ecc, multica-ai/andrej-karpathy-skills, dietrichgebert/ponytail |
-| Research | Panniantong/agent-reach, Egonex-AI/Understand-Anything, mvanhorn/last30days-skill |
-| Workflow and context | garrytan/gstack, juliusbrussee/caveman, headroomlabs-ai/headroom, thedotmack/claude-mem |
+| Writing code | cloudflare/security-audit-skill, mattpocock/skills, multica-ai/andrej-karpathy-skills, dietrichgebert/ponytail |
+| Research | Egonex-AI/Understand-Anything |
+| Workflow and context | juliusbrussee/caveman (terse voice and review prompts only) |
 | UI and design | nextlevelbuilder/ui-ux-pro-max-skill, leonxlnx/taste-skill, tt-a1i/archify, pbakaus/impeccable, hugohe3/ppt-master, cathrynlavery/diagram-design |
-| Focus, marketing, media, copy | uditakhourii/adhd, coreyhaines31/marketingskills, OpenMontageInc/OpenMontage, heygen-com/hyperframes, blader/humanizer |
+| Focus, marketing, media, copy | uditakhourii/adhd, coreyhaines31/marketingskills, blader/humanizer |
+
+**Rejected (D-2026-11-13-03), do not install or use:** affaan-m/ecc, Panniantong/agent-reach, mvanhorn/last30days-skill,
+garrytan/gstack, headroomlabs-ai/headroom, thedotmack/claude-mem, OpenMontageInc/OpenMontage, heygen-com/hyperframes.
+Reasons and pinned commits are in `SKILLS.lock.md`. Claude Code's built-in memory replaces claude-mem; it must never store
+secrets, `.env` contents or user personal data.
 
 Usage rules:
 - Run the security audit skill on every PR touching auth, billing, economy, games, uploads or Desk.
-- Terse styles from caveman and headroom apply to agent-to-agent notes only. Never use them in user-facing copy, docs, commit
-  messages or code comments.
+- Caveman's terse style applies to agent-to-agent notes only. Never use it in user-facing copy, docs, commit messages or
+  code comments.
 - Run humanizer on every piece of user-facing copy (app strings, emails, site, posters). Content must still be factually exact.
-- claude-mem must never store secrets, `.env` contents or user personal data.
 
 ## 10. Definition of done (every bolt)
 

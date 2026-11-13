@@ -67,7 +67,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | Bolt | Work | Depends | Reviewers | Due | State | Blocker |
 | --- | --- | --- | --- | --- | --- | --- |
 | BOLT-0041 | Game engine and Supabase Realtime spike: Flame scene, Postgres state, broadcast channel, reconnect | 0024 | Kanakku, Kaaval, Vizhi | Nov 19 | todo | - |
-| BOLT-0042 | Daily Spin + Lucky Slot with server odds table, odds button and rules card | 0041, 0046 | Kanakku, Kaaval, Vizhi | Nov 24 | todo | Founder approves odds and prizes |
+| BOLT-0042 | Daily Spin + Lucky Slot with server odds table, odds button and rules card | 0041, 0046 | Kanakku, Kaaval, Vizhi | Nov 26 | todo | Founder approves odds and prizes |
 | BOLT-0043 | Confidence Duel + Clue Poker | 0041 | Kanakku, Kaaval, Vizhi | Nov 27 | todo | - |
 | BOLT-0044 | Squad Battles (with Koottam) | 0041, 0049 | Kanakku, Kaaval, Vizhi | Nov 27 | todo | - |
 
@@ -99,9 +99,9 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | Bolt | Work | Depends | Reviewers | Due | State | Blocker |
 | --- | --- | --- | --- | --- | --- | --- |
 | BOLT-0053 | Desk shell and roles on `desk.heymey.app`, TOTP, audit log | - | Kaaval, Vizhi | Nov 20 | todo | - |
-| BOLT-0054 | Desk screens: Support, Moderation, Review, Ops, Admin, Institution, Creator Studio, Partner, Exam Alert approval, content and watcher queues | 0053 | Kaaval, Vizhi | Nov 27 | todo | - |
+| BOLT-0054 | Desk screens: Support, Moderation, Review, Ops, Admin, Institution, Creator Studio, Partner, Exam Alert approval, content and watcher queues | 0053 | Kaaval, Vizhi | Nov 25 | todo | - |
 | BOLT-0055 | Backend modules: `support`, `moderation`, `liveops`, `institutions`, `marketplace` | 0031 | Kaaval, Vizhi | Nov 26 | todo | - |
-| BOLT-0056 | Sticker-code check page | 0036, 0053 | Kaaval | Dec 4 | todo | - |
+| BOLT-0056 | Sticker-code check page | 0036, 0053 | Kaaval | Dec 1 | todo | - |
 
 ### Thedal (research)
 
