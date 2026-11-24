@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "description": "NestJS HTTP API on Fastify. https://api.heymey.app/v1 - local port 4567.",
   "scripts": {
     "dev": "nest start --watch",
