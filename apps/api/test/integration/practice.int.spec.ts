@@ -1,20 +1,19 @@
-// BOLT-0010: practice + content routes over HTTP with a REAL session on REAL Postgres + Valkey (Testcontainers, §44).
+// BOLT-0010: practice + content routes over HTTP with a REAL session on REAL Postgres (Testcontainers, §44).
 // §10.6 practice, §11 free 30/day (IST), §13 limit sheet, §19.4 PYQ Vault + reports, §19.6 Q60 drills, §39 packs + sync.
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import { Queue } from "bullmq";
+import { captureMailQueue } from "../support/mail.js";
 import { createPrismaClient, type PrismaClient } from "@heymey/db";
-import { startPostgres, startValkey, type StartedDb } from "@heymey/testing";
+import { startPostgres, type StartedDb } from "@heymey/testing";
 import { seeder } from "../../../../packages/db/prisma/seed/catalog.js";
 import { createApiApp } from "../../src/bootstrap.js";
 import { setTestEnv } from "../support/env.js";
 
 let pg: StartedDb;
-let valkey: StartedDb;
 let app: NestFastifyApplication;
 let prisma: PrismaClient;
-let otpQueue: Queue;
+let otpQueue: ReturnType<typeof captureMailQueue>;
 let clientIp = "203.0.114.1";
 let ipSeq = 1;
 const EXAM = "tnpsc-group-4";
@@ -70,23 +69,22 @@ async function seedQuestions() {
 }
 
 beforeAll(async () => {
-  [pg, valkey] = await Promise.all([startPostgres(), startValkey()]);
+  pg = await startPostgres();
   prisma = createPrismaClient(pg.url);
   await seeder.run(prisma);
   await seedQuestions();
-  setTestEnv({ DATABASE_URL: pg.url, VALKEY_URL: valkey.url });
+  setTestEnv({ DATABASE_URL: pg.url });
   app = await createApiApp({ logger: false });
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
-  const url = new URL(valkey.url);
-  otpQueue = new Queue("email.otp", { connection: { host: url.hostname, port: Number(url.port), maxRetriesPerRequest: null } });
+  otpQueue = captureMailQueue();
 });
 
 afterAll(async () => {
   await otpQueue?.close();
   await app?.close();
   await prisma?.$disconnect();
-  await Promise.all([pg?.stop(), valkey?.stop()]);
+  await pg?.stop();
 });
 
 beforeEach(() => {

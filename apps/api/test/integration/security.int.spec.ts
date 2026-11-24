@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- tests assert presence right after creating the row */
-// Security review BOLT-0006 (security agent): tests that DEMONSTRATE open findings on REAL Postgres + Valkey.
+// Security review BOLT-0006 (security agent): tests that DEMONSTRATE open findings on REAL Postgres.
 // Every `it.fails` below asserts the SECURE behaviour and currently fails because of the finding named in its title
 // (see aidlc/construction/bolts/BOLT-0006-reviews.md, "Security review"). When a finding is fixed, vitest reports the
 // `it.fails` as failing: flip it to `it` so it becomes a permanent regression test. Never delete or weaken these.
@@ -7,19 +7,16 @@
 import { createHmac, randomUUID } from "node:crypto";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import { Queue } from "bullmq";
-import { Redis } from "ioredis";
+import { captureMailQueue } from "../support/mail.js";
 import { createPrismaClient, type PrismaClient } from "@heymey/db";
-import { startPostgres, startValkey, type StartedDb } from "@heymey/testing";
+import { startPostgres, type StartedDb } from "@heymey/testing";
 import { createApiApp } from "../../src/bootstrap.js";
 import { setTestEnv } from "../support/env.js";
 
 let pg: StartedDb;
-let valkey: StartedDb;
 let app: NestFastifyApplication;
 let prisma: PrismaClient;
-let otpQueue: Queue;
-let redis: Redis;
+let otpQueue: ReturnType<typeof captureMailQueue>;
 let ipSeq = 1;
 
 type Res = { statusCode: number; json: () => any }; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -81,29 +78,25 @@ async function opsUser(email: string): Promise<void> {
 }
 
 beforeAll(async () => {
-  [pg, valkey] = await Promise.all([startPostgres(), startValkey()]);
-  setTestEnv({ DATABASE_URL: pg.url, VALKEY_URL: valkey.url });
+  pg = await startPostgres();
+  setTestEnv({ DATABASE_URL: pg.url });
   app = await createApiApp({ logger: false });
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
   prisma = createPrismaClient(pg.url);
-  const url = new URL(valkey.url);
-  otpQueue = new Queue("email.otp", { connection: { host: url.hostname, port: Number(url.port), maxRetriesPerRequest: null } });
-  redis = new Redis(valkey.url);
+  otpQueue = captureMailQueue();
 });
 
 // Each finding is tested in isolation: fresh rate-limit counters, so one test's traffic can't 429 the next.
 beforeEach(async () => {
-  const keys = await redis.keys("rl:*");
-  if (keys.length) await redis.del(...keys);
+  await prisma.$executeRaw`DELETE FROM "RateLimitCounter" WHERE "key" LIKE 'rl:%'`;
 });
 
 afterAll(async () => {
-  redis?.disconnect();
   await otpQueue?.close();
   await app?.close();
   await prisma?.$disconnect();
-  await Promise.all([pg?.stop(), valkey?.stop()]);
+  await pg?.stop();
 });
 
 describe("security review BOLT-0006 (open findings; it.fails = still vulnerable)", () => {
@@ -148,7 +141,7 @@ describe("security review BOLT-0006 (open findings; it.fails = still vulnerable)
     const email = "ops-lockout@heymey.app";
     await opsUser(email);
     const fresh = async () => {
-      for (const k of await redis.keys("otp:email:*")) await redis.del(k); // the attacker owns the mailbox; skip the 3/10 min mail limit
+      await prisma.$executeRaw`DELETE FROM "RateLimitCounter" WHERE "key" LIKE 'otp:email:%'`; // the attacker owns the mailbox; skip the 3/10 min mail limit
       return deskChallenge(email);
     };
     const first = await fresh();
@@ -184,7 +177,7 @@ describe("security review BOLT-0006 (open findings; it.fails = still vulnerable)
     expect(row!.attempts).toBeLessThanOrEqual(5);
   });
 
-  // SEC-M2: the idempotency store keeps whole response bodies for 24 h in plaintext (Valkey, no auth), including
+  // SEC-M2: the idempotency store keeps whole response bodies for 24 h in plaintext (Postgres), including
   // the Desk TOTP seed from /enroll and the refresh token from /otp/verify and /refresh.
   it("SEC-M2: no TOTP seed is stored in plaintext in the idempotency store", async () => {
     const email = "ops-idem@heymey.app";
@@ -192,8 +185,7 @@ describe("security review BOLT-0006 (open findings; it.fails = still vulnerable)
     const challengeToken = await deskChallenge(email);
     const { secret } = (await call("POST", "/v1/auth/desk/totp/enroll", { body: { challengeToken } })).json();
     await new Promise((r) => setTimeout(r, 200)); // store.complete() is fire-and-forget
-    const keys = await redis.keys("idem:*");
-    const values = await Promise.all(keys.map((k) => redis.get(k)));
-    expect(values.some((v) => v?.includes(secret as string))).toBe(false);
+    const rows = await prisma.$queryRaw<{ body: string }[]>`SELECT "body"::text AS body FROM "IdempotencyRecord"`;
+    expect(rows.some((r) => r.body.includes(secret as string))).toBe(false);
   });
 });

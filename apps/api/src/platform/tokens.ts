@@ -5,7 +5,6 @@
  */
 export const ENV = Symbol("ENV");
 export const PRISMA = Symbol("PRISMA");
-export const VALKEY = Symbol("VALKEY");
 export const CLOCK = Symbol("CLOCK");
 export const RATE_LIMITER = Symbol("RATE_LIMITER");
 export const IDEMPOTENCY_STORE = Symbol("IDEMPOTENCY_STORE");

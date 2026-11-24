@@ -1,21 +1,20 @@
-// BOLT-0013: readiness routes over HTTP with a REAL session on REAL Postgres + Valkey (Testcontainers, blueprint §44).
+// BOLT-0013: readiness routes over HTTP with a REAL session on REAL Postgres (Testcontainers, blueprint §44).
 // §19.5 Q41-Q50 four bars + label (never one overall percentage), §11 free vs Pro, §37 error envelope. INT-002 S14, S15.
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import { Queue } from "bullmq";
+import { captureMailQueue } from "../support/mail.js";
 import { ReadinessMeter, SundayReport, SundayReportPage } from "@heymey/contracts";
 import { createPrismaClient, type PrismaClient } from "@heymey/db";
-import { startPostgres, startValkey, type StartedDb } from "@heymey/testing";
+import { startPostgres, type StartedDb } from "@heymey/testing";
 import { seeder } from "../../../../packages/db/prisma/seed/catalog.js";
 import { createApiApp } from "../../src/bootstrap.js";
 import { setTestEnv } from "../support/env.js";
 
 let pg: StartedDb;
-let valkey: StartedDb;
 let app: NestFastifyApplication;
 let prisma: PrismaClient;
-let otpQueue: Queue;
+let otpQueue: ReturnType<typeof captureMailQueue>;
 let clientIp = "203.0.113.1";
 let ipSeq = 1;
 const PREAMBLE = "0199f5a0-0101-7000-8000-000000000101";
@@ -48,22 +47,21 @@ async function signIn(email: string): Promise<string> {
 const userIdOf = async (email: string) => (await prisma.user.findUniqueOrThrow({ where: { email } })).id;
 
 beforeAll(async () => {
-  [pg, valkey] = await Promise.all([startPostgres(), startValkey()]);
+  pg = await startPostgres();
   prisma = createPrismaClient(pg.url);
   await seeder.run(prisma);
-  setTestEnv({ DATABASE_URL: pg.url, VALKEY_URL: valkey.url });
+  setTestEnv({ DATABASE_URL: pg.url });
   app = await createApiApp({ logger: false });
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
-  const url = new URL(valkey.url);
-  otpQueue = new Queue("email.otp", { connection: { host: url.hostname, port: Number(url.port), maxRetriesPerRequest: null } });
+  otpQueue = captureMailQueue();
 });
 
 afterAll(async () => {
   await otpQueue?.close();
   await app?.close();
   await prisma?.$disconnect();
-  await Promise.all([pg?.stop(), valkey?.stop()]);
+  await pg?.stop();
 });
 
 beforeEach(() => {

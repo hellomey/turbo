@@ -7,13 +7,14 @@ export const TEST_WEBHOOK_SECRET = "test-webhook-secret-0123456789abcdef01234567
  * A complete, throwaway API environment for tests. Pass real container URLs for integration tests;
  * unit/contract tests can use the defaults (connections are lazy and never opened).
  */
-export function setTestEnv(overrides: { DATABASE_URL?: string; VALKEY_URL?: string } = {}): void {
+export function setTestEnv(overrides: { DATABASE_URL?: string } = {}): void {
   const { privateKey, publicKey } = generateKeyPairSync("ed25519");
   Object.assign(process.env, {
     HEYMEY_ENV: "test",
     NODE_ENV: "test",
     DATABASE_URL: overrides.DATABASE_URL ?? "postgresql://test:test@127.0.0.1:1/test",
-    VALKEY_URL: overrides.VALKEY_URL ?? "redis://127.0.0.1:1",
+    EMAIL_PROVIDER: "brevo",
+    BREVO_API_KEY: "test-key",
     JWT_ISSUER: "http://localhost:4567",
     JWT_PRIVATE_KEY: privateKey.export({ type: "pkcs8", format: "pem" }).toString(),
     JWT_PUBLIC_KEY: publicKey.export({ type: "spki", format: "pem" }).toString(),

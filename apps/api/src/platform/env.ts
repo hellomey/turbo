@@ -1,8 +1,8 @@
-import { authEnv, baseEnv, databaseEnv, httpEnv, loadEnv, valkeyEnv, webhookEnv } from "@heymey/config";
+import { authEnv, baseEnv, databaseEnv, httpEnv, emailEnv, loadEnv, webhookEnv } from "@heymey/config";
 
 export const apiEnvSchema = baseEnv
   .extend(databaseEnv.shape)
-  .extend(valkeyEnv.shape)
+  .extend(emailEnv.shape)
   .extend(authEnv.shape)
   .extend(httpEnv.shape)
   .extend(webhookEnv.shape);

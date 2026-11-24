@@ -60,6 +60,15 @@ export const valkeyEnv = z.object({
   VALKEY_URL: z.url(),
 });
 
+/** Transactional email over HTTPS (Brevo primary, Resend fallback). Used by the API on Vercel; no SMTP, no worker. */
+export const emailEnv = z.object({
+  EMAIL_PROVIDER: z.enum(["brevo", "resend"]).default("brevo"),
+  BREVO_API_KEY: z.string().optional(),
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().default("no-reply@heymey.app"),
+  EMAIL_FROM_NAME: z.string().default("HeyMey"),
+});
+
 /**
  * Endpoint-agnostic S3 (BOLT-0023): local SeaweedFS (:4583) or Cloudflare R2
  * (`https://<account>.r2.cloudflarestorage.com`, region `auto`). S3_PUBLIC_BASE_URL is the public origin for

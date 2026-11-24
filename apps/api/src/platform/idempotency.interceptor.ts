@@ -6,7 +6,7 @@ import { DomainError } from "@heymey/domain/shared";
 import type { HmRequest } from "./request-context.js";
 import { successStatus } from "./route-policy.js";
 import { IDEMPOTENCY_STORE } from "./tokens.js";
-import type { ValkeyIdempotencyStore } from "./valkey.js";
+import type { PgIdempotencyStore } from "./pg-stores.js";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const TTL_SECONDS = 24 * 60 * 60;
@@ -21,7 +21,7 @@ const TTL_SECONDS = 24 * 60 * 60;
  */
 @Injectable()
 export class IdempotencyInterceptor implements NestInterceptor {
-  constructor(@Inject(IDEMPOTENCY_STORE) private readonly store: ValkeyIdempotencyStore) {}
+  constructor(@Inject(IDEMPOTENCY_STORE) private readonly store: PgIdempotencyStore) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const req = context.switchToHttp().getRequest<HmRequest>();

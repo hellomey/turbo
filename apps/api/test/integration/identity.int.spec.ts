@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- tests assert presence right after creating the row */
-// API end to end for the identity track (BOLT-0002) on REAL Postgres + Valkey (blueprint §44).
+// API end to end for the identity track (BOLT-0002) on REAL Postgres (blueprint §44).
 import { createHmac, randomUUID } from "node:crypto";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import { Queue } from "bullmq";
+import { captureMailQueue } from "../support/mail.js";
 import { createPrismaClient, type PrismaClient } from "@heymey/db";
-import { startPostgres, startValkey, type StartedDb } from "@heymey/testing";
+import { startPostgres, type StartedDb } from "@heymey/testing";
 import { createApiApp } from "../../src/bootstrap.js";
 import { setTestEnv } from "../support/env.js";
 
 let pg: StartedDb;
-let valkey: StartedDb;
 let app: NestFastifyApplication;
 let prisma: PrismaClient;
-let otpQueue: Queue;
+let otpQueue: ReturnType<typeof captureMailQueue>;
 let clientIp = "203.0.113.1";
 let ipSeq = 1;
 
@@ -32,7 +31,7 @@ async function call(method: string, url: string, opts: { body?: unknown; token?:
   return { statusCode: res.statusCode, headers: res.headers as Record<string, unknown>, json: () => res.json() };
 }
 
-/** The newest queued `email.otp` job for this address (read straight from BullMQ in Valkey). */
+/** The newest queued `email.otp` job for this address (captured from the mail stub). */
 async function lastCode(to: string): Promise<{ code: string; purpose: string; count: number }> {
   const jobs = (await otpQueue.getJobs(["waiting", "delayed", "prioritized", "active"])).filter((j) => j.data.to === to);
   jobs.sort((a, b) => b.timestamp - a.timestamp);
@@ -63,21 +62,20 @@ async function signIn(email: string, deviceId = randomUUID()) {
 }
 
 beforeAll(async () => {
-  [pg, valkey] = await Promise.all([startPostgres(), startValkey()]);
-  setTestEnv({ DATABASE_URL: pg.url, VALKEY_URL: valkey.url });
+  pg = await startPostgres();
+  setTestEnv({ DATABASE_URL: pg.url });
   app = await createApiApp({ logger: false });
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
   prisma = createPrismaClient(pg.url);
-  const url = new URL(valkey.url);
-  otpQueue = new Queue("email.otp", { connection: { host: url.hostname, port: Number(url.port), maxRetriesPerRequest: null } });
+  otpQueue = captureMailQueue();
 });
 
 afterAll(async () => {
   await otpQueue?.close();
   await app?.close();
   await prisma?.$disconnect();
-  await Promise.all([pg?.stop(), valkey?.stop()]);
+  await pg?.stop();
 });
 
 describe("identity API (integration)", () => {
