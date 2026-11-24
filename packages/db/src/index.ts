@@ -7,6 +7,23 @@ export * from "./generated/prisma/client.js";
 const POOLER_PARAMS = ["pgbouncer", "connection_limit", "pool_timeout", "statement_cache_size"] as const;
 
 /**
+ * DATABASE_CA may be pasted with real or escaped (\n) line breaks, with or without the BEGIN/END lines.
+ * Returns clean PEM, or undefined when empty.
+ */
+export function normalisePem(raw: string | undefined): string | undefined {
+  const text = raw?.replace(/\\n/g, "\n").trim();
+  if (!text) return undefined;
+  const blocks = text.match(/-----BEGIN CERTIFICATE-----[\s\S]*?-----END CERTIFICATE-----/g);
+  const certs = blocks ?? [text];
+  return certs
+    .map((c) => {
+      const body = c.replace(/-----(BEGIN|END) CERTIFICATE-----/g, "").replace(/\s+/g, "");
+      return `-----BEGIN CERTIFICATE-----\n${(body.match(/.{1,64}/g) ?? []).join("\n")}\n-----END CERTIFICATE-----\n`;
+    })
+    .join("");
+}
+
+/**
  * Split a DATABASE_URL into a clean node-postgres connection string and a pool size.
  * `connection_limit` (Prisma URL convention) becomes the pg Pool `max`; `pgbouncer=true` is accepted and dropped.
  * Exported for tests.
