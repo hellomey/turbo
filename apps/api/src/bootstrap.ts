@@ -13,7 +13,7 @@ export function trustHops(hops: number): (address: string, hop: number) => boole
 }
 
 /** Builds the API application (used by main.ts and by tests). Does not listen. */
-export async function createApiApp(options: { logger?: false; adapter?: FastifyAdapter } = {}): Promise<NestFastifyApplication> {
+export async function createApiApp(options: { logger?: false | ("log" | "warn" | "error")[]; adapter?: FastifyAdapter } = {}): Promise<NestFastifyApplication> {
   const adapter =
     options.adapter ??
     new FastifyAdapter({

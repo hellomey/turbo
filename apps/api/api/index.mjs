@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   try {
     ready ??= (async () => {
       const { createApiApp } = await import("../dist/bootstrap.js");
-      const app = await createApiApp({ logger: false });
+      const app = await createApiApp({ logger: ["warn", "error"] });
       await app.init();
       const fastify = app.getHttpAdapter().getInstance();
       await fastify.ready();
