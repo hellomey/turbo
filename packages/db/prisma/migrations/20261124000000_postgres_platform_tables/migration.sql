@@ -17,7 +17,7 @@ CREATE TABLE "OneTimeToken" (
 
 -- CreateTable
 CREATE TABLE "JobQueueItem" (
-    "id" UUID NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "queue" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "jobId" TEXT,

@@ -47,7 +47,7 @@ model OneTimeToken {
 /// Background job queue in Postgres (replaces BullMQ). Claimed with FOR UPDATE SKIP LOCKED by /internal/jobs/*.
 /// `data` of email jobs holds an address and a one-time code: rows are deleted as soon as the job is sent (SEC-M2).
 model JobQueueItem {
-  id          String    @id @default(uuid()) @db.Uuid
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   queue       String
   name        String
   jobId       String?   @unique
