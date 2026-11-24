@@ -1,0 +1,109 @@
+# Sideloadable Android beta, published as a GitHub Release (interim path until dl.heymey.app exists).
+# Every release note states which backend the build talks to and how it is signed.
+name: android-beta
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      api_base_url:
+        description: "API the app talks to. Empty = repository variable API_BASE_URL, else NONE (no backend yet)."
+        required: false
+        default: ""
+      backend_label:
+        description: "Label for the release notes: staging | production | none | custom"
+        required: false
+        default: ""
+
+concurrency:
+  group: android-beta
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          lfs: false
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with: { channel: stable, cache: true }
+
+      - name: Resolve backend
+        id: be
+        env:
+          INPUT_URL: ${{ inputs.api_base_url }}
+          INPUT_LABEL: ${{ inputs.backend_label }}
+          VAR_URL: ${{ vars.API_BASE_URL }}
+          VAR_LABEL: ${{ vars.API_BACKEND_LABEL }}
+        run: |
+          url="${INPUT_URL:-$VAR_URL}"
+          label="${INPUT_LABEL:-$VAR_LABEL}"
+          if [ -z "$url" ]; then
+            url="https://backend-not-configured.invalid"
+            label="none"
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "label=${label:-custom}" >> "$GITHUB_OUTPUT"
+
+      - name: Signing
+        id: sign
+        run: |
+          # Real release keystore is not ready: apps/mobile/android/app/build.gradle.kts signs release with the debug key.
+          echo "mode=DEBUG key (not the production keystore)" >> "$GITHUB_OUTPUT"
+
+      - name: Build release APK
+        working-directory: apps/mobile
+        run: |
+          flutter pub get
+          flutter build apk --release \
+            --build-name 0.1.0 --build-number ${{ github.run_number }} \
+            --dart-define=API_BASE_URL=${{ steps.be.outputs.url }}
+          cp build/app/outputs/flutter-apk/app-release.apk "$RUNNER_TEMP/heymey.apk"
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BACKEND_URL: ${{ steps.be.outputs.url }}
+          BACKEND_LABEL: ${{ steps.be.outputs.label }}
+          SIGN_MODE: ${{ steps.sign.outputs.mode }}
+        run: |
+          d=$(date -u +%Y%m%d)
+          tag="v0.1.0-beta.${d}.${{ github.run_number }}"
+          sha="${{ github.sha }}"
+          cp "$RUNNER_TEMP/heymey.apk" "$RUNNER_TEMP/heymey-${tag}.apk"
+          cp "$RUNNER_TEMP/heymey.apk" "$RUNNER_TEMP/heymey-latest.apk"
+          {
+            echo "## HeyMey Android beta ${tag}"
+            echo
+            echo "- **Backend:** \`${BACKEND_LABEL}\` -> \`${BACKEND_URL}\`"
+            if [ "$BACKEND_LABEL" = "none" ]; then
+              echo "- **No backend is configured for this build.** Sign-in and any network screen will fail. Do not report that as a bug."
+            fi
+            echo "- **Signing:** ${SIGN_MODE}. Android may warn about an unknown developer; install anyway to test."
+            echo "- **Commit:** ${sha}"
+            echo "- Bundled lesson content is labelled \"sample content, under review\"; it is not the verified Group 4 set."
+            echo
+            echo "Install: download the APK on your phone, allow installs from this source, open it."
+          } > "$RUNNER_TEMP/notes.md"
+
+          gh release create "$tag" "$RUNNER_TEMP/heymey-${tag}.apk" \
+            --target "$sha" --prerelease --title "Beta ${tag}" --notes-file "$RUNNER_TEMP/notes.md"
+
+          # Moving 'latest' tag with a stable download URL: .../releases/download/latest/heymey-latest.apk
+          git tag -f latest "$sha"
+          git push -f origin refs/tags/latest
+          if gh release view latest >/dev/null 2>&1; then
+            gh release delete-asset latest heymey-latest.apk -y || true
+            gh release upload latest "$RUNNER_TEMP/heymey-latest.apk" --clobber
+            gh release edit latest --notes-file "$RUNNER_TEMP/notes.md" --title "Latest beta (${tag})"
+          else
+            gh release create latest "$RUNNER_TEMP/heymey-latest.apk" \
+              --target "$sha" --prerelease --title "Latest beta (${tag})" --notes-file "$RUNNER_TEMP/notes.md"
+          fi
+          echo "Release: https://github.com/${{ github.repository }}/releases/tag/${tag}" >> "$GITHUB_STEP_SUMMARY"
