@@ -14,6 +14,7 @@ export function setTestEnv(overrides: { DATABASE_URL?: string } = {}): void {
     NODE_ENV: "test",
     DATABASE_URL: overrides.DATABASE_URL ?? "postgresql://test:test@127.0.0.1:1/test",
     EMAIL_PROVIDER: "brevo",
+    EMAIL_FALLBACK_PROVIDER: "none",
     BREVO_API_KEY: "test-key",
     JWT_ISSUER: "http://localhost:4567",
     JWT_PRIVATE_KEY: privateKey.export({ type: "pkcs8", format: "pem" }).toString(),

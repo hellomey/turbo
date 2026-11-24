@@ -26,3 +26,11 @@ See `infra/supabase/env.template`. The database password comes from Supabase > P
   steps to Kural, who runs it once the connection string is shared privately.
 - Because the SQL was run by hand, mark the Prisma migrations as applied so `prisma migrate deploy` does not re-run them:
   `pnpm --filter @heymey/db exec prisma migrate resolve --applied <name>` for each folder in `packages/db/prisma/migrations`.
+
+## Vercel: importing the API
+The import screen lists "marketing" and "realtime" only because it scans the repo root. For the API:
+1. Click **Edit** next to Root Directory and choose `apps/api`. Application Preset: **Other**. Do not use "Services".
+2. Leave Build and Install commands alone; `apps/api/vercel.json` sets them.
+3. Settings > General: turn on "Include source files outside of the Root Directory in the Build Step".
+4. Environment Variables: paste the values from `env.template`.
+Project name suggestion: `heymey-api`. `apps/realtime` is the old Socket.IO server and is not deployed (replaced by Supabase Realtime).
