@@ -15,8 +15,12 @@ $env:DATABASE_URL = "postgresql://postgres.$ref`:$enc@$host_`:5432/postgres?sslm
 $env:DIRECT_URL   = $env:DATABASE_URL
 
 Write-Host "Seeding catalogue..."
-corepack pnpm db:seed
-if ($LASTEXITCODE -ne 0) { throw "seed failed" }
+# Run tsx directly: "pnpm db:seed" starts a nested pnpm, which is not on PATH in a plain PowerShell window.
+Push-Location packages/db
+corepack pnpm exec tsx prisma/seed.ts
+$seedExit = $LASTEXITCODE
+Pop-Location
+if ($seedExit -ne 0) { throw "seed failed" }
 
 Write-Host "Marking migrations as applied (the SQL was run by hand in the SQL editor)..."
 Push-Location packages/db
