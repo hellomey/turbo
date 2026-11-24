@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseDatabaseUrl } from "../src/index.js";
+import { normalisePem, parseDatabaseUrl } from "../src/index.js";
 
 // BOLT-0023: Supabase transaction-pooler URLs (Prisma convention) must become clean node-postgres config.
 describe("parseDatabaseUrl", () => {
@@ -20,5 +20,20 @@ describe("parseDatabaseUrl", () => {
   it("leaves a local URL unchanged", () => {
     const r = parseDatabaseUrl("postgresql://heymey:heymey@localhost:4580/heymey");
     expect(r).toEqual({ connectionString: "postgresql://heymey:heymey@localhost:4580/heymey" });
+  });
+});
+
+describe("normalisePem", () => {
+  const body = "MIIB".repeat(40);
+  const full = `-----BEGIN CERTIFICATE-----\n${body}\n-----END CERTIFICATE-----\n`;
+  it("accepts bare base64 without BEGIN/END lines", () => {
+    expect(normalisePem(body)).toContain("-----BEGIN CERTIFICATE-----");
+  });
+  it("accepts escaped newlines", () => {
+    expect(normalisePem(full.replace(/\n/g, "\n"))).toBe(normalisePem(full));
+  });
+  it("returns undefined for empty input", () => {
+    expect(normalisePem("  ")).toBeUndefined();
+    expect(normalisePem(undefined)).toBeUndefined();
   });
 });
