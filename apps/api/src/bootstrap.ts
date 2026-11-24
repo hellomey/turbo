@@ -25,6 +25,8 @@ export async function createApiApp(options: { logger?: false; adapter?: FastifyA
     });
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, {
     logger: options.logger ?? ["log", "warn", "error"],
+    // Throw instead of process.exit(1) so a serverless entry can report why start-up failed.
+    abortOnError: false,
   });
   const env = app.get<ApiEnv>(ENV);
   // On EVERY response, including ones rejected by guards (401/403/429) and 404s (§37, QA Q-2): an outdated
