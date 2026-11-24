@@ -60,11 +60,22 @@ export const valkeyEnv = z.object({
   VALKEY_URL: z.url(),
 });
 
-/** Transactional email over HTTPS (Brevo primary, Resend fallback). Used by the API on Vercel; no SMTP, no worker. */
+/**
+ * Transactional email from the API. Primary: Gmail SMTP (about 500 mails a day). Fallback: Brevo over HTTPS (300 a day),
+ * tried automatically when the primary fails. Resend is also supported. Switch with EMAIL_PROVIDER / EMAIL_FALLBACK_PROVIDER.
+ * For Gmail use an App Password (Google account > Security > 2-Step Verification > App passwords), not the account password.
+ */
 export const emailEnv = z.object({
-  EMAIL_PROVIDER: z.enum(["brevo", "resend"]).default("brevo"),
+  EMAIL_PROVIDER: z.enum(["smtp", "brevo", "resend"]).default("smtp"),
+  EMAIL_FALLBACK_PROVIDER: z.enum(["smtp", "brevo", "resend", "none"]).default("brevo"),
+  SMTP_HOST: z.string().default("smtp.gmail.com"),
+  SMTP_PORT: z.coerce.number().int().default(465),
+  SMTP_SECURE: z.stringbool().default(true),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
   BREVO_API_KEY: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
+  /** Gmail only sends as the signed-in account (or a verified alias), so this should equal SMTP_USER. */
   EMAIL_FROM: z.string().default("no-reply@heymey.app"),
   EMAIL_FROM_NAME: z.string().default("HeyMey"),
 });
