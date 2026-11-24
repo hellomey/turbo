@@ -87,7 +87,6 @@ jobs:
             fi
             echo "- **Signing:** ${SIGN_MODE}. Android may warn about an unknown developer; install anyway to test."
             echo "- **Commit:** ${sha}"
-            echo "- Bundled lesson content is labelled \"sample content, under review\"; it is not the verified Group 4 set."
             echo
             echo "Install: download the APK on your phone, allow installs from this source, open it."
           } > "$RUNNER_TEMP/notes.md"
