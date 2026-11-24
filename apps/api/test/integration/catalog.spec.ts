@@ -1,16 +1,15 @@
-// API end-to-end for the catalog (BOLT-0003) against REAL Postgres + Valkey (Testcontainers, blueprint §44).
+// API end-to-end for the catalog (BOLT-0003) against REAL Postgres (Testcontainers, blueprint §44).
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { OFFICIAL_CONFIRM_LINE } from "@heymey/contracts";
 import { createPrismaClient, type PrismaClient } from "@heymey/db";
-import { startPostgres, startValkey, type StartedDb } from "@heymey/testing";
+import { startPostgres, type StartedDb } from "@heymey/testing";
 import { seeder } from "../../../../packages/db/prisma/seed/catalog.js";
 import { createApiApp } from "../../src/bootstrap.js";
 import { setTestEnv } from "../support/env.js";
 
 let pg: StartedDb;
-let valkey: StartedDb;
 let prisma: PrismaClient;
 let app: NestFastifyApplication;
 
@@ -19,10 +18,9 @@ const RIVERS = "0199f5a0-0302-7000-8000-000000000302";
 
 beforeAll(async () => {
   pg = await startPostgres();
-  valkey = await startValkey();
-  prisma = createPrismaClient(pg.url);
+    prisma = createPrismaClient(pg.url);
   await seeder.run(prisma);
-  setTestEnv({ DATABASE_URL: pg.url, VALKEY_URL: valkey.url });
+  setTestEnv({ DATABASE_URL: pg.url });
   app = await createApiApp({ logger: false });
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
@@ -31,7 +29,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await app?.close();
   await prisma?.$disconnect();
-  await Promise.all([pg?.stop(), valkey?.stop()]);
+  await pg?.stop();
 });
 
 const inject = (opts: { method: "GET" | "POST" | "PUT"; url: string; payload?: unknown; headers?: Record<string, string> }) =>

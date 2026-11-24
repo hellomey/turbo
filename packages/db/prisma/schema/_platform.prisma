@@ -25,3 +25,39 @@ model SyncReceipt {
 
   @@index([userId, acceptedAt])
 }
+
+/// Fixed-window rate limit counters (replaces Valkey INCR/EXPIRE, ADR for the Vercel + Supabase deploy). Rows are
+/// deleted by the cleanup job once `resetAt` has passed.
+model RateLimitCounter {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
+}
+
+/// One-time token marks (replaces Valkey SET NX): a JWT id may be used once, e.g. the Desk TOTP challenge.
+model OneTimeToken {
+  jti       String   @id
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+
+/// Background job queue in Postgres (replaces BullMQ). Claimed with FOR UPDATE SKIP LOCKED by /internal/jobs/*.
+/// `data` of email jobs holds an address and a one-time code: rows are deleted as soon as the job is sent (SEC-M2).
+model JobQueueItem {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  queue       String
+  name        String
+  jobId       String?   @unique
+  data        Json
+  status      String    @default("pending") // pending | running | failed
+  attempts    Int       @default(0)
+  runAt       DateTime  @default(now())
+  lockedUntil DateTime?
+  lastError   String?
+  createdAt   DateTime  @default(now())
+
+  @@index([queue, status, runAt])
+}

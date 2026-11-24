@@ -1,26 +1,25 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- tests assert presence right after creating the row */
-// BOLT-0014: notifications + Exam Alerts end to end on REAL Postgres + Valkey (Testcontainers, blueprint §44).
+// BOLT-0014: notifications + Exam Alerts end to end on REAL Postgres (Testcontainers, blueprint §44).
 // Blueprint §19.8 Q78, §6, §17.1 step 11, §19.1 Q7, §17.5, §20.2. INT-002-S16, S17. D-2026-10-22-31..33.
 // Includes the webhook security tests: bad secret -> 401 and nothing stored; replay -> 409 and no duplicate.
 import { createHmac, randomUUID } from "node:crypto";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
-import { Queue } from "bullmq";
+import { captureMailQueue, pgQueue } from "../support/mail.js";
 import { OFFICIAL_CONFIRM_LINE } from "@heymey/contracts";
 import { createPrismaClient, type PrismaClient } from "@heymey/db";
 import { createExamAlertsModule } from "@heymey/domain/modules/exams";
 import { createNotificationsModule } from "@heymey/domain/modules/notifications";
-import { startPostgres, startValkey, type StartedDb } from "@heymey/testing";
+import { startPostgres, type StartedDb } from "@heymey/testing";
 import { seeder } from "../../../../packages/db/prisma/seed/catalog.js";
 import { createApiApp } from "../../src/bootstrap.js";
 import { setTestEnv, TEST_WEBHOOK_SECRET } from "../support/env.js";
 
 let pg: StartedDb;
-let valkey: StartedDb;
 let app: NestFastifyApplication;
 let prisma: PrismaClient;
-let otpQueue: Queue;
-let alertQueue: Queue;
+let otpQueue: ReturnType<typeof captureMailQueue>;
+let alertQueue: ReturnType<typeof pgQueue>;
 let clientIp = "192.0.2.1";
 let ipSeq = 1;
 
@@ -81,24 +80,22 @@ const siteChange = (changeId: string) => ({ watchUuid: "0199f5a0-0000-7000-8000-
 const approveBody = { examCode: "tnpsc-group-4", kind: "notification", title: "Group 4 notification is out", summary: "Applications are open on the TNPSC site.", officialUrl: "https://www.tnpsc.gov.in/n/group4.pdf" };
 
 beforeAll(async () => {
-  [pg, valkey] = await Promise.all([startPostgres(), startValkey()]);
+  pg = await startPostgres();
   prisma = createPrismaClient(pg.url);
   await seeder.run(prisma);
-  setTestEnv({ DATABASE_URL: pg.url, VALKEY_URL: valkey.url });
+  setTestEnv({ DATABASE_URL: pg.url });
   app = await createApiApp({ logger: false });
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
-  const url = new URL(valkey.url);
-  const connection = { host: url.hostname, port: Number(url.port), maxRetriesPerRequest: null };
-  otpQueue = new Queue("email.otp", { connection });
-  alertQueue = new Queue("notifications.exam-alert", { connection });
+  otpQueue = captureMailQueue();
+  alertQueue = pgQueue(prisma, "notifications.exam-alert");
 });
 
 afterAll(async () => {
   await Promise.allSettled([otpQueue?.close(), alertQueue?.close()]);
   await app?.close();
   await prisma?.$disconnect();
-  await Promise.all([pg?.stop(), valkey?.stop()]);
+  await pg?.stop();
 });
 
 beforeEach(() => {
