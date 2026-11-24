@@ -11,7 +11,7 @@ const POOLER_PARAMS = ["pgbouncer", "connection_limit", "pool_timeout", "stateme
  * `connection_limit` (Prisma URL convention) becomes the pg Pool `max`; `pgbouncer=true` is accepted and dropped.
  * Exported for tests.
  */
-export function parseDatabaseUrl(databaseUrl: string): { connectionString: string; max?: number; ssl?: { rejectUnauthorized: boolean } } {
+export function parseDatabaseUrl(databaseUrl: string): { connectionString: string; max?: number; ssl?: { rejectUnauthorized: boolean; ca?: string } } {
   const u = new URL(databaseUrl);
   const limit = Number(u.searchParams.get("connection_limit"));
   for (const p of POOLER_PARAMS) u.searchParams.delete(p);
@@ -20,10 +20,13 @@ export function parseDatabaseUrl(databaseUrl: string): { connectionString: strin
   const sslmode = u.searchParams.get("sslmode");
   const tls = sslmode === "require" || sslmode === "verify-ca" || sslmode === "verify-full";
   if (tls) u.searchParams.delete("sslmode");
+  // Supabase poolers present a certificate signed by the Supabase root CA, which Node does not ship. Paste that CA
+  // (Supabase > Database > Settings > SSL certificate) into DATABASE_CA; verification stays on.
+  const ca = process.env.DATABASE_CA?.replace(/\\n/g, "\n").trim() || undefined;
   return {
     connectionString: u.toString(),
     ...(Number.isInteger(limit) && limit > 0 ? { max: limit } : {}),
-    ...(tls ? { ssl: { rejectUnauthorized: true } } : {}),
+    ...(tls ? { ssl: { rejectUnauthorized: true, ...(ca ? { ca } : {}) } } : {}),
   };
 }
 
