@@ -1,0 +1,134 @@
+# Aptitude and Mental Ability: SAMPLE lessons, under review.
+# Original explanations written for HeyMey in simple English from standard school arithmetic.
+# The Percentage lesson already ships with the catalogue seed; these four cover the other aptitude topics.
+# review_status is "sample" until a human reviewer checks each lesson.
+review_status: sample
+source_citation: "HeyMey original lesson (sample content, under review). Standard school arithmetic."
+lessons:
+  - topic_id: 0199f5a0-0602-7000-8000-000000000602
+    title: Ratio and proportion
+    reading_minutes: 3
+    body: |
+      # Ratio and proportion
+
+      A **ratio** compares two quantities of the same kind. We write it as `a : b`. The ratio of 6 boys to 9 girls is 6 : 9, which simplifies to 2 : 3, because we can divide both numbers by 3.
+
+      ## Sharing in a ratio
+      To share an amount in the ratio `a : b`:
+      1. Add the parts: `a + b`.
+      2. Find one part: `amount / (a + b)`.
+      3. Multiply one part by `a` and by `b`.
+
+      Example: Rs 900 shared in the ratio 2 : 3. Parts = 5, one part = 180, shares = 360 and 540.
+
+      ## Same units first
+      Before you write a ratio, bring both quantities to one unit. 2 metres to 50 centimetres is 200 cm : 50 cm = 4 : 1, not 2 : 50.
+
+      ## Proportion
+      Four numbers are in **proportion** when `a : b = c : d`. Then `a x d = b x c`. This is how you find a missing number: if `3 : 5 = 12 : x`, then `3 x = 60`, so `x = 20`.
+
+      ## Direct proportion
+      If 6 notebooks cost Rs 90, one costs Rs 15, so 15 notebooks cost Rs 225. More items, more cost, in the same ratio.
+
+      ## Mean proportional
+      The mean proportional between `x` and `y` is the square root of `x y`. Between 4 and 9 it is the square root of 36, which is 6.
+
+      ## Quick check
+      A ratio has no unit. If you ever end with "3 : 5 rupees", something went wrong.
+
+  - topic_id: 0199f5a0-0603-7000-8000-000000000603
+    title: Simple and compound interest
+    reading_minutes: 3
+    body: |
+      # Simple and compound interest
+
+      When you lend money, the borrower pays you extra for using it. That extra is **interest**. The money lent is the **principal** (P), the yearly percentage is the **rate** (R), and the number of years is the **time** (T).
+
+      ## Simple interest
+      Interest is worked out on the original principal only, every year.
+
+      `SI = P x R x T / 100`
+
+      Rs 5000 at 8% for 3 years: 5000 x 8 x 3 / 100 = Rs 1200. The amount to repay is principal plus interest: 5000 + 1200 = Rs 6200.
+
+      Rearranged: `P = SI x 100 / (R x T)`, `R = SI x 100 / (P x T)`, `T = SI x 100 / (P x R)`.
+
+      ## Compound interest
+      Each year's interest is added to the principal, so the next year's interest is bigger.
+
+      Rs 4000 at 10% for 2 years, compounded yearly:
+      - After year 1: 4000 x 1.10 = 4400
+      - After year 2: 4400 x 1.10 = 4840
+      - Compound interest = 4840 - 4000 = Rs 840
+
+      Simple interest on the same money would be 4000 x 10 x 2 / 100 = Rs 800. Compound interest is more because it earns interest on interest.
+
+      ## A useful shortcut
+      For 2 years, the difference between compound and simple interest is `P x (R / 100)^2`.
+
+      ## Doubling at simple interest
+      Money doubles when interest equals principal, so `T = 100 / R` years. At 5% it takes 20 years.
+
+  - topic_id: 0199f5a0-0604-7000-8000-000000000604
+    title: Number series
+    reading_minutes: 3
+    body: |
+      # Number series
+
+      A number series follows a rule. Your job is to find the rule, then use it. Always check the **differences** first.
+
+      ## 1. Add the same number (arithmetic series)
+      7, 12, 17, 22 goes up by 5. The next number is 27.
+
+      ## 2. Multiply by the same number (geometric series)
+      2, 6, 18, 54 multiplies by 3. The next number is 162.
+
+      ## 3. Squares and cubes
+      4, 9, 16, 25, 36 are 2^2, 3^2, 4^2, 5^2, 6^2. The next is 7^2 = 49. Learn the squares up to 20 and the cubes up to 10; they appear often.
+
+      ## 4. Differences that grow
+      3, 5, 9, 15, 23: the differences are 2, 4, 6, 8, going up by 2. The next difference is 10, so the next number is 33.
+
+      ## 5. Two series mixed together
+      2, 100, 5, 97, 8, 94: look at every other number. The odd places go 2, 5, 8 (add 3). The even places go 100, 97, 94 (subtract 3).
+
+      ## 6. Add the two before (Fibonacci type)
+      1, 2, 3, 5, 8, 13: each number is the sum of the two before it. The next is 21.
+
+      ## How to attack a question
+      1. Write the differences between neighbours.
+      2. If they are equal, it is arithmetic.
+      3. If they grow, check the differences of the differences.
+      4. Try ratios between neighbours for a multiplying rule.
+      5. Check squares and cubes.
+      6. If it looks jumpy, split it into two series.
+
+  - topic_id: 0199f5a0-0605-7000-8000-000000000605
+    title: Time and work
+    reading_minutes: 3
+    body: |
+      # Time and work
+
+      The one idea: **work per day**. If someone finishes a job in 10 days, they do 1/10 of the job each day.
+
+      ## Working together
+      If A takes `x` days and B takes `y` days, together in one day they do `1/x + 1/y` of the job.
+
+      A takes 10 days and B takes 15 days. Together: 1/10 + 1/15 = 5/30 = 1/6 per day. So they finish in 6 days.
+
+      The shortcut is `x y / (x + y)`: 10 x 15 / 25 = 6.
+
+      ## Finding the other person
+      A and B together take 6 days. A alone takes 10 days. B's daily work = 1/6 - 1/10 = 1/15, so B alone takes 15 days.
+
+      ## Workers and days
+      More workers means fewer days. The total work is `workers x days`. 6 workers for 20 days is 120 worker-days. With 8 workers: 120 / 8 = 15 days.
+
+      ## Faster and slower
+      "A works twice as fast as B" means A does 2 parts a day when B does 1 part. Together they do 3 parts a day.
+
+      ## Pipes and tanks
+      A filling pipe is positive work, a leak or outlet is negative work. A fills in 12 hours, a leak empties in 20 hours. Net per hour = 1/12 - 1/20 = 1/30, so the tank fills in 30 hours.
+
+      ## Sharing wages
+      Wages follow the work done. If A works 3 days and B works 2 days at the same rate, they share the pay in the ratio 3 : 2.

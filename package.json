@@ -19,6 +19,8 @@
     "db:migrate": "pnpm --filter @heymey/db migrate:deploy",
     "db:migrate:dev": "pnpm --filter @heymey/db migrate:dev",
     "db:seed": "pnpm --filter @heymey/db seed",
+    "content:validate": "node content/pipeline/validate.mjs",
+    "content:generate": "node content/pipeline/generate-aptitude.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "infra:up": "docker compose -f infra/compose/compose.dev.yml --env-file infra/compose/ports.env --env-file infra/compose/images.env up -d --wait",
