@@ -93,6 +93,11 @@ export class DomainErrorFilter implements ExceptionFilter {
       status = 500;
       code = "INTERNAL_ERROR";
       details = { requestId: String(req.id) };
+      // Staging triage only: API_DEBUG_ERRORS=1 adds a scrubbed one-line reason. Never enable it in production.
+      if (process.env.API_DEBUG_ERRORS === "1") {
+        details.reason = redactForLog(raw).replace(/[a-z]+://S+/gi, "<url>").split("
+").slice(0, 3).join(" | ").slice(0, 500);
+      }
     }
 
     if (code === "RATE_LIMITED" && typeof details?.retryAfterSeconds === "number") {
