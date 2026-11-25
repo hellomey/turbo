@@ -225,7 +225,7 @@ void main() {
         final state = h.container.read(examHallControllerProvider);
         expect(state.phase, ExamPhase.finished);
         expect(state.report, isNotNull);
-        expect(f.repo.calls, contains('submit:submit-a-1'));
+        expect(f.repo.calls, contains('submit:a-1'));
         expect(f.repo.saved.last.single.questionId, 'q1');
         expect(await f.store.activeAttempt(), isNull);
       },
