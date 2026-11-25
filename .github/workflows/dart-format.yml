@@ -21,6 +21,8 @@ jobs:
         with: { channel: stable, cache: true }
       - name: Format and commit
         run: |
+          # pub get first: dart format reads each package's language version from the package config.
+          flutter pub get
           dart format apps/mobile/lib apps/mobile/test apps/desk/lib apps/desk/test dart/hm_design dart/hm_core dart/hm_data dart/hm_games dart/hm_features dart/hm_desk
           if git diff --quiet; then echo "already formatted"; exit 0; fi
           git config user.name "heymey-bot"
