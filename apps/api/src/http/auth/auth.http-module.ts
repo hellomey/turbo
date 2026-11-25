@@ -1,3 +1,4 @@
+import { createPublicKey } from "node:crypto";
 import { Global, Module } from "@nestjs/common";
 import type { PrismaClient } from "@heymey/db";
 import type { AuditApi } from "@heymey/domain/modules/audit";
@@ -54,7 +55,8 @@ import { AuthController } from "./auth.controller.js";
           oneTimeTokens: pgOneTimeTokens(prisma),
           config: {
             jwtPrivateKeyPem: env.JWT_PRIVATE_KEY,
-            jwtPublicKeyPem: env.JWT_PUBLIC_KEY,
+            // Derived from the private key so the pair always matches.
+            jwtPublicKeyPem: createPublicKey(env.JWT_PRIVATE_KEY).export({ type: "spki", format: "pem" }).toString(),
             jwtIssuer: env.JWT_ISSUER,
             otpPepper: env.OTP_PEPPER,
             totpEncKey: env.TOTP_ENC_KEY,

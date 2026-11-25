@@ -1,3 +1,4 @@
+import { createPrivateKey } from "node:crypto";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { z } from "zod";
@@ -117,11 +118,25 @@ export function normalisePemKey(raw: string, label: string): string {
   return `${begin}\n${(body.match(/.{1,64}/g) ?? []).join("\n")}\n${end}\n`;
 }
 
+/** Why a PEM is not a usable Ed25519 private key, or null. Never includes key material. */
+export function ed25519KeyProblem(pemText: string): string | null {
+  try {
+    const k = createPrivateKey(pemText);
+    return k.asymmetricKeyType === "ed25519" ? null : `is a ${k.asymmetricKeyType ?? "unknown"} key, expected Ed25519`;
+  } catch {
+    return "cannot be read as a PKCS#8 private key (damaged, cut short, or the public key pasted here)";
+  }
+}
+
 export const authEnv = z.object({
   JWT_ISSUER: z.string().default("https://api.heymey.app"),
   /** Ed25519 keys (EdDSA), PKCS#8 / SPKI PEM. From SOPS in staging/production; `pnpm env:dev` locally. */
-  JWT_PRIVATE_KEY: pem("PRIVATE KEY"),
-  JWT_PUBLIC_KEY: pem("PUBLIC KEY"),
+  JWT_PRIVATE_KEY: pem("PRIVATE KEY").superRefine((v, ctx) => {
+    const problem = ed25519KeyProblem(v);
+    if (problem) ctx.addIssue({ code: "custom", message: problem });
+  }),
+  /** Optional: the API derives the public key from JWT_PRIVATE_KEY, so a mismatched pair can never happen. */
+  JWT_PUBLIC_KEY: z.string().optional(),
   /** Server-side secret mixed into OTP hashes. */
   OTP_PEPPER: z.string().min(32),
   /** 32-byte key (base64) for AES-256-GCM encryption of Desk TOTP secrets at rest. */
