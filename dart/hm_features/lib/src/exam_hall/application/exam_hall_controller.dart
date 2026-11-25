@@ -16,12 +16,16 @@ final examHallRepositoryProvider = Provider<ExamHallRepository>(
 );
 
 /// New Idempotency-Key per write (§34.3); the caller keeps it while retrying the same write.
+/// Random UUID v4. The API rejects any Idempotency-Key that is not a UUID (IDEMPOTENCY_KEY_REQUIRED).
 final idempotencyKeyFactoryProvider = Provider<String Function()>((ref) {
   final random = Random.secure();
-  return () => [
-    for (var i = 0; i < 16; i++)
-      random.nextInt(256).toRadixString(16).padLeft(2, '0'),
-  ].join();
+  return () {
+    final b = [for (var i = 0; i < 16; i++) random.nextInt(256)];
+    b[6] = (b[6] & 0x0f) | 0x40; // version 4
+    b[8] = (b[8] & 0x3f) | 0x80; // RFC 4122 variant
+    final h = [for (final x in b) x.toRadixString(16).padLeft(2, '0')].join();
+    return '${h.substring(0, 8)}-${h.substring(8, 12)}-${h.substring(12, 16)}-${h.substring(16, 20)}-${h.substring(20)}';
+  };
 });
 
 final mockListProvider = FutureProvider.family<MockListView, String>(
@@ -348,7 +352,8 @@ class ExamHallController extends Notifier<ExamHallState> {
       try {
         report = await _repo.submit(
           s.attemptId,
-          idempotencyKey: 'submit-${s.attemptId}',
+          // The attempt id is a UUID and unique per attempt, so it is a stable key for the one submit.
+          idempotencyKey: s.attemptId,
         );
       } on HmApiException catch (e) {
         if (e.code != 'MOCK_ALREADY_SUBMITTED' &&
