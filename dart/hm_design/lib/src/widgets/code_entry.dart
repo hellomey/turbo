@@ -124,8 +124,9 @@ class _HmCodeEntryState extends State<HmCodeEntry> {
             textInputAction: TextInputAction.done,
             autofillHints: const [AutofillHints.oneTimeCode],
             inputFormatters: [DigitsOnlyFormatter(widget.length)],
-            style: Theme.of(context).textTheme.headlineSmall
-                ?.copyWith(letterSpacing: 8),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(letterSpacing: 8),
             textAlign: TextAlign.center,
             decoration: InputDecoration(
               labelText: widget.label,

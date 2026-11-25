@@ -76,8 +76,9 @@ class _HmChunkyButtonState extends State<HmChunkyButton> {
     final depth = plain || !enabled ? 0.0 : HmElevation.buttonDepth;
     final sink = _pressed ? depth : 0.0;
     final radius = BorderRadius.circular(HmRadius.md);
-    final labelStyle = Theme.of(context).textTheme.labelLarge
-        ?.copyWith(color: ink, fontWeight: FontWeight.w900);
+    final labelStyle = Theme.of(
+      context,
+    ).textTheme.labelLarge?.copyWith(color: ink, fontWeight: FontWeight.w900);
 
     final content = widget.busy
         ? SizedBox.square(
@@ -261,8 +262,9 @@ class HmGhostButton extends StatelessWidget {
     final style = TextButton.styleFrom(
       foregroundColor: p.primaryText,
       minimumSize: const Size(HmSizes.minTapTarget, HmSizes.minTapTarget),
-      textStyle: Theme.of(context).textTheme.labelLarge
-          ?.copyWith(fontWeight: FontWeight.w900),
+      textStyle: Theme.of(
+        context,
+      ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w900),
     );
     final text = Text(label, textAlign: TextAlign.center);
     return Semantics(

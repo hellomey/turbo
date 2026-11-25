@@ -44,7 +44,8 @@ class _DobStepState extends ConsumerState<DobStep> {
     return OnboardingPage(
       title: "Let's find your exams",
       illustration: HmIllustrationKind.welcome,
-      subtitle: 'Answer a few quick questions. We will show the government exams you can write.',
+      subtitle:
+          'Answer a few quick questions. We will show the government exams you can write.',
       children: [
         Text(
           'Your date of birth',

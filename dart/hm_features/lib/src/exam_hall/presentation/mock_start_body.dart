@@ -50,8 +50,10 @@ class MockStartBody extends StatelessWidget {
                 'The clock is set by the server and keeps running if you leave the app.',
                 'Your answers are saved on this phone and sent as you go.',
                 'You need an internet connection to start.',
-                if (mock.negativeMarking) 'Wrong answers lose marks. Leave a question blank if you are not sure.',
-                if (mock.kind == MockKindView.stateMockSunday) 'Only attempts started on time and sent before the end time count for the rank.',
+                if (mock.negativeMarking)
+                  'Wrong answers lose marks. Leave a question blank if you are not sure.',
+                if (mock.kind == MockKindView.stateMockSunday)
+                  'Only attempts started on time and sent before the end time count for the rank.',
               ])
                 Padding(
                   padding: const EdgeInsets.only(bottom: 6),

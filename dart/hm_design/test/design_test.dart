@@ -50,7 +50,8 @@ void main() {
       expect(
         tester.getSemantics(lamp),
         matchesSemantics(
-          label: 'Indian Polity. Lit ring: off. Steady ring: 0 of 4. Gold ring: off.',
+          label:
+              'Indian Polity. Lit ring: off. Steady ring: 0 of 4. Gold ring: off.',
           isButton: true,
           hasTapAction: true,
         ),

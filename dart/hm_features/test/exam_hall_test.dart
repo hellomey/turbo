@@ -11,25 +11,28 @@ import 'support/fakes.dart';
 /// Exam Hall app screens (BOLT-0019, INT-002-S10/S11, §10.6).
 void main() {
   group('domain', () {
-    test('countdown uses the server deadline and server offset, never the phone alone', () {
-      final left = timeLeft(
-        deadlineAt: fixedNow.add(const Duration(minutes: 90)),
-        localNow: fixedNow,
-        serverOffset: const Duration(seconds: 5),
-      );
-      expect(left, const Duration(minutes: 89, seconds: 55));
-      expect(formatClock(left), '1:29:55');
-      expect(spokenTimeLeft(left), '1 hour 29 minutes left');
-      expect(
-        timeLeft(
-          deadlineAt: fixedNow,
+    test(
+      'countdown uses the server deadline and server offset, never the phone alone',
+      () {
+        final left = timeLeft(
+          deadlineAt: fixedNow.add(const Duration(minutes: 90)),
           localNow: fixedNow,
-          serverOffset: const Duration(seconds: 1),
-        ),
-        Duration.zero,
-      );
-      expect(formatClock(const Duration(minutes: 5, seconds: 9)), '05:09');
-    });
+          serverOffset: const Duration(seconds: 5),
+        );
+        expect(left, const Duration(minutes: 89, seconds: 55));
+        expect(formatClock(left), '1:29:55');
+        expect(spokenTimeLeft(left), '1 hour 29 minutes left');
+        expect(
+          timeLeft(
+            deadlineAt: fixedNow,
+            localNow: fixedNow,
+            serverOffset: const Duration(seconds: 1),
+          ),
+          Duration.zero,
+        );
+        expect(formatClock(const Duration(minutes: 5, seconds: 9)), '05:09');
+      },
+    );
 
     test('answer mode comes from the paper; written is not built yet', () {
       expect(answerModeFromPaper('omr'), AnswerMode.omr);
@@ -462,8 +465,9 @@ void main() {
         h.app(
           Builder(
             builder: (context) => MediaQuery(
-              data: MediaQuery.of(context)
-                  .copyWith(textScaler: const TextScaler.linear(2)),
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: const TextScaler.linear(2)),
               child: home,
             ),
           ),

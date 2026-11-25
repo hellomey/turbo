@@ -298,8 +298,9 @@ class HmLampBadge extends StatelessWidget {
                   child: Text(
                     status.label,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.labelSmall
-                        ?.copyWith(color: fg),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.copyWith(color: fg),
                   ),
                 ),
               ],

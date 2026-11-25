@@ -94,8 +94,9 @@ class _HmProgressBarState extends State<HmProgressBar>
                           height: widget.height * 0.22,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFFFFFF)
-                                  .withValues(alpha: 0.35),
+                              color: const Color(
+                                0xFFFFFFFF,
+                              ).withValues(alpha: 0.35),
                               borderRadius: r,
                             ),
                           ),
@@ -115,8 +116,9 @@ class _HmProgressBarState extends State<HmProgressBar>
                                 child: Transform(
                                   transform: Matrix4.skewX(-0.4),
                                   child: ColoredBox(
-                                    color: const Color(0xFFFFFFFF)
-                                        .withValues(alpha: 0.45),
+                                    color: const Color(
+                                      0xFFFFFFFF,
+                                    ).withValues(alpha: 0.45),
                                   ),
                                 ),
                               );

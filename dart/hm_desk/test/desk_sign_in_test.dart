@@ -41,7 +41,8 @@ class FakeDeskAuth implements DeskAuthRepository {
   Future<DeskEnrolment> enroll(String challengeToken) async {
     calls.add('enroll:$challengeToken');
     return const DeskEnrolment(
-      otpauthUri: 'otpauth://totp/HeyMey%20Desk:staff@heymey.app?secret=JBSWY3DPEHPK3PXP&issuer=HeyMey%20Desk',
+      otpauthUri:
+          'otpauth://totp/HeyMey%20Desk:staff@heymey.app?secret=JBSWY3DPEHPK3PXP&issuer=HeyMey%20Desk',
       secret: 'JBSWY3DPEHPK3PXP',
     );
   }

@@ -86,9 +86,9 @@ class _ExamHallScreenState extends ConsumerState<ExamHallScreen> {
                 now: ref.watch(clockProvider)(),
                 calm: calm,
                 onResume: resumable == null ? null : _resume,
-                onOpenMock: (m) =>
-                    Navigator.of(context)
-                        .push(_plainRoute(MockStartScreen(mock: m))),
+                onOpenMock: (m) => Navigator.of(
+                  context,
+                ).push(_plainRoute(MockStartScreen(mock: m))),
               ),
             );
           },
@@ -120,8 +120,9 @@ class MockStartScreen extends ConsumerWidget {
           onStart: () async {
             final ok = await controller.start(mock);
             if (ok && context.mounted) {
-              await Navigator.of(context)
-                  .pushReplacement(_plainRoute(const MockAttemptScreen()));
+              await Navigator.of(
+                context,
+              ).pushReplacement(_plainRoute(const MockAttemptScreen()));
             }
           },
           onNotNow: () {
