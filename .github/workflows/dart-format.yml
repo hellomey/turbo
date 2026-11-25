@@ -1,0 +1,31 @@
+# Formats Dart on agent branches and commits the result, because agents work on machines where the Dart SDK
+# cannot run. Pushes made with GITHUB_TOKEN do not start other workflows, so push once more after this to rerun CI.
+name: dart-format
+
+on:
+  push:
+    branches: ["agent/**"]
+    paths: ["dart/**", "apps/desk/**", "apps/mobile/**"]
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with: { lfs: false }
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with: { channel: stable, cache: true }
+      - name: Format and commit
+        run: |
+          # pub get first: dart format reads each package's language version from the package config.
+          flutter pub get
+          dart format apps/mobile/lib apps/mobile/test apps/desk/lib apps/desk/test dart/hm_design dart/hm_core dart/hm_data dart/hm_games dart/hm_features dart/hm_desk
+          if git diff --quiet; then echo "already formatted"; exit 0; fi
+          git config user.name "heymey-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -qam "style: dart format"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

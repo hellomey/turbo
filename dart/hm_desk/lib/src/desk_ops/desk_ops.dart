@@ -6,3 +6,5 @@
 ///   domain/        feature models
 ///   data/          repositories over hm_api (online) + hm_data (offline)
 library;
+
+export 'presentation/exam_changes_screen.dart';
