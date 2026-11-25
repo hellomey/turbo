@@ -34,18 +34,17 @@ final examChangeStatusProvider = NotifierProvider<ExamChangeStatus, String>(
 );
 
 /// One page of exam changes for the chosen status. Refreshed after every approve or reject.
-final examChangesProvider = FutureProvider.autoDispose<List<Map<String, dynamic>>>((
-  ref,
-) async {
-  final status = ref.watch(examChangeStatusProvider);
-  final page = await ref
-      .watch(hmApiProvider)
-      .deskExamChanges(status: status);
-  return [
-    for (final item in (page['items'] as List? ?? const []))
-      (item as Map).cast<String, dynamic>(),
-  ];
-});
+final examChangesProvider =
+    FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
+      final status = ref.watch(examChangeStatusProvider);
+      final page = await ref
+          .watch(hmApiProvider)
+          .deskExamChanges(status: status);
+      return [
+        for (final item in (page['items'] as List? ?? const []))
+          (item as Map).cast<String, dynamic>(),
+      ];
+    });
 
 /// Ops Desk: official-page changes found by the watcher wait here. Nothing reaches users until staff approve it
 /// (CLAUDE.md §6). Approving publishes one Exam Alert; rejecting publishes nothing.
@@ -140,7 +139,10 @@ class _ChangeCard extends ConsumerWidget {
           children: [
             Text(title, style: text.titleMedium),
             const SizedBox(height: 4),
-            SelectableText(change['watchUrl'] as String? ?? '', style: text.bodySmall),
+            SelectableText(
+              change['watchUrl'] as String? ?? '',
+              style: text.bodySmall,
+            ),
             if (change['diffSummary'] != null) ...[
               const SizedBox(height: 8),
               Text(change['diffSummary'] as String),
@@ -178,7 +180,9 @@ class _ChangeCard extends ConsumerWidget {
     await _run(
       context,
       ref,
-      () => ref.read(hmApiProvider).deskApproveExamChange(change['id'] as String, body),
+      () => ref
+          .read(hmApiProvider)
+          .deskApproveExamChange(change['id'] as String, body),
       'Approved. The alert is published.',
     );
   }
@@ -192,7 +196,9 @@ class _ChangeCard extends ConsumerWidget {
     await _run(
       context,
       ref,
-      () => ref.read(hmApiProvider).deskRejectExamChange(change['id'] as String, reason),
+      () => ref
+          .read(hmApiProvider)
+          .deskRejectExamChange(change['id'] as String, reason),
       'Rejected. Nothing was published.',
     );
   }
@@ -224,10 +230,9 @@ class _ApproveDialog extends StatefulWidget {
 
 class _ApproveDialogState extends State<_ApproveDialog> {
   final _form = GlobalKey<FormState>();
-  late String _exam =
-      deskExamCodes.contains(widget.change['examCode'])
-          ? widget.change['examCode'] as String
-          : deskExamCodes.first;
+  late String _exam = deskExamCodes.contains(widget.change['examCode'])
+      ? widget.change['examCode'] as String
+      : deskExamCodes.first;
   String _kind = 'notification';
   late final _title = TextEditingController(
     text: widget.change['title'] as String? ?? '',
@@ -283,13 +288,17 @@ class _ApproveDialogState extends State<_ApproveDialog> {
               ),
               TextFormField(
                 controller: _title,
-                decoration: const InputDecoration(labelText: 'Title (what users see)'),
+                decoration: const InputDecoration(
+                  labelText: 'Title (what users see)',
+                ),
                 validator: (v) => _len(v, 5, 120),
               ),
               TextFormField(
                 controller: _summary,
                 maxLines: 3,
-                decoration: const InputDecoration(labelText: 'Summary in plain English'),
+                decoration: const InputDecoration(
+                  labelText: 'Summary in plain English',
+                ),
                 validator: (v) => _len(v, 5, 500),
               ),
               TextFormField(
