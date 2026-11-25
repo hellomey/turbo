@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_design/hm_design.dart';
 
+import '../../desk_ops/presentation/exam_changes_screen.dart';
 import '../../sign_in/application/desk_sign_in_controller.dart';
 
 /// Plain-English role names (§16).
@@ -44,6 +45,12 @@ class DeskHome extends ConsumerWidget {
     final state = ref.watch(deskSignInProvider);
     final me = state.me;
     final text = Theme.of(context).textTheme;
+    final held = me?.roles ?? const <String>[];
+    // Areas that are built, and who may open them. The server checks the role again on every call.
+    final open = <String, Widget Function()>{
+      if (held.contains('OPS') || held.contains('ADMIN'))
+        'Ops Desk': () => const ExamChangesScreen(),
+    };
     final roles = [
       for (final r in me?.roles ?? const <String>[])
         if (deskRoleLabels.containsKey(r)) deskRoleLabels[r]!,
@@ -86,7 +93,16 @@ class DeskHome extends ConsumerWidget {
                 children: [
                   for (final (title, body, icon) in deskAreas)
                     HmCard(
-                      semanticLabel: '$title. Coming in a later update.',
+                      semanticLabel: open.containsKey(title)
+                          ? '$title. Open.'
+                          : '$title. Coming in a later update.',
+                      onTap: open.containsKey(title)
+                          ? () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => open[title]!(),
+                              ),
+                            )
+                          : null,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -95,7 +111,10 @@ class DeskHome extends ConsumerWidget {
                           Text(title, style: text.titleMedium),
                           Text(body, style: text.bodySmall),
                           const Spacer(),
-                          Text('Coming soon', style: text.labelMedium),
+                          Text(
+                            open.containsKey(title) ? 'Open' : 'Coming soon',
+                            style: text.labelMedium,
+                          ),
                         ],
                       ),
                     ),

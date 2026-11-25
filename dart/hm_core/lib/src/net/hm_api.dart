@@ -731,6 +731,42 @@ class HmApi {
     null,
   );
 
+  // ------------------------------------------------------------------ Desk: exam changes (§20.2, OPS / ADMIN)
+
+  /// `GET /v1/desk/exam-changes?status=` (contract `ExamChangePage`).
+  Future<Map<String, dynamic>> deskExamChanges({
+    String status = 'pending',
+    String? cursor,
+  }) async => _map(
+    await _get(
+      '/v1/desk/exam-changes?${Uri(queryParameters: {'status': status, 'cursor': ?cursor}).query}',
+    ),
+  );
+
+  /// `POST /v1/desk/exam-changes/{id}/approve` (contract `ApproveExamChangeBody`).
+  Future<Map<String, dynamic>> deskApproveExamChange(
+    String changeId,
+    Map<String, Object> body,
+  ) async => _map(
+    await _write(
+      'POST',
+      '/v1/desk/exam-changes/${Uri.encodeComponent(changeId)}/approve',
+      body,
+    ),
+  );
+
+  /// `POST /v1/desk/exam-changes/{id}/reject` (contract `RejectExamChangeBody`).
+  Future<Map<String, dynamic>> deskRejectExamChange(
+    String changeId,
+    String reason,
+  ) async => _map(
+    await _write(
+      'POST',
+      '/v1/desk/exam-changes/${Uri.encodeComponent(changeId)}/reject',
+      {'reason': reason},
+    ),
+  );
+
   void dispose() {
     _http.close();
     updateRequired.dispose();
