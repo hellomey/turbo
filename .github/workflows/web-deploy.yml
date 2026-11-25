@@ -1,0 +1,99 @@
+# Builds the Flutter web targets and publishes each build to its own deploy branch. A Vercel project per branch
+# serves the files as a static site, so no Vercel token lives in GitHub.
+#   deploy/desk -> Desk (staff only, apps/desk)
+#   deploy/app  -> aspirant web app ("try it" path, apps/mobile web target)
+# The API URL comes from the repository variable API_BASE_URL (same one the APK uses).
+name: web-deploy
+
+on:
+  push:
+    branches: [main]
+    paths: ["apps/desk/**", "apps/mobile/**", "dart/**", ".github/workflows/web-deploy.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: web-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: desk, dir: apps/desk, branch: deploy/desk }
+          - { target: app, dir: apps/mobile, branch: deploy/app }
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with: { lfs: false }
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with: { channel: stable, cache: true }
+
+      - name: Add the web platform (aspirant app has no web/ folder yet)
+        if: matrix.target == 'app'
+        working-directory: apps/mobile
+        run: |
+          if [ ! -d web ]; then flutter create --platforms=web --project-name heymey_mobile --org app.heymey . ; fi
+
+      - name: Build
+        working-directory: ${{ matrix.dir }}
+        env:
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: |
+          test -n "$API_BASE_URL" || { echo "Set the repository variable API_BASE_URL first"; exit 1; }
+          flutter pub get
+          flutter build web --release --no-web-resources-cdn --dart-define=API_BASE_URL="$API_BASE_URL"
+
+      - name: Write vercel.json (SPA rewrites + security headers)
+        env:
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: |
+          node -e '
+            const api = process.env.API_BASE_URL;
+            const csp = ["default-src '\''self'\''", "script-src '\''self'\'' '\''wasm-unsafe-eval'\''",
+              "style-src '\''self'\'' '\''unsafe-inline'\''", "img-src '\''self'\'' data: blob:",
+              "font-src '\''self'\'' data: https://fonts.gstatic.com", `connect-src '\''self'\'' ${api}`,
+              "worker-src '\''self'\'' blob:", "object-src '\''none'\''", "base-uri '\''self'\''",
+              "frame-ancestors '\''none'\''"].join("; ");
+            const cfg = {
+              cleanUrls: true,
+              rewrites: [{ source: "/(.*)", destination: "/index.html" }],
+              headers: [
+                { source: "/(.*)", headers: [
+                  { key: "Content-Security-Policy", value: csp },
+                  { key: "X-Content-Type-Options", value: "nosniff" },
+                  { key: "X-Frame-Options", value: "DENY" },
+                  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" } ] },
+                { source: "/(index.html|flutter_service_worker.js|flutter_bootstrap.js|version.json)",
+                  headers: [{ key: "Cache-Control", value: "no-cache" }] } ] };
+            require("fs").writeFileSync(process.argv[1], JSON.stringify(cfg, null, 2));
+          ' "${{ matrix.dir }}/build/web/vercel.json"
+
+      - name: Publish to ${{ matrix.branch }}
+        env:
+          BRANCH: ${{ matrix.branch }}
+          SRC: ${{ matrix.dir }}/build/web
+        run: |
+          out="$RUNNER_TEMP/site"
+          git config user.name "heymey-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if git ls-remote --exit-code origin "refs/heads/$BRANCH" >/dev/null; then
+            git fetch --depth 1 origin "$BRANCH"
+            git worktree add "$out" FETCH_HEAD
+            git -C "$out" checkout -B "$BRANCH"
+          else
+            git worktree add --detach "$out"
+            git -C "$out" checkout --orphan "$BRANCH"
+          fi
+          git -C "$out" rm -rq --ignore-unmatch . || true
+          find "$out" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -r "$SRC"/. "$out"/
+          git -C "$out" add -A
+          git -C "$out" commit -qm "deploy ${{ matrix.target }} from ${GITHUB_SHA::7}" || { echo "no changes"; exit 0; }
+          git -C "$out" push origin "$BRANCH"
+          echo "Published ${{ matrix.target }} to branch $BRANCH" >> "$GITHUB_STEP_SUMMARY"
