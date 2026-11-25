@@ -101,8 +101,21 @@ export const s3Env = z.object({
 const pem = (label: string) =>
   z
     .string()
-    .transform((v) => v.replace(/\\n/g, "\n"))
+    .transform((v) => normalisePemKey(v, label))
     .refine((v) => v.includes(`-----BEGIN ${label}-----`), `must be a PEM ${label}`);
+
+/**
+ * Hosting dashboards mangle multi-line secrets: surrounding quotes, `\n` written out, spaces instead of line breaks.
+ * Rebuild a clean PEM from the base64 body so the key imports. Exported for tests.
+ */
+export function normalisePemKey(raw: string, label: string): string {
+  const text = raw.trim().replace(/^["']|["']$/g, "").replace(/\\n/g, "\n");
+  const begin = `-----BEGIN ${label}-----`;
+  const end = `-----END ${label}-----`;
+  const body = text.replace(begin, "").replace(end, "").replace(/[^A-Za-z0-9+/=]/g, "");
+  if (!body) return text;
+  return `${begin}\n${(body.match(/.{1,64}/g) ?? []).join("\n")}\n${end}\n`;
+}
 
 export const authEnv = z.object({
   JWT_ISSUER: z.string().default("https://api.heymey.app"),
