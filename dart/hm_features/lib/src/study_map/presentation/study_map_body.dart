@@ -153,9 +153,8 @@ class _LiteSubject extends StatelessWidget {
                 size: const Size.square(24),
                 painter: LampPainter(
                   state: topic.lamp,
-                  faint: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.3),
+                  faint: Theme.of(context).colorScheme.onSurface
+                      .withValues(alpha: 0.3),
                 ),
               ),
             ),

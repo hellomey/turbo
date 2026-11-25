@@ -14,8 +14,9 @@ class FakeClock {
   void advance(Duration d) => now = now.add(d);
 }
 
-typedef Responder =
-    api.SyncBatchResult Function(List<Map<String, Object>> actions);
+typedef Responder = api.SyncBatchResult Function(
+  List<Map<String, Object>> actions,
+);
 
 class FakeSyncApi implements StudySyncGateway {
   final calls = <({String key, List<Map<String, Object>> actions})>[];
@@ -316,38 +317,41 @@ void main() {
     expect(OutboxRules.backoff(1000), const Duration(minutes: 10));
   });
 
-  test('HmApi gateway: sends the batch key and reads nullable fields', () async {
-    late http.Request seen;
-    final gateway = HmApiSyncGateway(
-      HmApi(
-        config: const ApiConfig(
-          baseUrl: 'http://localhost:4567',
-          appVersion: '0.1.0',
+  test(
+    'HmApi gateway: sends the batch key and reads nullable fields',
+    () async {
+      late http.Request seen;
+      final gateway = HmApiSyncGateway(
+        HmApi(
+          config: const ApiConfig(
+            baseUrl: 'http://localhost:4567',
+            appVersion: '0.1.0',
+          ),
+          tokens: MemoryTokenStore(),
+          httpClient: MockClient((req) async {
+            seen = req;
+            return http.Response(
+              '{"results":[{"clientActionId":"a","status":"rejected","errorCode":null}],'
+              '"topicStates":[{"topicId":"t1","ring":{"lit":true,"steadyLevel":1,"gold":false,'
+              '"dim":"bright"},"litAt":null,"goldAt":null,"lessonCompletedAt":null,'
+              '"nextDueAt":null,"nextCheck":"recall","updatedAt":"2026-10-22T00:00:00.000Z"}],'
+              '"serverNow":"2026-10-22T00:00:00.000Z"}',
+              200,
+              headers: {'content-type': 'application/json'},
+            );
+          }),
         ),
-        tokens: MemoryTokenStore(),
-        httpClient: MockClient((req) async {
-          seen = req;
-          return http.Response(
-            '{"results":[{"clientActionId":"a","status":"rejected","errorCode":null}],'
-            '"topicStates":[{"topicId":"t1","ring":{"lit":true,"steadyLevel":1,"gold":false,'
-            '"dim":"bright"},"litAt":null,"goldAt":null,"lessonCompletedAt":null,'
-            '"nextDueAt":null,"nextCheck":"recall","updatedAt":"2026-10-22T00:00:00.000Z"}],'
-            '"serverNow":"2026-10-22T00:00:00.000Z"}',
-            200,
-            headers: {'content-type': 'application/json'},
-          );
-        }),
-      ),
-    );
-    final r = await gateway.send(
-      idempotencyKey: 'batch-key-1',
-      deviceId: 'device-0001',
-      actions: const [],
-    );
-    expect(seen.url.path, '/v1/sync/study-actions');
-    expect(seen.headers['idempotency-key'], 'batch-key-1');
-    expect(r.results.single.errorCode, isNull);
-    expect(r.topicStates.single.litAt, isNull);
-    expect(r.topicStates.single.ring.steadyLevel, 1);
-  });
+      );
+      final r = await gateway.send(
+        idempotencyKey: 'batch-key-1',
+        deviceId: 'device-0001',
+        actions: const [],
+      );
+      expect(seen.url.path, '/v1/sync/study-actions');
+      expect(seen.headers['idempotency-key'], 'batch-key-1');
+      expect(r.results.single.errorCode, isNull);
+      expect(r.topicStates.single.litAt, isNull);
+      expect(r.topicStates.single.ring.steadyLevel, 1);
+    },
+  );
 }

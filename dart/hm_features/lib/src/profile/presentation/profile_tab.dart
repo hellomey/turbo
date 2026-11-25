@@ -95,9 +95,8 @@ class ProfileTab extends ConsumerWidget {
                 await ref.read(meProvider.notifier).setCalmMode(on);
               } on Exception catch (e) {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(messageOf(e))));
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(messageOf(e))));
                 }
               }
             },

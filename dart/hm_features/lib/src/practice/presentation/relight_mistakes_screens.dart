@@ -80,9 +80,8 @@ class RelightQueueBody extends StatelessWidget {
                         size: const Size.square(32),
                         painter: LampPainter(
                           state: HmLampState(lit: true, dim: item.dim),
-                          faint: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.3),
+                          faint: Theme.of(context).colorScheme.onSurface
+                              .withValues(alpha: 0.3),
                         ),
                       ),
                     ),

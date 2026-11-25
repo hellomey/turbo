@@ -198,8 +198,7 @@ class _EmailStepState extends ConsumerState<EmailStep> {
     return OnboardingPage(
       title: state.signInOnly ? 'Sign in' : 'Save your progress',
       illustration: HmIllustrationKind.shield,
-      subtitle:
-          'We will send a 6-digit code to your email. You do not need a password.',
+      subtitle: 'We will send a 6-digit code to your email. You do not need a password.',
       children: [
         TextField(
           key: const Key('email-field'),

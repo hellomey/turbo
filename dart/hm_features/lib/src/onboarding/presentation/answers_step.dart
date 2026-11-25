@@ -133,8 +133,7 @@ class AnswersStep extends ConsumerWidget {
                 ),
             ],
           ),
-          help:
-              'Tap any that apply. We use this only to check age relaxations. You can skip this.',
+          help: 'Tap any that apply. We use this only to check age relaxations. You can skip this.',
         ),
         StepError(state.error),
         const SizedBox(height: HmSpace.lg),

@@ -38,61 +38,64 @@ final _profile = ProfileAnswersInput(
 
 void main() {
   group('Idempotency-Key (§34.3)', () {
-    test('every write gets a UUID key; the eligibility check does not', () async {
-      final seen = <String, String?>{};
-      final api = HmApi(
-        config: _config,
-        tokens: MemoryTokenStore(_tokens('a1')),
-        httpClient: MockClient((req) async {
-          seen['${req.method} ${req.url.path}'] =
-              req.headers['idempotency-key'];
-          return switch (req.url.path) {
-            '/v1/eligibility/check' => _json({
-              'eligibleCount': 0,
-              'eligible': <Object>[],
-              'notEligible': <Object>[],
-              'disclaimer': 'Always confirm with the official notification.',
-            }),
-            '/v1/auth/otp/request' => _json({'resendAfterSeconds': 60}),
-            '/v1/me' => _json({
-              'id': '6f1c1c56-6c7e-4c41-9d5c-1d1f6f2a0b11',
-              'email': 'a@b.in',
-              'nickname': null,
-              'district': null,
-              'calmMode': true,
-              'liteMode': null,
-              'hideFromLeaderboards': false,
-              'profile': null,
-              'roles': ['ASPIRANT'],
-              'deletionScheduledFor': null,
-              'createdAt': '2026-10-20T00:00:00.000Z',
-            }),
-            _ => _json({'ok': true}),
-          };
-        }),
-      );
+    test(
+      'every write gets a UUID key; the eligibility check does not',
+      () async {
+        final seen = <String, String?>{};
+        final api = HmApi(
+          config: _config,
+          tokens: MemoryTokenStore(_tokens('a1')),
+          httpClient: MockClient((req) async {
+            seen['${req.method} ${req.url.path}'] =
+                req.headers['idempotency-key'];
+            return switch (req.url.path) {
+              '/v1/eligibility/check' => _json({
+                'eligibleCount': 0,
+                'eligible': <Object>[],
+                'notEligible': <Object>[],
+                'disclaimer': 'Always confirm with the official notification.',
+              }),
+              '/v1/auth/otp/request' => _json({'resendAfterSeconds': 60}),
+              '/v1/me' => _json({
+                'id': '6f1c1c56-6c7e-4c41-9d5c-1d1f6f2a0b11',
+                'email': 'a@b.in',
+                'nickname': null,
+                'district': null,
+                'calmMode': true,
+                'liteMode': null,
+                'hideFromLeaderboards': false,
+                'profile': null,
+                'roles': ['ASPIRANT'],
+                'deletionScheduledFor': null,
+                'createdAt': '2026-10-20T00:00:00.000Z',
+              }),
+              _ => _json({'ok': true}),
+            };
+          }),
+        );
 
-      await api.checkEligibility(_profile);
-      await api.requestOtp('a@b.in');
-      await api.updateMe(calmMode: true);
-      await api.putProfile(_profile);
-      await api.putMyExams('tnpsc-group-4', const []);
+        await api.checkEligibility(_profile);
+        await api.requestOtp('a@b.in');
+        await api.updateMe(calmMode: true);
+        await api.putProfile(_profile);
+        await api.putMyExams('tnpsc-group-4', const []);
 
-      final uuid = RegExp(
-        r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
-      );
-      expect(seen['POST /v1/eligibility/check'], isNull);
-      for (final key in [
-        'POST /v1/auth/otp/request',
-        'PATCH /v1/me',
-        'PUT /v1/me/profile',
-        'PUT /v1/me/exams',
-      ]) {
-        expect(seen[key], matches(uuid), reason: key);
-      }
-      final keys = seen.values.whereType<String>().toSet();
-      expect(keys.length, 4, reason: 'a fresh key for every write');
-    });
+        final uuid = RegExp(
+          r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
+        );
+        expect(seen['POST /v1/eligibility/check'], isNull);
+        for (final key in [
+          'POST /v1/auth/otp/request',
+          'PATCH /v1/me',
+          'PUT /v1/me/profile',
+          'PUT /v1/me/exams',
+        ]) {
+          expect(seen[key], matches(uuid), reason: key);
+        }
+        final keys = seen.values.whereType<String>().toSet();
+        expect(keys.length, 4, reason: 'a fresh key for every write');
+      },
+    );
 
     test('GET requests carry no key', () async {
       String? key = 'unset';

@@ -210,9 +210,8 @@ class _Center extends StatelessWidget {
       const SizedBox(height: HmSpace.sm),
       Text(
         body,
-        style: Theme.of(
-          context,
-        ).textTheme.bodyLarge?.copyWith(color: context.hm.textMuted),
+        style: Theme.of(context).textTheme.bodyLarge
+            ?.copyWith(color: context.hm.textMuted),
         textAlign: TextAlign.center,
       ),
       const SizedBox(height: HmSpace.xl),
