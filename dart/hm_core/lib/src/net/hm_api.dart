@@ -20,11 +20,16 @@ class OtpSessionOutcome extends OtpVerifyOutcome {
   const OtpSessionOutcome({
     required this.isNewUser,
     required this.deletionCancelled,
+    this.guestProgress,
   });
   final bool isNewUser;
 
   /// Signing in cancelled a pending account deletion (§38 step 7).
   final bool deletionCancelled;
+
+  /// Only when a guest signed in: `kept` (the guest account became this account) or `not_merged`
+  /// (the email already had an account; the guest progress was not moved into it).
+  final String? guestProgress;
 }
 
 /// HeyMey Desk needs the authenticator code next (`kind: desk_2fa`).
@@ -60,6 +65,7 @@ class MeInfo {
     required this.email,
     required this.calmMode,
     required this.roles,
+    this.isGuest = false,
     this.nickname,
     this.liteMode,
     this.hasProfile = false,
@@ -67,7 +73,12 @@ class MeInfo {
   });
 
   final String id;
-  final String email;
+
+  /// null for a guest (no email yet).
+  final String? email;
+
+  /// Trying HeyMey without an email (guest mode). "Save your progress" signs in with email.
+  final bool isGuest;
   final String? nickname;
   final bool calmMode;
 
@@ -79,7 +90,8 @@ class MeInfo {
 
   static MeInfo fromJson(Map<String, dynamic> json) => MeInfo(
     id: json['id'] as String,
-    email: json['email'] as String,
+    email: json['email'] as String?,
+    isGuest: json['isGuest'] == true,
     nickname: json['nickname'] as String?,
     calmMode: json['calmMode'] as bool? ?? false,
     liteMode: json['liteMode'] as bool?,
@@ -245,6 +257,7 @@ class HmApi {
       return OtpSessionOutcome(
         isNewUser: map['isNewUser'] == true,
         deletionCancelled: map['deletionCancelled'] == true,
+        guestProgress: map['guestProgress'] as String?,
       );
     }
     if (map['kind'] == 'desk_2fa' && map['challengeToken'] is String) {
@@ -254,6 +267,21 @@ class HmApi {
       );
     }
     throw _unknown;
+  }
+
+  /// "Try it now" (guest mode): an 18+ visitor starts without an email. The guest tokens are stored.
+  /// Only call this after the 18+ check passed; the server refuses otherwise.
+  Future<void> startGuestSession({
+    required String deviceId,
+    required ClientPlatform platform,
+  }) async {
+    await _storeTokens(
+      await _write('POST', '/v1/auth/guest', {
+        'deviceId': deviceId,
+        'platform': platform.name,
+        'ageConfirmed18': true,
+      }),
+    );
   }
 
   Future<DeskEnrolment> enrollDeskTotp(String challengeToken) async {

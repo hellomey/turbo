@@ -1,7 +1,11 @@
 import type { Actor } from "@heymey/domain/shared";
 
 export interface UsersDeletionDeps {
-  users: { eraseDueAccounts(hooks: { beforeErase(user: { id: string; email: string }): Promise<void> }): Promise<string[]> };
+  users: {
+    eraseDueAccounts(hooks: { beforeErase(user: { id: string; email: string | null }): Promise<void> }): Promise<string[]>;
+    /** Guest mode: guests inactive for 30+ days enter this same deletion path. Optional for older wiring. */
+    scheduleInactiveGuestErasure?(): Promise<number>;
+  };
   sessions: { revokeAllForUser(userId: string, reason: "deleted", actor: Actor): Promise<number> };
   /** auth's OTP retention API (SEC-M3): OTP rows keep the plain email and request IP. */
   otps: { purgeOtpCodesFor(email: string): Promise<number> };
@@ -19,17 +23,18 @@ const SYSTEM: Actor = { userId: null, role: "SYSTEM" };
  * Returns counts only (ids and emails are never logged).
  */
 export function createUsersDeletionProcessor(deps: UsersDeletionDeps) {
-  return async (): Promise<{ erased: number; otpRowsPurged: number }> => {
+  return async (): Promise<{ erased: number; otpRowsPurged: number; inactiveGuestsScheduled: number }> => {
     let otpRowsPurged = 0;
+    const inactiveGuestsScheduled = (await deps.users.scheduleInactiveGuestErasure?.()) ?? 0;
     const ids = await deps.users.eraseDueAccounts({
       beforeErase: async (user) => {
-        otpRowsPurged += await deps.otps.purgeOtpCodesFor(user.email);
+        if (user.email) otpRowsPurged += await deps.otps.purgeOtpCodesFor(user.email);
       },
     });
     for (const id of ids) {
       await deps.sessions.revokeAllForUser(id, "deleted", SYSTEM);
       await deps.pushTokens?.forgetUser(id);
     }
-    return { erased: ids.length, otpRowsPurged };
+    return { erased: ids.length, otpRowsPurged, inactiveGuestsScheduled };
   };
 }

@@ -3,6 +3,7 @@ import {
   DeleteAccountBody,
   DeskTotpEnrollBody,
   DeskTotpVerifyBody,
+  GuestSessionBody,
   OtpRequestBody,
   OtpVerifyBody,
   RefreshBody,
@@ -26,8 +27,14 @@ export class AuthController {
 
   @Post("otp/verify")
   @HttpCode(200)
-  verifyOtp(@Body() body: unknown) {
-    return this.auth.verifyOtp(parse(OtpVerifyBody, body));
+  verifyOtp(@Req() req: HmRequest, @Body() body: unknown) {
+    return this.auth.verifyOtp({ ...parse(OtpVerifyBody, body), callerUserId: req.auth?.userId ?? null });
+  }
+
+  @Post("guest")
+  @HttpCode(200)
+  startGuestSession(@Body() body: unknown) {
+    return this.auth.startGuestSession(parse(GuestSessionBody, body));
   }
 
   @Post("refresh")

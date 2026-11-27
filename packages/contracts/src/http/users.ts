@@ -17,7 +17,8 @@ export const ProfileAnswers = z
 export const Me = z
   .object({
     id: z.uuid(),
-    email: z.email(),
+    email: z.email().nullable().openapi({ description: "null for a guest (no email yet)" }),
+    isGuest: z.boolean(),
     nickname: z.string().nullable(),
     district: District.nullable(),
     calmMode: z.boolean(),

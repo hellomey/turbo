@@ -15,6 +15,8 @@ export const AUTH_POLICY = {
   resendAfterSeconds: 60,
   accessTokenTtlMs: 15 * MINUTE,
   appSessionTtlMs: 60 * DAY,
+  /** Guest mode (D-2026-11-27): never extended; signing in with email starts a normal app session. */
+  guestSessionTtlMs: 30 * DAY,
   deskSessionTtlMs: 12 * 60 * MINUTE,
   deskChallengeTtlMs: 5 * MINUTE,
   totpStepSeconds: 30,

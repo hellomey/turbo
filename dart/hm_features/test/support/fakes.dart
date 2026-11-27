@@ -87,6 +87,9 @@ class FakeOnboardingRepository implements OnboardingRepository {
   }
 
   @override
+  Future<void> startGuest() async => calls.add('startGuest');
+
+  @override
   Future<ConsentNoticeInfo> consentNotice() async {
     calls.add('consentNotice');
     return notice;
@@ -271,6 +274,21 @@ class FakeProfileRepository implements ProfileRepository {
   Future<DateTime> deleteAccount(String code) async {
     calls.add('delete:$code');
     return DateTime.utc(2026, 10, 27, 4, 30);
+  }
+
+  /// What the server answers when the guest signs in: `kept` or `not_merged`.
+  String? guestProgress = 'kept';
+
+  @override
+  Future<int> requestSaveProgressCode(String email) async {
+    calls.add('saveCode:$email');
+    return 60;
+  }
+
+  @override
+  Future<String?> saveGuestProgress(String email, String code) async {
+    calls.add('saveProgress:$email:$code');
+    return guestProgress;
   }
 }
 

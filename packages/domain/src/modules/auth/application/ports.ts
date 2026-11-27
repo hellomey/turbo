@@ -52,6 +52,8 @@ export interface DeviceRecord {
 export interface DeviceRepository {
   find(id: string): Promise<DeviceRecord | null>;
   upsert(input: { id: string; userId: string; platform: string; at: Date }): Promise<void>;
+  /** Moves the device from a guest to another account, only if it still belongs to `fromUserId`. */
+  reassign(id: string, fromUserId: string, toUserId: string): Promise<boolean>;
 }
 
 export interface SessionRecord {

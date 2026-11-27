@@ -5,7 +5,9 @@ export type Purpose = z.infer<typeof ConsentPurpose>;
 
 export interface UserRecord {
   id: string;
-  email: string;
+  /** null for a guest (no email yet). */
+  email: string | null;
+  isGuest: boolean;
   nickname: string | null;
   district: District | null;
   calmMode: boolean;
@@ -38,6 +40,12 @@ export interface UserRepository {
   /** Creates the user; if the email already exists (race), returns the existing one with created=false. */
   create(email: string): Promise<{ user: UserRecord; created: boolean }>;
   update(id: string, patch: SettingsPatch): Promise<UserRecord>;
+  /** A new guest: no email, isGuest = true. */
+  createGuest(): Promise<UserRecord>;
+  /** Gives a live guest this email and makes it a normal account. null if not a live guest or the email is taken. */
+  attachEmail(id: string, email: string): Promise<UserRecord | null>;
+  /** Sets deletionRequestedAt = requestedAt on live guests created at or before createdBefore. Returns how many. */
+  requestDeletionForGuestsCreatedBefore(createdBefore: Date, requestedAt: Date): Promise<number>;
   getProfile(userId: string): Promise<Profile | null>;
   saveProfile(userId: string, profile: Profile): Promise<void>;
   setDeletionRequestedAt(id: string, at: Date | null): Promise<void>;
@@ -55,7 +63,7 @@ export interface UserRepository {
  * depend on auth). The worker purges the account's OTP rows here (SEC-M3, §38.7).
  */
 export interface ErasureHooks {
-  beforeErase?(user: { id: string; email: string }): Promise<void>;
+  beforeErase?(user: { id: string; email: string | null }): Promise<void>;
 }
 
 /** Port: append-only consent rows. */

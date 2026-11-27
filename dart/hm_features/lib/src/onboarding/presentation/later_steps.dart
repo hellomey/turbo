@@ -221,6 +221,14 @@ class _EmailStepState extends ConsumerState<EmailStep> {
           busy: state.busy,
           onPressed: () => c.requestCode(_controller.text),
         ),
+        if (!state.signInOnly) ...[
+          const SizedBox(height: 8),
+          HmSecondaryButton(
+            key: const Key('try-as-guest'),
+            label: 'Try it now without email',
+            onPressed: state.busy ? null : c.tryAsGuest,
+          ),
+        ],
         const SizedBox(height: 8),
         HmSecondaryButton(label: 'Back', onPressed: c.back),
       ],

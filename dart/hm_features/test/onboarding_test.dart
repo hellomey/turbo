@@ -390,6 +390,44 @@ void main() {
       );
     });
 
+    testWidgets(
+      'Try it now: a guest session after the 18+ check, then consent saves the answers',
+      (tester) async {
+        final h = await pumpFlow(tester);
+        h.controller.submitDateOfBirth(DateTime(2000, 1, 15));
+        await tester.pumpAndSettle();
+        await answerProfile(tester);
+        await tapKey(tester, 'answers-check');
+        h.controller.continueToPickExams();
+        await tester.pumpAndSettle();
+        await tapKey(tester, 'exams-continue');
+        await tapKey(tester, 'save-progress');
+        await tapKey(tester, 'try-as-guest');
+
+        expect(h.onboarding.calls, contains('startGuest'));
+        expect(h.onboarding.calls, isNot(contains('verifyCode')));
+        expect(h.state.step, OnboardingStep.consent);
+
+        await tapKey(tester, 'consent-core_service');
+        await tester.tap(find.byKey(const Key('consent-continue')));
+        await tester.pump();
+        await tester.pump();
+        expect(h.onboarding.calls, containsAll(['saveProfile', 'saveExams']));
+        expect(h.state.step, OnboardingStep.done);
+      },
+    );
+
+    testWidgets('Try it now is never offered before the 18+ check', (
+      tester,
+    ) async {
+      final h = await pumpFlow(tester);
+      await h.controller.tryAsGuest();
+      expect(h.onboarding.calls, isNot(contains('startGuest')));
+      await tester.tap(find.text('I already have an account'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('try-as-guest')), findsNothing);
+    });
+
     testWidgets('"I already have an account" signs in without onboarding', (
       tester,
     ) async {

@@ -208,6 +208,13 @@
           },
           "deletionCancelled": {
             "type": "boolean"
+          },
+          "guestProgress": {
+            "type": "string",
+            "enum": [
+              "kept",
+              "not_merged"
+            ]
           }
         },
         "required": [
@@ -303,6 +310,31 @@
           "desk"
         ],
         "default": "app"
+      },
+      "GuestSessionBody": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "android",
+              "ios",
+              "web"
+            ]
+          },
+          "ageConfirmed18": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "deviceId",
+          "platform",
+          "ageConfirmed18"
+        ]
       },
       "RefreshBody": {
         "type": "object",
@@ -404,8 +436,15 @@
             "format": "uuid"
           },
           "email": {
-            "type": "string",
-            "format": "email"
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "email",
+            "description": "null for a guest (no email yet)"
+          },
+          "isGuest": {
+            "type": "boolean"
           },
           "nickname": {
             "type": [
@@ -453,6 +492,7 @@
         "required": [
           "id",
           "email",
+          "isGuest",
           "nickname",
           "district",
           "calmMode",
@@ -4887,8 +4927,8 @@
           "auth"
         ],
         "operationId": "verifyOtp",
-        "summary": "Exchange email + code for a session bound to this device (or a Desk 2FA challenge).",
-        "x-heymey-auth": "public",
+        "summary": "Exchange email + code for a session bound to this device (or a Desk 2FA challenge). With a guest token it keeps the guest progress (see guestProgress).",
+        "x-heymey-auth": "optional",
         "x-heymey-idempotent": true,
         "x-heymey-rate-limit": [
           {
@@ -4951,6 +4991,87 @@
           },
           "403": {
             "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/guest": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "startGuestSession",
+        "summary": "Try HeyMey without an email (18+ only). Guest sessions last 30 days; sign in with email to keep progress.",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "ip",
+            "limit": 60,
+            "windowSeconds": 3600
+          }
+        ],
+        "x-heymey-sensitive-response": true,
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GuestSessionBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Guest signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenPair"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Under 18 (UNDER_18)",
             "content": {
               "application/json": {
                 "schema": {

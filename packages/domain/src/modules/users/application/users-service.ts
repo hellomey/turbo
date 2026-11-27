@@ -9,6 +9,7 @@ import {
   deletionScheduledFor,
   erasedEmail,
   erasureCutoff,
+  staleGuestCutoff,
   validateConsentChoices,
 } from "../domain/rules.js";
 import type { ConsentRepository, ErasureHooks, Profile, RolesReader, SettingsPatch, UserRecord, UserRepository } from "./ports.js";
@@ -38,6 +39,7 @@ export async function getMe(deps: UsersDeps, userId: string): Promise<MeView> {
   return {
     id: user.id,
     email: user.email,
+    isGuest: user.isGuest,
     nickname: user.nickname,
     district: user.district,
     calmMode: user.calmMode,
@@ -102,6 +104,28 @@ export async function findOrCreateByEmail(deps: UsersDeps, email: string): Promi
   const existing = await deps.users.findByEmail(email);
   if (existing) return { user: existing, created: false };
   return deps.users.create(email);
+}
+
+/** Guest mode (D-2026-11-27): an account with no email. auth grants the role and the session. */
+export function createGuest(deps: UsersDeps): Promise<UserRecord> {
+  return deps.users.createGuest();
+}
+
+/** A guest signs in with an email nobody uses yet: the same account keeps all its progress. */
+export async function attachEmailToGuest(deps: UsersDeps, userId: string, email: string): Promise<UserRecord> {
+  const user = await deps.users.attachEmail(userId, email);
+  if (!user) throw new DomainError("VALIDATION_FAILED", { field: "email", reason: "not a guest, or the email is taken" });
+  await deps.audit.record({ actor: { userId, role: "ASPIRANT" }, action: "users.guest_upgraded", target: `user:${userId}` });
+  return user;
+}
+
+/**
+ * Cleanup (guest mode): guests inactive for 30+ days enter the normal deletion path already due, so the same
+ * `eraseDueAccounts` run erases them. Returns a count only.
+ */
+export async function scheduleInactiveGuestErasure(deps: UsersDeps): Promise<number> {
+  const now = deps.clock.now();
+  return deps.users.requestDeletionForGuestsCreatedBefore(staleGuestCutoff(now), erasureCutoff(now));
 }
 
 /** §38.7: confirmed by OTP (auth). Keeps the first request date if asked again. */

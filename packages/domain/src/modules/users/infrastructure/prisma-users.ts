@@ -12,7 +12,8 @@ import type {
 
 type UserRow = {
   id: string;
-  email: string;
+  email: string | null;
+  isGuest: boolean;
   nickname: string | null;
   district: string | null;
   calmMode: boolean;
@@ -26,6 +27,7 @@ type UserRow = {
 const toRecord = (u: UserRow): UserRecord => ({
   id: u.id,
   email: u.email,
+  isGuest: u.isGuest,
   nickname: u.nickname,
   district: u.district as District | null,
   calmMode: u.calmMode,
@@ -67,6 +69,28 @@ export class PrismaUserRepository implements UserRepository {
 
   async update(id: string, patch: SettingsPatch): Promise<UserRecord> {
     return toRecord(await this.prisma.user.update({ where: { id }, data: patch }));
+  }
+
+  async createGuest(): Promise<UserRecord> {
+    return toRecord(await this.prisma.user.create({ data: { email: null, isGuest: true } }));
+  }
+
+  async attachEmail(id: string, email: string): Promise<UserRecord | null> {
+    try {
+      const res = await this.prisma.user.updateMany({ where: { id, isGuest: true, deletedAt: null }, data: { email, isGuest: false } });
+      return res.count === 1 ? this.findById(id) : null;
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") return null;
+      throw e;
+    }
+  }
+
+  async requestDeletionForGuestsCreatedBefore(createdBefore: Date, requestedAt: Date): Promise<number> {
+    const res = await this.prisma.user.updateMany({
+      where: { isGuest: true, deletedAt: null, deletionRequestedAt: null, createdAt: { lte: createdBefore } },
+      data: { deletionRequestedAt: requestedAt },
+    });
+    return res.count;
   }
 
   async getProfile(userId: string): Promise<Profile | null> {

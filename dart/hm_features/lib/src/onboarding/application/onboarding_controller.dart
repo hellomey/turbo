@@ -281,16 +281,35 @@ class OnboardingController extends Notifier<OnboardingState> {
         state = state.copyWith(step: OnboardingStep.done, busy: false);
         return;
       }
-      final notice = await _repo.consentNotice();
-      state = state.copyWith(
-        step: OnboardingStep.consent,
-        notice: notice,
-        consents: const {},
-        busy: false,
-      );
+      await _toConsent();
     } on HmApiException catch (e) {
       state = state.copyWith(busy: false, error: e.message);
     }
+  }
+
+  /// "Try it now" (guest mode): only reachable after the 18+ check passed. No email; the answers are
+  /// saved to the guest account after consent, and "Save your progress" in Profile keeps them.
+  Future<void> tryAsGuest() async {
+    if (state.busy || state.signInOnly || state.draft.dateOfBirth == null) {
+      return;
+    }
+    state = state.copyWith(busy: true, clearError: true);
+    try {
+      await _repo.startGuest();
+      await _toConsent();
+    } on HmApiException catch (e) {
+      state = state.copyWith(busy: false, error: e.message);
+    }
+  }
+
+  Future<void> _toConsent() async {
+    final notice = await _repo.consentNotice();
+    state = state.copyWith(
+      step: OnboardingStep.consent,
+      notice: notice,
+      consents: const {},
+      busy: false,
+    );
   }
 
   // ---------------------------------------------------------------- step 8
