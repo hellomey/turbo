@@ -36,6 +36,17 @@ export function erasureCutoff(now: Date): Date {
   return new Date(now.getTime() - DELETION_GRACE_DAYS * DAY_MS);
 }
 
+/**
+ * Guest mode (D-2026-11-27): a guest's session lasts 30 days and is never extended, and a guest has no email to sign
+ * in again with. So a guest created this long ago has been unable to use the app for at least 30 days.
+ */
+export const GUEST_INACTIVE_ERASE_AFTER_DAYS = 60;
+
+/** Guests created at or before this instant are inactive for 30+ days and go into the deletion path. */
+export function staleGuestCutoff(now: Date): Date {
+  return new Date(now.getTime() - GUEST_INACTIVE_ERASE_AFTER_DAYS * DAY_MS);
+}
+
 /** The email an erased account keeps (unique, undeliverable, no personal data). */
 export function erasedEmail(userId: string): string {
   return `deleted+${userId}@invalid.heymey.app`;

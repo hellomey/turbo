@@ -138,6 +138,8 @@ async function consume(d: AuthDeps, otp: OtpRecord): Promise<void> {
 // ---------------------------------------------------------------- OTP verify (§38 step 3, §15 Desk)
 
 export interface VerifyOtpInput {
+  /** The signed-in caller, if any. A guest caller keeps their progress (guest mode, D-2026-11-27). */
+  callerUserId?: string | null;
   email: string;
   code: string;
   deviceId: string;
@@ -151,7 +153,7 @@ export async function verifyOtp(d: AuthDeps, input: VerifyOtpInput): Promise<Otp
 
   const existing = await d.users.findByEmail(email);
   const device = await d.repos.devices.find(input.deviceId);
-  if (device && device.userId !== existing?.id) {
+  if (device && device.userId !== existing?.id && !(await isLiveGuest(d, device.userId))) {
     // One device, one account (§18). The code stays unused so the user can retry from their own device.
     throw new DomainError("VALIDATION_FAILED", { field: "deviceId", reason: "device belongs to another account" });
   }
@@ -161,25 +163,81 @@ export async function verifyOtp(d: AuthDeps, input: VerifyOtpInput): Promise<Otp
   if (input.client === "desk") {
     if (!existing || existing.deletedAt) throw new DomainError("DESK_NOT_ALLOWED");
     if (!hasDeskRole(await d.roles.rolesOf(existing.id))) throw new DomainError("DESK_NOT_ALLOWED");
-    await d.repos.devices.upsert({ id: input.deviceId, userId: existing.id, platform: input.platform, at: now });
+    await bindDevice(d, input.deviceId, existing.id, input.platform, now);
     const tf = await d.repos.twoFactors.find(existing.id);
     const challengeToken = await d.tokens.signChallenge({ userId: existing.id, deviceId: input.deviceId }, now);
     return { kind: "desk_2fa", challengeToken, totpEnrolled: Boolean(tf?.confirmedAt) };
   }
 
+  const guestId = input.callerUserId && (await isLiveGuest(d, input.callerUserId)) ? input.callerUserId : null;
+  if (guestId && !existing) {
+    // The email is new: the guest account becomes this account, so every bit of progress stays.
+    await d.users.attachEmailToGuest(guestId, email);
+    await bindDevice(d, input.deviceId, guestId, input.platform, now);
+    await d.repos.sessions.revokeAllForUser(guestId, "logout", now); // the short guest session ends here
+    const tokens = await issueSession(d, guestId, input.deviceId, false);
+    return { kind: "session", tokens, isNewUser: false, deletionCancelled: false, guestProgress: "kept" };
+  }
+
   const { user, created } = existing ? { user: existing, created: false } : await d.users.findOrCreateByEmail(email);
   if (created) await d.roles.grant({ userId: user.id, role: "ASPIRANT", actor: SYSTEM });
   const deletionCancelled = created ? false : await d.users.cancelDeletion(user.id);
-  await d.repos.devices.upsert({ id: input.deviceId, userId: user.id, platform: input.platform, at: now });
+  await bindDevice(d, input.deviceId, user.id, input.platform, now);
   const tokens = await issueSession(d, user.id, input.deviceId, false);
-  return { kind: "session", tokens, isNewUser: created, deletionCancelled };
+  if (!guestId) return { kind: "session", tokens, isNewUser: created, deletionCancelled };
+  // The email already has an account. Study data lives in many modules, so it is not moved: the guest account is
+  // signed out and goes into the normal deletion path, and the app says the guest progress was not merged.
+  await d.users.requestDeletion(guestId, SYSTEM);
+  await revokeAllForUser(d, guestId, "deleted", SYSTEM);
+  return { kind: "session", tokens, isNewUser: created, deletionCancelled, guestProgress: "not_merged" };
+}
+
+// ---------------------------------------------------------------- guest mode (D-2026-11-27)
+
+export interface GuestSessionInput {
+  deviceId: string;
+  platform: "android" | "ios" | "web";
+  ageConfirmed18: boolean;
+}
+
+async function isLiveGuest(d: AuthDeps, userId: string): Promise<boolean> {
+  const u = await d.users.getById(userId);
+  return Boolean(u?.isGuest && !u.deletedAt && !u.deletionRequestedAt);
+}
+
+/** Binds the device to `userId`. A device still held by a guest moves over, and that guest is signed out. */
+async function bindDevice(d: AuthDeps, deviceId: string, userId: string, platform: string, now: Date): Promise<void> {
+  const device = await d.repos.devices.find(deviceId);
+  const previous = device?.userId;
+  if (previous && previous !== userId && (await d.repos.devices.reassign(deviceId, previous, userId))) {
+    await d.repos.sessions.revokeAllForUser(previous, "logout", now);
+  }
+  await d.repos.devices.upsert({ id: deviceId, userId, platform, at: now });
+}
+
+/** "Try it now": an 18+ visitor gets a guest account (no email) with a 30-day session. Under-18s: waitlist only. */
+export async function startGuestSession(d: AuthDeps, input: GuestSessionInput): Promise<TokenPairView> {
+  if (input.ageConfirmed18 !== true) throw new DomainError("UNDER_18");
+  const device = await d.repos.devices.find(input.deviceId);
+  if (device && !(await isLiveGuest(d, device.userId))) {
+    throw new DomainError("VALIDATION_FAILED", { field: "deviceId", reason: "device belongs to another account" });
+  }
+  const user = await d.users.createGuest();
+  await d.roles.grant({ userId: user.id, role: "ASPIRANT", actor: SYSTEM });
+  await bindDevice(d, input.deviceId, user.id, input.platform, d.clock.now());
+  return issueSession(d, user.id, input.deviceId, false, AUTH_POLICY.guestSessionTtlMs);
 }
 
 // ---------------------------------------------------------------- sessions (§37, D-2026-10-20-11)
 
-async function issueSession(d: AuthDeps, userId: string, deviceId: string, isDesk: boolean): Promise<TokenPairView> {
+async function issueSession(
+  d: AuthDeps,
+  userId: string,
+  deviceId: string,
+  isDesk: boolean,
+  ttl: number = isDesk ? AUTH_POLICY.deskSessionTtlMs : AUTH_POLICY.appSessionTtlMs,
+): Promise<TokenPairView> {
   const now = d.clock.now();
-  const ttl = isDesk ? AUTH_POLICY.deskSessionTtlMs : AUTH_POLICY.appSessionTtlMs;
   const session = await d.repos.sessions.create({ userId, deviceId, isDesk, expiresAt: new Date(now.getTime() + ttl), at: now });
   return issueTokens(d, session.id, userId, isDesk, session.expiresAt, now);
 }
@@ -313,7 +371,7 @@ export async function enrollDeskTotp(
     throw new DomainError("FORBIDDEN", { reason: "authenticator set-up already started; try again in 10 minutes" });
   }
   await d.audit.record({ actor: who, action: "auth.desk_totp_enroll_started", target });
-  return { otpauthUri: d.totp.uri(user.email, secret), secret };
+  return { otpauthUri: d.totp.uri(user.email ?? user.id, secret), secret };
 }
 
 /**
@@ -384,6 +442,7 @@ export function purgeExpiredOtpCodes(d: { repos: Pick<AuthRepositories, "otps"> 
 export async function deleteAccount(d: AuthDeps, userId: string, code: string, actor: Actor): Promise<{ deletionScheduledFor: string }> {
   const user = await d.users.getById(userId);
   if (!user || user.deletedAt) throw new DomainError("UNAUTHENTICATED");
+  if (!user.email) throw new DomainError("FORBIDDEN", { reason: "guests have no email to confirm with" });
   const otp = await checkCode(d, user.email, "delete_account", code);
   await consume(d, otp);
   const scheduledFor = await d.users.requestDeletion(userId, actor);

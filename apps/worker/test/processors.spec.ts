@@ -52,7 +52,7 @@ describe("users.deletion processor", () => {
       sessions: { revokeAllForUser: async (id, reason, actor) => (revoked.push([id, reason, actor]), 1) },
       otps: { purgeOtpCodesFor: async (email) => (purged.push(email), 2) },
     });
-    expect(await run()).toEqual({ erased: 2, otpRowsPurged: 4 });
+    expect(await run()).toEqual({ erased: 2, otpRowsPurged: 4, inactiveGuestsScheduled: 0 });
     expect(purged).toEqual(["a@example.com", "b@example.com"]);
     expect(revoked).toEqual([
       ["u1", "deleted", { userId: null, role: "SYSTEM" }],
@@ -67,8 +67,28 @@ describe("users.deletion processor", () => {
       sessions: { revokeAllForUser: async () => ++calls },
       otps: { purgeOtpCodesFor: async () => 0 },
     });
-    expect(await run()).toEqual({ erased: 0, otpRowsPurged: 0 });
+    expect(await run()).toEqual({ erased: 0, otpRowsPurged: 0, inactiveGuestsScheduled: 0 });
     expect(calls).toBe(0);
+  });
+
+  it("schedules inactive guests first, then erases them in the same run; guests have no OTP rows to purge", async () => {
+    const order: string[] = [];
+    const purged: string[] = [];
+    const run = createUsersDeletionProcessor({
+      users: {
+        scheduleInactiveGuestErasure: async () => (order.push("schedule"), 1),
+        eraseDueAccounts: async (hooks) => {
+          order.push("erase");
+          await hooks.beforeErase({ id: "g1", email: null });
+          return ["g1"];
+        },
+      },
+      sessions: { revokeAllForUser: async () => 1 },
+      otps: { purgeOtpCodesFor: async (email) => (purged.push(email), 1) },
+    });
+    expect(await run()).toEqual({ erased: 1, otpRowsPurged: 0, inactiveGuestsScheduled: 1 });
+    expect(order).toEqual(["schedule", "erase"]);
+    expect(purged).toEqual([]);
   });
 });
 

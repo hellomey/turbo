@@ -218,11 +218,11 @@ describe("identity (integration, Postgres)", () => {
     clock.advanceDays(8);
     await auth.requestOtp({ email: "purge-me@example.com", purpose: "login" }); // a fresh row too
     const purged: number[] = [];
-    const emailsAtHook: string[] = [];
+    const emailsAtHook: (string | null)[] = [];
     const erased = await users.eraseDueAccounts({
       beforeErase: async (u) => {
         emailsAtHook.push((await prisma.user.findUniqueOrThrow({ where: { id: u.id } })).email);
-        purged.push(await otps.purgeOtpCodesFor(u.email));
+        purged.push(await otps.purgeOtpCodesFor(u.email!));
         if (u.id === stayId) await users.cancelDeletion(stayId); // signs in meanwhile
       },
     });
@@ -308,5 +308,32 @@ describe("identity (integration, Postgres)", () => {
     expect(results.filter(Boolean)).toHaveLength(1);
     expect(await prisma.roleAssignment.count({ where: { userId: uid } })).toBe(1);
     expect(await roles.rolesOf(uid)).toEqual(["REVIEWER"]);
+  });
+  it("guest mode: no-email user, upgrade keeps the row, taken email is not merged, stale guests are erased", async () => {
+    const start = async () => {
+      const t = await auth.startGuestSession({ deviceId: randomUUID(), platform: "web", ageConfirmed18: true });
+      return (await auth.verifyAccessToken(t.accessToken))!;
+    };
+    const g = await start();
+    expect(await prisma.user.findUniqueOrThrow({ where: { id: g.userId } })).toMatchObject({ email: null, isGuest: true });
+
+    await auth.requestOtp({ email: "guest.kept@example.com", purpose: "login" });
+    const kept = await auth.verifyOtp({ email: "guest.kept@example.com", code: codeFor("guest.kept@example.com"), deviceId: g.deviceId!, platform: "web", client: "app", callerUserId: g.userId });
+    expect(kept).toMatchObject({ kind: "session", guestProgress: "kept" });
+    expect(await prisma.user.findUniqueOrThrow({ where: { id: g.userId } })).toMatchObject({ email: "guest.kept@example.com", isGuest: false });
+
+    const g2 = await start();
+    clock.advanceMinutes(11);
+    await auth.requestOtp({ email: "guest.kept@example.com", purpose: "login" });
+    const other = await auth.verifyOtp({ email: "guest.kept@example.com", code: codeFor("guest.kept@example.com"), deviceId: g2.deviceId!, platform: "web", client: "app", callerUserId: g2.userId });
+    expect(other).toMatchObject({ kind: "session", guestProgress: "not_merged" });
+    expect((await prisma.device.findUniqueOrThrow({ where: { id: g2.deviceId! } })).userId).toBe(g.userId);
+
+    const stale = await start();
+    await prisma.user.update({ where: { id: stale.userId }, data: { createdAt: new Date(clock.now().getTime() - 61 * 86_400_000) } });
+    expect(await users.scheduleInactiveGuestErasure()).toBe(1);
+    const erased = await users.eraseDueAccounts();
+    expect(erased).toContain(stale.userId);
+    expect(erased).not.toContain(g.userId);
   });
 });

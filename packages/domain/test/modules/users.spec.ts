@@ -45,6 +45,7 @@ describe("users: Me", () => {
     expect(await h.users.getMe(u.id)).toEqual({
       id: u.id,
       email: "u@example.com",
+      isGuest: false,
       nickname: null,
       district: null,
       calmMode: false,
@@ -170,7 +171,7 @@ describe("users: erasure safety (SEC-M3)", () => {
     await h.users.requestDeletion(a.id, ACTOR);
     await h.users.requestDeletion(b.id, ACTOR);
     h.clock.advanceDays(8);
-    const seen: { id: string; email: string; current: string | undefined }[] = [];
+    const seen: { id: string; email: string | null; current: string | null | undefined }[] = [];
     const erased = await h.users.eraseDueAccounts({
       beforeErase: async (u) => {
         seen.push({ ...u, current: (await h.users.getById(u.id))?.email });

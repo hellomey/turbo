@@ -39,9 +39,26 @@ export class MemUsers implements UserRepository {
   async create(email: string) {
     const existing = await this.findByEmail(email);
     if (existing) return { user: existing, created: false };
+    return { user: this.insert(email), created: true };
+  }
+  async createGuest() {
+    return this.insert(null);
+  }
+  async attachEmail(id: string, email: string) {
+    const u = this.rows.get(id);
+    if (!u?.isGuest || u.deletedAt || (await this.findByEmail(email))) return null;
+    return this.update(id, { email, isGuest: false });
+  }
+  async requestDeletionForGuestsCreatedBefore(createdBefore: Date, requestedAt: Date) {
+    const due = [...this.rows.values()].filter((u) => u.isGuest && !u.deletedAt && !u.deletionRequestedAt && u.createdAt <= createdBefore);
+    for (const u of due) await this.update(u.id, { deletionRequestedAt: requestedAt });
+    return due.length;
+  }
+  private insert(email: string | null): UserRecord {
     const user: UserRecord = {
       id: randomUUID(),
       email,
+      isGuest: email === null,
       nickname: null,
       district: null,
       calmMode: false,
@@ -52,7 +69,7 @@ export class MemUsers implements UserRepository {
       deletedAt: null,
     };
     this.rows.set(user.id, user);
-    return { user, created: true };
+    return user;
   }
   async update(id: string, patch: Partial<UserRecord>) {
     const u = { ...this.rows.get(id)!, ...patch };
@@ -163,6 +180,12 @@ export function memAuthRepos() {
       async upsert(i) {
         const prev = devices.get(i.id);
         devices.set(i.id, { id: i.id, userId: prev?.userId ?? i.userId, platform: i.platform });
+      },
+      async reassign(id, from, to) {
+        const dev = devices.get(id);
+        if (!dev || dev.userId !== from) return false;
+        dev.userId = to;
+        return true;
       },
     },
     sessions: {

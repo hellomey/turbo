@@ -42,7 +42,7 @@ export type {
   RefreshTokenRecord,
   TwoFactorRecord,
 } from "./application/ports.js";
-export type { RequestOtpInput, VerifyOtpInput, TokenPairView, SessionGrantedView, OtpVerifyView } from "./application/auth-service.js";
+export type { GuestSessionInput, RequestOtpInput, VerifyOtpInput, TokenPairView, SessionGrantedView, OtpVerifyView } from "./application/auth-service.js";
 export { AUTH_POLICY, composeOtpEmail, isDisposableEmail, normalizeEmail } from "./domain/policy.js";
 export { jobQueueOtpMailer, OTP_EMAIL_QUEUE, type JobQueueLike } from "./infrastructure/job-queue-mailer.js";
 
@@ -81,6 +81,7 @@ export interface AuthModuleDeps {
 export interface AuthApi {
   requestOtp(input: svc.RequestOtpInput): Promise<{ resendAfterSeconds: number }>;
   verifyOtp(input: svc.VerifyOtpInput): Promise<svc.OtpVerifyView>;
+  startGuestSession(input: svc.GuestSessionInput): Promise<svc.TokenPairView>;
   refresh(refreshToken: string, actor: Actor): Promise<svc.TokenPairView>;
   logout(auth: AccessContext): Promise<{ ok: true }>;
   logoutAll(userId: string, actor: Actor): Promise<{ ok: true }>;
@@ -128,6 +129,7 @@ export function createAuthModule(deps: AuthModuleDeps): AuthApi {
   return {
     requestOtp: (input) => svc.requestOtp(d, input),
     verifyOtp: (input) => svc.verifyOtp(d, input),
+    startGuestSession: (input) => svc.startGuestSession(d, input),
     refresh: (token, actor) => svc.refresh(d, token, actor),
     logout: (auth) => svc.logout(d, auth),
     logoutAll: (userId, actor) => svc.logoutAll(d, userId, actor),

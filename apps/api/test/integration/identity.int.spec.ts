@@ -283,4 +283,45 @@ describe("identity API (integration)", () => {
     });
     expect(back.json()).toMatchObject({ kind: "session", deletionCancelled: true });
   });
+  it("guest: 18+ only, no email, ASPIRANT, 30-day session, cannot reach Desk", async () => {
+    const under = await call("POST", "/v1/auth/guest", { body: { deviceId: randomUUID(), platform: "web", ageConfirmed18: false } });
+    expect(under.statusCode).toBe(422);
+    expect(under.json().error.code).toBe("UNDER_18");
+    const res = await call("POST", "/v1/auth/guest", { body: { deviceId: randomUUID(), platform: "web", ageConfirmed18: true } });
+    expect(res.statusCode).toBe(200);
+    const me = await call("GET", "/v1/me", { token: res.json().accessToken });
+    expect(me.json()).toMatchObject({ email: null, isGuest: true, roles: ["ASPIRANT"] });
+    const session = await prisma.session.findFirstOrThrow({ where: { userId: me.json().id } });
+    expect(Math.abs(session.expiresAt.getTime() - (Date.now() + 30 * 86_400_000))).toBeLessThan(60_000);
+    expect((await call("GET", "/v1/desk/exam-changes", { token: res.json().accessToken })).json().error.code).toBe("DESK_2FA_REQUIRED");
+  });
+
+  it("guest -> new email keeps the same account; guest -> existing email says not merged", async () => {
+    const g = await call("POST", "/v1/auth/guest", { body: { deviceId: randomUUID(), platform: "web", ageConfirmed18: true } });
+    const guestId = (await call("GET", "/v1/me", { token: g.json().accessToken })).json().id;
+    const deviceId = (await prisma.device.findFirstOrThrow({ where: { userId: guestId } })).id;
+    expect((await call("POST", "/v1/auth/otp/request", { body: { email: "guest.new@example.com" } })).statusCode).toBe(200);
+    const kept = await call("POST", "/v1/auth/otp/verify", {
+      token: g.json().accessToken,
+      body: { email: "guest.new@example.com", code: (await lastCode("guest.new@example.com")).code, deviceId, platform: "web" },
+    });
+    expect(kept.json()).toMatchObject({ kind: "session", guestProgress: "kept" });
+    const me = await call("GET", "/v1/me", { token: kept.json().tokens.accessToken });
+    expect(me.json()).toMatchObject({ id: guestId, email: "guest.new@example.com", isGuest: false });
+
+    const owner = await signIn("guest.owner@example.com");
+    const g2 = await call("POST", "/v1/auth/guest", { body: { deviceId: randomUUID(), platform: "web", ageConfirmed18: true } });
+    const g2Id = (await call("GET", "/v1/me", { token: g2.json().accessToken })).json().id;
+    const d2 = (await prisma.device.findFirstOrThrow({ where: { userId: g2Id } })).id;
+    expect((await call("POST", "/v1/auth/otp/request", { body: { email: "guest.owner@example.com" } })).statusCode).toBe(200);
+    const merged = await call("POST", "/v1/auth/otp/verify", {
+      token: g2.json().accessToken,
+      body: { email: "guest.owner@example.com", code: (await lastCode("guest.owner@example.com")).code, deviceId: d2, platform: "web" },
+    });
+    expect(merged.json()).toMatchObject({ kind: "session", guestProgress: "not_merged" });
+    const ownerMe = await call("GET", "/v1/me", { token: owner.tokens.accessToken });
+    expect((await call("GET", "/v1/me", { token: merged.json().tokens.accessToken })).json().id).toBe(ownerMe.json().id);
+    expect((await call("GET", "/v1/me", { token: g2.json().accessToken })).statusCode).toBe(401);
+    expect((await prisma.user.findUniqueOrThrow({ where: { id: g2Id } })).deletionRequestedAt).not.toBeNull();
+  });
 });

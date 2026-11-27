@@ -24,7 +24,7 @@ export type {
   UserRepository,
 } from "./application/ports.js";
 export type { ConsentStateView, MeView } from "./application/users-service.js";
-export { CONSENT_NOTICE, DELETION_GRACE_DAYS, isAdultOn } from "./domain/rules.js";
+export { CONSENT_NOTICE, DELETION_GRACE_DAYS, GUEST_INACTIVE_ERASE_AFTER_DAYS, isAdultOn } from "./domain/rules.js";
 
 export interface UsersApi {
   getMe(userId: string): Promise<svc.MeView>;
@@ -37,11 +37,15 @@ export interface UsersApi {
   getById(userId: string): Promise<UserRecord | null>;
   findByEmail(email: string): Promise<UserRecord | null>;
   findOrCreateByEmail(email: string): Promise<{ user: UserRecord; created: boolean }>;
+  createGuest(): Promise<UserRecord>;
+  attachEmailToGuest(userId: string, email: string): Promise<UserRecord>;
   requestDeletion(userId: string, actor: Actor): Promise<Date>;
   cancelDeletion(userId: string): Promise<boolean>;
   // used by the worker
   /** Erases accounts past the 7-day grace; returns the ids actually erased. `hooks.beforeErase` runs before each. */
   eraseDueAccounts(hooks?: ErasureHooks): Promise<string[]>;
+  /** Puts guests inactive for 30+ days into the deletion path, due at once. Run before eraseDueAccounts. */
+  scheduleInactiveGuestErasure(): Promise<number>;
 }
 
 export type UsersModuleDeps = (
@@ -65,8 +69,11 @@ export function createUsersModule(deps: UsersModuleDeps): UsersApi {
     getById: (id) => d.users.findById(id),
     findByEmail: (email) => d.users.findByEmail(email),
     findOrCreateByEmail: (email) => svc.findOrCreateByEmail(d, email),
+    createGuest: () => svc.createGuest(d),
+    attachEmailToGuest: (id, email) => svc.attachEmailToGuest(d, id, email),
     requestDeletion: (id, actor) => svc.requestDeletion(d, id, actor),
     cancelDeletion: (id) => svc.cancelDeletion(d, id),
     eraseDueAccounts: (hooks) => svc.eraseDueAccounts(d, hooks),
+    scheduleInactiveGuestErasure: () => svc.scheduleInactiveGuestErasure(d),
   };
 }

@@ -85,6 +85,11 @@ class PrismaDeviceRepository implements DeviceRepository {
       update: { platform: input.platform, lastSeenAt: input.at },
     });
   }
+
+  async reassign(id: string, fromUserId: string, toUserId: string): Promise<boolean> {
+    const res = await this.prisma.device.updateMany({ where: { id, userId: fromUserId }, data: { userId: toUserId } });
+    return res.count === 1;
+  }
 }
 
 const sessionSelect = {
