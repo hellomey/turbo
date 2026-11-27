@@ -1,5 +1,6 @@
 import type { CheckInResult, LeaderboardOptIn, MyProgress, WeeklyLeaderboard, z } from "@heymey/contracts";
 import { DomainError } from "../../../shared/errors.js";
+import { assertGameReward, assertPointsReason } from "../domain/firewall.js";
 import { istDayKey, type Clock, type DomainEvent } from "../../../shared/index.js";
 import {
   CHECK_IN_REWARD,
@@ -20,6 +21,8 @@ export interface EconomyRepository {
   /** One transaction: Points row + XP row for this IST day. false = already checked in that day. */
   checkIn(a: { userId: string; day: string; xp: number; points: number; at: Date }): Promise<boolean>;
   hasCheckedIn(userId: string, day: string): Promise<boolean>;
+  /** Append one Points row. false = this idempotency key was already used. */
+  awardPoints(a: { userId: string; delta: number; reason: string; key: string; at: Date }): Promise<boolean>;
   xpTotal(userId: string): Promise<number>;
   pointsBalance(userId: string): Promise<number>;
   trophiesOf(userId: string): Promise<{ code: string; earnedAt: Date }[]>;
@@ -152,4 +155,17 @@ export async function weeklyLeaderboard(d: ProgressionDeps, userId: string): Pro
     entries.push({ rank: prev && prev.xp === r.xp ? prev.rank : entries.length + 1, displayName: p.nickname, xp: r.xp, isMe: r.userId === userId });
   }
   return { weekStart: from.toISOString(), weekEnd: to.toISOString(), optedIn, entries };
+}
+
+/**
+ * The games -> economy firewall API (BOLT-0115). A game may credit Points only: the amount must be a positive integer
+ * reward (assertGameReward) and the ledger reason is "game:<game>" (assertPointsReason). Never Sparks, never XP.
+ * Idempotent per sourceKey.
+ */
+export async function awardGamePoints(d: ProgressionDeps, a: { userId: string; game: string; amount: number; sourceKey: string }): Promise<boolean> {
+  assertGameReward({ kind: "currency", currency: "POINTS", amount: a.amount });
+  if (a.amount === 0) return false;
+  const reason = `game:${a.game}`;
+  assertPointsReason(reason);
+  return d.repo.awardPoints({ userId: a.userId, delta: a.amount, reason, key: `game:${a.sourceKey}`, at: d.clock.now() });
 }

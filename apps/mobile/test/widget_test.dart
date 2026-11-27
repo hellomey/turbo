@@ -32,7 +32,7 @@ void main() {
 
     await tester.tap(find.text('Play'));
     await tester.pumpAndSettle();
-    expect(find.text('Games are coming soon'), findsOneWidget);
+    expect(find.text('Daily Spin'), findsOneWidget);
   });
 
   testWidgets('signed out: onboarding starts with the date of birth', (

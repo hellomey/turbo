@@ -1,0 +1,7 @@
+/* Game Rules & Odds tables. Same tokens and heavy line as the stall pages (components/stall/stall.css). */
+.st-table { width: 100%; border-collapse: collapse; margin: 0 0 16px; font-size: 18px; font-weight: 700; background: #fff; }
+.st-table th, .st-table td { border: var(--st-line); padding: 10px 12px; text-align: left; }
+.st-table th { font-weight: 900; background: var(--st-yellow); }
+.st-table td + td, .st-table th + th { text-align: right; font-variant-numeric: tabular-nums; }
+.st-list { margin: 0 0 12px; padding-left: 22px; font-size: 18px; line-height: 1.5; font-weight: 600; }
+.st-list li { margin: 0 0 6px; }

@@ -687,6 +687,33 @@ CREATE TABLE "GameResult" (
 );
 
 -- CreateTable
+CREATE TABLE "DailySpin" (
+    "userId" UUID NOT NULL,
+    "day" TEXT NOT NULL,
+    "prizeId" TEXT NOT NULL,
+    "amount" INTEGER NOT NULL,
+    "roll" INTEGER NOT NULL,
+    "oddsVersion" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "DailySpin_pkey" PRIMARY KEY ("userId","day")
+);
+
+-- CreateTable
+CREATE TABLE "ConfidenceDuel" (
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "examCode" TEXT NOT NULL,
+    "questions" JSONB NOT NULL,
+    "startedAt" TIMESTAMP(3) NOT NULL,
+    "submittedAt" TIMESTAMP(3),
+    "pointsAwarded" INTEGER NOT NULL DEFAULT 0,
+    "result" JSONB,
+
+    CONSTRAINT "ConfidenceDuel_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "FeatureFlag" (
     "key" TEXT NOT NULL,
     "enabled" BOOLEAN NOT NULL DEFAULT false,
@@ -1309,6 +1336,9 @@ CREATE UNIQUE INDEX "OddsConfig_game_version_key" ON "OddsConfig"("game", "versi
 
 -- CreateIndex
 CREATE INDEX "GameResult_userId_game_createdAt_idx" ON "GameResult"("userId", "game", "createdAt");
+
+-- CreateIndex
+CREATE INDEX "ConfidenceDuel_userId_submittedAt_idx" ON "ConfidenceDuel"("userId", "submittedAt");
 
 -- CreateIndex
 CREATE INDEX "UserTopicState_nextDueAt_idx" ON "UserTopicState"("nextDueAt");

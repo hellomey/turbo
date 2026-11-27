@@ -65,6 +65,11 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   QUESTION_NOT_FOUND: 404,
   // BOLT-0012 plan (U-plan logical design, failure modes: no plan -> 404)
   PLAN_NOT_FOUND: 404,
+  // BOLT-0115 games
+  GAMES_SLEEPING: 409,
+  DUEL_NOT_FOUND: 404,
+  DUEL_ALREADY_SUBMITTED: 409,
+  DUEL_NO_QUESTIONS: 409,
   INTERNAL_ERROR: 500,
   FEATURE_PAUSED: 503,
   AI_BUSY: 503,

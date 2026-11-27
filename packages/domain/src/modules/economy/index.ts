@@ -58,6 +58,8 @@ export interface EconomyProgressionApi {
    * the user already has it. Trophies are badges only: they carry no Points, Sparks or anything worth money.
    */
   awardTrophy(userId: string, code: TrophyCode): Promise<boolean>;
+  /** Games -> economy firewall API: Points only, positive integer, idempotent per sourceKey. false = already credited. */
+  awardGamePoints(a: { userId: string; game: string; amount: number; sourceKey: string }): Promise<boolean>;
 }
 
 export function createEconomyProgression(
@@ -76,5 +78,6 @@ export function createEconomyProgression(
     setOptIn: (userId, optIn) => progression.setOptIn(d, userId, optIn),
     onLearningEvent: (e) => progression.onLearningEvent(d, e),
     awardTrophy: (userId, code) => progression.awardTrophy(d, userId, code),
+    awardGamePoints: (a) => progression.awardGamePoints(d, a),
   };
 }

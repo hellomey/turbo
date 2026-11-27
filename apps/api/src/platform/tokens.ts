@@ -32,3 +32,4 @@ export const ENTITLEMENTS = Symbol("ENTITLEMENTS"); // BOLT-0010 (billing Phase 
 export const PLAN_API = Symbol("PLAN_API"); // BOLT-0012
 export const EXPO_API = Symbol("EXPO_API"); // BOLT-0112 (stall: expo challenge + sticker codes)
 export const ECONOMY_API = Symbol("ECONOMY_API"); // BOLT-0113
+export const GAMES_API = Symbol("GAMES_API"); // BOLT-0115

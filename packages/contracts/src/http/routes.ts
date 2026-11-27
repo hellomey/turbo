@@ -23,6 +23,7 @@ import { EligibilityCheckBody, EligibilityResult, ExamCode, ExamDetail, ExamList
 import { GlossaryList, GlossaryQuery, Lesson, StudyMap } from "./study.js";
 import { studyRoutes } from "./routes-study.js";
 import { ExpoChallenge, ExpoChallengeResult, MyStickerCode, RedeemStickerCodeBody, StickerCodeRedeemed, SubmitExpoChallengeBody } from "./expo.js";
+import { gamesRoutes } from "./routes-games.js";
 
 const json = <T extends z.ZodType>(schema: T) => ({ content: { "application/json": { schema } } });
 const err = (description: string) => ({ description, ...json(ErrorEnvelope) });
@@ -246,4 +247,7 @@ export const routes: HmRoute[] = [
       404: err("STICKER_CODE_NOT_FOUND"), 409: err("STICKER_CODE_ALREADY_REDEEMED"), ...authErrors,
     },
   },
+
+  // ---------------------------------------------------------------- games (BOLT-0115)
+  ...gamesRoutes,
 ];

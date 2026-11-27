@@ -38,6 +38,9 @@ export const ERROR_CODES = {
   AI_BUSY: "AI help is busy. Here is the written explanation.",
   GAMES_SLEEPING: "Games are sleeping now. They wake up at 5 AM. Study is open.",
   RANKED_DAILY_CAP: "You've played today's 10 ranked duels. Practice duels are open.",
+  DUEL_NOT_FOUND: "We couldn't find that duel. Please start a new one.",
+  DUEL_ALREADY_SUBMITTED: "This duel is already done. Start a new one.",
+  DUEL_NO_QUESTIONS: "There are not enough questions for a duel in this exam yet.",
 
   // Phase 2: core study (INT-002, BOLT-0008). Added, never renamed.
   TOPIC_NOT_FOUND: "We couldn't find that topic.",

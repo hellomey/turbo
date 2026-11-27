@@ -6,14 +6,18 @@
     "GameResult",
     "OddsConfig (versioned)",
     "League",
-    "Trophy"
+    "Trophy",
+    "DailySpin",
+    "ConfidenceDuel"
   ],
   "responsibilities": [
     "Server-authoritative rooms",
     "CSPRNG spin/slot with versioned odds stored per outcome",
     "ranked cap 10/day for everyone",
     "games sleep 12-5 AM IST",
-    "bots never give ranked trophies"
+    "bots never give ranked trophies",
+    "Daily Spin: one free spin per IST day, Points prizes only, odds served from the draw table",
+    "solo Confidence Duel: server-graded calibration scoring, daily Points cap"
   ],
   "dependsOn": [
     "content",

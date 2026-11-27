@@ -18,5 +18,6 @@ export * from "./http/notifications.js";
 export * from "./http/sync.js";
 export * from "./http/expo.js";
 export * from "./http/economy.js";
+export * from "./http/games.js";
 export { routes } from "./http/routes.js";
 export * from "./socket/events.js";

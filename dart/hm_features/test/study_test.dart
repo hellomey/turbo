@@ -194,7 +194,7 @@ void main() {
       expect(opened, 1);
 
       await tester.pumpWidget(h.app(const Scaffold(body: PlayTab())));
-      expect(find.text('Games are coming soon'), findsOneWidget);
+      expect(find.text('Daily Spin'), findsOneWidget);
       await tester.pumpWidget(h.app(const Scaffold(body: SquadTab())));
       expect(find.text('Squads are coming soon'), findsOneWidget);
     });

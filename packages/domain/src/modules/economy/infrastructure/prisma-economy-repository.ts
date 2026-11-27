@@ -34,6 +34,14 @@ export class PrismaEconomyRepository implements EconomyRepository {
     return (await this.prisma.pointsLedger.count({ where: { idempotencyKey: checkInKey(userId, day) } })) > 0;
   }
 
+  async awardPoints(a: { userId: string; delta: number; reason: string; key: string; at: Date }): Promise<boolean> {
+    const r = await this.prisma.pointsLedger.createMany({
+      data: [{ userId: a.userId, delta: a.delta, reason: a.reason, idempotencyKey: a.key, createdAt: a.at }],
+      skipDuplicates: true,
+    });
+    return r.count === 1;
+  }
+
   async xpTotal(userId: string): Promise<number> {
     return (await this.prisma.xpAward.aggregate({ where: { userId }, _sum: { amount: true } }))._sum.amount ?? 0;
   }
