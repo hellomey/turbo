@@ -1039,7 +1039,8 @@ CREATE TABLE "GlossaryTerm" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" UUID NOT NULL,
-    "email" TEXT NOT NULL,
+    "email" TEXT,
+    "isGuest" BOOLEAN NOT NULL DEFAULT false,
     "nickname" TEXT,
     "district" TEXT,
     "calmMode" BOOLEAN NOT NULL DEFAULT false,

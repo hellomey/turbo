@@ -2,7 +2,8 @@
 
 model User {
   id                   String    @id @default(uuid(7)) @db.Uuid
-  email                String    @unique // normalised (lower-case, trimmed)
+  email                String?   @unique // normalised (lower-case, trimmed); null for a guest until they sign in with email
+  isGuest              Boolean   @default(false) // guest mode (D-2026-11-27): no email, 30-day session, cleaned up when inactive
   nickname             String?
   district             String? // one of the 38 TN districts; chosen by the user, we never collect location (§23)
   calmMode             Boolean   @default(false)

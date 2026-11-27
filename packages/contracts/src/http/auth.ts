@@ -42,8 +42,24 @@ export const SessionGranted = z
     isNewUser: z.boolean(),
     /** True when signing in cancelled a pending account deletion (§38.7). */
     deletionCancelled: z.boolean(),
+    /**
+     * Set only when a guest signed in with an email (guest mode, D-2026-11-27). `kept`: the email was new, so the
+     * guest account became this account and all progress stays. `not_merged`: the email already had an account;
+     * you are now in that account and the guest progress was NOT moved into it.
+     */
+    guestProgress: z.enum(["kept", "not_merged"]).optional(),
   })
   .openapi("SessionGranted");
+
+/** Guest mode (D-2026-11-27): try the app without an email. Adults only; under-18s join the waitlist (DPDP). */
+export const GuestSessionBody = z
+  .object({
+    deviceId: z.uuid(),
+    platform: z.enum(["android", "ios", "web"]),
+    /** Must be true; the server answers UNDER_18 otherwise. */
+    ageConfirmed18: z.boolean(),
+  })
+  .openapi("GuestSessionBody");
 
 /** Desk sign-in needs a second factor. The challenge token lives 5 minutes. */
 export const DeskChallenge = z

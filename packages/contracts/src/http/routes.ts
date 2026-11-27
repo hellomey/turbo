@@ -8,6 +8,7 @@ import {
   DeskTotpEnrollBody,
   DeskTotpEnrollResponse,
   DeskTotpVerifyBody,
+  GuestSessionBody,
   OkResponse,
   OtpRequestBody,
   OtpRequestResponse,
@@ -54,11 +55,20 @@ export const routes: HmRoute[] = [
   },
   {
     method: "post", path: "/v1/auth/otp/verify", tags: ["auth"], operationId: "verifyOtp",
-    auth: "public", idempotent: true, sensitiveResponse: true,
+    auth: "optional", idempotent: true, sensitiveResponse: true,
     rateLimit: [{ scope: "ip", limit: 30, windowSeconds: 3600 }],
-    summary: "Exchange email + code for a session bound to this device (or a Desk 2FA challenge).",
+    summary:
+      "Exchange email + code for a session bound to this device (or a Desk 2FA challenge). With a guest token it keeps the guest progress (see guestProgress).",
     request: { headers: idempotency, body: json(OtpVerifyBody) },
     responses: { 200: { description: "Signed in, or second factor needed", ...json(OtpVerifyResponse) }, ...authErrors },
+  },
+  {
+    method: "post", path: "/v1/auth/guest", tags: ["auth"], operationId: "startGuestSession",
+    auth: "public", idempotent: true, sensitiveResponse: true,
+    rateLimit: [{ scope: "ip", limit: 10, windowSeconds: 3600 }],
+    summary: "Try HeyMey without an email (18+ only). Guest sessions last 30 days; sign in with email to keep progress.",
+    request: { headers: idempotency, body: json(GuestSessionBody) },
+    responses: { 200: { description: "Guest signed in", ...json(TokenPair) }, ...errors, 422: err("Under 18 (UNDER_18)") },
   },
   {
     method: "post", path: "/v1/auth/refresh", tags: ["auth"], operationId: "refreshSession",
