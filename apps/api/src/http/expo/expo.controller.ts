@@ -1,11 +1,12 @@
-import { Body, Controller, Get, HttpCode, Inject, Param, Post, Req } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Inject, Logger, Param, Post, Req } from "@nestjs/common";
 import { RedeemStickerCodeBody, SubmitExpoChallengeBody, z } from "@heymey/contracts";
 import type { AuditApi } from "@heymey/domain/modules/audit";
+import type { EconomyProgressionApi } from "@heymey/domain/modules/economy";
 import { canRedeemStickerCodes, normalizeStickerCode, type ExpoApi } from "@heymey/domain/modules/practice";
 import { DomainError } from "@heymey/domain/shared";
 import { actorOf, type HmRequest, requireAuth } from "../../platform/request-context.js";
 import { parse } from "../../platform/zod.js";
-import { AUDIT_API, EXPO_API } from "../../platform/tokens.js";
+import { AUDIT_API, ECONOMY_API, EXPO_API } from "../../platform/tokens.js";
 
 const Uuid = z.uuid();
 
@@ -16,9 +17,12 @@ const Uuid = z.uuid();
  */
 @Controller()
 export class ExpoController {
+  private readonly log = new Logger("expo");
+
   constructor(
     @Inject(EXPO_API) private readonly expo: ExpoApi,
     @Inject(AUDIT_API) private readonly audit: AuditApi,
+    @Inject(ECONOMY_API) private readonly economy: EconomyProgressionApi,
   ) {}
 
   @Get("v1/expo/challenge")
@@ -28,9 +32,14 @@ export class ExpoController {
 
   @Post("v1/expo/challenge/:challengeId/submit")
   @HttpCode(200)
-  submit(@Req() req: HmRequest, @Param("challengeId") challengeId: string, @Body() body: unknown) {
+  async submit(@Req() req: HmRequest, @Param("challengeId") challengeId: string, @Body() body: unknown) {
     const userId = requireAuth(req).userId;
-    return this.expo.submit(userId, parse(Uuid, challengeId), parse(SubmitExpoChallengeBody, body));
+    const result = await this.expo.submit(userId, parse(Uuid, challengeId), parse(SubmitExpoChallengeBody, body));
+    // Idempotent trophy (economy). A failed award is logged and never fails the submit.
+    await this.economy.awardTrophy(userId, "expo_challenge").catch((e: unknown) => {
+      this.log.warn(`expo_challenge trophy award failed requestId=${String(req.id)} error=${e instanceof Error ? e.name : "unknown"}`);
+    });
+    return result;
   }
 
   @Get("v1/me/sticker-code")

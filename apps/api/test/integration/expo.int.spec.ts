@@ -114,6 +114,8 @@ describe("expo challenge", () => {
     expect((await call("POST", url, { token, body: { answers }, key })).json()).toEqual(r.json());
     expect((await call("POST", url, { token, body: { answers } })).json().error.code).toBe("EXPO_CHALLENGE_ALREADY_SUBMITTED");
     expect((await call("GET", "/v1/me/sticker-code", { token })).json()).toEqual({ code: r.json().stickerCode, redeemed: false });
+    const meId = (await call("GET", "/v1/me", { token })).json().id as string;
+    expect(await prisma.userTrophy.count({ where: { userId: meId, code: "expo_challenge" } })).toBe(1);
 
     const other = await guest();
     expect((await call("POST", url, { token: other, body: { answers } })).statusCode).toBe(404);
