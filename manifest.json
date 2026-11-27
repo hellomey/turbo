@@ -1,11 +1,11 @@
 {
   "name": "HeyMey",
   "short_name": "HeyMey",
-  "description": "Prepare for TNPSC exams.",
+  "description": "Light up your TNPSC prep. Beta.",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#FFF8EC",
-  "theme_color": "#19B5AE",
+  "background_color": "#F8F5EF",
+  "theme_color": "#F5A524",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
