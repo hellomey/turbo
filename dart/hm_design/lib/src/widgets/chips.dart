@@ -134,3 +134,55 @@ class HmRankChip extends StatelessWidget {
     );
   }
 }
+
+/// A small rounded tag (design/ui 19-27): "Coming soon", "Official", "Expected", "+1". Amber tint by default.
+class HmTag extends StatelessWidget {
+  const HmTag({
+    super.key,
+    required this.label,
+    this.color,
+    this.textColor,
+    this.icon,
+    this.dense = false,
+  });
+
+  final String label;
+  final Color? color;
+  final Color? textColor;
+  final IconData? icon;
+  final bool dense;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.hm;
+    final ink = textColor ?? p.primaryText;
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: dense ? HmSpace.sm : HmSpace.md,
+        vertical: dense ? 2 : HmSpace.xs,
+      ),
+      decoration: BoxDecoration(
+        color: color ?? const Color(0xFFFFEFD5),
+        borderRadius: BorderRadius.circular(HmRadius.pill),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 16, color: ink),
+            const SizedBox(width: 4),
+          ],
+          Flexible(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: ink,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

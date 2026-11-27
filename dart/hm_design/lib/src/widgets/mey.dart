@@ -40,7 +40,23 @@ enum HmPic {
   icAptitude('ic_aptitude'),
   icTamil('ic_tamil'),
   icGavel('ic_gavel'),
-  icPencilMath('ic_pencil_math');
+  icPencilMath('ic_pencil_math'),
+  icDuel('ic_duel'),
+  icShield('ic_shield'),
+  coin('coin'),
+  meyDuel('mey_duel'),
+  expoStall('expo_stall'),
+  meyHandsUp('mey_hands_up'),
+  meySticker('mey_sticker'),
+  meyBell('mey_bell'),
+  meySleep('mey_sleep'),
+  icDiya('ic_diya'),
+  icTrophy('ic_trophy'),
+  icShieldCheck('ic_shield_check'),
+  icTrophyGold('ic_trophy_gold'),
+  meySquad('mey_squad'),
+  deskHero('desk_hero'),
+  logo('logo');
 
   const HmPic(this.file);
   final String file;

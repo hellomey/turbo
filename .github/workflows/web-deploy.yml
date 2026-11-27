@@ -64,7 +64,15 @@ jobs:
                   { key: "X-Content-Type-Options", value: "nosniff" },
                   { key: "X-Frame-Options", value: "DENY" },
                   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" } ] },
-                { source: "/(index.html|flutter_service_worker.js|flutter_bootstrap.js|version.json)",
+                // Pictures and fonts change rarely: browsers keep them an hour, then refresh in the background.
+                // The no-cache rules below come later, so they win for the files that must always be fresh.
+                { source: "/(assets|icons|desktop)/:file*",
+                  headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }] },
+                { source: "/(index.html|flutter_service_worker.js|flutter_bootstrap.js|version.json|main.dart.js|manifest.json|favicon.png)",
+                  headers: [{ key: "Cache-Control", value: "no-cache" }] },
+                { source: "/desktop/desktop.js",
+                  headers: [{ key: "Cache-Control", value: "no-cache" }] },
+                { source: "/assets/(AssetManifest.*|FontManifest.json|NOTICES)",
                   headers: [{ key: "Cache-Control", value: "no-cache" }] } ] };
             require("fs").writeFileSync(process.argv[1], JSON.stringify(cfg, null, 2));
           ' "${{ matrix.dir }}/build/web/vercel.json"

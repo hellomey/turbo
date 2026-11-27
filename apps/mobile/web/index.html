@@ -5,17 +5,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="HeyMey helps you prepare for TNPSC exams. Try it in your browser, no install needed.">
-  <meta name="theme-color" content="#FFF8EC">
+  <meta name="theme-color" content="#F8F5EF">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="HeyMey">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <title>HeyMey</title>
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/Icon-192.png">
+  <title>HeyMey: light up your TNPSC prep</title>
   <link rel="manifest" href="manifest.json">
-  <style>html, body { margin: 0; background: #FFF8EC; }</style>
+  <style>
+    html, body { margin: 0; background: #F8F5EF; }
+    /* Desktop page (design/ui/desktop.png). Shown only on wide screens with a mouse; phones go straight to the app. */
+    #hm-desktop { display: none; min-height: 100vh; box-sizing: border-box; color: #1C1C1E;
+      font-family: "Nunito", ui-rounded, "Segoe UI", system-ui, -apple-system, sans-serif;
+      background-color: #F8F5EF;
+      background-image: radial-gradient(circle at 1px 1px, rgba(217, 130, 11, 0.13) 1.5px, transparent 0);
+      background-size: 26px 26px; padding: 28px 56px 40px; }
+    #hm-desktop.on { display: flex; flex-direction: column; }
+    .hd-top { display: flex; align-items: center; justify-content: space-between; }
+    .hd-brand { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 26px; }
+    .hd-brand img { width: 44px; height: 44px; }
+    .hd-beta { background: #FFEFD5; color: #9A5800; font-weight: 800; font-size: 13px; border-radius: 999px; padding: 4px 12px; }
+    .hd-main { flex: 1; display: grid; grid-template-columns: 1.05fr 1fr 360px; gap: 32px; align-items: center;
+      max-width: 1280px; width: 100%; margin: 0 auto; }
+    .hd-title { font-size: clamp(40px, 4.6vw, 64px); font-weight: 900; line-height: 1.05; margin: 0 0 10px; }
+    .hd-sub { font-size: clamp(26px, 2.6vw, 38px); font-weight: 900; line-height: 1.15; margin: 0 0 18px; }
+    .hd-copy { font-size: 18px; line-height: 1.55; color: #4A4540; max-width: 440px; margin: 0; }
+    .hd-hero { width: 100%; max-width: 480px; justify-self: center; animation: hd-bob 3.2s ease-in-out infinite; }
+    .hd-card { background: #fff; border-radius: 28px; padding: 28px; text-align: center;
+      box-shadow: 0 18px 48px rgba(90, 64, 32, 0.14); }
+    .hd-card h2 { margin: 0 0 14px; font-size: 20px; font-weight: 800; }
+    .hd-qr { width: 220px; height: 220px; display: block; margin: 0 auto; }
+    .hd-or { color: #8A8178; font-size: 14px; margin: 14px 0; }
+    .hd-btn { display: block; width: 100%; box-sizing: border-box; border-radius: 999px; padding: 14px 18px; margin-top: 12px;
+      font: inherit; font-weight: 800; font-size: 16px; cursor: pointer; transition: transform 150ms ease, box-shadow 150ms ease; }
+    .hd-btn:hover { transform: translateY(-1px); }
+    .hd-btn:active { transform: scale(0.97); }
+    .hd-btn:focus-visible { outline: 3px solid #3A8DDE; outline-offset: 2px; }
+    .hd-ghost { background: #fff; color: #9A5800; border: 2px solid #F5A524; }
+    .hd-solid { background: #F5A524; color: #1C1C1E; border: 0; box-shadow: 0 8px 20px rgba(245, 165, 36, 0.35); }
+    .hd-note { font-size: 13px; color: #8A8178; margin-top: 12px; min-height: 18px; }
+    @keyframes hd-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @media (prefers-reduced-motion: reduce) { .hd-hero { animation: none; } .hd-btn { transition: none; } }
+    @media (max-width: 1180px) { .hd-main { grid-template-columns: 1fr 340px; } .hd-hero { display: none; } }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <main id="hm-desktop" aria-labelledby="hd-title">
+    <header class="hd-top">
+      <div class="hd-brand"><img src="desktop/logo.png" alt="" width="44" height="44">HeyMey <span class="hd-beta">Beta</span></div>
+    </header>
+    <section class="hd-main">
+      <div>
+        <h1 class="hd-title" id="hd-title">HeyMey <span class="hd-beta" style="font-size:18px;vertical-align:middle">Beta</span></h1>
+        <p class="hd-sub">Try it on your mobile phone</p>
+        <p class="hd-copy">HeyMey is made for phones. Scan the code with your phone's camera to light up your TNPSC exam prep.
+          HeyMey is in beta and still being built.</p>
+      </div>
+      <img class="hd-hero" src="desktop/hero.png" alt="" width="640" height="418" decoding="async">
+      <div class="hd-card">
+        <h2>Scan to open on mobile</h2>
+        <img class="hd-qr" src="desktop/qr.svg" alt="QR code for heymey.app/try" width="220" height="220">
+        <div class="hd-or">or</div>
+        <button class="hd-btn hd-ghost" id="hd-copy" type="button">Copy mobile link</button>
+        <button class="hd-btn hd-solid" id="hd-open" type="button">Open here in this browser</button>
+        <div class="hd-note" id="hd-note" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+  <script src="desktop/desktop.js"></script>
 </body>
 </html>

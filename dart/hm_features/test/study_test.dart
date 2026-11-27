@@ -199,7 +199,7 @@ void main() {
       await tester.pumpWidget(h.app(const Scaffold(body: PlayTab())));
       expect(find.text('Daily Spin'), findsOneWidget);
       await tester.pumpWidget(h.app(const Scaffold(body: SquadTab())));
-      expect(find.text('Squads are coming soon'), findsOneWidget);
+      expect(find.text('Study with friends'), findsOneWidget);
     });
   });
 

@@ -293,6 +293,9 @@ void main() {
     testWidgets('settings save at once; a failure restores the saved value', (
       tester,
     ) async {
+      tester.view.physicalSize = const Size(800, 2400);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       final f = PlanFakes();
       await tester.pumpWidget(f.harness().app(const AlertSettingsScreen()));
       await tester.pumpAndSettle();

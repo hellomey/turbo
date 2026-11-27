@@ -24,7 +24,7 @@ const CROPS = [
   ["mey_sleepy", "09_Relight list.png", 798, 698, 1148, 1068, true],
   ["mey_pencil", "10_Practice.png", 822, 528, 1152, 922, true],
   ["mey_puzzled", "11_Mistakes.png", 922, 2028, 1168, 2378, true],
-  ["mey_small", "12_PYQVault.png", 984, 698, 1172, 922, true],
+  ["mey_small", "12_PYQVault.png", 984, 698, 1172, 922, true, [[984, 698, 1040, 735]]],
   ["mey_cheer", "14_Plan.png", 858, 722, 1128, 1112, true],
   ["mey_calendar", "14_Plan.png", 818, 2048, 1172, 2342, true],
   ["mey_proud", "15_Readiness.png", 782, 538, 1162, 1062, true],
@@ -49,6 +49,26 @@ const CROPS = [
   ["ic_tamil", "10_Practice.png", 781, 1895, 890, 2004, false],
   ["ic_gavel", "15_Readiness.png", 560, 2230, 665, 2335, true],
   ["ic_pencil_math", "15_Readiness.png", 1040, 2230, 1148, 2335, true],
+  // Screens 19-27 and the desktop page (BOLT-0118), measured on 560-wide (phone) or 1100-wide (desktop) previews.
+  ...[
+    ["ic_duel", "19_Fun&stall.png", 138, 492, 236, 586, true],
+    ["ic_shield", "19_Fun&stall.png", 348, 503, 406, 566, true],
+    ["coin", "19_Fun&stall.png", 116, 763, 172, 820, true],
+    ["mey_duel", "21_Confidence Duel.png", 372, 762, 474, 938, true],
+    ["expo_stall", "22_Expo Challenge.png", 116, 183, 231, 271, false],
+    ["mey_hands_up", "22_Expo Challenge.png", 376, 742, 472, 852, true],
+    ["mey_sticker", "23_Sticker reward.png", 174, 236, 362, 432, true],
+    ["mey_bell", "24_Exam Alerts.png", 212, 92, 338, 222, true],
+    ["mey_sleep", "25_Alert settings.png", 212, 732, 358, 882, true],
+    ["ic_diya", "26_ProfileScreen.png", 300, 328, 364, 394, true],
+    ["ic_trophy", "26_ProfileScreen.png", 120, 362, 176, 412, true],
+    ["ic_shield_check", "26_ProfileScreen.png", 195, 362, 251, 412, true],
+    ["ic_trophy_gold", "26_ProfileScreen.png", 120, 457, 176, 507, true],
+    ["mey_squad", "27_Extra_Squad (coming soon).png", 98, 262, 462, 494, true],
+  ].map((c) => [c[0], c[1], ...c.slice(2, 6).map((v) => (v * 1438) / 560), c[6], (c[7] ?? []).map((r) => r.map((v) => (v * 1438) / 560))]),
+  ...[["desk_hero", "desktop.png", 425, 230, 750, 442, true]].map((c) => [
+    c[0], c[1], ...c.slice(2, 6).map((v) => (v * 2752 * 1438) / 1100 / 1536), c[6],
+  ]),
 ];
 
 const cache = new Map();
@@ -100,6 +120,12 @@ function removeBackground(p) {
   return p;
 }
 
+// Fully transparent pixels get black RGB so the PNG compresses better.
+function clean(p) {
+  for (let i = 0; i < p.data.length; i += 4) if (p.data[i + 3] === 0) p.data[i] = p.data[i + 1] = p.data[i + 2] = 0;
+  return p;
+}
+
 // Box-filter downscale so the longest side is at most max px (2x the largest size a screen shows it at).
 function shrink(p, max) {
   const f = Math.max(p.width, p.height) / max;
@@ -132,7 +158,55 @@ for (const [name, file, x0, y0, x1, y1, rm, clear = []] of CROPS) {
     for (let y = Math.round((cy0 - y0) * S); y < Math.round((cy1 - y0) * S); y++)
       for (let x = Math.round((cx0 - x0) * S); x < Math.round((cx1 - x0) * S); x++)
         if (x >= 0 && y >= 0 && x < p.width && y < p.height) p.data[(y * p.width + x) * 4 + 3] = 0;
-  p = shrink(p, name.startsWith("story") ? 640 : name.startsWith("ic_") ? 128 : 360);
+  p = shrink(p, name.startsWith("story") || name === "desk_hero" || name === "mey_squad" ? 640 : name.startsWith("ic_") || name === "coin" ? 128 : 360);
+  clean(p);
   writeFileSync(new URL(`${name}.png`, OUT), PNG.sync.write(p, { deflateLevel: 9 }));
+  if (name === "desk_hero") writeFileSync(new URL("../../apps/mobile/web/desktop/hero.png", import.meta.url), PNG.sync.write(p, { deflateLevel: 9 }));
   console.log(`${name}.png ${p.width}x${p.height}`);
+}
+
+// The round logo (design/ui/logo.png): circular crop with transparent corners, written as the in-app logo,
+// the web favicon and the PWA icons. Maskable icons sit on the warm background with safe-zone padding.
+{
+  const src = load("logo.png");
+  const cx = 1024, cy = 1024, r = 866;
+  const size = 2 * r;
+  const round = new PNG({ width: size, height: size });
+  for (let y = 0; y < size; y++)
+    for (let x = 0; x < size; x++) {
+      const dx = x - r + 0.5, dy = y - r + 0.5, dist = Math.hypot(dx, dy);
+      const i = ((cy - r + y) * src.width + (cx - r + x)) * 4, o = (y * size + x) * 4;
+      src.data.copy(round.data, o, i, i + 4);
+      round.data[o + 3] = Math.round(255 * Math.max(0, Math.min(1, r - dist)));
+    }
+  const maskable = (px) => {
+    const inner = shrink(round, Math.round(px * 0.8));
+    const out = new PNG({ width: px, height: px });
+    const off = Math.round((px - inner.width) / 2);
+    for (let y = 0; y < px; y++)
+      for (let x = 0; x < px; x++) {
+        const o = (y * px + x) * 4;
+        let [rr, gg, bb] = [0xf8, 0xf5, 0xef];
+        const ix = x - off, iy = y - off;
+        if (ix >= 0 && iy >= 0 && ix < inner.width && iy < inner.height) {
+          const i = (iy * inner.width + ix) * 4, a = inner.data[i + 3] / 255;
+          rr = rr * (1 - a) + inner.data[i] * a; gg = gg * (1 - a) + inner.data[i + 1] * a; bb = bb * (1 - a) + inner.data[i + 2] * a;
+        }
+        out.data[o] = rr; out.data[o + 1] = gg; out.data[o + 2] = bb; out.data[o + 3] = 255;
+      }
+    return out;
+  };
+  const write = (rel, p) => {
+    writeFileSync(new URL(rel, new URL("../../", import.meta.url)), PNG.sync.write(p, { deflateLevel: 9 }));
+    console.log(`${rel} ${p.width}x${p.height}`);
+  };
+  write("dart/hm_design/assets/img/logo.png", clean(shrink(round, 360)));
+  write("apps/mobile/web/desktop/logo.png", clean(shrink(round, 160)));
+  for (const app of ["apps/mobile/web", "apps/desk/web"]) {
+    write(`${app}/favicon.png`, shrink(round, 48));
+    write(`${app}/icons/Icon-192.png`, shrink(round, 192));
+    write(`${app}/icons/Icon-512.png`, shrink(round, 512));
+    write(`${app}/icons/Icon-maskable-192.png`, maskable(192));
+    write(`${app}/icons/Icon-maskable-512.png`, maskable(512));
+  }
 }

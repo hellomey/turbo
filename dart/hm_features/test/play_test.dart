@@ -220,19 +220,15 @@ void main() {
                   as SpinWheelPainter)
               .turn;
       final target = -SpinWheelPainter.centreOf(_prizes, 'points_20');
-      expect(
-        turn(),
-        isNot(closeTo(target, 0.001)),
-        reason: 'turning, at most 400 ms',
-      );
-      await tester.pump(const Duration(milliseconds: 300));
+      expect(turn(), isNot(closeTo(target, 0.001)), reason: 'still turning');
+      await tester.pump(const Duration(milliseconds: 2400));
       expect(turn(), closeTo(target, 0.001));
       await tester.pumpAndSettle();
       expect(repo.spins, 1);
-      expect(find.text('You won 20 Points.'), findsOneWidget);
+      expect(find.text('+20 Points!'), findsOneWidget);
       expect(
         tester
-            .widget<FilledButton>(find.byKey(const Key('spin-button')))
+            .widget<HmChunkyButton>(find.byKey(const Key('spin-button')))
             .onPressed,
         isNull,
       );
@@ -249,11 +245,11 @@ void main() {
     final h = harness(repo);
     await tester.pumpWidget(h.app(const DailySpinScreen()));
     await tester.pumpAndSettle();
-    expect(find.text('You won 20 Points.'), findsOneWidget);
+    expect(find.textContaining("Today's spin"), findsOneWidget);
     expect(find.text('Next free spin tomorrow at 5 AM'), findsOneWidget);
     expect(
       tester
-          .widget<FilledButton>(find.byKey(const Key('spin-button')))
+          .widget<HmChunkyButton>(find.byKey(const Key('spin-button')))
           .onPressed,
       isNull,
     );
@@ -291,7 +287,7 @@ void main() {
       (wheel.painter! as SpinWheelPainter).turn,
       -SpinWheelPainter.centreOf(_prizes, 'points_20'),
     );
-    expect(find.text('You won 20 Points.'), findsOneWidget);
+    expect(find.text('+20 Points!'), findsOneWidget);
   });
 
   testWidgets(
@@ -309,7 +305,7 @@ void main() {
       await tester.tap(find.byKey(const Key('duel-start')));
       await tester.pump();
       await tester.pump();
-      expect(find.text('1. Capital of Tamil Nadu?'), findsOneWidget);
+      expect(find.text('Capital of Tamil Nadu?'), findsOneWidget);
       await tester.tap(find.byKey(const Key('duel-q-0-a')));
       await tester.tap(find.byKey(const Key('duel-q-0-c3')));
       await tester.pump();
