@@ -5024,7 +5024,7 @@
         "x-heymey-rate-limit": [
           {
             "scope": "ip",
-            "limit": 10,
+            "limit": 60,
             "windowSeconds": 3600
           }
         ],

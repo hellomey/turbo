@@ -65,7 +65,7 @@ export const routes: HmRoute[] = [
   {
     method: "post", path: "/v1/auth/guest", tags: ["auth"], operationId: "startGuestSession",
     auth: "public", idempotent: true, sensitiveResponse: true,
-    rateLimit: [{ scope: "ip", limit: 10, windowSeconds: 3600 }],
+    rateLimit: [{ scope: "ip", limit: 60, windowSeconds: 3600 }],
     summary: "Try HeyMey without an email (18+ only). Guest sessions last 30 days; sign in with email to keep progress.",
     request: { headers: idempotency, body: json(GuestSessionBody) },
     responses: { 200: { description: "Guest signed in", ...json(TokenPair) }, ...errors, 422: err("Under 18 (UNDER_18)") },
