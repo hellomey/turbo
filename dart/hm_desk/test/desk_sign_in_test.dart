@@ -156,6 +156,7 @@ void main() {
     await tester.enterText(find.byKey(const Key('hm-code-field')), '111111');
     await tester.pumpAndSettle();
     expect(find.text('Your role: Ops, Admin'), findsOneWidget);
+    expect(find.text('Sticker codes'), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('desk-logout')));
     await tester.pumpAndSettle();

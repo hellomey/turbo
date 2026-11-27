@@ -192,6 +192,10 @@ class ApiClient {
           return ApproveExamChangeBody.fromJson(value);
         case 'ApproveExamChangeBodyNewStageDate':
           return ApproveExamChangeBodyNewStageDate.fromJson(value);
+        case 'CheckInResult':
+          return CheckInResult.fromJson(value);
+        case 'CheckInResultAwarded':
+          return CheckInResultAwarded.fromJson(value);
         case 'CheckKind':
           return CheckKindTypeTransformer().decode(value);
         case 'CheckResult':
@@ -238,6 +242,8 @@ class ApiClient {
           return DeskTotpVerifyBody.fromJson(value);
         case 'District':
           return DistrictTypeTransformer().decode(value);
+        case 'EarnedTrophy':
+          return EarnedTrophy.fromJson(value);
         case 'EligibilityCheckBody':
           return EligibilityCheckBody.fromJson(value);
         case 'EligibilityReason':
@@ -282,16 +288,34 @@ class ApiClient {
           return ExamStructureFamily.fromJson(value);
         case 'ExamSummary':
           return ExamSummary.fromJson(value);
+        case 'ExpoChallenge':
+          return ExpoChallenge.fromJson(value);
+        case 'ExpoChallengeQuestionsInner':
+          return ExpoChallengeQuestionsInner.fromJson(value);
+        case 'ExpoChallengeQuestionsInnerOptionsInner':
+          return ExpoChallengeQuestionsInnerOptionsInner.fromJson(value);
+        case 'ExpoChallengeResult':
+          return ExpoChallengeResult.fromJson(value);
+        case 'ExpoChallengeResultResultsInner':
+          return ExpoChallengeResultResultsInner.fromJson(value);
         case 'GlossaryList':
           return GlossaryList.fromJson(value);
         case 'GlossaryListItemsInner':
           return GlossaryListItemsInner.fromJson(value);
         case 'GradedAnswer':
           return GradedAnswer.fromJson(value);
+        case 'GuestSessionBody':
+          return GuestSessionBody.fromJson(value);
         case 'HealthResponse':
           return HealthResponse.fromJson(value);
         case 'LampRing':
           return LampRing.fromJson(value);
+        case 'LeaderboardEntry':
+          return LeaderboardEntry.fromJson(value);
+        case 'LeaderboardOptIn':
+          return LeaderboardOptIn.fromJson(value);
+        case 'LeaderboardOptInBody':
+          return LeaderboardOptInBody.fromJson(value);
         case 'Lesson':
           return Lesson.fromJson(value);
         case 'LessonCompleteBody':
@@ -336,6 +360,10 @@ class ApiClient {
           return MockSectionView.fromJson(value);
         case 'MockSummary':
           return MockSummary.fromJson(value);
+        case 'MyProgress':
+          return MyProgress.fromJson(value);
+        case 'MyStickerCode':
+          return MyStickerCode.fromJson(value);
         case 'OkResponse':
           return OkResponse.fromJson(value);
         case 'OtpPurpose':
@@ -424,6 +452,8 @@ class ApiClient {
           return ReadinessTrend.fromJson(value);
         case 'ReadinessTrendPointsInner':
           return ReadinessTrendPointsInner.fromJson(value);
+        case 'RedeemStickerCodeBody':
+          return RedeemStickerCodeBody.fromJson(value);
         case 'RefreshBody':
           return RefreshBody.fromJson(value);
         case 'RegisterPushTokenBody':
@@ -466,6 +496,8 @@ class ApiClient {
           return StateMockInfoMock.fromJson(value);
         case 'StatewideRank':
           return StatewideRank.fromJson(value);
+        case 'StickerCodeRedeemed':
+          return StickerCodeRedeemed.fromJson(value);
         case 'StretchPhase':
           return StretchPhaseTypeTransformer().decode(value);
         case 'StudyMap':
@@ -476,6 +508,10 @@ class ApiClient {
           return StudyMapTopic.fromJson(value);
         case 'SubmitCheckBody':
           return SubmitCheckBody.fromJson(value);
+        case 'SubmitExpoChallengeBody':
+          return SubmitExpoChallengeBody.fromJson(value);
+        case 'SubmitExpoChallengeBodyAnswersInner':
+          return SubmitExpoChallengeBodyAnswersInner.fromJson(value);
         case 'SundayReport':
           return SundayReport.fromJson(value);
         case 'SundayReportPage':
@@ -512,6 +548,8 @@ class ApiClient {
           return TopicState.fromJson(value);
         case 'TopicStatePage':
           return TopicStatePage.fromJson(value);
+        case 'TrophyCode':
+          return TrophyCodeTypeTransformer().decode(value);
         case 'UpdateMeBody':
           return UpdateMeBody.fromJson(value);
         case 'UpdatePlanItemBody':
@@ -522,6 +560,8 @@ class ApiClient {
           return UserExamsBody.fromJson(value);
         case 'UserExamsMain':
           return UserExamsMain.fromJson(value);
+        case 'WeeklyLeaderboard':
+          return WeeklyLeaderboard.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

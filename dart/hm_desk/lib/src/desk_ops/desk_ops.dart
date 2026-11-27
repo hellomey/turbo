@@ -8,3 +8,4 @@
 library;
 
 export 'presentation/exam_changes_screen.dart';
+export 'presentation/sticker_codes_screen.dart';

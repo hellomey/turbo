@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_design/hm_design.dart';
 
 import '../../common/ports.dart';
+import '../../progress/presentation/trophies_section.dart';
 import '../application/profile_controller.dart';
 
 /// Profile (§10.5). Phase 1: who you are, Calm Mode, log out, log out of all devices, delete account.
@@ -13,6 +14,9 @@ class ProfileTab extends ConsumerWidget {
     this.onOpenReports,
     this.onOpenAlerts,
     this.onOpenAlertSettings,
+    this.onReplayStory,
+    this.onOpenSticker,
+    this.onOpenLeaderboard,
   });
 
   /// Profile links (§10.5 Profile: Readiness Meter, reports, Exam Alerts, settings). Hidden when null.
@@ -20,6 +24,15 @@ class ProfileTab extends ConsumerWidget {
   final VoidCallback? onOpenReports;
   final VoidCallback? onOpenAlerts;
   final VoidCallback? onOpenAlertSettings;
+
+  /// Replays "The Lamplighter" story (BOLT-0111). Hidden when null.
+  final VoidCallback? onReplayStory;
+
+  /// Opens "Collect your sticker". Hidden when null.
+  final VoidCallback? onOpenSticker;
+
+  /// BOLT-0113: shows Trophies and the weekly leaderboard link when set.
+  final VoidCallback? onOpenLeaderboard;
 
   /// Profile links that have somewhere to go (a null callback hides its tile).
   List<(String, String, IconData, VoidCallback)> get _links => [
@@ -41,6 +54,18 @@ class ProfileTab extends ConsumerWidget {
       'Alert settings',
       Icons.notifications_outlined,
       onOpenAlertSettings,
+    ),
+    (
+      'profile-replay-story',
+      'Replay the story',
+      Icons.auto_stories_outlined,
+      onReplayStory,
+    ),
+    (
+      'profile-sticker',
+      'Your sticker code',
+      Icons.confirmation_number_outlined,
+      onOpenSticker,
     ),
   ].where((l) => l.$4 != null).map((l) => (l.$1, l.$2, l.$3, l.$4!)).toList();
 
@@ -154,6 +179,8 @@ class ProfileTab extends ConsumerWidget {
               ),
             ),
           ],
+          if (onOpenLeaderboard != null)
+            TrophiesSection(onOpenLeaderboard: onOpenLeaderboard),
           const HmSectionTitle('Settings', icon: Icons.tune_rounded),
           SwitchListTile(
             key: const Key('calm-mode'),

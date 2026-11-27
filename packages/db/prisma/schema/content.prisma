@@ -35,6 +35,7 @@ model Source {
   citation  String
   url       String?
   kind      String // pyq | textbook | official | original
+  setName   String?  @unique // content set this source was loaded for, e.g. "expo-challenge-1" (BOLT-0112)
   createdAt DateTime @default(now())
 }
 

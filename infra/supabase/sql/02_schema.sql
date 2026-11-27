@@ -237,6 +237,7 @@ CREATE TABLE "Source" (
     "citation" TEXT NOT NULL,
     "url" TEXT,
     "kind" TEXT NOT NULL,
+    "setName" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Source_pkey" PRIMARY KEY ("id")
@@ -359,6 +360,36 @@ CREATE TABLE "TrophyLedger" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "TrophyLedger_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "XpAward" (
+    "id" BIGSERIAL NOT NULL,
+    "userId" UUID NOT NULL,
+    "amount" INTEGER NOT NULL,
+    "reason" TEXT NOT NULL,
+    "sourceKey" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "XpAward_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserTrophy" (
+    "userId" UUID NOT NULL,
+    "code" TEXT NOT NULL,
+    "earnedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "UserTrophy_pkey" PRIMARY KEY ("userId","code")
+);
+
+-- CreateTable
+CREATE TABLE "LeaderboardOptIn" (
+    "userId" UUID NOT NULL,
+    "optIn" BOOLEAN NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "LeaderboardOptIn_pkey" PRIMARY KEY ("userId")
 );
 
 -- CreateTable
@@ -926,6 +957,31 @@ CREATE TABLE "ConceptDrill" (
 );
 
 -- CreateTable
+CREATE TABLE "ExpoChallenge" (
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "questionIds" UUID[],
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "submittedAt" TIMESTAMP(3),
+    "score" INTEGER,
+
+    CONSTRAINT "ExpoChallenge_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StickerCode" (
+    "userId" UUID NOT NULL,
+    "code" TEXT NOT NULL,
+    "reason" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "redeemedAt" TIMESTAMP(3),
+    "redeemedBy" UUID,
+
+    CONSTRAINT "StickerCode_pkey" PRIMARY KEY ("userId")
+);
+
+-- CreateTable
 CREATE TABLE "ReadinessSnapshot" (
     "userId" UUID NOT NULL,
     "examCode" TEXT NOT NULL,
@@ -1138,6 +1194,9 @@ CREATE INDEX "Lesson_topicId_status_idx" ON "Lesson"("topicId", "status");
 CREATE UNIQUE INDEX "Lesson_topicId_version_key" ON "Lesson"("topicId", "version");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Source_setName_key" ON "Source"("setName");
+
+-- CreateIndex
 CREATE INDEX "Question_topicId_status_difficulty_idx" ON "Question"("topicId", "status", "difficulty");
 
 -- CreateIndex
@@ -1178,6 +1237,12 @@ CREATE UNIQUE INDEX "TrophyLedger_idempotencyKey_key" ON "TrophyLedger"("idempot
 
 -- CreateIndex
 CREATE INDEX "TrophyLedger_userId_seasonId_idx" ON "TrophyLedger"("userId", "seasonId");
+
+-- CreateIndex
+CREATE INDEX "XpAward_createdAt_idx" ON "XpAward"("createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "XpAward_userId_sourceKey_key" ON "XpAward"("userId", "sourceKey");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Mock_code_key" ON "Mock"("code");
@@ -1307,6 +1372,12 @@ CREATE UNIQUE INDEX "PracticeAnswer_userId_clientActionId_key" ON "PracticeAnswe
 
 -- CreateIndex
 CREATE INDEX "ConceptDrill_userId_status_idx" ON "ConceptDrill"("userId", "status");
+
+-- CreateIndex
+CREATE INDEX "ExpoChallenge_userId_createdAt_idx" ON "ExpoChallenge"("userId", "createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "StickerCode_code_key" ON "StickerCode"("code");
 
 -- CreateIndex
 CREATE INDEX "SundayReport_userId_createdAt_idx" ON "SundayReport"("userId", "createdAt");

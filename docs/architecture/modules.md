@@ -86,11 +86,11 @@ Thick border = founder approval on every change (money, personal data, game fair
 | [`mastery`](../../packages/domain/src/modules/mastery/MODULE.md) | 2 | 90% | — | UserTopicState, TopicCheck, RingEvent, UserRank | syllabus, content |
 | [`notifications`](../../packages/domain/src/modules/notifications/MODULE.md) | 2 | 70% | — | PushToken, AlertPreference, SendLog | users, liveops |
 | [`plan`](../../packages/domain/src/modules/plan/MODULE.md) | 2 | 70% | — | Plan, PlanExam, PlanItem, StudyLog | syllabus, mastery, exams |
-| [`practice`](../../packages/domain/src/modules/practice/MODULE.md) | 2 | 70% | — | PracticeSession, PracticeAnswer, PracticeDayCounter, MistakeTally, ConceptDrill | content, mastery, billing |
+| [`practice`](../../packages/domain/src/modules/practice/MODULE.md) | 2 | 70% | — | PracticeSession, PracticeAnswer, PracticeDayCounter, MistakeTally, ConceptDrill, ExpoChallenge, StickerCode | content, mastery, billing |
 | [`readiness`](../../packages/domain/src/modules/readiness/MODULE.md) | 2 | 70% | — | ReadinessSnapshot, SundayReport | mastery, practice, exam-hall |
 | [`ai`](../../packages/domain/src/modules/ai/MODULE.md) | 3 | 70% | — | AiTask, AiModelRoute, AiUsage | — |
 | [`billing`](../../packages/domain/src/modules/billing/MODULE.md) | 3 | 90% | yes | Product, Purchase, Entitlement, Refund, Gift, RazorpayOrder | economy, audit |
-| [`economy`](../../packages/domain/src/modules/economy/MODULE.md) | 3 | 90% | yes | SparksLedger, PointsLedger, TrophyLedger, Cosmetic, UserCosmetic, CheckInTrack, Season, SeasonPassProgress | audit, liveops |
+| [`economy`](../../packages/domain/src/modules/economy/MODULE.md) | 3 | 90% | yes | SparksLedger, PointsLedger, TrophyLedger, Cosmetic, UserCosmetic, CheckInTrack, Season, SeasonPassProgress, XpAward, UserTrophy, LeaderboardOptIn | audit, liveops |
 | [`games`](../../packages/domain/src/modules/games/MODULE.md) | 3 | 90% | yes | GameRoom, GameResult, OddsConfig (versioned), League, Trophy | content, economy, liveops |
 | [`squads`](../../packages/domain/src/modules/squads/MODULE.md) | 3 | 70% | — | Squad, SquadMember, SquadBattle, BattleAttempt, HelpRequest, ChatMessage, SquadGoal | content, economy, moderation |
 | [`analytics`](../../packages/domain/src/modules/analytics/MODULE.md) | 4 | 70% | — | AnalyticsEvent (partitioned) | — |

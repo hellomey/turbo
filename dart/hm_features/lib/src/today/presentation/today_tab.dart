@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_design/hm_design.dart';
 
 import '../../common/ports.dart';
+import '../../expo/presentation/expo_hero_tile.dart';
 import '../../plan/application/plan_controller.dart';
 import '../../plan/domain/plan_models.dart';
 import '../../plan/presentation/plan_card.dart';
 import '../../plan/presentation/rank_bar.dart';
 import '../../practice/domain/practice_models.dart' show rankUpSubtitle;
 import '../../profile/application/profile_controller.dart';
+import '../../progress/presentation/progress_card.dart';
 
 /// Today (§10.5, §10.6 Today, INT-002-S12): rank badge + XP bar, one big Today Card, "Relight N · M min",
 /// pocket sessions, then the Study Map, My Plan and the Exam Hall.
@@ -25,9 +27,17 @@ class TodayTab extends ConsumerWidget {
     this.onStartItem,
     this.onOpenRelight,
     this.onStartPocket,
+    this.onOpenExpo,
+    this.onOpenLeaderboard,
   });
 
   final VoidCallback onOpenStudyMap;
+
+  /// Opens the Expo Challenge (BOLT-0111). The hero tile is hidden when null.
+  final VoidCallback? onOpenExpo;
+
+  /// BOLT-0113: shows the XP / level + check-in card when set; opens the weekly leaderboard.
+  final VoidCallback? onOpenLeaderboard;
 
   /// Opens the Exam Hall (§10.6). Hidden when null.
   final VoidCallback? onOpenExamHall;
@@ -75,6 +85,10 @@ class TodayTab extends ConsumerWidget {
       onStartItem: onStartItem,
       onOpenRelight: onOpenRelight,
       onStartPocket: onStartPocket,
+      onOpenExpo: onOpenExpo,
+      progress: onOpenLeaderboard == null || calm
+          ? null
+          : ProgressCard(onOpenLeaderboard: onOpenLeaderboard),
       onMarkDone: (item) => ref
           .read(planControllerProvider.notifier)
           .mark(item, PlanItemStatusView.done),
@@ -108,7 +122,12 @@ class TodayBody extends StatelessWidget {
     this.onStartPocket,
     this.onMarkDone,
     this.onRetry,
+    this.onOpenExpo,
+    this.progress,
   });
+
+  /// Opens the Expo Challenge. The hero tile is hidden when null.
+  final VoidCallback? onOpenExpo;
 
   final AsyncValue<TodayView>? today;
   final bool calm;
@@ -124,6 +143,9 @@ class TodayBody extends StatelessWidget {
   final ValueChanged<PlanItemView>? onMarkDone;
   final VoidCallback? onRetry;
 
+  /// XP / level + check-in card (BOLT-0113). Not shown when null.
+  final Widget? progress;
+
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
@@ -134,7 +156,16 @@ class TodayBody extends StatelessWidget {
         t != null && (t.hasPlan ? t.todayCard.canMark : onSetUpPlan != null);
     // Bento (BOLT-0110): one hero tile (the Today Card, or Study when there is no plan step), then
     // smaller tiles. Calm Mode keeps only the Today Card, Study and Relight.
+    final expo = onOpenExpo;
     final tiles = <HmBentoTile>[
+      if (progress != null)
+        HmBentoTile(
+          span: 2,
+          eyebrow: 'Your progress',
+          shape: HmShape.square,
+          shapeColor: p.gold,
+          child: progress!,
+        ),
       if (today != null)
         ...switch (today!) {
           AsyncData(:final value) => _plan(context, value),
@@ -175,7 +206,7 @@ class TodayBody extends StatelessWidget {
             ),
           ],
         },
-      _studyTile(context, hero: !cardIsPrimary),
+      _studyTile(context, hero: !cardIsPrimary && expo == null),
       if (onOpenPlan != null && !calm)
         HmBentoTile(
           key: const Key('today-open-plan'),
@@ -234,6 +265,11 @@ class TodayBody extends StatelessWidget {
           ],
         ),
         const SizedBox(height: HmSpace.xl),
+        // The Expo Challenge is the hero while it is available (BOLT-0111).
+        if (expo != null) ...[
+          HmEnter(child: ExpoHeroTile(onOpen: expo)),
+          const SizedBox(height: HmSpace.lg),
+        ],
         HmBentoGrid(children: tiles),
       ],
     );

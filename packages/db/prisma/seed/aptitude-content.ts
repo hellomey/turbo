@@ -48,7 +48,12 @@ export const seeder = {
 
     for (const doc of await yamlFiles("questions")) {
       const sid = sourceId(doc.set as string);
-      const src = { citation: doc.source.citation as string, url: (doc.source.url as string | null) ?? null, kind: doc.source.kind as string };
+      const src = {
+        citation: doc.source.citation as string,
+        url: (doc.source.url as string | null) ?? null,
+        kind: doc.source.kind as string,
+        setName: doc.set as string, // stable lookup for a set, e.g. the expo challenge (BOLT-0112)
+      };
       await prisma.source.upsert({ where: { id: sid }, create: { id: sid, ...src }, update: src });
 
       for (const q of doc.questions as any[]) {

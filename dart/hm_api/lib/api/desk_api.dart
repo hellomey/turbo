@@ -207,6 +207,64 @@ class DeskApi {
     return null;
   }
 
+  /// Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] idempotencyKey (required):
+  ///
+  /// * [RedeemStickerCodeBody] redeemStickerCodeBody:
+  Future<Response> redeemStickerCodeWithHttpInfo(String idempotencyKey, { RedeemStickerCodeBody? redeemStickerCodeBody, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/v1/desk/sticker-codes/redeem';
+
+    // ignore: prefer_final_locals
+    Object? postBody = redeemStickerCodeBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    headerParams[r'idempotency-key'] = parameterToString(idempotencyKey);
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] idempotencyKey (required):
+  ///
+  /// * [RedeemStickerCodeBody] redeemStickerCodeBody:
+  Future<StickerCodeRedeemed?> redeemStickerCode(String idempotencyKey, { RedeemStickerCodeBody? redeemStickerCodeBody, }) async {
+    final response = await redeemStickerCodeWithHttpInfo(idempotencyKey,  redeemStickerCodeBody: redeemStickerCodeBody, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'StickerCodeRedeemed',) as StickerCodeRedeemed;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /v1/desk/exam-changes/{changeId}/reject' operation and returns the [Response].
   /// Parameters:
   ///

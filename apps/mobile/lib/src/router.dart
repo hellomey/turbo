@@ -65,6 +65,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                   onStartItem: (item) => context.push(planItemRoute(item)),
                   onOpenRelight: () => context.push('/relight'),
                   onStartPocket: (_) => context.go('/map'),
+                  onOpenExpo: () => context.push('/expo'),
+                  onOpenLeaderboard: () => context.push('/leaderboard'),
                 ),
               ),
             ],
@@ -106,6 +108,9 @@ final routerProvider = Provider<GoRouter>((ref) {
                   onOpenReports: () => context.push('/reports'),
                   onOpenAlerts: () => context.push('/alerts'),
                   onOpenAlertSettings: () => context.push('/alert-settings'),
+                  onReplayStory: () => context.push('/story'),
+                  onOpenSticker: () => context.push('/sticker'),
+                  onOpenLeaderboard: () => context.push('/leaderboard'),
                 ),
               ),
             ],
@@ -113,6 +118,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(path: '/exam-hall', builder: (_, _) => const ExamHallScreen()),
+      // Stall (BOLT-0111): Expo Challenge deep link, sticker code, story replay.
+      GoRoute(path: '/expo', builder: (_, _) => const ExpoChallengeScreen()),
+      GoRoute(path: '/sticker', builder: (_, _) => const StickerScreen()),
+      GoRoute(path: '/story', builder: (_, _) => const StoryReplayScreen()),
+      GoRoute(
+        path: '/leaderboard',
+        builder: (_, _) => const LeaderboardScreen(),
+      ),
       GoRoute(
         path: '/lesson/:topicId',
         builder: (context, state) {

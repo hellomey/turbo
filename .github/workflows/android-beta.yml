@@ -53,9 +53,26 @@ jobs:
 
       - name: Signing
         id: sign
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          # Real release keystore is not ready: apps/mobile/android/app/build.gradle.kts signs release with the debug key.
-          echo "mode=DEBUG key (not the production keystore)" >> "$GITHUB_OUTPUT"
+          # Uses the release keystore only when all four secrets exist; otherwise build.gradle.kts falls back to the debug key.
+          if [ -n "$KEYSTORE_B64" ] && [ -n "$KEYSTORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
+            ks="$RUNNER_TEMP/release.jks"
+            printf '%s' "$KEYSTORE_B64" | base64 -d > "$ks"
+            {
+              echo "ANDROID_KEYSTORE_PATH=$ks"
+              echo "ANDROID_KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
+              echo "ANDROID_KEY_ALIAS=$KEY_ALIAS"
+              echo "ANDROID_KEY_PASSWORD=$KEY_PASSWORD"
+            } >> "$GITHUB_ENV"
+            echo "mode=release keystore" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=DEBUG key (not the production keystore)" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Build release APK
         working-directory: apps/mobile
@@ -65,6 +82,10 @@ jobs:
             --build-name 0.1.0 --build-number ${{ github.run_number }} \
             --dart-define=API_BASE_URL=${{ steps.be.outputs.url }}
           cp build/app/outputs/flutter-apk/app-release.apk "$RUNNER_TEMP/heymey.apk"
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"
 
       - name: Publish release
         env:
@@ -85,7 +106,11 @@ jobs:
             if [ "$BACKEND_LABEL" = "none" ]; then
               echo "- **No backend is configured for this build.** Sign-in and any network screen will fail. Do not report that as a bug."
             fi
-            echo "- **Signing:** ${SIGN_MODE}. Android may warn about an unknown developer; install anyway to test."
+            if [ "$SIGN_MODE" = "release keystore" ]; then
+              echo "- **Signing:** release keystore."
+            else
+              echo "- **Signing:** ${SIGN_MODE}. Android may warn about an unknown developer; install anyway to test."
+            fi
             echo "- **Commit:** ${sha}"
             echo
             echo "Install: download the APK on your phone, allow installs from this source, open it."

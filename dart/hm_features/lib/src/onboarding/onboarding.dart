@@ -12,3 +12,4 @@ export 'data/onboarding_repository.dart';
 export 'domain/age_gate.dart';
 export 'domain/profile_draft.dart';
 export 'presentation/onboarding_flow.dart';
+export 'presentation/story.dart';

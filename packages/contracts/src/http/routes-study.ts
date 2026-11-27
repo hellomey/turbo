@@ -57,6 +57,7 @@ import { Plan, PlanDays, PlanDaysQuery, PlanItem, PutPlanBody, TodayScreen, Upda
 import { ReadinessMeter, ReadinessQuery, ReadinessTrend, ReadinessTrendQuery, SundayReport, SundayReportPage } from "./readiness.js";
 import { AlertSettings, PushTokenAck, PutAlertSettingsBody, RegisterPushTokenBody } from "./notifications.js";
 import { SyncBatchBody, SyncBatchResult } from "./sync.js";
+import { CheckInResult, LeaderboardOptIn, LeaderboardOptInBody, MyProgress, WeeklyLeaderboard } from "./economy.js";
 
 const json = <T extends z.ZodType>(schema: T) => ({ content: { "application/json": { schema } } });
 const err = (description: string) => ({ description, ...json(ErrorEnvelope) });
@@ -414,5 +415,35 @@ export const studyRoutes: HmRoute[] = [
     summary: "Offers can be on only with the offers consent; dailyLimit is capped at 3.",
     request: { headers: idempotency, body: json(PutAlertSettingsBody) },
     responses: { 200: { description: "Saved", ...json(AlertSettings) }, ...authErrors },
+  },
+
+  // ------------------------------------------------ economy: XP, Points, check-in, trophies, leaderboard - BOLT-0113
+  {
+    method: "get", path: "/v1/me/progress", tags: ["economy"], operationId: "getMyProgress",
+    auth: "user", idempotent: false, security: bearer,
+    summary: "XP and level (from learning only), Points (never bought) and trophies.",
+    responses: { 200: { description: "Progress", ...json(MyProgress) }, ...authErrors },
+  },
+  {
+    method: "post", path: "/v1/me/check-in", tags: ["economy"], operationId: "checkIn",
+    auth: "user", idempotent: true, security: bearer,
+    rateLimit: perUser(20, 3600),
+    summary: "Daily check-in, once per IST day: small XP + Points. Missing a day resets nothing.",
+    request: { headers: idempotency },
+    responses: { 200: { description: "Checked in (or already today)", ...json(CheckInResult) }, ...authErrors },
+  },
+  {
+    method: "get", path: "/v1/leaderboard/weekly", tags: ["economy"], operationId: "getWeeklyLeaderboard",
+    auth: "user", idempotent: false, security: bearer,
+    summary: "This IST week's XP. Only real users who opted in, by nickname. Guests never appear.",
+    responses: { 200: { description: "Leaderboard", ...json(WeeklyLeaderboard) }, ...authErrors },
+  },
+  {
+    method: "put", path: "/v1/me/leaderboard-opt-in", tags: ["economy"], operationId: "putLeaderboardOptIn",
+    auth: "user", idempotent: true, security: bearer,
+    rateLimit: perUser(30, 3600),
+    summary: "Join or leave the weekly leaderboard (off by default). Guests get GUEST_NOT_ALLOWED when joining.",
+    request: { headers: idempotency, body: json(LeaderboardOptInBody) },
+    responses: { 200: { description: "Saved", ...json(LeaderboardOptIn) }, ...authErrors },
   },
 ];

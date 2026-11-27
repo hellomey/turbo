@@ -72,16 +72,22 @@ Class | Method | HTTP request | Description
 *AuthApi* | [**logoutAll**](doc//AuthApi.md#logoutall) | **POST** /v1/auth/logout-all | Log out of all devices.
 *AuthApi* | [**refreshSession**](doc//AuthApi.md#refreshsession) | **POST** /v1/auth/refresh | Rotate the refresh token. Re-using an old one revokes the whole session family.
 *AuthApi* | [**requestOtp**](doc//AuthApi.md#requestotp) | **POST** /v1/auth/otp/request | Send a 6-digit code. Always 200: never reveals whether the email has an account.
+*AuthApi* | [**startGuestSession**](doc//AuthApi.md#startguestsession) | **POST** /v1/auth/guest | Try HeyMey without an email (18+ only). Guest sessions last 30 days; sign in with email to keep progress.
 *AuthApi* | [**verifyDeskTotp**](doc//AuthApi.md#verifydesktotp) | **POST** /v1/auth/desk/totp/verify | Complete Desk sign-in with the authenticator code.
-*AuthApi* | [**verifyOtp**](doc//AuthApi.md#verifyotp) | **POST** /v1/auth/otp/verify | Exchange email + code for a session bound to this device (or a Desk 2FA challenge).
+*AuthApi* | [**verifyOtp**](doc//AuthApi.md#verifyotp) | **POST** /v1/auth/otp/verify | Exchange email + code for a session bound to this device (or a Desk 2FA challenge). With a guest token it keeps the guest progress (see guestProgress).
 *ContentApi* | [**getLesson**](doc//ContentApi.md#getlesson) | **GET** /v1/topics/{topicId}/lesson | 
 *ContentApi* | [**listContentPacks**](doc//ContentApi.md#listcontentpacks) | **GET** /v1/content/packs | Offline packs for an exam with SHA-256 checksums (§39). Free users: free packs only.
 *ContentApi* | [**reportQuestion**](doc//ContentApi.md#reportquestion) | **POST** /v1/questions/{questionId}/reports | Report a problem with a question (§19.4 Q34). Goes to the content fix loop.
 *DeskApi* | [**approveExamChange**](doc//DeskApi.md#approveexamchange) | **POST** /v1/desk/exam-changes/{changeId}/approve | Human-approved: publishes an Exam Alert (exams.notification_published) to followers. Audited.
 *DeskApi* | [**enrollDeskTotp**](doc//DeskApi.md#enrolldesktotp) | **POST** /v1/auth/desk/totp/enroll | First Desk sign-in: create the authenticator secret for this staff/partner account.
 *DeskApi* | [**listExamChanges**](doc//DeskApi.md#listexamchanges) | **GET** /v1/desk/exam-changes | Ops queue of official-site changes waiting for a human check. Role OPS or ADMIN (checked in the handler).
+*DeskApi* | [**redeemStickerCode**](doc//DeskApi.md#redeemstickercode) | **POST** /v1/desk/sticker-codes/redeem | Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
 *DeskApi* | [**rejectExamChange**](doc//DeskApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
 *DeskApi* | [**verifyDeskTotp**](doc//DeskApi.md#verifydesktotp) | **POST** /v1/auth/desk/totp/verify | Complete Desk sign-in with the authenticator code.
+*EconomyApi* | [**checkIn**](doc//EconomyApi.md#checkin) | **POST** /v1/me/check-in | Daily check-in, once per IST day: small XP + Points. Missing a day resets nothing.
+*EconomyApi* | [**getMyProgress**](doc//EconomyApi.md#getmyprogress) | **GET** /v1/me/progress | XP and level (from learning only), Points (never bought) and trophies.
+*EconomyApi* | [**getWeeklyLeaderboard**](doc//EconomyApi.md#getweeklyleaderboard) | **GET** /v1/leaderboard/weekly | This IST week's XP. Only real users who opted in, by nickname. Guests never appear.
+*EconomyApi* | [**putLeaderboardOptIn**](doc//EconomyApi.md#putleaderboardoptin) | **PUT** /v1/me/leaderboard-opt-in | Join or leave the weekly leaderboard (off by default). Guests get GUEST_NOT_ALLOWED when joining.
 *ExamHallApi* | [**getMockAttempt**](doc//ExamHallApi.md#getmockattempt) | **GET** /v1/mock-attempts/{attemptId} | Resume exactly where I left off, with server remaining time (§19.8 Q76).
 *ExamHallApi* | [**getMockReport**](doc//ExamHallApi.md#getmockreport) | **GET** /v1/mock-attempts/{attemptId}/report | 
 *ExamHallApi* | [**getMyStatewideRank**](doc//ExamHallApi.md#getmystatewiderank) | **GET** /v1/mocks/{mockId}/statewide-rank | My statewide rank. Only live, online, on-time attempts are ranked (§18, §39).
@@ -102,6 +108,10 @@ Class | Method | HTTP request | Description
 *ExamsApi* | [**putMyExams**](doc//ExamsApi.md#putmyexams) | **PUT** /v1/me/exams | 
 *ExamsApi* | [**receiveSiteChange**](doc//ExamsApi.md#receivesitechange) | **POST** /v1/webhooks/changedetection | changedetection.io site-change webhook. Stores a pending change; NOTHING is sent to users (§17.5).
 *ExamsApi* | [**rejectExamChange**](doc//ExamsApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
+*ExpoApi* | [**getMyStickerCode**](doc//ExpoApi.md#getmystickercode) | **GET** /v1/me/sticker-code | My sticker code, earned by finishing the expo challenge or lighting a first lamp. null until earned.
+*ExpoApi* | [**redeemStickerCode**](doc//ExpoApi.md#redeemstickercode) | **POST** /v1/desk/sticker-codes/redeem | Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
+*ExpoApi* | [**startExpoChallenge**](doc//ExpoApi.md#startexpochallenge) | **GET** /v1/expo/challenge | Start a 10-question stall challenge (guests allowed). Answers are never sent; the challenge expires in 15 minutes.
+*ExpoApi* | [**submitExpoChallenge**](doc//ExpoApi.md#submitexpochallenge) | **POST** /v1/expo/challenge/{challengeId}/submit | Grade once on the server. Finishing (any score) earns the user's sticker code.
 *MasteryApi* | [**completeLesson**](doc//MasteryApi.md#completelesson) | **POST** /v1/topics/{topicId}/lesson-complete | I finished the lesson or the mapped textbook pages. Opens the 3-question Lit check.
 *MasteryApi* | [**getMyMastery**](doc//MasteryApi.md#getmymastery) | **GET** /v1/me/mastery | Rank (from lamps only), XP and ring counts across my exams.
 *MasteryApi* | [**getRelightQueue**](doc//MasteryApi.md#getrelightqueue) | **GET** /v1/me/relight-queue | Dimming lamps I can open, oldest first, with minutes (\"Relight 4 · 8 min\").
@@ -150,6 +160,8 @@ Class | Method | HTTP request | Description
  - [AnswerInput](doc//AnswerInput.md)
  - [ApproveExamChangeBody](doc//ApproveExamChangeBody.md)
  - [ApproveExamChangeBodyNewStageDate](doc//ApproveExamChangeBodyNewStageDate.md)
+ - [CheckInResult](doc//CheckInResult.md)
+ - [CheckInResultAwarded](doc//CheckInResultAwarded.md)
  - [CheckKind](doc//CheckKind.md)
  - [CheckResult](doc//CheckResult.md)
  - [ClientKind](doc//ClientKind.md)
@@ -173,6 +185,7 @@ Class | Method | HTTP request | Description
  - [DeskTotpEnrollResponse](doc//DeskTotpEnrollResponse.md)
  - [DeskTotpVerifyBody](doc//DeskTotpVerifyBody.md)
  - [District](doc//District.md)
+ - [EarnedTrophy](doc//EarnedTrophy.md)
  - [EligibilityCheckBody](doc//EligibilityCheckBody.md)
  - [EligibilityReason](doc//EligibilityReason.md)
  - [EligibilityResult](doc//EligibilityResult.md)
@@ -195,11 +208,20 @@ Class | Method | HTTP request | Description
  - [ExamStructure](doc//ExamStructure.md)
  - [ExamStructureFamily](doc//ExamStructureFamily.md)
  - [ExamSummary](doc//ExamSummary.md)
+ - [ExpoChallenge](doc//ExpoChallenge.md)
+ - [ExpoChallengeQuestionsInner](doc//ExpoChallengeQuestionsInner.md)
+ - [ExpoChallengeQuestionsInnerOptionsInner](doc//ExpoChallengeQuestionsInnerOptionsInner.md)
+ - [ExpoChallengeResult](doc//ExpoChallengeResult.md)
+ - [ExpoChallengeResultResultsInner](doc//ExpoChallengeResultResultsInner.md)
  - [GlossaryList](doc//GlossaryList.md)
  - [GlossaryListItemsInner](doc//GlossaryListItemsInner.md)
  - [GradedAnswer](doc//GradedAnswer.md)
+ - [GuestSessionBody](doc//GuestSessionBody.md)
  - [HealthResponse](doc//HealthResponse.md)
  - [LampRing](doc//LampRing.md)
+ - [LeaderboardEntry](doc//LeaderboardEntry.md)
+ - [LeaderboardOptIn](doc//LeaderboardOptIn.md)
+ - [LeaderboardOptInBody](doc//LeaderboardOptInBody.md)
  - [Lesson](doc//Lesson.md)
  - [LessonCompleteBody](doc//LessonCompleteBody.md)
  - [LessonSource](doc//LessonSource.md)
@@ -222,6 +244,8 @@ Class | Method | HTTP request | Description
  - [MockReport](doc//MockReport.md)
  - [MockSectionView](doc//MockSectionView.md)
  - [MockSummary](doc//MockSummary.md)
+ - [MyProgress](doc//MyProgress.md)
+ - [MyStickerCode](doc//MyStickerCode.md)
  - [OkResponse](doc//OkResponse.md)
  - [OtpPurpose](doc//OtpPurpose.md)
  - [OtpRequestBody](doc//OtpRequestBody.md)
@@ -266,6 +290,7 @@ Class | Method | HTTP request | Description
  - [ReadinessMeterCoverage](doc//ReadinessMeterCoverage.md)
  - [ReadinessTrend](doc//ReadinessTrend.md)
  - [ReadinessTrendPointsInner](doc//ReadinessTrendPointsInner.md)
+ - [RedeemStickerCodeBody](doc//RedeemStickerCodeBody.md)
  - [RefreshBody](doc//RefreshBody.md)
  - [RegisterPushTokenBody](doc//RegisterPushTokenBody.md)
  - [RejectExamChangeBody](doc//RejectExamChangeBody.md)
@@ -287,11 +312,14 @@ Class | Method | HTTP request | Description
  - [StateMockInfo](doc//StateMockInfo.md)
  - [StateMockInfoMock](doc//StateMockInfoMock.md)
  - [StatewideRank](doc//StatewideRank.md)
+ - [StickerCodeRedeemed](doc//StickerCodeRedeemed.md)
  - [StretchPhase](doc//StretchPhase.md)
  - [StudyMap](doc//StudyMap.md)
  - [StudyMapSubjectsInner](doc//StudyMapSubjectsInner.md)
  - [StudyMapTopic](doc//StudyMapTopic.md)
  - [SubmitCheckBody](doc//SubmitCheckBody.md)
+ - [SubmitExpoChallengeBody](doc//SubmitExpoChallengeBody.md)
+ - [SubmitExpoChallengeBodyAnswersInner](doc//SubmitExpoChallengeBodyAnswersInner.md)
  - [SundayReport](doc//SundayReport.md)
  - [SundayReportPage](doc//SundayReportPage.md)
  - [SundayReportSummary](doc//SundayReportSummary.md)
@@ -310,11 +338,13 @@ Class | Method | HTTP request | Description
  - [TopicCheck](doc//TopicCheck.md)
  - [TopicState](doc//TopicState.md)
  - [TopicStatePage](doc//TopicStatePage.md)
+ - [TrophyCode](doc//TrophyCode.md)
  - [UpdateMeBody](doc//UpdateMeBody.md)
  - [UpdatePlanItemBody](doc//UpdatePlanItemBody.md)
  - [UserExams](doc//UserExams.md)
  - [UserExamsBody](doc//UserExamsBody.md)
  - [UserExamsMain](doc//UserExamsMain.md)
+ - [WeeklyLeaderboard](doc//WeeklyLeaderboard.md)
 
 
 ## Documentation For Authorization

@@ -81,3 +81,27 @@ model ConceptDrill {
 
   @@index([userId, status])
 }
+
+/// Stall challenge (BOLT-0112): 10 server-picked questions from the expo set, graded once, expires after 15 minutes.
+model ExpoChallenge {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  userId      String    @db.Uuid
+  questionIds String[]  @db.Uuid
+  createdAt   DateTime
+  expiresAt   DateTime
+  submittedAt DateTime?
+  score       Int?
+
+  @@index([userId, createdAt])
+}
+
+/// One sticker code per user (BOLT-0112), earned by finishing the expo challenge or lighting a first lamp.
+/// Staff redeem it on Desk for one physical sticker.
+model StickerCode {
+  userId     String    @id @db.Uuid
+  code       String    @unique
+  reason     String // expo_challenge | first_lamp
+  createdAt  DateTime
+  redeemedAt DateTime?
+  redeemedBy String?   @db.Uuid
+}

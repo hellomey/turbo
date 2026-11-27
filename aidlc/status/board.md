@@ -42,6 +42,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0028 | Nightly `pg_dump` to Cloudflare R2; restore drill run and written up | 0026 | Kaaval, Vizhi | Nov 20 (drill passed by Nov 27) | todo | - |
 | BOLT-0029 | pgmq + `pg_cron` + `pg_net` wiring and request signing for `/internal/jobs/*` | 0026 | Kaaval | Nov 20 | todo | - |
 | BOLT-0030 | Signed APK in GitHub Actions, `dl.heymey.app` on R2, version manifest; Flutter web to `app.heymey.app`; Desk to `desk.heymey.app` | 0026 | Kaaval, Vizhi | Nov 24 | todo | Founder supplies keystore as a GitHub secret |
+| BOLT-0114 | Stall ops: real QR codes, PWA icons, release-signing code path, k6 stall load test, live URL checker, stall-day runbook | - | Kaaval, Vizhi | Dec 1 | review | Founder creates keystore and sets 4 GitHub secrets (SIGNING.md); sticker-code Desk page not built |
 
 ### Thoon (backend)
 
@@ -54,6 +55,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0035 | `analytics` module: consent-gated, personal data stripped | 0031 | Kaaval | Nov 26 | todo | - |
 | BOLT-0036 | Sticker codes: issue a one-time code on first lit lamp, verify and burn from Desk | 0031 | Kaaval, Vizhi | Nov 24 | todo | - |
 | BOLT-0104 | Guest mode (founder decision 2026-11-27): `POST /v1/auth/guest` (18+, 30-day session), guest to email upgrade via OTP verify, inactive-guest cleanup, "Try it now" + "Save your progress" in the app | - | Kaaval, Vizhi | Nov 28 | review | `dart/hm_api` needs regenerating with Docker |
+| BOLT-0112 | Stall: expo challenge (`GET /v1/expo/challenge`, single-submit grading), one sticker code per user (challenge finished or first lit lamp), Desk "Sticker codes" check and redeem with audit. Covers BOLT-0036 | - | Kaaval, Vizhi | Nov 28 | review | - |
 
 ### Kalai (Flutter UI)
 
@@ -65,6 +67,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0040 | Flutter web target, in-app "update available" prompt, "Collect your sticker" screen | 0030, 0036 | Vizhi, Kaaval | Nov 26 | todo | - |
 | BOLT-0103 | Aspirant app builds for web: drift WASM storage, committed `apps/mobile/web/`, web-deploy without `flutter create` (part of 0040) | - | Vizhi | Nov 27 | review (PR #33) | - |
 | BOLT-0110 | Bauhaus theme as the default (founder decision 2026-11-27): tokens, widgets, 32 hand-written SVGs with `HmArt`, bento Today/Study Map/Plan/Readiness/Profile, lesson reader, practice feedback motion, Beta chip | 0037 | Vizhi | Nov 28 | review | Goldens need regenerating on Linux CI |
+| BOLT-0111 | Story onboarding "The Lamplighter", Expo Challenge (`/expo`) with timer, lamp finale and "Collect your sticker", beta line (part of 0040) | Thoon expo API | Vizhi | Nov 28 | review | API built in parallel by Thoon |
 
 ### Vilaiyattu (games)
 
@@ -83,6 +86,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0046 | Economy: Sparks, Points, XP, Trophies, Match chips, daily check-in, cosmetics, Season Pass | 0045 | Kaaval, Founder | Nov 25 | todo | - |
 | BOLT-0047 | Billing: Razorpay test mode, Play Billing, entitlements, restore, spending limits, paywalls with "Not now", `billing.live=false` | 0045 | Kaaval, Founder | Nov 27 | todo | Founder sets prices |
 | BOLT-0048 | Firewall audit across economy, billing and games | 0042-0047 | Kaaval | Dec 1 | todo | - |
+| BOLT-0113 | Phase B gamification part 1: XP and levels from learning events, Points, daily check-in, trophies, opt-in weekly leaderboard (API + Flutter) | - | Kaaval, Founder | Nov 28 | in review | Founder confirms XP amounts and trophy list |
 
 ### Koottam (social)
 

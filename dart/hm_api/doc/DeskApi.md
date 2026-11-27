@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**approveExamChange**](DeskApi.md#approveexamchange) | **POST** /v1/desk/exam-changes/{changeId}/approve | Human-approved: publishes an Exam Alert (exams.notification_published) to followers. Audited.
 [**enrollDeskTotp**](DeskApi.md#enrolldesktotp) | **POST** /v1/auth/desk/totp/enroll | First Desk sign-in: create the authenticator secret for this staff/partner account.
 [**listExamChanges**](DeskApi.md#listexamchanges) | **GET** /v1/desk/exam-changes | Ops queue of official-site changes waiting for a human check. Role OPS or ADMIN (checked in the handler).
+[**redeemStickerCode**](DeskApi.md#redeemstickercode) | **POST** /v1/desk/sticker-codes/redeem | Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
 [**rejectExamChange**](DeskApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
 [**verifyDeskTotp**](DeskApi.md#verifydesktotp) | **POST** /v1/auth/desk/totp/verify | Complete Desk sign-in with the authenticator code.
 
@@ -157,6 +158,55 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **redeemStickerCode**
+> StickerCodeRedeemed redeemStickerCode(idempotencyKey, redeemStickerCodeBody)
+
+Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
+
+### Example
+```dart
+import 'package:hm_api/api.dart';
+// TODO Configure HTTP Bearer authorization: bearerAuth
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = DeskApi();
+final idempotencyKey = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
+final redeemStickerCodeBody = RedeemStickerCodeBody(); // RedeemStickerCodeBody | 
+
+try {
+    final result = api_instance.redeemStickerCode(idempotencyKey, redeemStickerCodeBody);
+    print(result);
+} catch (e) {
+    print('Exception when calling DeskApi->redeemStickerCode: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String**|  | 
+ **redeemStickerCodeBody** | [**RedeemStickerCodeBody**](RedeemStickerCodeBody.md)|  | [optional] 
+
+### Return type
+
+[**StickerCodeRedeemed**](StickerCodeRedeemed.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
