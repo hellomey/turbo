@@ -1,0 +1,341 @@
+# Expo challenge: SAMPLE mixed Group 4 questions for the stall, under review.
+# Original questions written for HeyMey from the Constitution of India and TN State Board textbooks
+# (History, Geography, Economics, Science, Mathematics). Not copied from any paper, book, app or website.
+# review_status is "sample" until a human reviewer checks each item.
+set: expo-challenge-1
+review_status: sample
+source:
+  kind: original
+  citation: "HeyMey original practice question (sample content, under review). Constitution of India; TN State Board Social Science, Science and Mathematics textbooks."
+  url: null
+questions:
+  - id: 5e000000-e001-4000-8000-000000000001
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 1
+    stem: "Which day is celebrated as Republic Day in India?"
+    options:
+      - { id: a, text: "15 August" }
+      - { id: b, text: "26 January" }
+      - { id: c, text: "2 October" }
+      - { id: d, text: "26 November" }
+    correct: b
+    explanation: "The Constitution came into force on 26 January 1950, and that day is celebrated as Republic Day."
+  - id: 5e000000-e001-4000-8000-000000000002
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 1
+    stem: "The right to constitutional remedies lets a citizen go directly to the Supreme Court under which Article?"
+    options:
+      - { id: a, text: "Article 32" }
+      - { id: b, text: "Article 21" }
+      - { id: c, text: "Article 51A" }
+      - { id: d, text: "Article 370" }
+    correct: a
+    explanation: "Article 32 allows a person to approach the Supreme Court directly when a Fundamental Right is violated."
+  - id: 5e000000-e001-4000-8000-000000000003
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Directive Principles of State Policy are:"
+    options:
+      - { id: a, text: "enforceable in any court" }
+      - { id: b, text: "rules for elections" }
+      - { id: c, text: "guidelines for the State that courts cannot enforce" }
+      - { id: d, text: "duties of citizens" }
+    correct: c
+    explanation: "Article 37 says the Directive Principles cannot be enforced by courts, though they are fundamental in governance."
+  - id: 5e000000-e001-4000-8000-000000000004
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 1
+    stem: "Which House of Parliament is called the Council of States?"
+    options:
+      - { id: a, text: "Lok Sabha" }
+      - { id: b, text: "Vidhan Sabha" }
+      - { id: c, text: "Gram Sabha" }
+      - { id: d, text: "Rajya Sabha" }
+    correct: d
+    explanation: "The Rajya Sabha is the Council of States. The Lok Sabha is the House of the People."
+  - id: 5e000000-e001-4000-8000-000000000005
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "The Gram Sabha of a village is made up of:"
+    options:
+      - { id: a, text: "all voters registered in the village" }
+      - { id: b, text: "only the panchayat president" }
+      - { id: c, text: "government officers of the block" }
+      - { id: d, text: "the MLA of the area" }
+    correct: a
+    explanation: "Every person on the village's electoral roll is a member of the Gram Sabha."
+  - id: 5e000000-e001-4000-8000-000000000006
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 1
+    stem: "The Harappan civilisation is also known as the:"
+    options:
+      - { id: a, text: "Vedic civilisation" }
+      - { id: b, text: "Indus Valley civilisation" }
+      - { id: c, text: "Sangam civilisation" }
+      - { id: d, text: "Gangetic civilisation" }
+    correct: b
+    explanation: "Many of its early sites lie along the Indus and its tributaries, so it is also called the Indus Valley civilisation."
+  - id: 5e000000-e001-4000-8000-000000000007
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 1
+    stem: "Which Mauryan emperor turned to Dhamma after the Kalinga war?"
+    options:
+      - { id: a, text: "Chandragupta Maurya" }
+      - { id: b, text: "Bindusara" }
+      - { id: c, text: "Ashoka" }
+      - { id: d, text: "Brihadratha" }
+    correct: c
+    explanation: "Ashoka was moved by the suffering of the Kalinga war and gave up conquest by force for Dhamma."
+  - id: 5e000000-e001-4000-8000-000000000008
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "The First Battle of Panipat in 1526 ended the rule of which dynasty?"
+    options:
+      - { id: a, text: "Tughlaq" }
+      - { id: b, text: "Khalji" }
+      - { id: c, text: "Slave" }
+      - { id: d, text: "Lodi" }
+    correct: d
+    explanation: "Babur defeated Ibrahim Lodi in 1526, ending the Lodi dynasty and the Delhi Sultanate."
+  - id: 5e000000-e001-4000-8000-000000000009
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 1
+    stem: "The Dandi March of 1930 was a protest against the tax on:"
+    options:
+      - { id: a, text: "salt" }
+      - { id: b, text: "cotton" }
+      - { id: c, text: "land" }
+      - { id: d, text: "tea" }
+    correct: a
+    explanation: "Gandhi walked to Dandi and made salt from sea water to break the British salt law."
+  - id: 5e000000-e001-4000-8000-000000000010
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "V. O. Chidambaram, the freedom fighter from Tamil Nadu, is remembered for starting a:"
+    options:
+      - { id: a, text: "newspaper in Madurai" }
+      - { id: b, text: "swadeshi shipping company" }
+      - { id: c, text: "textile mill in Coimbatore" }
+      - { id: d, text: "university in Chennai" }
+    correct: b
+    explanation: "V. O. Chidambaram started the Swadeshi Steam Navigation Company at Thoothukudi to compete with British ships."
+  - id: 5e000000-e001-4000-8000-000000000011
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 1
+    stem: "Which mountain range lies along the northern border of India?"
+    options:
+      - { id: a, text: "Western Ghats" }
+      - { id: b, text: "Aravalli" }
+      - { id: c, text: "Himalayas" }
+      - { id: d, text: "Vindhyas" }
+    correct: c
+    explanation: "The Himalayas stretch along India's northern border."
+  - id: 5e000000-e001-4000-8000-000000000012
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 1
+    stem: "Which river is the main river of Tamil Nadu?"
+    options:
+      - { id: a, text: "Godavari" }
+      - { id: b, text: "Narmada" }
+      - { id: c, text: "Yamuna" }
+      - { id: d, text: "Kaveri" }
+    correct: d
+    explanation: "The Kaveri flows from Karnataka into Tamil Nadu and feeds the fertile delta around Thanjavur."
+  - id: 5e000000-e001-4000-8000-000000000013
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "Chennai gets most of its rain during which months?"
+    options:
+      - { id: a, text: "October to December" }
+      - { id: b, text: "June to September" }
+      - { id: c, text: "January to March" }
+      - { id: d, text: "April to May" }
+    correct: a
+    explanation: "Chennai and most of Tamil Nadu get their main rain from the north-east monsoon, October to December."
+  - id: 5e000000-e001-4000-8000-000000000014
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "Ooty (Udhagamandalam) is a hill station in which hills?"
+    options:
+      - { id: a, text: "Palani hills" }
+      - { id: b, text: "Nilgiri hills" }
+      - { id: c, text: "Shevaroy hills" }
+      - { id: d, text: "Kolli hills" }
+    correct: b
+    explanation: "Ooty is the headquarters of the Nilgiris district, in the Nilgiri hills."
+  - id: 5e000000-e001-4000-8000-000000000015
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Coimbatore is nicknamed the Manchester of South India because of its:"
+    options:
+      - { id: a, text: "tea gardens" }
+      - { id: b, text: "seaport" }
+      - { id: c, text: "textile mills" }
+      - { id: d, text: "coal mines" }
+    correct: c
+    explanation: "Like Manchester in England, Coimbatore grew around cotton textile mills."
+  - id: 5e000000-e001-4000-8000-000000000016
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 1
+    stem: "Which body replaced the Planning Commission in 2015?"
+    options:
+      - { id: a, text: "Finance Commission" }
+      - { id: b, text: "GST Council" }
+      - { id: c, text: "Election Commission" }
+      - { id: d, text: "NITI Aayog" }
+    correct: d
+    explanation: "NITI Aayog replaced the Planning Commission on 1 January 2015."
+  - id: 5e000000-e001-4000-8000-000000000017
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 1
+    stem: "GDP stands for:"
+    options:
+      - { id: a, text: "Gross Domestic Product" }
+      - { id: b, text: "General Development Plan" }
+      - { id: c, text: "Gross Daily Production" }
+      - { id: d, text: "Government Deposit Policy" }
+    correct: a
+    explanation: "GDP is Gross Domestic Product, the value of final goods and services produced within a country in a year."
+  - id: 5e000000-e001-4000-8000-000000000018
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "A shop sells you bread. In which sector of the economy is the shop working?"
+    options:
+      - { id: a, text: "Primary" }
+      - { id: b, text: "Secondary" }
+      - { id: c, text: "Tertiary" }
+      - { id: d, text: "None of these" }
+    correct: c
+    explanation: "Trade is a service, so a shop belongs to the tertiary sector. The bakery that makes the bread is in the secondary sector."
+  - id: 5e000000-e001-4000-8000-000000000019
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 1
+    stem: "In GST, what does the letter 'S' in SGST stand for?"
+    options:
+      - { id: a, text: "Service" }
+      - { id: b, text: "State" }
+      - { id: c, text: "Sales" }
+      - { id: d, text: "Special" }
+    correct: b
+    explanation: "SGST is State Goods and Services Tax, collected by the state on sales within the state."
+  - id: 5e000000-e001-4000-8000-000000000020
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "Which organ pumps blood through the human body?"
+    options:
+      - { id: a, text: "Lungs" }
+      - { id: b, text: "Liver" }
+      - { id: c, text: "Kidney" }
+      - { id: d, text: "Heart" }
+    correct: d
+    explanation: "The heart is a muscular pump that pushes blood through arteries to every part of the body."
+  - id: 5e000000-e001-4000-8000-000000000021
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "Which organs filter waste from the blood and make urine?"
+    options:
+      - { id: a, text: "Kidneys" }
+      - { id: b, text: "Lungs" }
+      - { id: c, text: "Stomach" }
+      - { id: d, text: "Pancreas" }
+    correct: a
+    explanation: "The kidneys filter the blood through nephrons and remove waste as urine."
+  - id: 5e000000-e001-4000-8000-000000000022
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 1
+    stem: "How many colours appear when white light passes through a prism?"
+    options:
+      - { id: a, text: "Three" }
+      - { id: b, text: "Five" }
+      - { id: c, text: "Seven" }
+      - { id: d, text: "Ten" }
+    correct: c
+    explanation: "White light splits into seven colours: violet, indigo, blue, green, yellow, orange and red (VIBGYOR)."
+  - id: 5e000000-e001-4000-8000-000000000023
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 1
+    stem: "The 'unit' on a household electricity bill is the:"
+    options:
+      - { id: a, text: "watt" }
+      - { id: b, text: "volt" }
+      - { id: c, text: "ampere" }
+      - { id: d, text: "kilowatt-hour" }
+    correct: d
+    explanation: "One unit of electricity is one kilowatt-hour, the energy used by a 1000 W appliance in one hour."
+  - id: 5e000000-e001-4000-8000-000000000024
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "A 6 V cell drives a current of 2 A through a lamp. What is the lamp's resistance?"
+    options:
+      - { id: a, text: "12 ohm" }
+      - { id: b, text: "3 ohm" }
+      - { id: c, text: "8 ohm" }
+      - { id: d, text: "4 ohm" }
+    correct: b
+    explanation: "By Ohm's law, R = V / I = 6 / 2 = 3 ohm."
+  - id: 5e000000-e001-4000-8000-000000000025
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Why is iodine added to common salt?"
+    options:
+      - { id: a, text: "To prevent goitre" }
+      - { id: b, text: "To make it white" }
+      - { id: c, text: "To make it taste sweeter" }
+      - { id: d, text: "To stop it from melting" }
+    correct: a
+    explanation: "Iodised salt supplies the iodine the thyroid needs and prevents goitre."
+  - id: 5e000000-e001-4000-8000-000000000026
+    topic_id: 0199f5a0-0601-7000-8000-000000000601
+    difficulty: 1
+    stem: "What is 20% of 450?"
+    options:
+      - { id: a, text: "45" }
+      - { id: b, text: "80" }
+      - { id: c, text: "90" }
+      - { id: d, text: "100" }
+    correct: c
+    explanation: "20% of 450 = 20 / 100 x 450 = 90."
+  - id: 5e000000-e001-4000-8000-000000000027
+    topic_id: 0199f5a0-0602-7000-8000-000000000602
+    difficulty: 2
+    stem: "Rs 1200 is shared between two friends in the ratio 1 : 3. What is the larger share?"
+    options:
+      - { id: a, text: "Rs 300" }
+      - { id: b, text: "Rs 400" }
+      - { id: c, text: "Rs 800" }
+      - { id: d, text: "Rs 900" }
+    correct: d
+    explanation: "Total parts = 4, one part = 1200 / 4 = 300, larger share = 3 x 300 = Rs 900."
+  - id: 5e000000-e001-4000-8000-000000000028
+    topic_id: 0199f5a0-0603-7000-8000-000000000603
+    difficulty: 2
+    stem: "What is the simple interest on Rs 2000 at 5% per year for 3 years?"
+    options:
+      - { id: a, text: "Rs 300" }
+      - { id: b, text: "Rs 100" }
+      - { id: c, text: "Rs 150" }
+      - { id: d, text: "Rs 600" }
+    correct: a
+    explanation: "SI = P x R x T / 100 = 2000 x 5 x 3 / 100 = Rs 300."
+  - id: 5e000000-e001-4000-8000-000000000029
+    topic_id: 0199f5a0-0604-7000-8000-000000000604
+    difficulty: 1
+    stem: "What comes next in the series 3, 6, 12, 24, ...?"
+    options:
+      - { id: a, text: "36" }
+      - { id: b, text: "48" }
+      - { id: c, text: "30" }
+      - { id: d, text: "42" }
+    correct: b
+    explanation: "Each term is double the one before it, so the next term is 24 x 2 = 48."
+  - id: 5e000000-e001-4000-8000-000000000030
+    topic_id: 0199f5a0-0605-7000-8000-000000000605
+    difficulty: 2
+    stem: "A can finish a job in 6 days and B can finish it in 3 days. Working together, how many days will they take?"
+    options:
+      - { id: a, text: "4.5 days" }
+      - { id: b, text: "3 days" }
+      - { id: c, text: "9 days" }
+      - { id: d, text: "2 days" }
+    correct: d
+    explanation: "In one day A does 1/6 and B does 1/3 = 2/6. Together they do 3/6 = 1/2 of the job per day, so they need 2 days."

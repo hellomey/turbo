@@ -1,0 +1,897 @@
+# Geography of India: SAMPLE practice questions, under review.
+# Original questions written for HeyMey from TN State Board Social Science (Geography).
+# Not copied from any paper, book, app or website. review_status is "sample" until a human reviewer checks each item.
+set: geography-sample-1
+review_status: sample
+source:
+  kind: original
+  citation: "HeyMey original practice question (sample content, under review). TN State Board Social Science (Geography), Class 10."
+  url: null
+questions:
+  # Physical features of India
+  - id: 5e000000-0301-4000-8000-000000000001
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 1
+    stem: "What is the northernmost and highest range of the Himalayas called?"
+    options:
+      - { id: a, text: "Shiwalik" }
+      - { id: b, text: "Himachal" }
+      - { id: c, text: "Himadri" }
+      - { id: d, text: "Aravalli" }
+    correct: c
+    explanation: "The Himadri, or Greater Himalaya, is the highest and northernmost of the three ranges."
+  - id: 5e000000-0301-4000-8000-000000000002
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 1
+    stem: "The outermost and lowest range of the Himalayas is the:"
+    options:
+      - { id: a, text: "Shiwalik" }
+      - { id: b, text: "Himadri" }
+      - { id: c, text: "Karakoram" }
+      - { id: d, text: "Himachal" }
+    correct: a
+    explanation: "The Shiwalik is the lowest and southernmost range of the Himalayas."
+  - id: 5e000000-0301-4000-8000-000000000003
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 1
+    stem: "The Western Ghats are also known as the:"
+    options:
+      - { id: a, text: "Vindhyas" }
+      - { id: b, text: "Satpura" }
+      - { id: c, text: "Aravalli" }
+      - { id: d, text: "Sahyadri" }
+    correct: d
+    explanation: "The northern part of the Western Ghats is called the Sahyadri."
+  - id: 5e000000-0301-4000-8000-000000000004
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "Which is the highest peak of South India?"
+    options:
+      - { id: a, text: "Doddabetta" }
+      - { id: b, text: "Anaimudi" }
+      - { id: c, text: "Mahendragiri" }
+      - { id: d, text: "Guru Shikhar" }
+    correct: b
+    explanation: "Anaimudi in the Anamalai hills of Kerala is the highest peak in South India."
+  - id: 5e000000-0301-4000-8000-000000000005
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "Which mountain range in Rajasthan is among the oldest fold mountains in the world?"
+    options:
+      - { id: a, text: "Satpura" }
+      - { id: b, text: "Shiwalik" }
+      - { id: c, text: "Aravalli" }
+      - { id: d, text: "Nilgiri" }
+    correct: c
+    explanation: "The Aravalli range is one of the oldest fold mountain systems in the world."
+  - id: 5e000000-0301-4000-8000-000000000006
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "India's only active volcano is on:"
+    options:
+      - { id: a, text: "Barren Island" }
+      - { id: b, text: "Great Nicobar" }
+      - { id: c, text: "Minicoy" }
+      - { id: d, text: "Rameswaram" }
+    correct: a
+    explanation: "Barren Island in the Andaman Sea has India's only active volcano."
+  - id: 5e000000-0301-4000-8000-000000000007
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 1
+    stem: "The Lakshadweep Islands are made mainly of:"
+    options:
+      - { id: a, text: "volcanic rock" }
+      - { id: b, text: "granite" }
+      - { id: c, text: "sandstone" }
+      - { id: d, text: "coral" }
+    correct: d
+    explanation: "The Lakshadweep Islands in the Arabian Sea are coral islands."
+  - id: 5e000000-0301-4000-8000-000000000008
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "Which strait separates India from Sri Lanka?"
+    options:
+      - { id: a, text: "Strait of Malacca" }
+      - { id: b, text: "Palk Strait" }
+      - { id: c, text: "Ten Degree Channel" }
+      - { id: d, text: "Bering Strait" }
+    correct: b
+    explanation: "The Palk Strait lies between Tamil Nadu and the northern tip of Sri Lanka."
+  - id: 5e000000-0301-4000-8000-000000000009
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "The Ten Degree Channel separates:"
+    options:
+      - { id: a, text: "India and Sri Lanka" }
+      - { id: b, text: "Lakshadweep and Maldives" }
+      - { id: c, text: "the Andaman group from the Nicobar group" }
+      - { id: d, text: "Gujarat and Maharashtra" }
+    correct: c
+    explanation: "The Ten Degree Channel lies between Little Andaman and Car Nicobar."
+  - id: 5e000000-0301-4000-8000-000000000010
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "The southernmost point of India is:"
+    options:
+      - { id: a, text: "Indira Point" }
+      - { id: b, text: "Kanyakumari" }
+      - { id: c, text: "Rameswaram" }
+      - { id: d, text: "Point Calimere" }
+    correct: a
+    explanation: "Indira Point on Great Nicobar Island is India's southernmost point. Kanyakumari is the southern tip of the mainland."
+  - id: 5e000000-0301-4000-8000-000000000011
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "The newer, more fertile alluvium of the Northern Plains is called:"
+    options:
+      - { id: a, text: "Bhabar" }
+      - { id: b, text: "Bhangar" }
+      - { id: c, text: "Terai" }
+      - { id: d, text: "Khadar" }
+    correct: d
+    explanation: "Khadar is the newer alluvium renewed by floods every year. Bhangar is the older alluvium."
+  - id: 5e000000-0301-4000-8000-000000000012
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 3
+    stem: "The belt of pebbles at the foot of the Shiwaliks, where streams disappear underground, is called:"
+    options:
+      - { id: a, text: "Terai" }
+      - { id: b, text: "Bhabar" }
+      - { id: c, text: "Khadar" }
+      - { id: d, text: "Doab" }
+    correct: b
+    explanation: "In the Bhabar belt the streams sink into the pebbles. They re-emerge further south in the marshy Terai."
+  - id: 5e000000-0301-4000-8000-000000000013
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "The Malabar coast lies mainly in which state?"
+    options:
+      - { id: a, text: "Tamil Nadu" }
+      - { id: b, text: "Goa" }
+      - { id: c, text: "Kerala" }
+      - { id: d, text: "Odisha" }
+    correct: c
+    explanation: "The Malabar coast is the southern part of the west coast, mostly in Kerala."
+  - id: 5e000000-0301-4000-8000-000000000014
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 1
+    stem: "The eastern coast of Tamil Nadu is called the:"
+    options:
+      - { id: a, text: "Coromandel coast" }
+      - { id: b, text: "Konkan coast" }
+      - { id: c, text: "Northern Circars" }
+      - { id: d, text: "Malabar coast" }
+    correct: a
+    explanation: "The Coromandel coast is the southern part of India's east coast, along Tamil Nadu."
+  - id: 5e000000-0301-4000-8000-000000000015
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "Compared with the Western Ghats, the Eastern Ghats are:"
+    options:
+      - { id: a, text: "higher and continuous" }
+      - { id: b, text: "covered with glaciers" }
+      - { id: c, text: "volcanic in origin" }
+      - { id: d, text: "lower and broken by rivers" }
+    correct: d
+    explanation: "Rivers flowing into the Bay of Bengal have cut the Eastern Ghats into separate hills, and they are lower than the Western Ghats."
+  - id: 5e000000-0301-4000-8000-000000000016
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "The Thar Desert lies mainly in which state?"
+    options:
+      - { id: a, text: "Gujarat" }
+      - { id: b, text: "Rajasthan" }
+      - { id: c, text: "Punjab" }
+      - { id: d, text: "Haryana" }
+    correct: b
+    explanation: "Most of the Thar Desert lies in western Rajasthan."
+  - id: 5e000000-0301-4000-8000-000000000017
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 3
+    stem: "Guru Shikhar, the highest point of the Aravallis, is on:"
+    options:
+      - { id: a, text: "Doddabetta" }
+      - { id: b, text: "Mahabaleshwar" }
+      - { id: c, text: "Mount Abu" }
+      - { id: d, text: "Kalsubai" }
+    correct: c
+    explanation: "Guru Shikhar on Mount Abu in Rajasthan is the highest point of the Aravalli range."
+  - id: 5e000000-0301-4000-8000-000000000018
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "The Western Ghats and the Eastern Ghats meet in the:"
+    options:
+      - { id: a, text: "Nilgiri hills" }
+      - { id: b, text: "Vindhya hills" }
+      - { id: c, text: "Khasi hills" }
+      - { id: d, text: "Rajmahal hills" }
+    correct: a
+    explanation: "The two Ghats meet in the Nilgiris, where Doddabetta is the highest peak."
+  - id: 5e000000-0301-4000-8000-000000000019
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 1
+    stem: "The Himalayas are an example of:"
+    options:
+      - { id: a, text: "block mountains" }
+      - { id: b, text: "volcanic mountains" }
+      - { id: c, text: "residual mountains" }
+      - { id: d, text: "young fold mountains" }
+    correct: d
+    explanation: "The Himalayas are young fold mountains formed when the Indian plate pushed against the Eurasian plate."
+  - id: 5e000000-0301-4000-8000-000000000020
+    topic_id: 0199f5a0-0301-7000-8000-000000000301
+    difficulty: 2
+    stem: "Which is the oldest landmass of India?"
+    options:
+      - { id: a, text: "The Himalayas" }
+      - { id: b, text: "The Peninsular Plateau" }
+      - { id: c, text: "The Northern Plains" }
+      - { id: d, text: "The Andaman Islands" }
+    correct: b
+    explanation: "The Peninsular Plateau is formed of very old, hard rocks and is the oldest part of India's landmass."
+
+  # Rivers of India
+  - id: 5e000000-0302-4000-8000-000000000001
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "At which place do the Bhagirathi and the Alaknanda meet to form the Ganga?"
+    options:
+      - { id: a, text: "Haridwar" }
+      - { id: b, text: "Rishikesh" }
+      - { id: c, text: "Devprayag" }
+      - { id: d, text: "Prayagraj" }
+    correct: c
+    explanation: "The Bhagirathi and the Alaknanda join at Devprayag in Uttarakhand to form the Ganga."
+  - id: 5e000000-0302-4000-8000-000000000002
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 1
+    stem: "The Ganga rises from which glacier?"
+    options:
+      - { id: a, text: "Gangotri" }
+      - { id: b, text: "Siachen" }
+      - { id: c, text: "Yamunotri" }
+      - { id: d, text: "Zemu" }
+    correct: a
+    explanation: "The Ganga begins as the Bhagirathi at the Gangotri glacier."
+  - id: 5e000000-0302-4000-8000-000000000003
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 1
+    stem: "In Tibet, the Brahmaputra is known as the:"
+    options:
+      - { id: a, text: "Dihang" }
+      - { id: b, text: "Jamuna" }
+      - { id: c, text: "Lohit" }
+      - { id: d, text: "Tsangpo" }
+    correct: d
+    explanation: "The Brahmaputra is called the Tsangpo in Tibet and the Dihang when it enters Arunachal Pradesh."
+  - id: 5e000000-0302-4000-8000-000000000004
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "Majuli, one of the largest river islands in the world, is in which river?"
+    options:
+      - { id: a, text: "Ganga" }
+      - { id: b, text: "Brahmaputra" }
+      - { id: c, text: "Godavari" }
+      - { id: d, text: "Indus" }
+    correct: b
+    explanation: "Majuli lies in the Brahmaputra in Assam."
+  - id: 5e000000-0302-4000-8000-000000000005
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 1
+    stem: "Which river is called the Dakshin Ganga?"
+    options:
+      - { id: a, text: "Krishna" }
+      - { id: b, text: "Kaveri" }
+      - { id: c, text: "Godavari" }
+      - { id: d, text: "Mahanadi" }
+    correct: c
+    explanation: "The Godavari, the longest peninsular river, is called the Dakshin Ganga (Ganga of the South)."
+  - id: 5e000000-0302-4000-8000-000000000006
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "Which pair of rivers flows west into the Arabian Sea through rift valleys?"
+    options:
+      - { id: a, text: "Narmada and Tapi" }
+      - { id: b, text: "Godavari and Krishna" }
+      - { id: c, text: "Kaveri and Vaigai" }
+      - { id: d, text: "Mahanadi and Damodar" }
+    correct: a
+    explanation: "The Narmada and the Tapi flow west through rift valleys and form estuaries, not deltas."
+  - id: 5e000000-0302-4000-8000-000000000007
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "The Kaveri rises at:"
+    options:
+      - { id: a, text: "Mahabaleshwar" }
+      - { id: b, text: "Amarkantak" }
+      - { id: c, text: "Nasik" }
+      - { id: d, text: "Talakaveri" }
+    correct: d
+    explanation: "The Kaveri rises at Talakaveri in the Brahmagiri hills of Kodagu district, Karnataka."
+  - id: 5e000000-0302-4000-8000-000000000008
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "Which river is called the 'Sorrow of Bihar' because of its floods?"
+    options:
+      - { id: a, text: "Gandak" }
+      - { id: b, text: "Kosi" }
+      - { id: c, text: "Son" }
+      - { id: d, text: "Damodar" }
+    correct: b
+    explanation: "The Kosi often changes course and floods north Bihar, so it is called the Sorrow of Bihar."
+  - id: 5e000000-0302-4000-8000-000000000009
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 1
+    stem: "The Mettur dam is built across which river?"
+    options:
+      - { id: a, text: "Vaigai" }
+      - { id: b, text: "Thamirabarani" }
+      - { id: c, text: "Kaveri" }
+      - { id: d, text: "Palar" }
+    correct: c
+    explanation: "The Mettur dam in Salem district stands on the Kaveri."
+  - id: 5e000000-0302-4000-8000-000000000010
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "The Hirakud dam stands on which river?"
+    options:
+      - { id: a, text: "Mahanadi" }
+      - { id: b, text: "Narmada" }
+      - { id: c, text: "Sutlej" }
+      - { id: d, text: "Krishna" }
+    correct: a
+    explanation: "The Hirakud dam is on the Mahanadi in Odisha."
+  - id: 5e000000-0302-4000-8000-000000000011
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "The Bhakra Nangal dam is built on the:"
+    options:
+      - { id: a, text: "Beas" }
+      - { id: b, text: "Ravi" }
+      - { id: c, text: "Chenab" }
+      - { id: d, text: "Sutlej" }
+    correct: d
+    explanation: "Bhakra Nangal is on the Sutlej, a tributary of the Indus."
+  - id: 5e000000-0302-4000-8000-000000000012
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "Which of these is NOT a tributary of the Indus?"
+    options:
+      - { id: a, text: "Jhelum" }
+      - { id: b, text: "Gomti" }
+      - { id: c, text: "Chenab" }
+      - { id: d, text: "Beas" }
+    correct: b
+    explanation: "The Gomti is a tributary of the Ganga. The Jhelum, Chenab, Ravi, Beas and Sutlej are tributaries of the Indus."
+  - id: 5e000000-0302-4000-8000-000000000013
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "The Yamuna joins the Ganga at:"
+    options:
+      - { id: a, text: "Varanasi" }
+      - { id: b, text: "Patna" }
+      - { id: c, text: "Prayagraj" }
+      - { id: d, text: "Kanpur" }
+    correct: c
+    explanation: "The Yamuna meets the Ganga at Prayagraj (Allahabad)."
+  - id: 5e000000-0302-4000-8000-000000000014
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "The Sundarbans delta is formed by the Ganga and the:"
+    options:
+      - { id: a, text: "Brahmaputra" }
+      - { id: b, text: "Mahanadi" }
+      - { id: c, text: "Godavari" }
+      - { id: d, text: "Damodar" }
+    correct: a
+    explanation: "The Ganga and the Brahmaputra together form the Sundarbans, the delta where the Royal Bengal tiger lives."
+  - id: 5e000000-0302-4000-8000-000000000015
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "Hogenakkal falls are on which river?"
+    options:
+      - { id: a, text: "Bhavani" }
+      - { id: b, text: "Vaigai" }
+      - { id: c, text: "Sharavathi" }
+      - { id: d, text: "Kaveri" }
+    correct: d
+    explanation: "Hogenakkal falls are on the Kaveri, in Dharmapuri district on the Tamil Nadu-Karnataka border."
+  - id: 5e000000-0302-4000-8000-000000000016
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "The Sardar Sarovar dam stands on the:"
+    options:
+      - { id: a, text: "Tapi" }
+      - { id: b, text: "Narmada" }
+      - { id: c, text: "Sabarmati" }
+      - { id: d, text: "Mahi" }
+    correct: b
+    explanation: "The Sardar Sarovar dam is on the Narmada in Gujarat."
+  - id: 5e000000-0302-4000-8000-000000000017
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 3
+    stem: "Which river of the Thar region ends in the Rann of Kutch without reaching the sea?"
+    options:
+      - { id: a, text: "Ghaggar" }
+      - { id: b, text: "Sabarmati" }
+      - { id: c, text: "Luni" }
+      - { id: d, text: "Chambal" }
+    correct: c
+    explanation: "The Luni flows through the Thar Desert and loses itself in the marshes of the Rann of Kutch."
+  - id: 5e000000-0302-4000-8000-000000000018
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "Jog Falls in Karnataka is on which river?"
+    options:
+      - { id: a, text: "Sharavathi" }
+      - { id: b, text: "Kaveri" }
+      - { id: c, text: "Krishna" }
+      - { id: d, text: "Tungabhadra" }
+    correct: a
+    explanation: "Jog Falls is formed by the Sharavathi river in Shivamogga district."
+  - id: 5e000000-0302-4000-8000-000000000019
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "The Indus Waters Treaty of 1960 was signed between India and:"
+    options:
+      - { id: a, text: "China" }
+      - { id: b, text: "Nepal" }
+      - { id: c, text: "Bangladesh" }
+      - { id: d, text: "Pakistan" }
+    correct: d
+    explanation: "India and Pakistan signed the Indus Waters Treaty in 1960 to share the waters of the Indus system."
+  - id: 5e000000-0302-4000-8000-000000000020
+    topic_id: 0199f5a0-0302-7000-8000-000000000302
+    difficulty: 2
+    stem: "Why do most Himalayan rivers flow throughout the year?"
+    options:
+      - { id: a, text: "They are fed only by groundwater" }
+      - { id: b, text: "They are fed by both rain and melting snow" }
+      - { id: c, text: "They flow through deserts" }
+      - { id: d, text: "They are controlled by dams" }
+    correct: b
+    explanation: "Himalayan rivers get water from melting snow in summer and from rain in the monsoon, so they are perennial."
+
+  # Climate and the monsoon
+  - id: 5e000000-0303-4000-8000-000000000001
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 1
+    stem: "The word 'monsoon' comes from an Arabic word meaning:"
+    options:
+      - { id: a, text: "rain" }
+      - { id: b, text: "wind" }
+      - { id: c, text: "season" }
+      - { id: d, text: "cloud" }
+    correct: c
+    explanation: "Monsoon comes from the Arabic word mausim, meaning season."
+  - id: 5e000000-0303-4000-8000-000000000002
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 1
+    stem: "Tamil Nadu gets most of its rainfall from the:"
+    options:
+      - { id: a, text: "north-east monsoon" }
+      - { id: b, text: "south-west monsoon" }
+      - { id: c, text: "western disturbances" }
+      - { id: d, text: "mango showers" }
+    correct: a
+    explanation: "Tamil Nadu lies in the rain shadow during the south-west monsoon and receives most of its rain from the north-east monsoon, October to December."
+  - id: 5e000000-0303-4000-8000-000000000003
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "Pre-monsoon showers that help mangoes ripen in Kerala and Karnataka are called:"
+    options:
+      - { id: a, text: "Kalbaisakhi" }
+      - { id: b, text: "Loo" }
+      - { id: c, text: "Western disturbances" }
+      - { id: d, text: "Mango showers" }
+    correct: d
+    explanation: "Showers before the monsoon in Kerala and Karnataka are called mango showers."
+  - id: 5e000000-0303-4000-8000-000000000004
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "The hot, dry wind that blows over the northern plains in summer is the:"
+    options:
+      - { id: a, text: "Chinook" }
+      - { id: b, text: "Loo" }
+      - { id: c, text: "Mistral" }
+      - { id: d, text: "Kalbaisakhi" }
+    correct: b
+    explanation: "The loo is a hot, dry wind that blows in the afternoons over north India in May and June."
+  - id: 5e000000-0303-4000-8000-000000000005
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "Evening thunderstorms in West Bengal in the hot season are called:"
+    options:
+      - { id: a, text: "Mango showers" }
+      - { id: b, text: "Cherry blossom showers" }
+      - { id: c, text: "Kalbaisakhi" }
+      - { id: d, text: "Loo" }
+    correct: c
+    explanation: "Kalbaisakhi, or nor'westers, are violent evening storms in West Bengal during the hot season."
+  - id: 5e000000-0303-4000-8000-000000000006
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "Winter rain in north-west India is mainly brought by:"
+    options:
+      - { id: a, text: "western disturbances" }
+      - { id: b, text: "the south-west monsoon" }
+      - { id: c, text: "tropical cyclones" }
+      - { id: d, text: "the loo" }
+    correct: a
+    explanation: "Western disturbances from the Mediterranean region bring winter rain to north-west India, which helps the wheat crop."
+  - id: 5e000000-0303-4000-8000-000000000007
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 1
+    stem: "Mawsynram and Cherrapunji, places with very high rainfall, are in which state?"
+    options:
+      - { id: a, text: "Assam" }
+      - { id: b, text: "Kerala" }
+      - { id: c, text: "Sikkim" }
+      - { id: d, text: "Meghalaya" }
+    correct: d
+    explanation: "Both are in the Khasi hills of Meghalaya and receive some of the highest rainfall in the world."
+  - id: 5e000000-0303-4000-8000-000000000008
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 1
+    stem: "The south-west monsoon first reaches which part of India?"
+    options:
+      - { id: a, text: "Tamil Nadu coast" }
+      - { id: b, text: "Kerala coast" }
+      - { id: c, text: "Gujarat coast" }
+      - { id: d, text: "West Bengal coast" }
+    correct: b
+    explanation: "The south-west monsoon usually sets in over the Kerala coast around the beginning of June."
+  - id: 5e000000-0303-4000-8000-000000000009
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "The land to the east of the Western Ghats gets less rain during the south-west monsoon because it lies in a:"
+    options:
+      - { id: a, text: "cyclone belt" }
+      - { id: b, text: "delta region" }
+      - { id: c, text: "rain shadow area" }
+      - { id: d, text: "coastal plain" }
+    correct: c
+    explanation: "Moist winds drop their rain on the western slopes. By the time they cross the Ghats they are dry, leaving a rain shadow on the east."
+  - id: 5e000000-0303-4000-8000-000000000010
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "Into which two branches does the south-west monsoon split over India?"
+    options:
+      - { id: a, text: "Arabian Sea branch and Bay of Bengal branch" }
+      - { id: b, text: "Himalayan branch and Deccan branch" }
+      - { id: c, text: "Northern branch and Southern branch" }
+      - { id: d, text: "Pacific branch and Atlantic branch" }
+    correct: a
+    explanation: "The monsoon divides into the Arabian Sea branch and the Bay of Bengal branch."
+  - id: 5e000000-0303-4000-8000-000000000011
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 1
+    stem: "Which type of climate does India have?"
+    options:
+      - { id: a, text: "Mediterranean" }
+      - { id: b, text: "Polar" }
+      - { id: c, text: "Equatorial" }
+      - { id: d, text: "Tropical monsoon" }
+    correct: d
+    explanation: "India has a tropical monsoon climate, with wet summers and dry winters for most of the country."
+  - id: 5e000000-0303-4000-8000-000000000012
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "El Nino, which is often linked to a weak Indian monsoon, refers to unusual warming of the:"
+    options:
+      - { id: a, text: "Arabian Sea" }
+      - { id: b, text: "eastern Pacific Ocean" }
+      - { id: c, text: "Bay of Bengal" }
+      - { id: d, text: "Mediterranean Sea" }
+    correct: b
+    explanation: "El Nino is the periodic warming of the eastern Pacific Ocean near Peru. It often weakens the Indian monsoon."
+  - id: 5e000000-0303-4000-8000-000000000013
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 1
+    stem: "Kharif crops are sown at the start of the:"
+    options:
+      - { id: a, text: "winter season" }
+      - { id: b, text: "spring season" }
+      - { id: c, text: "south-west monsoon" }
+      - { id: d, text: "hot season" }
+    correct: c
+    explanation: "Kharif crops such as rice are sown when the south-west monsoon arrives and harvested in autumn."
+  - id: 5e000000-0303-4000-8000-000000000014
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 1
+    stem: "Which of these is a rabi crop?"
+    options:
+      - { id: a, text: "Wheat" }
+      - { id: b, text: "Rice" }
+      - { id: c, text: "Jute" }
+      - { id: d, text: "Cotton" }
+    correct: a
+    explanation: "Wheat is sown in winter and harvested in spring, so it is a rabi crop."
+  - id: 5e000000-0303-4000-8000-000000000015
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "Cyclones hitting the Tamil Nadu coast are most common in which months?"
+    options:
+      - { id: a, text: "January to March" }
+      - { id: b, text: "April to May" }
+      - { id: c, text: "June to July" }
+      - { id: d, text: "October to December" }
+    correct: d
+    explanation: "Cyclones from the Bay of Bengal often strike the east coast during the retreating monsoon, October to December."
+  - id: 5e000000-0303-4000-8000-000000000016
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "Which government body forecasts the weather and the monsoon in India?"
+    options:
+      - { id: a, text: "ISRO" }
+      - { id: b, text: "India Meteorological Department" }
+      - { id: c, text: "Geological Survey of India" }
+      - { id: d, text: "Central Water Commission" }
+    correct: b
+    explanation: "The India Meteorological Department (IMD) issues weather forecasts and monsoon outlooks."
+  - id: 5e000000-0303-4000-8000-000000000017
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "The monsoon is best described as:"
+    options:
+      - { id: a, text: "a wind that blows from the same direction all year" }
+      - { id: b, text: "a daily sea breeze" }
+      - { id: c, text: "a seasonal reversal in the direction of winds" }
+      - { id: d, text: "a storm that forms only over deserts" }
+    correct: c
+    explanation: "Monsoon winds blow from sea to land in summer and from land to sea in winter, reversing with the seasons."
+  - id: 5e000000-0303-4000-8000-000000000018
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "The western slopes of the Western Ghats get heavy rain because:"
+    options:
+      - { id: a, text: "the moist winds are forced to rise and cool" }
+      - { id: b, text: "they are close to the Himalayas" }
+      - { id: c, text: "the winds come from the Thar Desert" }
+      - { id: d, text: "they lie in a rain shadow" }
+    correct: a
+    explanation: "Moist Arabian Sea winds rise up the Ghats, cool and drop their moisture as heavy rain on the windward side."
+  - id: 5e000000-0303-4000-8000-000000000019
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 1
+    stem: "Which months make up the south-west monsoon season?"
+    options:
+      - { id: a, text: "December to February" }
+      - { id: b, text: "March to May" }
+      - { id: c, text: "October to December" }
+      - { id: d, text: "June to September" }
+    correct: d
+    explanation: "The south-west monsoon season runs from June to September."
+  - id: 5e000000-0303-4000-8000-000000000020
+    topic_id: 0199f5a0-0303-7000-8000-000000000303
+    difficulty: 2
+    stem: "The north-east monsoon brings rain to Tamil Nadu because the winds pick up moisture over the:"
+    options:
+      - { id: a, text: "Arabian Sea" }
+      - { id: b, text: "Bay of Bengal" }
+      - { id: c, text: "Thar Desert" }
+      - { id: d, text: "Himalayas" }
+    correct: b
+    explanation: "Winds from the north-east gather moisture while crossing the Bay of Bengal and drop it on the Tamil Nadu coast."
+
+  # Geography of Tamil Nadu
+  - id: 5e000000-0304-4000-8000-000000000001
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "Which is the highest peak in Tamil Nadu?"
+    options:
+      - { id: a, text: "Anaimudi" }
+      - { id: b, text: "Kodaikanal" }
+      - { id: c, text: "Doddabetta" }
+      - { id: d, text: "Yercaud" }
+    correct: c
+    explanation: "Doddabetta in the Nilgiris is the highest peak in Tamil Nadu. Anaimudi is higher but lies in Kerala."
+  - id: 5e000000-0304-4000-8000-000000000002
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "Which district is called the rice bowl of Tamil Nadu?"
+    options:
+      - { id: a, text: "Thanjavur" }
+      - { id: b, text: "Coimbatore" }
+      - { id: c, text: "Madurai" }
+      - { id: d, text: "Salem" }
+    correct: a
+    explanation: "Thanjavur, in the fertile Kaveri delta, is called the rice bowl of Tamil Nadu."
+  - id: 5e000000-0304-4000-8000-000000000003
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "The hill station Yercaud is in the:"
+    options:
+      - { id: a, text: "Javadhu hills" }
+      - { id: b, text: "Kolli hills" }
+      - { id: c, text: "Palani hills" }
+      - { id: d, text: "Shevaroy hills" }
+    correct: d
+    explanation: "Yercaud is in the Shevaroy hills near Salem."
+  - id: 5e000000-0304-4000-8000-000000000004
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "Kodaikanal is in which range of hills?"
+    options:
+      - { id: a, text: "Nilgiri hills" }
+      - { id: b, text: "Palani hills" }
+      - { id: c, text: "Shevaroy hills" }
+      - { id: d, text: "Kalrayan hills" }
+    correct: b
+    explanation: "Kodaikanal is a hill station in the Palani hills of Dindigul district."
+  - id: 5e000000-0304-4000-8000-000000000005
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Neyveli in Cuddalore district is known for deposits of:"
+    options:
+      - { id: a, text: "iron ore" }
+      - { id: b, text: "bauxite" }
+      - { id: c, text: "lignite" }
+      - { id: d, text: "gold" }
+    correct: c
+    explanation: "Neyveli has large lignite deposits, which are mined to generate electricity."
+  - id: 5e000000-0304-4000-8000-000000000006
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "Which city is called the Manchester of South India?"
+    options:
+      - { id: a, text: "Coimbatore" }
+      - { id: b, text: "Madurai" }
+      - { id: c, text: "Tiruchirappalli" }
+      - { id: d, text: "Vellore" }
+    correct: a
+    explanation: "Coimbatore is called the Manchester of South India because of its many textile mills."
+  - id: 5e000000-0304-4000-8000-000000000007
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Muppandal in Kanyakumari district is known for:"
+    options:
+      - { id: a, text: "salt pans" }
+      - { id: b, text: "coal mines" }
+      - { id: c, text: "tea estates" }
+      - { id: d, text: "wind energy farms" }
+    correct: d
+    explanation: "Muppandal has a large cluster of wind turbines because strong winds funnel through the gap in the hills there."
+  - id: 5e000000-0304-4000-8000-000000000008
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Pulicat Lake, a brackish-water lagoon, lies on Tamil Nadu's border with:"
+    options:
+      - { id: a, text: "Kerala" }
+      - { id: b, text: "Andhra Pradesh" }
+      - { id: c, text: "Karnataka" }
+      - { id: d, text: "Puducherry" }
+    correct: b
+    explanation: "Pulicat Lake lies on the coast north of Chennai, shared with Andhra Pradesh."
+  - id: 5e000000-0304-4000-8000-000000000009
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Which was the first biosphere reserve in India?"
+    options:
+      - { id: a, text: "Gulf of Mannar" }
+      - { id: b, text: "Sundarbans" }
+      - { id: c, text: "Nilgiri" }
+      - { id: d, text: "Agasthyamalai" }
+    correct: c
+    explanation: "The Nilgiri Biosphere Reserve, spread over Tamil Nadu, Kerala and Karnataka, was the first in India."
+  - id: 5e000000-0304-4000-8000-000000000010
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "The Palghat Gap links Tamil Nadu with:"
+    options:
+      - { id: a, text: "Kerala" }
+      - { id: b, text: "Karnataka" }
+      - { id: c, text: "Andhra Pradesh" }
+      - { id: d, text: "Sri Lanka" }
+    correct: a
+    explanation: "The Palghat Gap is a low pass in the Western Ghats between Coimbatore and Palakkad in Kerala."
+  - id: 5e000000-0304-4000-8000-000000000011
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "Which town in Tamil Nadu is known for fireworks and printing?"
+    options:
+      - { id: a, text: "Tiruppur" }
+      - { id: b, text: "Karur" }
+      - { id: c, text: "Hosur" }
+      - { id: d, text: "Sivakasi" }
+    correct: d
+    explanation: "Sivakasi in Virudhunagar district is known for fireworks, safety matches and printing."
+  - id: 5e000000-0304-4000-8000-000000000012
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "Tiruppur is best known for:"
+    options:
+      - { id: a, text: "leather goods" }
+      - { id: b, text: "knitwear and garments" }
+      - { id: c, text: "silk sarees" }
+      - { id: d, text: "steel" }
+    correct: b
+    explanation: "Tiruppur is a major centre of knitted garments and exports."
+  - id: 5e000000-0304-4000-8000-000000000013
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "The Gulf of Mannar marine biosphere reserve lies between Tamil Nadu and:"
+    options:
+      - { id: a, text: "the Maldives" }
+      - { id: b, text: "the Andaman Islands" }
+      - { id: c, text: "Sri Lanka" }
+      - { id: d, text: "Lakshadweep" }
+    correct: c
+    explanation: "The Gulf of Mannar lies between the south-east coast of Tamil Nadu and the west coast of Sri Lanka."
+  - id: 5e000000-0304-4000-8000-000000000014
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Mudumalai Tiger Reserve is in which district?"
+    options:
+      - { id: a, text: "The Nilgiris" }
+      - { id: b, text: "Theni" }
+      - { id: c, text: "Tirunelveli" }
+      - { id: d, text: "Dharmapuri" }
+    correct: a
+    explanation: "Mudumalai lies in the Nilgiris district, part of the Nilgiri Biosphere Reserve."
+  - id: 5e000000-0304-4000-8000-000000000015
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Rameswaram stands on which island?"
+    options:
+      - { id: a, text: "Sriharikota" }
+      - { id: b, text: "Majuli" }
+      - { id: c, text: "Hare Island" }
+      - { id: d, text: "Pamban Island" }
+    correct: d
+    explanation: "Rameswaram is on Pamban Island, linked to the mainland by the Pamban bridge."
+  - id: 5e000000-0304-4000-8000-000000000016
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "The Vaigai river flows past which city?"
+    options:
+      - { id: a, text: "Tiruchirappalli" }
+      - { id: b, text: "Madurai" }
+      - { id: c, text: "Erode" }
+      - { id: d, text: "Vellore" }
+    correct: b
+    explanation: "Madurai stands on the banks of the Vaigai."
+  - id: 5e000000-0304-4000-8000-000000000017
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "The Kolli hills are in which district?"
+    options:
+      - { id: a, text: "Salem" }
+      - { id: b, text: "Dindigul" }
+      - { id: c, text: "Namakkal" }
+      - { id: d, text: "Vellore" }
+    correct: c
+    explanation: "The Kolli hills, part of the Eastern Ghats, are in Namakkal district."
+  - id: 5e000000-0304-4000-8000-000000000018
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Point Calimere (Kodiakkarai) is known as a:"
+    options:
+      - { id: a, text: "bird sanctuary" }
+      - { id: b, text: "hill station" }
+      - { id: c, text: "nuclear power site" }
+      - { id: d, text: "lignite mine" }
+    correct: a
+    explanation: "Point Calimere is a wildlife and bird sanctuary on the coast of Nagapattinam district, visited by many migratory birds."
+  - id: 5e000000-0304-4000-8000-000000000019
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 2
+    stem: "Which of these places in Tamil Nadu has a nuclear power plant?"
+    options:
+      - { id: a, text: "Mettur" }
+      - { id: b, text: "Neyveli" }
+      - { id: c, text: "Muppandal" }
+      - { id: d, text: "Kalpakkam" }
+    correct: d
+    explanation: "Kalpakkam, south of Chennai, has a nuclear power station. Koodankulam in Tirunelveli district also has one."
+  - id: 5e000000-0304-4000-8000-000000000020
+    topic_id: 0199f5a0-0304-7000-8000-000000000304
+    difficulty: 1
+    stem: "At Kanyakumari, the Indian Ocean, the Arabian Sea and which other water body meet?"
+    options:
+      - { id: a, text: "Red Sea" }
+      - { id: b, text: "Bay of Bengal" }
+      - { id: c, text: "Persian Gulf" }
+      - { id: d, text: "Andaman Sea" }
+    correct: b
+    explanation: "Kanyakumari is the meeting point of the Arabian Sea, the Indian Ocean and the Bay of Bengal."

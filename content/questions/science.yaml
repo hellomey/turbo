@@ -1,0 +1,897 @@
+# General Science: SAMPLE practice questions, under review.
+# Original questions written for HeyMey from TN State Board Science textbooks.
+# Not copied from any paper, book, app or website. review_status is "sample" until a human reviewer checks each item.
+set: science-sample-1
+review_status: sample
+source:
+  kind: original
+  citation: "HeyMey original practice question (sample content, under review). TN State Board Science, Classes 8, 9 and 10."
+  url: null
+questions:
+  # Human body systems
+  - id: 5e000000-0501-4000-8000-000000000001
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "How many bones are there in the body of an adult human?"
+    options:
+      - { id: a, text: "300" }
+      - { id: b, text: "212" }
+      - { id: c, text: "206" }
+      - { id: d, text: "180" }
+    correct: c
+    explanation: "An adult has 206 bones. A newborn has more, and some fuse together as the child grows."
+  - id: 5e000000-0501-4000-8000-000000000002
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "Which is the largest organ of the human body?"
+    options:
+      - { id: a, text: "Skin" }
+      - { id: b, text: "Liver" }
+      - { id: c, text: "Brain" }
+      - { id: d, text: "Lungs" }
+    correct: a
+    explanation: "The skin covers the whole body and is its largest organ. The liver is the largest internal organ and gland."
+  - id: 5e000000-0501-4000-8000-000000000003
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "Which is the largest gland in the human body?"
+    options:
+      - { id: a, text: "Pancreas" }
+      - { id: b, text: "Thyroid" }
+      - { id: c, text: "Pituitary" }
+      - { id: d, text: "Liver" }
+    correct: d
+    explanation: "The liver is the largest gland. It makes bile, stores glycogen and removes toxins."
+  - id: 5e000000-0501-4000-8000-000000000004
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "The smallest bone in the human body, the stapes, is found in the:"
+    options:
+      - { id: a, text: "nose" }
+      - { id: b, text: "ear" }
+      - { id: c, text: "finger" }
+      - { id: d, text: "toe" }
+    correct: b
+    explanation: "The stapes is one of the three tiny bones of the middle ear."
+  - id: 5e000000-0501-4000-8000-000000000005
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "Which is the longest bone in the human body?"
+    options:
+      - { id: a, text: "Tibia" }
+      - { id: b, text: "Humerus" }
+      - { id: c, text: "Femur" }
+      - { id: d, text: "Radius" }
+    correct: c
+    explanation: "The femur, or thigh bone, is the longest and strongest bone."
+  - id: 5e000000-0501-4000-8000-000000000006
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "How many chambers does the human heart have?"
+    options:
+      - { id: a, text: "Four" }
+      - { id: b, text: "Two" }
+      - { id: c, text: "Three" }
+      - { id: d, text: "Five" }
+    correct: a
+    explanation: "The heart has two atria and two ventricles, four chambers in all."
+  - id: 5e000000-0501-4000-8000-000000000007
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "Which blood cells carry oxygen?"
+    options:
+      - { id: a, text: "White blood cells" }
+      - { id: b, text: "Platelets" }
+      - { id: c, text: "Plasma cells" }
+      - { id: d, text: "Red blood cells" }
+    correct: d
+    explanation: "Red blood cells contain haemoglobin, which binds oxygen and carries it around the body."
+  - id: 5e000000-0501-4000-8000-000000000008
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "Which blood component helps the blood to clot?"
+    options:
+      - { id: a, text: "Red blood cells" }
+      - { id: b, text: "Platelets" }
+      - { id: c, text: "White blood cells" }
+      - { id: d, text: "Haemoglobin" }
+    correct: b
+    explanation: "Platelets gather at a cut and help form a clot to stop bleeding."
+  - id: 5e000000-0501-4000-8000-000000000009
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "Which gland is called the master gland?"
+    options:
+      - { id: a, text: "Thyroid" }
+      - { id: b, text: "Adrenal" }
+      - { id: c, text: "Pituitary" }
+      - { id: d, text: "Pancreas" }
+    correct: c
+    explanation: "The pituitary controls several other glands through its hormones, so it is called the master gland."
+  - id: 5e000000-0501-4000-8000-000000000010
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "Insulin is produced by the:"
+    options:
+      - { id: a, text: "pancreas" }
+      - { id: b, text: "liver" }
+      - { id: c, text: "kidney" }
+      - { id: d, text: "thyroid" }
+    correct: a
+    explanation: "The pancreas makes insulin, which lowers blood sugar. A lack of insulin causes diabetes."
+  - id: 5e000000-0501-4000-8000-000000000011
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "What is the basic functional unit of the kidney?"
+    options:
+      - { id: a, text: "Neuron" }
+      - { id: b, text: "Alveolus" }
+      - { id: c, text: "Villus" }
+      - { id: d, text: "Nephron" }
+    correct: d
+    explanation: "Nephrons are the tiny filtering units of the kidney that make urine."
+  - id: 5e000000-0501-4000-8000-000000000012
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "Exchange of gases in the lungs takes place in the:"
+    options:
+      - { id: a, text: "trachea" }
+      - { id: b, text: "alveoli" }
+      - { id: c, text: "bronchi" }
+      - { id: d, text: "larynx" }
+    correct: b
+    explanation: "Alveoli are tiny air sacs where oxygen enters the blood and carbon dioxide leaves it."
+  - id: 5e000000-0501-4000-8000-000000000013
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "Which part of the brain maintains balance of the body?"
+    options:
+      - { id: a, text: "Cerebrum" }
+      - { id: b, text: "Medulla" }
+      - { id: c, text: "Cerebellum" }
+      - { id: d, text: "Hypothalamus" }
+    correct: c
+    explanation: "The cerebellum coordinates movement and keeps the body balanced."
+  - id: 5e000000-0501-4000-8000-000000000014
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "Bile is produced by the liver and stored in the:"
+    options:
+      - { id: a, text: "gall bladder" }
+      - { id: b, text: "stomach" }
+      - { id: c, text: "pancreas" }
+      - { id: d, text: "small intestine" }
+    correct: a
+    explanation: "Bile is made in the liver, stored in the gall bladder and released into the small intestine to help digest fats."
+  - id: 5e000000-0501-4000-8000-000000000015
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "People with which blood group are called universal donors?"
+    options:
+      - { id: a, text: "AB positive" }
+      - { id: b, text: "A positive" }
+      - { id: c, text: "B negative" }
+      - { id: d, text: "O negative" }
+    correct: d
+    explanation: "O negative red cells have no A, B or Rh antigens, so they can be given to people of any group."
+  - id: 5e000000-0501-4000-8000-000000000016
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "What is the normal body temperature of a healthy human?"
+    options:
+      - { id: a, text: "32 degrees Celsius" }
+      - { id: b, text: "37 degrees Celsius" }
+      - { id: c, text: "40 degrees Celsius" }
+      - { id: d, text: "98 degrees Celsius" }
+    correct: b
+    explanation: "Normal body temperature is about 37 degrees Celsius, or about 98.6 degrees Fahrenheit."
+  - id: 5e000000-0501-4000-8000-000000000017
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "Who described the circulation of blood in the human body?"
+    options:
+      - { id: a, text: "Louis Pasteur" }
+      - { id: b, text: "Edward Jenner" }
+      - { id: c, text: "William Harvey" }
+      - { id: d, text: "Robert Hooke" }
+    correct: c
+    explanation: "William Harvey showed in the seventeenth century that the heart pumps blood around the body in a circuit."
+  - id: 5e000000-0501-4000-8000-000000000018
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "Most digestion and absorption of food takes place in the:"
+    options:
+      - { id: a, text: "small intestine" }
+      - { id: b, text: "stomach" }
+      - { id: c, text: "large intestine" }
+      - { id: d, text: "oesophagus" }
+    correct: a
+    explanation: "The small intestine completes digestion, and its villi absorb the digested food into the blood."
+  - id: 5e000000-0501-4000-8000-000000000019
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 1
+    stem: "What is the basic unit of the nervous system?"
+    options:
+      - { id: a, text: "Nephron" }
+      - { id: b, text: "Muscle fibre" }
+      - { id: c, text: "Platelet" }
+      - { id: d, text: "Neuron" }
+    correct: d
+    explanation: "The neuron, or nerve cell, carries messages as electrical signals."
+  - id: 5e000000-0501-4000-8000-000000000020
+    topic_id: 0199f5a0-0501-7000-8000-000000000501
+    difficulty: 2
+    stem: "Arteries carry blood:"
+    options:
+      - { id: a, text: "from the body back to the heart" }
+      - { id: b, text: "away from the heart" }
+      - { id: c, text: "only to the lungs" }
+      - { id: d, text: "only within the brain" }
+    correct: b
+    explanation: "Arteries carry blood away from the heart. Veins bring it back."
+
+  # Light
+  - id: 5e000000-0502-4000-8000-000000000001
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 1
+    stem: "What is the approximate speed of light in a vacuum?"
+    options:
+      - { id: a, text: "3 x 10^5 m/s" }
+      - { id: b, text: "340 m/s" }
+      - { id: c, text: "3 x 10^8 m/s" }
+      - { id: d, text: "3 x 10^10 m/s" }
+    correct: c
+    explanation: "Light travels at about 3 x 10^8 metres per second in a vacuum. 340 m/s is roughly the speed of sound in air."
+  - id: 5e000000-0502-4000-8000-000000000002
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 1
+    stem: "According to the law of reflection, the angle of incidence is:"
+    options:
+      - { id: a, text: "equal to the angle of reflection" }
+      - { id: b, text: "twice the angle of reflection" }
+      - { id: c, text: "half the angle of reflection" }
+      - { id: d, text: "always 90 degrees" }
+    correct: a
+    explanation: "The angle of incidence equals the angle of reflection, both measured from the normal."
+  - id: 5e000000-0502-4000-8000-000000000003
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 1
+    stem: "Which mirror is used as a rear-view mirror in vehicles?"
+    options:
+      - { id: a, text: "Concave mirror" }
+      - { id: b, text: "Plane mirror" }
+      - { id: c, text: "Cylindrical mirror" }
+      - { id: d, text: "Convex mirror" }
+    correct: d
+    explanation: "A convex mirror gives an upright, smaller image of a wide area behind the vehicle."
+  - id: 5e000000-0502-4000-8000-000000000004
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "Dentists use which type of mirror to see enlarged images of teeth?"
+    options:
+      - { id: a, text: "Convex mirror" }
+      - { id: b, text: "Concave mirror" }
+      - { id: c, text: "Plane mirror" }
+      - { id: d, text: "Prism" }
+    correct: b
+    explanation: "A concave mirror held close to the teeth forms an enlarged, upright image."
+  - id: 5e000000-0502-4000-8000-000000000005
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 1
+    stem: "Why does the sky appear blue?"
+    options:
+      - { id: a, text: "Reflection of the sea" }
+      - { id: b, text: "Blue gases in the air" }
+      - { id: c, text: "Scattering of sunlight by the air" }
+      - { id: d, text: "Refraction by clouds" }
+    correct: c
+    explanation: "Air molecules scatter short-wavelength blue light much more than red light, so blue reaches our eyes from all directions."
+  - id: 5e000000-0502-4000-8000-000000000006
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "Myopia (short-sightedness) is corrected using a:"
+    options:
+      - { id: a, text: "concave lens" }
+      - { id: b, text: "convex lens" }
+      - { id: c, text: "bifocal mirror" }
+      - { id: d, text: "plane glass" }
+    correct: a
+    explanation: "A concave (diverging) lens moves the image back onto the retina for a short-sighted eye."
+  - id: 5e000000-0502-4000-8000-000000000007
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "Hypermetropia (long-sightedness) is corrected using a:"
+    options:
+      - { id: a, text: "concave lens" }
+      - { id: b, text: "plane mirror" }
+      - { id: c, text: "concave mirror" }
+      - { id: d, text: "convex lens" }
+    correct: d
+    explanation: "A convex (converging) lens helps a long-sighted eye focus on near objects."
+  - id: 5e000000-0502-4000-8000-000000000008
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 1
+    stem: "The power of a lens is measured in:"
+    options:
+      - { id: a, text: "watts" }
+      - { id: b, text: "dioptres" }
+      - { id: c, text: "lux" }
+      - { id: d, text: "candela" }
+    correct: b
+    explanation: "Lens power is measured in dioptres. Power in dioptres = 1 / focal length in metres."
+  - id: 5e000000-0502-4000-8000-000000000009
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "Splitting of white light into seven colours by a prism is called:"
+    options:
+      - { id: a, text: "reflection" }
+      - { id: b, text: "diffraction" }
+      - { id: c, text: "dispersion" }
+      - { id: d, text: "polarisation" }
+    correct: c
+    explanation: "A prism bends each colour by a different amount, spreading white light into a spectrum. This is dispersion."
+  - id: 5e000000-0502-4000-8000-000000000010
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "Why is red light used for danger signals?"
+    options:
+      - { id: a, text: "It has the longest wavelength and is scattered least" }
+      - { id: b, text: "It travels faster than other colours" }
+      - { id: c, text: "It is the cheapest colour to produce" }
+      - { id: d, text: "It has the shortest wavelength" }
+    correct: a
+    explanation: "Red has the longest wavelength in visible light, so it is scattered least by fog and dust and can be seen from far away."
+  - id: 5e000000-0502-4000-8000-000000000011
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "Optical fibres carry light signals by:"
+    options:
+      - { id: a, text: "dispersion" }
+      - { id: b, text: "scattering" }
+      - { id: c, text: "absorption" }
+      - { id: d, text: "total internal reflection" }
+    correct: d
+    explanation: "Light inside the fibre keeps hitting the boundary at a large angle and reflects back completely, so it travels along the fibre."
+  - id: 5e000000-0502-4000-8000-000000000012
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "The image formed by a plane mirror is:"
+    options:
+      - { id: a, text: "real and inverted" }
+      - { id: b, text: "virtual, upright and laterally inverted" }
+      - { id: c, text: "real and magnified" }
+      - { id: d, text: "virtual and smaller than the object" }
+    correct: b
+    explanation: "A plane mirror image is virtual, upright, the same size as the object and swapped left to right."
+  - id: 5e000000-0502-4000-8000-000000000013
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 1
+    stem: "A pencil dipped in water looks bent because of:"
+    options:
+      - { id: a, text: "reflection" }
+      - { id: b, text: "dispersion" }
+      - { id: c, text: "refraction" }
+      - { id: d, text: "scattering" }
+    correct: c
+    explanation: "Light bends as it passes from water to air, so the part of the pencil under water appears shifted."
+  - id: 5e000000-0502-4000-8000-000000000014
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "C. V. Raman won the Nobel Prize in Physics in which year?"
+    options:
+      - { id: a, text: "1930" }
+      - { id: b, text: "1913" }
+      - { id: c, text: "1947" }
+      - { id: d, text: "1983" }
+    correct: a
+    explanation: "C. V. Raman received the Nobel Prize in Physics in 1930 for his work on the scattering of light."
+  - id: 5e000000-0502-4000-8000-000000000015
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "National Science Day, which marks the discovery of the Raman effect, is observed on:"
+    options:
+      - { id: a, text: "5 September" }
+      - { id: b, text: "14 November" }
+      - { id: c, text: "11 May" }
+      - { id: d, text: "28 February" }
+    correct: d
+    explanation: "National Science Day is observed on 28 February, the date of Raman's discovery in 1928."
+  - id: 5e000000-0502-4000-8000-000000000016
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "On which part of the eye is the image formed?"
+    options:
+      - { id: a, text: "Cornea" }
+      - { id: b, text: "Retina" }
+      - { id: c, text: "Iris" }
+      - { id: d, text: "Pupil" }
+    correct: b
+    explanation: "The eye lens focuses a real, inverted image on the retina, which sends signals to the brain."
+  - id: 5e000000-0502-4000-8000-000000000017
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "Which colour of visible light has the shortest wavelength?"
+    options:
+      - { id: a, text: "Red" }
+      - { id: b, text: "Yellow" }
+      - { id: c, text: "Violet" }
+      - { id: d, text: "Green" }
+    correct: c
+    explanation: "In VIBGYOR, violet has the shortest wavelength and red the longest."
+  - id: 5e000000-0502-4000-8000-000000000018
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "Car headlights use which kind of reflector?"
+    options:
+      - { id: a, text: "Concave" }
+      - { id: b, text: "Convex" }
+      - { id: c, text: "Plane" }
+      - { id: d, text: "No reflector" }
+    correct: a
+    explanation: "A bulb placed at the focus of a concave reflector sends out a strong parallel beam."
+  - id: 5e000000-0502-4000-8000-000000000019
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 3
+    stem: "A lens has a focal length of 0.5 m. What is its power?"
+    options:
+      - { id: a, text: "0.5 dioptre" }
+      - { id: b, text: "5 dioptres" }
+      - { id: c, text: "1 dioptre" }
+      - { id: d, text: "2 dioptres" }
+    correct: d
+    explanation: "Power = 1 / focal length in metres = 1 / 0.5 = 2 dioptres."
+  - id: 5e000000-0502-4000-8000-000000000020
+    topic_id: 0199f5a0-0502-7000-8000-000000000502
+    difficulty: 2
+    stem: "A rainbow is formed by sunlight passing through:"
+    options:
+      - { id: a, text: "dust particles" }
+      - { id: b, text: "raindrops" }
+      - { id: c, text: "ice crystals in the ground" }
+      - { id: d, text: "smoke" }
+    correct: b
+    explanation: "Raindrops refract, disperse and internally reflect sunlight, producing the colours of a rainbow."
+
+  # Electricity
+  - id: 5e000000-0503-4000-8000-000000000001
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 1
+    stem: "What is the SI unit of electric current?"
+    options:
+      - { id: a, text: "Volt" }
+      - { id: b, text: "Ohm" }
+      - { id: c, text: "Ampere" }
+      - { id: d, text: "Watt" }
+    correct: c
+    explanation: "Current is measured in amperes. Volt is the unit of potential difference and ohm of resistance."
+  - id: 5e000000-0503-4000-8000-000000000002
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 1
+    stem: "Ohm's law is written as:"
+    options:
+      - { id: a, text: "V = I x R" }
+      - { id: b, text: "P = I / R" }
+      - { id: c, text: "V = I / R" }
+      - { id: d, text: "R = V x I" }
+    correct: a
+    explanation: "Ohm's law says potential difference equals current times resistance: V = I x R."
+  - id: 5e000000-0503-4000-8000-000000000003
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "A 12 V battery is connected across a 4 ohm resistor. What current flows?"
+    options:
+      - { id: a, text: "48 A" }
+      - { id: b, text: "8 A" }
+      - { id: c, text: "16 A" }
+      - { id: d, text: "3 A" }
+    correct: d
+    explanation: "I = V / R = 12 / 4 = 3 A."
+  - id: 5e000000-0503-4000-8000-000000000004
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 1
+    stem: "An ammeter is connected in a circuit:"
+    options:
+      - { id: a, text: "in parallel" }
+      - { id: b, text: "in series" }
+      - { id: c, text: "across the battery only" }
+      - { id: d, text: "outside the circuit" }
+    correct: b
+    explanation: "An ammeter measures the current flowing through a circuit, so it is connected in series."
+  - id: 5e000000-0503-4000-8000-000000000005
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 1
+    stem: "A voltmeter is connected:"
+    options:
+      - { id: a, text: "in series" }
+      - { id: b, text: "only with a fuse" }
+      - { id: c, text: "in parallel across the component" }
+      - { id: d, text: "to the earth wire" }
+    correct: c
+    explanation: "A voltmeter measures potential difference between two points, so it is connected in parallel."
+  - id: 5e000000-0503-4000-8000-000000000006
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "One kilowatt-hour equals how many joules?"
+    options:
+      - { id: a, text: "3.6 x 10^6 J" }
+      - { id: b, text: "1000 J" }
+      - { id: c, text: "3600 J" }
+      - { id: d, text: "3.6 x 10^3 J" }
+    correct: a
+    explanation: "1 kWh = 1000 W x 3600 s = 3,600,000 J = 3.6 x 10^6 J."
+  - id: 5e000000-0503-4000-8000-000000000007
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "A fuse wire should have:"
+    options:
+      - { id: a, text: "a very high melting point" }
+      - { id: b, text: "zero resistance" }
+      - { id: c, text: "a magnetic core" }
+      - { id: d, text: "a low melting point" }
+    correct: d
+    explanation: "A fuse wire melts quickly when too much current flows, breaking the circuit and protecting appliances."
+  - id: 5e000000-0503-4000-8000-000000000008
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "Which metal is used for the filament of an ordinary electric bulb?"
+    options:
+      - { id: a, text: "Copper" }
+      - { id: b, text: "Tungsten" }
+      - { id: c, text: "Aluminium" }
+      - { id: d, text: "Nichrome" }
+    correct: b
+    explanation: "Tungsten has a very high melting point, so it can glow white-hot without melting."
+  - id: 5e000000-0503-4000-8000-000000000009
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "The heating element of an electric iron is usually made of:"
+    options:
+      - { id: a, text: "copper" }
+      - { id: b, text: "silver" }
+      - { id: c, text: "nichrome" }
+      - { id: d, text: "tungsten" }
+    correct: c
+    explanation: "Nichrome has high resistance and does not oxidise easily when hot, so it is used in heaters and irons."
+  - id: 5e000000-0503-4000-8000-000000000010
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "Two resistors of 3 ohm and 6 ohm are connected in series. What is the total resistance?"
+    options:
+      - { id: a, text: "2 ohm" }
+      - { id: b, text: "18 ohm" }
+      - { id: c, text: "3 ohm" }
+      - { id: d, text: "9 ohm" }
+    correct: d
+    explanation: "In series, resistances add: 3 + 6 = 9 ohm."
+  - id: 5e000000-0503-4000-8000-000000000011
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 3
+    stem: "Two resistors of 3 ohm and 6 ohm are connected in parallel. What is the combined resistance?"
+    options:
+      - { id: a, text: "2 ohm" }
+      - { id: b, text: "9 ohm" }
+      - { id: c, text: "4.5 ohm" }
+      - { id: d, text: "18 ohm" }
+    correct: a
+    explanation: "1/R = 1/3 + 1/6 = 1/2, so R = 2 ohm. Parallel resistance is smaller than the smallest resistor."
+  - id: 5e000000-0503-4000-8000-000000000012
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "Household appliances are connected in parallel because:"
+    options:
+      - { id: a, text: "it uses less wire" }
+      - { id: b, text: "each appliance gets the full voltage and works independently" }
+      - { id: c, text: "it increases total resistance" }
+      - { id: d, text: "it removes the need for a fuse" }
+    correct: b
+    explanation: "In parallel, every appliance gets the same supply voltage and can be switched on or off without affecting the others."
+  - id: 5e000000-0503-4000-8000-000000000013
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "A bulb draws 0.5 A from a 220 V supply. What is its power?"
+    options:
+      - { id: a, text: "440 W" }
+      - { id: b, text: "220.5 W" }
+      - { id: c, text: "110 W" }
+      - { id: d, text: "44 W" }
+    correct: c
+    explanation: "P = V x I = 220 x 0.5 = 110 W."
+  - id: 5e000000-0503-4000-8000-000000000014
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "A 2000 W heater runs for 3 hours. How many units (kWh) of energy does it use?"
+    options:
+      - { id: a, text: "6 kWh" }
+      - { id: b, text: "0.6 kWh" }
+      - { id: c, text: "600 kWh" }
+      - { id: d, text: "60 kWh" }
+    correct: a
+    explanation: "Energy = 2 kW x 3 h = 6 kWh, which is 6 units on the electricity bill."
+  - id: 5e000000-0503-4000-8000-000000000015
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "If the length of a wire is doubled while everything else stays the same, its resistance:"
+    options:
+      - { id: a, text: "becomes half" }
+      - { id: b, text: "stays the same" }
+      - { id: c, text: "becomes four times" }
+      - { id: d, text: "doubles" }
+    correct: d
+    explanation: "Resistance is proportional to length, so doubling the length doubles the resistance."
+  - id: 5e000000-0503-4000-8000-000000000016
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "Which metal is the best conductor of electricity?"
+    options:
+      - { id: a, text: "Copper" }
+      - { id: b, text: "Silver" }
+      - { id: c, text: "Aluminium" }
+      - { id: d, text: "Iron" }
+    correct: b
+    explanation: "Silver conducts best, but copper is used in wiring because it is nearly as good and far cheaper."
+  - id: 5e000000-0503-4000-8000-000000000017
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "What is the frequency of the AC mains supply in India?"
+    options:
+      - { id: a, text: "60 Hz" }
+      - { id: b, text: "100 Hz" }
+      - { id: c, text: "50 Hz" }
+      - { id: d, text: "25 Hz" }
+    correct: c
+    explanation: "Mains alternating current in India has a frequency of 50 hertz."
+  - id: 5e000000-0503-4000-8000-000000000018
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "The heat produced in a resistor is given by:"
+    options:
+      - { id: a, text: "H = I^2 x R x t" }
+      - { id: b, text: "H = V x R" }
+      - { id: c, text: "H = I x t / R" }
+      - { id: d, text: "H = R / I^2" }
+    correct: a
+    explanation: "Joule's law of heating says H = I^2 x R x t: heat grows with the square of the current."
+  - id: 5e000000-0503-4000-8000-000000000019
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 2
+    stem: "In household wiring, what is the purpose of the earth wire?"
+    options:
+      - { id: a, text: "To increase the voltage" }
+      - { id: b, text: "To carry the main current to appliances" }
+      - { id: c, text: "To make bulbs brighter" }
+      - { id: d, text: "To carry leaked current safely to the ground" }
+    correct: d
+    explanation: "If a live wire touches a metal body, the earth wire carries the current to the ground and protects the user from shock."
+  - id: 5e000000-0503-4000-8000-000000000020
+    topic_id: 0199f5a0-0503-7000-8000-000000000503
+    difficulty: 1
+    stem: "A battery supplies which kind of current?"
+    options:
+      - { id: a, text: "Alternating current" }
+      - { id: b, text: "Direct current" }
+      - { id: c, text: "Three-phase current" }
+      - { id: d, text: "No current" }
+    correct: b
+    explanation: "A battery gives direct current, which flows in one direction only."
+
+  # Nutrition and health
+  - id: 5e000000-0504-4000-8000-000000000001
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Scurvy is caused by a lack of which vitamin?"
+    options:
+      - { id: a, text: "Vitamin A" }
+      - { id: b, text: "Vitamin D" }
+      - { id: c, text: "Vitamin C" }
+      - { id: d, text: "Vitamin K" }
+    correct: c
+    explanation: "Lack of vitamin C causes scurvy, with bleeding gums and slow wound healing."
+  - id: 5e000000-0504-4000-8000-000000000002
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Night blindness is caused by a lack of:"
+    options:
+      - { id: a, text: "vitamin A" }
+      - { id: b, text: "vitamin B1" }
+      - { id: c, text: "vitamin C" }
+      - { id: d, text: "vitamin E" }
+    correct: a
+    explanation: "Vitamin A is needed for vision in dim light. Its lack causes night blindness."
+  - id: 5e000000-0504-4000-8000-000000000003
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Rickets in children is caused by a lack of:"
+    options:
+      - { id: a, text: "vitamin C" }
+      - { id: b, text: "iron" }
+      - { id: c, text: "iodine" }
+      - { id: d, text: "vitamin D" }
+    correct: d
+    explanation: "Vitamin D helps the body absorb calcium. Without it, children's bones become soft and bent."
+  - id: 5e000000-0504-4000-8000-000000000004
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Which vitamin does the skin make when exposed to sunlight?"
+    options:
+      - { id: a, text: "Vitamin A" }
+      - { id: b, text: "Vitamin D" }
+      - { id: c, text: "Vitamin C" }
+      - { id: d, text: "Vitamin B12" }
+    correct: b
+    explanation: "The skin produces vitamin D when exposed to sunlight."
+  - id: 5e000000-0504-4000-8000-000000000005
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Goitre is caused by a lack of:"
+    options:
+      - { id: a, text: "calcium" }
+      - { id: b, text: "iron" }
+      - { id: c, text: "iodine" }
+      - { id: d, text: "sodium" }
+    correct: c
+    explanation: "The thyroid needs iodine to make its hormone. Lack of iodine makes the gland swell, which is goitre."
+  - id: 5e000000-0504-4000-8000-000000000006
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Anaemia is mainly caused by a lack of:"
+    options:
+      - { id: a, text: "iron" }
+      - { id: b, text: "iodine" }
+      - { id: c, text: "vitamin A" }
+      - { id: d, text: "fat" }
+    correct: a
+    explanation: "Iron is needed to make haemoglobin. Too little iron leads to anaemia, with tiredness and pale skin."
+  - id: 5e000000-0504-4000-8000-000000000007
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 2
+    stem: "Beriberi is caused by a lack of:"
+    options:
+      - { id: a, text: "vitamin C" }
+      - { id: b, text: "vitamin K" }
+      - { id: c, text: "vitamin D" }
+      - { id: d, text: "vitamin B1 (thiamine)" }
+    correct: d
+    explanation: "Beriberi is caused by a lack of thiamine, vitamin B1, and affects the nerves and heart."
+  - id: 5e000000-0504-4000-8000-000000000008
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 2
+    stem: "Which vitamin helps the blood to clot?"
+    options:
+      - { id: a, text: "Vitamin A" }
+      - { id: b, text: "Vitamin K" }
+      - { id: c, text: "Vitamin C" }
+      - { id: d, text: "Vitamin B3" }
+    correct: b
+    explanation: "Vitamin K is needed to make clotting factors. Its lack slows clotting."
+  - id: 5e000000-0504-4000-8000-000000000009
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 2
+    stem: "Which group lists only fat-soluble vitamins?"
+    options:
+      - { id: a, text: "B and C" }
+      - { id: b, text: "A, B and C" }
+      - { id: c, text: "A, D, E and K" }
+      - { id: d, text: "C, D and K" }
+    correct: c
+    explanation: "Vitamins A, D, E and K dissolve in fat. Vitamins B and C dissolve in water."
+  - id: 5e000000-0504-4000-8000-000000000010
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 2
+    stem: "Kwashiorkor is caused mainly by a lack of:"
+    options:
+      - { id: a, text: "protein" }
+      - { id: b, text: "vitamin C" }
+      - { id: c, text: "iodine" }
+      - { id: d, text: "water" }
+    correct: a
+    explanation: "Kwashiorkor results from too little protein in the diet. The child has a swollen belly and limbs."
+  - id: 5e000000-0504-4000-8000-000000000011
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 2
+    stem: "Marasmus is caused by a lack of:"
+    options:
+      - { id: a, text: "vitamins only" }
+      - { id: b, text: "minerals only" }
+      - { id: c, text: "water only" }
+      - { id: d, text: "both protein and energy" }
+    correct: d
+    explanation: "Marasmus is a form of protein-energy malnutrition. The child becomes very thin and weak."
+  - id: 5e000000-0504-4000-8000-000000000012
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Which nutrient is the main source of energy in our diet?"
+    options:
+      - { id: a, text: "Vitamins" }
+      - { id: b, text: "Carbohydrates" }
+      - { id: c, text: "Minerals" }
+      - { id: d, text: "Roughage" }
+    correct: b
+    explanation: "Carbohydrates from rice, wheat and other foods are the main source of energy."
+  - id: 5e000000-0504-4000-8000-000000000013
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Proteins are called body-building foods because they:"
+    options:
+      - { id: a, text: "give the most energy" }
+      - { id: b, text: "prevent constipation" }
+      - { id: c, text: "build and repair body tissues" }
+      - { id: d, text: "control body temperature" }
+    correct: c
+    explanation: "Proteins are needed for growth and to repair tissues such as muscle and skin."
+  - id: 5e000000-0504-4000-8000-000000000014
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 2
+    stem: "One gram of fat gives about how many kilocalories of energy?"
+    options:
+      - { id: a, text: "9" }
+      - { id: b, text: "4" }
+      - { id: c, text: "1" }
+      - { id: d, text: "20" }
+    correct: a
+    explanation: "Fat gives about 9 kilocalories per gram, more than twice that of carbohydrates or proteins (about 4)."
+  - id: 5e000000-0504-4000-8000-000000000015
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Roughage (dietary fibre) in food mainly helps to:"
+    options:
+      - { id: a, text: "build muscles" }
+      - { id: b, text: "make blood" }
+      - { id: c, text: "provide vitamins" }
+      - { id: d, text: "prevent constipation" }
+    correct: d
+    explanation: "Roughage adds bulk to food and helps the bowels move, preventing constipation."
+  - id: 5e000000-0504-4000-8000-000000000016
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "ORS is given to a person suffering from:"
+    options:
+      - { id: a, text: "a fracture" }
+      - { id: b, text: "dehydration due to diarrhoea" }
+      - { id: c, text: "night blindness" }
+      - { id: d, text: "goitre" }
+    correct: b
+    explanation: "Oral rehydration solution replaces the water and salts lost in diarrhoea."
+  - id: 5e000000-0504-4000-8000-000000000017
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 2
+    stem: "Pellagra is caused by a lack of:"
+    options:
+      - { id: a, text: "vitamin A" }
+      - { id: b, text: "vitamin C" }
+      - { id: c, text: "vitamin B3 (niacin)" }
+      - { id: d, text: "vitamin D" }
+    correct: c
+    explanation: "Lack of niacin, vitamin B3, causes pellagra, which affects the skin, gut and nerves."
+  - id: 5e000000-0504-4000-8000-000000000018
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 1
+    stem: "Which of these is a rich source of vitamin C?"
+    options:
+      - { id: a, text: "Amla (Indian gooseberry)" }
+      - { id: b, text: "White rice" }
+      - { id: c, text: "Sugar" }
+      - { id: d, text: "Cooking oil" }
+    correct: a
+    explanation: "Amla and citrus fruits such as lemon and orange are rich in vitamin C."
+  - id: 5e000000-0504-4000-8000-000000000019
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 2
+    stem: "Which mineral is most needed for strong bones and teeth?"
+    options:
+      - { id: a, text: "Iodine" }
+      - { id: b, text: "Iron" }
+      - { id: c, text: "Sodium" }
+      - { id: d, text: "Calcium" }
+    correct: d
+    explanation: "Calcium, along with phosphorus, builds bones and teeth. Milk and ragi are good sources."
+  - id: 5e000000-0504-4000-8000-000000000020
+    topic_id: 0199f5a0-0504-7000-8000-000000000504
+    difficulty: 3
+    stem: "A person weighs 64 kg and is 1.6 m tall. What is their BMI?"
+    options:
+      - { id: a, text: "40" }
+      - { id: b, text: "25" }
+      - { id: c, text: "20" }
+      - { id: d, text: "16" }
+    correct: b
+    explanation: "BMI = weight / height^2 = 64 / (1.6 x 1.6) = 64 / 2.56 = 25."

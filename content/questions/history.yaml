@@ -1,0 +1,897 @@
+# History of India: SAMPLE practice questions, under review.
+# Original questions written for HeyMey from TN State Board Social Science (History).
+# Not copied from any paper, book, app or website. review_status is "sample" until a human reviewer checks each item.
+set: history-sample-1
+review_status: sample
+source:
+  kind: original
+  citation: "HeyMey original practice question (sample content, under review). TN State Board Social Science (History), Classes 6, 7 and 10."
+  url: null
+questions:
+  # Harappan (Indus Valley) Civilisation
+  - id: 5e000000-0201-4000-8000-000000000001
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 1
+    stem: "The Great Bath was found at which Harappan site?"
+    options:
+      - { id: a, text: "Harappa" }
+      - { id: b, text: "Lothal" }
+      - { id: c, text: "Mohenjo-daro" }
+      - { id: d, text: "Kalibangan" }
+    correct: c
+    explanation: "The Great Bath, a large brick-lined tank, was found at Mohenjo-daro in Sindh."
+  - id: 5e000000-0201-4000-8000-000000000002
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "A dockyard of the Harappan period was found at:"
+    options:
+      - { id: a, text: "Lothal" }
+      - { id: b, text: "Harappa" }
+      - { id: c, text: "Mohenjo-daro" }
+      - { id: d, text: "Banawali" }
+    correct: a
+    explanation: "Lothal in Gujarat has a brick dockyard, showing that Harappans traded by sea."
+  - id: 5e000000-0201-4000-8000-000000000003
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Who first excavated Harappa in 1921?"
+    options:
+      - { id: a, text: "R. D. Banerji" }
+      - { id: b, text: "Mortimer Wheeler" }
+      - { id: c, text: "James Prinsep" }
+      - { id: d, text: "Daya Ram Sahni" }
+    correct: d
+    explanation: "Daya Ram Sahni excavated Harappa in 1921. R. D. Banerji excavated Mohenjo-daro in 1922."
+  - id: 5e000000-0201-4000-8000-000000000004
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Mohenjo-daro was first excavated in 1922 by:"
+    options:
+      - { id: a, text: "Daya Ram Sahni" }
+      - { id: b, text: "R. D. Banerji" }
+      - { id: c, text: "Alexander Cunningham" }
+      - { id: d, text: "John Marshall" }
+    correct: b
+    explanation: "R. D. Banerji began excavations at Mohenjo-daro in 1922."
+  - id: 5e000000-0201-4000-8000-000000000005
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 1
+    stem: "The Harappan civilisation belongs to which age?"
+    options:
+      - { id: a, text: "Iron Age" }
+      - { id: b, text: "Old Stone Age" }
+      - { id: c, text: "Bronze Age" }
+      - { id: d, text: "New Stone Age" }
+    correct: c
+    explanation: "Harappans used copper and bronze but not iron, so it is a Bronze Age civilisation."
+  - id: 5e000000-0201-4000-8000-000000000006
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 1
+    stem: "Bronze is an alloy of copper and:"
+    options:
+      - { id: a, text: "tin" }
+      - { id: b, text: "iron" }
+      - { id: c, text: "zinc" }
+      - { id: d, text: "silver" }
+    correct: a
+    explanation: "Bronze is made by mixing copper with tin. Harappans used it for tools and figures."
+  - id: 5e000000-0201-4000-8000-000000000007
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "The bronze 'dancing girl' figure was found at:"
+    options:
+      - { id: a, text: "Lothal" }
+      - { id: b, text: "Dholavira" }
+      - { id: c, text: "Kalibangan" }
+      - { id: d, text: "Mohenjo-daro" }
+    correct: d
+    explanation: "The famous bronze dancing girl was found at Mohenjo-daro."
+  - id: 5e000000-0201-4000-8000-000000000008
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Evidence of a ploughed field was found at which Harappan site in Rajasthan?"
+    options:
+      - { id: a, text: "Rakhigarhi" }
+      - { id: b, text: "Kalibangan" }
+      - { id: c, text: "Lothal" }
+      - { id: d, text: "Chanhudaro" }
+    correct: b
+    explanation: "Kalibangan in Rajasthan shows furrows of a ploughed field and fire altars."
+  - id: 5e000000-0201-4000-8000-000000000009
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Harappa is on the bank of which river?"
+    options:
+      - { id: a, text: "Ravi" }
+      - { id: b, text: "Indus" }
+      - { id: c, text: "Sutlej" }
+      - { id: d, text: "Ghaggar" }
+    correct: a
+    explanation: "Harappa lies on the Ravi in Punjab, Pakistan. Mohenjo-daro lies on the Indus in Sindh."
+  - id: 5e000000-0201-4000-8000-000000000010
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 1
+    stem: "What is true about the Harappan script today?"
+    options:
+      - { id: a, text: "It was deciphered by James Prinsep" }
+      - { id: b, text: "It is the same as Brahmi" }
+      - { id: c, text: "It has not yet been deciphered" }
+      - { id: d, text: "It was written only on copper plates" }
+    correct: c
+    explanation: "No one has been able to read the Harappan script so far. Prinsep deciphered Brahmi, a much later script."
+  - id: 5e000000-0201-4000-8000-000000000011
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Which Harappan site in Gujarat is known for its water management and was made a UNESCO World Heritage Site?"
+    options:
+      - { id: a, text: "Lothal" }
+      - { id: b, text: "Surkotada" }
+      - { id: c, text: "Banawali" }
+      - { id: d, text: "Dholavira" }
+    correct: d
+    explanation: "Dholavira in Kutch, Gujarat, had reservoirs and channels to store water. It was inscribed as a World Heritage Site in 2021."
+  - id: 5e000000-0201-4000-8000-000000000012
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Harappan towns were laid out in a:"
+    options:
+      - { id: a, text: "circular pattern around a temple" }
+      - { id: b, text: "grid pattern with roads crossing at right angles" }
+      - { id: c, text: "random pattern without roads" }
+      - { id: d, text: "single long street along the river" }
+    correct: b
+    explanation: "Harappan towns had planned roads that crossed at right angles, dividing the town into blocks."
+  - id: 5e000000-0201-4000-8000-000000000013
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Which metal was NOT known to the Harappans?"
+    options:
+      - { id: a, text: "Copper" }
+      - { id: b, text: "Gold" }
+      - { id: c, text: "Iron" }
+      - { id: d, text: "Bronze" }
+    correct: c
+    explanation: "Iron came into use in India much later. Harappans used copper, bronze, gold and silver."
+  - id: 5e000000-0201-4000-8000-000000000014
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "The Harappans are believed to be among the earliest people to grow:"
+    options:
+      - { id: a, text: "cotton" }
+      - { id: b, text: "tea" }
+      - { id: c, text: "coffee" }
+      - { id: d, text: "rubber" }
+    correct: a
+    explanation: "Harappans grew cotton and wove cloth, among the earliest known in the world."
+  - id: 5e000000-0201-4000-8000-000000000015
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Harappan houses and drains were mostly built with:"
+    options:
+      - { id: a, text: "stone blocks" }
+      - { id: b, text: "wood" }
+      - { id: c, text: "bamboo" }
+      - { id: d, text: "burnt bricks" }
+    correct: d
+    explanation: "Harappans used burnt bricks of standard size for houses, walls and covered drains."
+  - id: 5e000000-0201-4000-8000-000000000016
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 3
+    stem: "Who was the Director-General of the Archaeological Survey of India when Harappa and Mohenjo-daro were excavated?"
+    options:
+      - { id: a, text: "Alexander Cunningham" }
+      - { id: b, text: "John Marshall" }
+      - { id: c, text: "Mortimer Wheeler" }
+      - { id: d, text: "James Prinsep" }
+    correct: b
+    explanation: "Sir John Marshall headed the ASI in the 1920s and announced the discovery of the Indus civilisation in 1924."
+  - id: 5e000000-0201-4000-8000-000000000017
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Which animal appears most often on Harappan seals?"
+    options:
+      - { id: a, text: "Horse" }
+      - { id: b, text: "Lion" }
+      - { id: c, text: "Unicorn-like bull" }
+      - { id: d, text: "Camel" }
+    correct: c
+    explanation: "A one-horned, unicorn-like animal is the most common motif on Harappan seals."
+  - id: 5e000000-0201-4000-8000-000000000018
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 3
+    stem: "Most Harappan seals were made of:"
+    options:
+      - { id: a, text: "steatite" }
+      - { id: b, text: "iron" }
+      - { id: c, text: "glass" }
+      - { id: d, text: "ivory" }
+    correct: a
+    explanation: "Most seals were carved from steatite, a soft stone, and then hardened by heating."
+  - id: 5e000000-0201-4000-8000-000000000019
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 3
+    stem: "Rakhigarhi, one of the largest Harappan sites in India, is in which state?"
+    options:
+      - { id: a, text: "Gujarat" }
+      - { id: b, text: "Rajasthan" }
+      - { id: c, text: "Punjab" }
+      - { id: d, text: "Haryana" }
+    correct: d
+    explanation: "Rakhigarhi is in the Hisar district of Haryana."
+  - id: 5e000000-0201-4000-8000-000000000020
+    topic_id: 0199f5a0-0201-7000-8000-000000000201
+    difficulty: 2
+    stem: "Mohenjo-daro is located in which present-day region?"
+    options:
+      - { id: a, text: "Punjab, India" }
+      - { id: b, text: "Sindh, Pakistan" }
+      - { id: c, text: "Gujarat, India" }
+      - { id: d, text: "Balochistan, Afghanistan" }
+    correct: b
+    explanation: "Mohenjo-daro lies on the Indus in the Sindh province of Pakistan."
+
+  # The Mauryan Empire
+  - id: 5e000000-0202-4000-8000-000000000001
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 1
+    stem: "Who founded the Mauryan Empire?"
+    options:
+      - { id: a, text: "Ashoka" }
+      - { id: b, text: "Bindusara" }
+      - { id: c, text: "Chandragupta Maurya" }
+      - { id: d, text: "Bimbisara" }
+    correct: c
+    explanation: "Chandragupta Maurya founded the empire after overthrowing the Nandas, with Chanakya as his adviser."
+  - id: 5e000000-0202-4000-8000-000000000002
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 1
+    stem: "The Arthashastra is credited to:"
+    options:
+      - { id: a, text: "Kautilya" }
+      - { id: b, text: "Megasthenes" }
+      - { id: c, text: "Kalidasa" }
+      - { id: d, text: "Vishakhadatta" }
+    correct: a
+    explanation: "The Arthashastra, a treatise on statecraft and economy, is credited to Kautilya, also called Chanakya."
+  - id: 5e000000-0202-4000-8000-000000000003
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Megasthenes, author of Indica, was the ambassador of:"
+    options:
+      - { id: a, text: "Alexander" }
+      - { id: b, text: "Darius" }
+      - { id: c, text: "Ptolemy" }
+      - { id: d, text: "Seleucus Nicator" }
+    correct: d
+    explanation: "Seleucus Nicator sent Megasthenes to the court of Chandragupta Maurya at Pataliputra."
+  - id: 5e000000-0202-4000-8000-000000000004
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 1
+    stem: "What was the capital of the Mauryan Empire?"
+    options:
+      - { id: a, text: "Ujjain" }
+      - { id: b, text: "Pataliputra" }
+      - { id: c, text: "Taxila" }
+      - { id: d, text: "Kanchipuram" }
+    correct: b
+    explanation: "Pataliputra, near modern Patna in Bihar, was the Mauryan capital."
+  - id: 5e000000-0202-4000-8000-000000000005
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 1
+    stem: "Which war made Ashoka give up conquest by force?"
+    options:
+      - { id: a, text: "Battle of Panipat" }
+      - { id: b, text: "Battle of Hydaspes" }
+      - { id: c, text: "Kalinga war" }
+      - { id: d, text: "Battle of Takkolam" }
+    correct: c
+    explanation: "The great loss of life in the Kalinga war led Ashoka to turn to Dhamma."
+  - id: 5e000000-0202-4000-8000-000000000006
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Kalinga corresponds roughly to which present-day state?"
+    options:
+      - { id: a, text: "Odisha" }
+      - { id: b, text: "Bihar" }
+      - { id: c, text: "Gujarat" }
+      - { id: d, text: "Kerala" }
+    correct: a
+    explanation: "Ancient Kalinga lay on the east coast, in present-day Odisha."
+  - id: 5e000000-0202-4000-8000-000000000007
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Most of Ashoka's edicts are written in which script?"
+    options:
+      - { id: a, text: "Devanagari" }
+      - { id: b, text: "Grantha" }
+      - { id: c, text: "Tamil" }
+      - { id: d, text: "Brahmi" }
+    correct: d
+    explanation: "Most Ashokan edicts use the Brahmi script. A few in the north-west use Kharosthi, Greek or Aramaic."
+  - id: 5e000000-0202-4000-8000-000000000008
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Who deciphered the Brahmi script in 1837?"
+    options:
+      - { id: a, text: "William Jones" }
+      - { id: b, text: "James Prinsep" }
+      - { id: c, text: "John Marshall" }
+      - { id: d, text: "Max Muller" }
+    correct: b
+    explanation: "James Prinsep deciphered Brahmi in 1837, which made Ashoka's edicts readable."
+  - id: 5e000000-0202-4000-8000-000000000009
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 1
+    stem: "India's national emblem is taken from the Ashokan pillar at:"
+    options:
+      - { id: a, text: "Sanchi" }
+      - { id: b, text: "Lumbini" }
+      - { id: c, text: "Sarnath" }
+      - { id: d, text: "Bodh Gaya" }
+    correct: c
+    explanation: "The national emblem is adapted from the Lion Capital of the Ashokan pillar at Sarnath."
+  - id: 5e000000-0202-4000-8000-000000000010
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Ashoka sent his son Mahendra and daughter Sanghamitra to spread Buddhism in:"
+    options:
+      - { id: a, text: "Sri Lanka" }
+      - { id: b, text: "China" }
+      - { id: c, text: "Egypt" }
+      - { id: d, text: "Greece" }
+    correct: a
+    explanation: "Mahendra and Sanghamitra carried Buddhism to Sri Lanka."
+  - id: 5e000000-0202-4000-8000-000000000011
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Who was the son and successor of Chandragupta Maurya?"
+    options:
+      - { id: a, text: "Ashoka" }
+      - { id: b, text: "Brihadratha" }
+      - { id: c, text: "Dasaratha" }
+      - { id: d, text: "Bindusara" }
+    correct: d
+    explanation: "Bindusara succeeded Chandragupta. Ashoka was Bindusara's son."
+  - id: 5e000000-0202-4000-8000-000000000012
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Where did Chandragupta Maurya spend his last days as a Jain, according to Jain tradition?"
+    options:
+      - { id: a, text: "Pawapuri" }
+      - { id: b, text: "Shravanabelagola" }
+      - { id: c, text: "Madurai" }
+      - { id: d, text: "Mount Abu" }
+    correct: b
+    explanation: "Jain tradition says Chandragupta went to Shravanabelagola in present-day Karnataka with the monk Bhadrabahu."
+  - id: 5e000000-0202-4000-8000-000000000013
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 3
+    stem: "Who killed the last Mauryan ruler Brihadratha and founded a new dynasty?"
+    options:
+      - { id: a, text: "Kanishka" }
+      - { id: b, text: "Kharavela" }
+      - { id: c, text: "Pushyamitra Shunga" }
+      - { id: d, text: "Samudragupta" }
+    correct: c
+    explanation: "Pushyamitra Shunga, the Mauryan army commander, killed Brihadratha and founded the Shunga dynasty."
+  - id: 5e000000-0202-4000-8000-000000000014
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "In his edicts Ashoka calls himself:"
+    options:
+      - { id: a, text: "Devanampiya Piyadasi" }
+      - { id: b, text: "Vikramaditya" }
+      - { id: c, text: "Rajaraja" }
+      - { id: d, text: "Maharajadhiraja" }
+    correct: a
+    explanation: "Ashoka's edicts call him Devanampiya Piyadasi, meaning 'beloved of the gods, of pleasing appearance'."
+  - id: 5e000000-0202-4000-8000-000000000015
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Ashoka appointed officers to spread Dhamma. What were they called?"
+    options:
+      - { id: a, text: "Amatyas" }
+      - { id: b, text: "Rajukas" }
+      - { id: c, text: "Sannidhata" }
+      - { id: d, text: "Dhamma Mahamattas" }
+    correct: d
+    explanation: "Dhamma Mahamattas were special officers who toured the empire to spread Dhamma."
+  - id: 5e000000-0202-4000-8000-000000000016
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 3
+    stem: "Which Tamil kingdoms are named in Ashoka's rock edicts as neighbours outside his empire?"
+    options:
+      - { id: a, text: "Pallavas and Kalabhras" }
+      - { id: b, text: "Cholas, Pandyas and Cheras" }
+      - { id: c, text: "Hoysalas and Kakatiyas" }
+      - { id: d, text: "Nayaks and Marathas" }
+    correct: b
+    explanation: "Ashoka's rock edicts name the Cholas, Pandyas, Cheras (Keralaputras) and Satiyaputras as independent neighbours."
+  - id: 5e000000-0202-4000-8000-000000000017
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 3
+    stem: "The third Buddhist Council was held during Ashoka's reign at:"
+    options:
+      - { id: a, text: "Rajagriha" }
+      - { id: b, text: "Vaishali" }
+      - { id: c, text: "Pataliputra" }
+      - { id: d, text: "Kashmir" }
+    correct: c
+    explanation: "Buddhist tradition places the third council at Pataliputra under Ashoka's patronage."
+  - id: 5e000000-0202-4000-8000-000000000018
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 3
+    stem: "The play Mudrarakshasa, about Chandragupta's rise to power, was written by:"
+    options:
+      - { id: a, text: "Vishakhadatta" }
+      - { id: b, text: "Kalidasa" }
+      - { id: c, text: "Banabhatta" }
+      - { id: d, text: "Kautilya" }
+    correct: a
+    explanation: "Vishakhadatta wrote Mudrarakshasa, which shows Chanakya's plans to bring Chandragupta to power."
+  - id: 5e000000-0202-4000-8000-000000000019
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Chandragupta Maurya came to power by overthrowing which dynasty?"
+    options:
+      - { id: a, text: "Shunga" }
+      - { id: b, text: "Gupta" }
+      - { id: c, text: "Haryanka" }
+      - { id: d, text: "Nanda" }
+    correct: d
+    explanation: "Chandragupta defeated the Nanda dynasty of Magadha with Chanakya's help."
+  - id: 5e000000-0202-4000-8000-000000000020
+    topic_id: 0199f5a0-0202-7000-8000-000000000202
+    difficulty: 2
+    stem: "Ashoka's Dhamma mainly stressed:"
+    options:
+      - { id: a, text: "conquest of new lands" }
+      - { id: b, text: "tolerance, non-violence and respect for all" }
+      - { id: c, text: "worship of a single god" }
+      - { id: d, text: "strict caste rules" }
+    correct: b
+    explanation: "Dhamma was a moral code of tolerance, non-violence, respect for elders and care for people and animals."
+
+  # The Delhi Sultanate
+  - id: 5e000000-0203-4000-8000-000000000001
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 1
+    stem: "Who founded the Delhi Sultanate in 1206?"
+    options:
+      - { id: a, text: "Iltutmish" }
+      - { id: b, text: "Qutb-ud-din Aibak" }
+      - { id: c, text: "Balban" }
+      - { id: d, text: "Muhammad Ghori" }
+    correct: b
+    explanation: "Qutb-ud-din Aibak, a slave general of Muhammad Ghori, founded the Sultanate and the Slave dynasty in 1206."
+  - id: 5e000000-0203-4000-8000-000000000002
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 1
+    stem: "Who completed the Qutb Minar?"
+    options:
+      - { id: a, text: "Qutb-ud-din Aibak" }
+      - { id: b, text: "Alauddin Khalji" }
+      - { id: c, text: "Iltutmish" }
+      - { id: d, text: "Firoz Shah Tughlaq" }
+    correct: c
+    explanation: "Aibak began the Qutb Minar and Iltutmish completed it."
+  - id: 5e000000-0203-4000-8000-000000000003
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 1
+    stem: "Who was the only woman ruler of the Delhi Sultanate?"
+    options:
+      - { id: a, text: "Razia" }
+      - { id: b, text: "Nur Jahan" }
+      - { id: c, text: "Chand Bibi" }
+      - { id: d, text: "Rani Durgavati" }
+    correct: a
+    explanation: "Razia, daughter of Iltutmish, was the first and only woman to rule from Delhi in the Sultanate period."
+  - id: 5e000000-0203-4000-8000-000000000004
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Which Sultan introduced the silver tanka and the copper jital?"
+    options:
+      - { id: a, text: "Balban" }
+      - { id: b, text: "Alauddin Khalji" }
+      - { id: c, text: "Muhammad bin Tughlaq" }
+      - { id: d, text: "Iltutmish" }
+    correct: d
+    explanation: "Iltutmish introduced the silver tanka and the copper jital, the two basic coins of the Sultanate."
+  - id: 5e000000-0203-4000-8000-000000000005
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Which Sultan fixed market prices and branded army horses?"
+    options:
+      - { id: a, text: "Balban" }
+      - { id: b, text: "Alauddin Khalji" }
+      - { id: c, text: "Ibrahim Lodi" }
+      - { id: d, text: "Iltutmish" }
+    correct: b
+    explanation: "Alauddin Khalji controlled prices in Delhi's markets and introduced dagh, the branding of horses."
+  - id: 5e000000-0203-4000-8000-000000000006
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Which Sultan shifted his capital from Delhi to Daulatabad?"
+    options:
+      - { id: a, text: "Firoz Shah Tughlaq" }
+      - { id: b, text: "Sikandar Lodi" }
+      - { id: c, text: "Muhammad bin Tughlaq" }
+      - { id: d, text: "Jalal-ud-din Khalji" }
+    correct: c
+    explanation: "Muhammad bin Tughlaq moved the capital to Daulatabad (Devagiri) and later moved it back to Delhi."
+  - id: 5e000000-0203-4000-8000-000000000007
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Who introduced token currency in copper and brass?"
+    options:
+      - { id: a, text: "Muhammad bin Tughlaq" }
+      - { id: b, text: "Alauddin Khalji" }
+      - { id: c, text: "Balban" }
+      - { id: d, text: "Bahlul Lodi" }
+    correct: a
+    explanation: "Muhammad bin Tughlaq issued token coins that were meant to carry the value of silver. Widespread forgery made the scheme fail."
+  - id: 5e000000-0203-4000-8000-000000000008
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Which is the correct order of the Sultanate dynasties?"
+    options:
+      - { id: a, text: "Khalji, Slave, Tughlaq, Lodi, Sayyid" }
+      - { id: b, text: "Slave, Tughlaq, Khalji, Sayyid, Lodi" }
+      - { id: c, text: "Slave, Khalji, Sayyid, Tughlaq, Lodi" }
+      - { id: d, text: "Slave, Khalji, Tughlaq, Sayyid, Lodi" }
+    correct: d
+    explanation: "The five dynasties ruled in the order Slave, Khalji, Tughlaq, Sayyid and Lodi."
+  - id: 5e000000-0203-4000-8000-000000000009
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 1
+    stem: "The First Battle of Panipat (1526) was fought between Babur and:"
+    options:
+      - { id: a, text: "Rana Sanga" }
+      - { id: b, text: "Ibrahim Lodi" }
+      - { id: c, text: "Sher Shah" }
+      - { id: d, text: "Hemu" }
+    correct: b
+    explanation: "Babur defeated Ibrahim Lodi at Panipat in 1526, ending the Delhi Sultanate."
+  - id: 5e000000-0203-4000-8000-000000000010
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Which general of Alauddin Khalji led campaigns into South India?"
+    options:
+      - { id: a, text: "Ulugh Khan" }
+      - { id: b, text: "Zafar Khan" }
+      - { id: c, text: "Malik Kafur" }
+      - { id: d, text: "Khizr Khan" }
+    correct: c
+    explanation: "Malik Kafur led Alauddin's campaigns deep into the Deccan and the far south."
+  - id: 5e000000-0203-4000-8000-000000000011
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Who founded the city of Agra?"
+    options:
+      - { id: a, text: "Sikandar Lodi" }
+      - { id: b, text: "Akbar" }
+      - { id: c, text: "Babur" }
+      - { id: d, text: "Firoz Shah Tughlaq" }
+    correct: a
+    explanation: "Sikandar Lodi founded Agra in the early sixteenth century and made it his capital."
+  - id: 5e000000-0203-4000-8000-000000000012
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Which Sultan followed the policy of 'blood and iron'?"
+    options:
+      - { id: a, text: "Iltutmish" }
+      - { id: b, text: "Razia" }
+      - { id: c, text: "Muhammad bin Tughlaq" }
+      - { id: d, text: "Balban" }
+    correct: d
+    explanation: "Balban dealt harshly with rebels and raiders, a policy known as 'blood and iron'."
+  - id: 5e000000-0203-4000-8000-000000000013
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "The Moroccan traveller Ibn Battuta visited India during the reign of:"
+    options:
+      - { id: a, text: "Alauddin Khalji" }
+      - { id: b, text: "Muhammad bin Tughlaq" }
+      - { id: c, text: "Iltutmish" }
+      - { id: d, text: "Ibrahim Lodi" }
+    correct: b
+    explanation: "Ibn Battuta served at the court of Muhammad bin Tughlaq and wrote about India in his travel account, the Rihla."
+  - id: 5e000000-0203-4000-8000-000000000014
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Under the iqta system, officers received:"
+    options:
+      - { id: a, text: "a fixed monthly cash salary only" }
+      - { id: b, text: "ownership of the land forever" }
+      - { id: c, text: "the revenue of a territory in return for service" }
+      - { id: d, text: "a share of temple offerings" }
+    correct: c
+    explanation: "An iqta was a territory whose revenue an officer collected and used to maintain troops and serve the Sultan."
+  - id: 5e000000-0203-4000-8000-000000000015
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 3
+    stem: "Timur invaded India and sacked Delhi in:"
+    options:
+      - { id: a, text: "1398" }
+      - { id: b, text: "1206" }
+      - { id: c, text: "1526" }
+      - { id: d, text: "1290" }
+    correct: a
+    explanation: "Timur's invasion in 1398 came during the late Tughlaq period and weakened the Sultanate."
+  - id: 5e000000-0203-4000-8000-000000000016
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "The poet and musician Amir Khusrau is linked to the court of which dynasty in particular?"
+    options:
+      - { id: a, text: "Lodi" }
+      - { id: b, text: "Sayyid" }
+      - { id: c, text: "Mughal" }
+      - { id: d, text: "Khalji" }
+    correct: d
+    explanation: "Amir Khusrau served several Sultans and is best known as a court poet of Alauddin Khalji."
+  - id: 5e000000-0203-4000-8000-000000000017
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 3
+    stem: "Who built the Alai Darwaza near the Qutb Minar?"
+    options:
+      - { id: a, text: "Iltutmish" }
+      - { id: b, text: "Alauddin Khalji" }
+      - { id: c, text: "Balban" }
+      - { id: d, text: "Ghiyas-ud-din Tughlaq" }
+    correct: b
+    explanation: "Alauddin Khalji built the Alai Darwaza, a gateway in the Qutb complex."
+  - id: 5e000000-0203-4000-8000-000000000018
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "The Slave dynasty is also known as the:"
+    options:
+      - { id: a, text: "Lodi dynasty" }
+      - { id: b, text: "Afghan dynasty" }
+      - { id: c, text: "Mamluk dynasty" }
+      - { id: d, text: "Sayyid dynasty" }
+    correct: c
+    explanation: "Mamluk means 'owned', and the early Sultans had been slaves, so the dynasty is called Mamluk or Slave."
+  - id: 5e000000-0203-4000-8000-000000000019
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 2
+    stem: "Which Sultan is known for building canals and new towns such as Hisar?"
+    options:
+      - { id: a, text: "Firoz Shah Tughlaq" }
+      - { id: b, text: "Muhammad bin Tughlaq" }
+      - { id: c, text: "Qutb-ud-din Aibak" }
+      - { id: d, text: "Bahlul Lodi" }
+    correct: a
+    explanation: "Firoz Shah Tughlaq built irrigation canals and founded towns including Hisar and Firozabad."
+  - id: 5e000000-0203-4000-8000-000000000020
+    topic_id: 0199f5a0-0203-7000-8000-000000000203
+    difficulty: 1
+    stem: "Which dynasty was the last to rule the Delhi Sultanate?"
+    options:
+      - { id: a, text: "Tughlaq" }
+      - { id: b, text: "Sayyid" }
+      - { id: c, text: "Khalji" }
+      - { id: d, text: "Lodi" }
+    correct: d
+    explanation: "The Lodis were the last Sultanate dynasty. Babur's victory over Ibrahim Lodi in 1526 ended their rule."
+
+  # Indian National Movement
+  - id: 5e000000-0204-4000-8000-000000000001
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 1
+    stem: "In which year was the Indian National Congress founded?"
+    options:
+      - { id: a, text: "1857" }
+      - { id: b, text: "1905" }
+      - { id: c, text: "1885" }
+      - { id: d, text: "1919" }
+    correct: c
+    explanation: "The Indian National Congress held its first session at Bombay in 1885."
+  - id: 5e000000-0204-4000-8000-000000000002
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 1
+    stem: "Who was the first president of the Indian National Congress?"
+    options:
+      - { id: a, text: "W. C. Bonnerjee" }
+      - { id: b, text: "Dadabhai Naoroji" }
+      - { id: c, text: "A. O. Hume" }
+      - { id: d, text: "Surendranath Banerjee" }
+    correct: a
+    explanation: "W. C. Bonnerjee presided over the first session in 1885. A. O. Hume helped found the Congress."
+  - id: 5e000000-0204-4000-8000-000000000003
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 1
+    stem: "Who partitioned Bengal in 1905?"
+    options:
+      - { id: a, text: "Lord Ripon" }
+      - { id: b, text: "Lord Minto" }
+      - { id: c, text: "Lord Dalhousie" }
+      - { id: d, text: "Lord Curzon" }
+    correct: d
+    explanation: "Lord Curzon, the Viceroy, partitioned Bengal in 1905, which sparked the Swadeshi movement."
+  - id: 5e000000-0204-4000-8000-000000000004
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "Who started the Swadeshi Steam Navigation Company at Thoothukudi?"
+    options:
+      - { id: a, text: "Subramania Bharathi" }
+      - { id: b, text: "V. O. Chidambaram" }
+      - { id: c, text: "Vanchinathan" }
+      - { id: d, text: "Subramania Siva" }
+    correct: b
+    explanation: "V. O. Chidambaram started the company to challenge British control of coastal shipping."
+  - id: 5e000000-0204-4000-8000-000000000005
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 1
+    stem: "Where did Gandhi lead his first satyagraha in India in 1917?"
+    options:
+      - { id: a, text: "Kheda" }
+      - { id: b, text: "Ahmedabad" }
+      - { id: c, text: "Champaran" }
+      - { id: d, text: "Bardoli" }
+    correct: c
+    explanation: "Gandhi's first satyagraha in India was at Champaran, Bihar, for indigo farmers in 1917."
+  - id: 5e000000-0204-4000-8000-000000000006
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 1
+    stem: "The Jallianwala Bagh massacre took place in which city?"
+    options:
+      - { id: a, text: "Amritsar" }
+      - { id: b, text: "Lahore" }
+      - { id: c, text: "Delhi" }
+      - { id: d, text: "Lucknow" }
+    correct: a
+    explanation: "On 13 April 1919 troops under General Dyer fired on a peaceful gathering at Jallianwala Bagh in Amritsar."
+  - id: 5e000000-0204-4000-8000-000000000007
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "Gandhi called off the Non-Cooperation Movement after the violence at:"
+    options:
+      - { id: a, text: "Dandi" }
+      - { id: b, text: "Champaran" }
+      - { id: c, text: "Bardoli" }
+      - { id: d, text: "Chauri Chaura" }
+    correct: d
+    explanation: "In 1922 a crowd burned a police station at Chauri Chaura, and Gandhi withdrew the movement because it had turned violent."
+  - id: 5e000000-0204-4000-8000-000000000008
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "At which session did the Congress adopt Purna Swaraj (complete independence) as its goal?"
+    options:
+      - { id: a, text: "Surat, 1907" }
+      - { id: b, text: "Lahore, 1929" }
+      - { id: c, text: "Lucknow, 1916" }
+      - { id: d, text: "Karachi, 1931" }
+    correct: b
+    explanation: "The Lahore session of December 1929, presided over by Jawaharlal Nehru, adopted Purna Swaraj."
+  - id: 5e000000-0204-4000-8000-000000000009
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "Who led the salt march to Vedaranyam in Tamil Nadu in 1930?"
+    options:
+      - { id: a, text: "K. Kamaraj" }
+      - { id: b, text: "Periyar E. V. Ramasamy" }
+      - { id: c, text: "C. Rajagopalachari" }
+      - { id: d, text: "Sathyamurthy" }
+    correct: c
+    explanation: "C. Rajagopalachari led volunteers from Tiruchirappalli to Vedaranyam to make salt, in step with Gandhi's Dandi March."
+  - id: 5e000000-0204-4000-8000-000000000010
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 1
+    stem: "Gandhi gave the call 'Do or Die' during which movement?"
+    options:
+      - { id: a, text: "Quit India Movement" }
+      - { id: b, text: "Non-Cooperation Movement" }
+      - { id: c, text: "Civil Disobedience Movement" }
+      - { id: d, text: "Khilafat Movement" }
+    correct: a
+    explanation: "Gandhi gave the call 'Do or Die' when the Quit India Movement was launched in August 1942."
+  - id: 5e000000-0204-4000-8000-000000000011
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "Who started the Home Rule Leagues in 1916?"
+    options:
+      - { id: a, text: "Gandhi and Nehru" }
+      - { id: b, text: "Gokhale and Naoroji" }
+      - { id: c, text: "Bose and Patel" }
+      - { id: d, text: "Tilak and Annie Besant" }
+    correct: d
+    explanation: "Bal Gangadhar Tilak and Annie Besant each started a Home Rule League in 1916."
+  - id: 5e000000-0204-4000-8000-000000000012
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "The Poona Pact of 1932 was signed between Gandhi and:"
+    options:
+      - { id: a, text: "Muhammad Ali Jinnah" }
+      - { id: b, text: "B. R. Ambedkar" }
+      - { id: c, text: "Lord Irwin" }
+      - { id: d, text: "Ramsay MacDonald" }
+    correct: b
+    explanation: "Gandhi and B. R. Ambedkar signed the Poona Pact on reserved seats for the depressed classes in a joint electorate."
+  - id: 5e000000-0204-4000-8000-000000000013
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "Why was the Simon Commission boycotted?"
+    options:
+      - { id: a, text: "It wanted to divide Bengal" }
+      - { id: b, text: "It came to collect taxes" }
+      - { id: c, text: "It had no Indian member" }
+      - { id: d, text: "It banned the Congress" }
+    correct: c
+    explanation: "The Simon Commission had only British members, so Indians protested with the slogan 'Simon, go back'."
+  - id: 5e000000-0204-4000-8000-000000000014
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "The Dandi March began in 1930 to break which law?"
+    options:
+      - { id: a, text: "The salt law" }
+      - { id: b, text: "The Rowlatt Act" }
+      - { id: c, text: "The forest law" }
+      - { id: d, text: "The press law" }
+    correct: a
+    explanation: "Gandhi marched from Sabarmati to Dandi to make salt from sea water, breaking the British salt monopoly."
+  - id: 5e000000-0204-4000-8000-000000000015
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "The All-India Muslim League was founded in 1906 at:"
+    options:
+      - { id: a, text: "Lahore" }
+      - { id: b, text: "Aligarh" }
+      - { id: c, text: "Karachi" }
+      - { id: d, text: "Dhaka" }
+    correct: d
+    explanation: "The Muslim League was founded at Dhaka in December 1906."
+  - id: 5e000000-0204-4000-8000-000000000016
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "The Congress split into Moderates and Extremists at which session?"
+    options:
+      - { id: a, text: "Calcutta, 1906" }
+      - { id: b, text: "Surat, 1907" }
+      - { id: c, text: "Lahore, 1929" }
+      - { id: d, text: "Bombay, 1885" }
+    correct: b
+    explanation: "Differences over methods led to the split at the Surat session of 1907."
+  - id: 5e000000-0204-4000-8000-000000000017
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "Who led the Indian National Army against the British?"
+    options:
+      - { id: a, text: "Bhagat Singh" }
+      - { id: b, text: "Chandrashekhar Azad" }
+      - { id: c, text: "Subhas Chandra Bose" }
+      - { id: d, text: "Lala Lajpat Rai" }
+    correct: c
+    explanation: "Subhas Chandra Bose led the Indian National Army during the Second World War."
+  - id: 5e000000-0204-4000-8000-000000000018
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "Which Act of 1919 allowed the British to detain people without trial?"
+    options:
+      - { id: a, text: "Rowlatt Act" }
+      - { id: b, text: "Ilbert Bill" }
+      - { id: c, text: "Vernacular Press Act" }
+      - { id: d, text: "Regulating Act" }
+    correct: a
+    explanation: "The Rowlatt Act of 1919 allowed detention without trial and led to protests, including the gathering at Jallianwala Bagh."
+  - id: 5e000000-0204-4000-8000-000000000019
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "Which day was celebrated as Independence Day by the Congress after the Lahore session?"
+    options:
+      - { id: a, text: "15 August 1930" }
+      - { id: b, text: "2 October 1930" }
+      - { id: c, text: "13 April 1930" }
+      - { id: d, text: "26 January 1930" }
+    correct: d
+    explanation: "The Congress observed 26 January 1930 as Independence Day. The Constitution later came into force on 26 January to honour it."
+  - id: 5e000000-0204-4000-8000-000000000020
+    topic_id: 0199f5a0-0204-7000-8000-000000000204
+    difficulty: 2
+    stem: "The Congress and the Muslim League came together in 1916 through the:"
+    options:
+      - { id: a, text: "Poona Pact" }
+      - { id: b, text: "Lucknow Pact" }
+      - { id: c, text: "Gandhi-Irwin Pact" }
+      - { id: d, text: "Cabinet Mission Plan" }
+    correct: b
+    explanation: "In the Lucknow Pact of 1916 the Congress and the Muslim League agreed to make joint demands on the British."

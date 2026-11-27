@@ -1,0 +1,91 @@
+# Indian Polity: SAMPLE lessons, under review.
+# Original explanations written for HeyMey in simple English from the Constitution of India and TN State Board Civics.
+# The Preamble and Fundamental Rights lessons already ship with the catalogue seed; these cover the other polity topics.
+# review_status is "sample" until a human reviewer checks each lesson.
+review_status: sample
+source_citation: "HeyMey original lesson (sample content, under review). Constitution of India, Parts IV, V, IX and IXA; TN State Board Social Science (Civics)."
+lessons:
+  - topic_id: 0199f5a0-0103-7000-8000-000000000103
+    title: Directive Principles of State Policy
+    reading_minutes: 3
+    body: |
+      # Directive Principles of State Policy
+
+      The Directive Principles sit in Part IV of the Constitution, in Articles 36 to 51. They are guidelines for the Union and State governments when they make laws and policies. The framers took the idea from the Constitution of Ireland.
+
+      ## They cannot be enforced in court
+      Article 37 says the Directive Principles are not enforceable by any court, yet they are fundamental in the governance of the country. This is the main difference from Fundamental Rights in Part III: if the State breaks a Fundamental Right, you can go to court. If the State does not follow a Directive Principle, you cannot.
+
+      ## Three broad groups
+      Textbooks usually sort them into three groups.
+
+      Socialist principles aim at economic justice. Article 39 asks for adequate means of livelihood and equal pay for equal work for men and women. Article 41 speaks of the right to work, to education and to public help in old age, sickness and unemployment. Article 43 asks for a living wage.
+
+      Gandhian principles reflect Gandhi's ideas. Article 40 asks the State to organise village panchayats. Article 43 also promotes cottage industries. Article 46 protects the educational and economic interests of Scheduled Castes, Scheduled Tribes and weaker sections. Article 47 asks the State to raise nutrition and public health and to bring in prohibition of intoxicating drinks.
+
+      Liberal principles cover the rest. Article 44 speaks of a Uniform Civil Code. Article 45 deals with early childhood care and education for children below six. Article 50 asks for the judiciary to be separated from the executive. Article 51 asks India to promote international peace and security.
+
+      ## Later additions
+      The 42nd Amendment of 1976 added Article 39A (equal justice and free legal aid) and Article 48A (protection of the environment, forests and wildlife).
+
+      ## Remember
+      Fundamental Rights limit what the State may do. Directive Principles tell the State what it should try to do. Exam questions often test this pair, so learn which Part and which Articles each one covers.
+
+  - topic_id: 0199f5a0-0104-7000-8000-000000000104
+    title: Parliament
+    reading_minutes: 3
+    body: |
+      # Parliament
+
+      Article 79 says Parliament has three parts: the President, the Lok Sabha (House of the People) and the Rajya Sabha (Council of States). The President is not a member of either House but is part of Parliament, because a bill becomes law only after the President gives assent.
+
+      ## Lok Sabha
+      Members of the Lok Sabha are directly elected by the people. Its normal term is five years, and the President can dissolve it earlier on the advice of the Council of Ministers. A candidate must be at least 25 years old. The Speaker, elected by the members, presides over its sittings.
+
+      ## Rajya Sabha
+      The Rajya Sabha is a permanent House and is never dissolved. One third of its members retire every two years, and each member serves six years. Most members are elected by the elected members of the State Legislative Assemblies. The President nominates 12 members with special knowledge of literature, science, art or social service. A candidate must be at least 30 years old. The Vice-President of India is the ex-officio Chairman.
+
+      ## How a bill becomes law
+      An ordinary bill can start in either House. It must pass both Houses and then get the President's assent. If the two Houses disagree, the President can call a joint sitting under Article 108, and the Speaker presides over it.
+
+      ## Money bills
+      A money bill (Article 110) can be introduced only in the Lok Sabha. The Speaker decides whether a bill is a money bill. The Rajya Sabha can only suggest changes and must return the bill within 14 days. The Lok Sabha may accept or reject those suggestions.
+
+      ## A day in the House
+      The first hour of a sitting is usually Question Hour, when members ask ministers questions. Zero Hour follows it. Zero Hour is an Indian practice that is not written in the rules.
+
+      ## The Budget
+      Article 112 calls the Budget the Annual Financial Statement. The government places it before Parliament every year. No tax can be collected and no money spent from the Consolidated Fund without Parliament's approval, which is how Parliament controls the government's purse.
+
+  - topic_id: 0199f5a0-0105-7000-8000-000000000105
+    title: Local government (Panchayati Raj)
+    reading_minutes: 3
+    body: |
+      # Local government (Panchayati Raj)
+
+      Local government means people running the affairs of their own village or town through elected bodies. Article 40, a Directive Principle, asks the State to organise village panchayats.
+
+      ## How it grew
+      In 1957 the Balwant Rai Mehta Committee recommended a three-tier system of rural local government. Rajasthan was the first state to start it, at Nagaur on 2 October 1959. In 1977 the Ashok Mehta Committee suggested a two-tier system instead.
+
+      ## The 73rd and 74th Amendments
+      Local bodies got constitutional status in 1992.
+
+      The 73rd Amendment added Part IX and the Eleventh Schedule for rural panchayats. The Eleventh Schedule lists 29 subjects that panchayats can handle. The amendment came into force on 24 April 1993, which is why 24 April is National Panchayati Raj Day.
+
+      The 74th Amendment added Part IXA and the Twelfth Schedule for urban local bodies such as municipal corporations and municipalities. The Twelfth Schedule lists 18 subjects.
+
+      ## Main features of the 73rd Amendment
+      There are three tiers: the village panchayat, the intermediate (block) panchayat and the district panchayat. In Tamil Nadu the intermediate level is called the panchayat union.
+
+      Every panchayat has a term of five years. If it is dissolved early, a new election must be held within six months.
+
+      At least one third of the seats are reserved for women. Seats are also reserved for Scheduled Castes and Scheduled Tribes in proportion to their population.
+
+      The State Election Commission conducts panchayat elections (Article 243K). A State Finance Commission is set up every five years to review panchayat finances (Article 243I).
+
+      ## Gram Sabha
+      The Gram Sabha is the body of all people registered on the electoral roll of a village. It meets to discuss the village's needs, approve plans and check the panchayat's work. It is the base of grassroots democracy.
+
+      ## In Tamil Nadu
+      The Tamil Nadu Panchayats Act, 1994 puts the 73rd Amendment into effect in the state. Village panchayat presidents are elected directly by the voters.

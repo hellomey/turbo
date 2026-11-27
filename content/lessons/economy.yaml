@@ -1,0 +1,111 @@
+# Indian Economy: SAMPLE lessons, under review.
+# Original explanations written for HeyMey in simple English from TN State Board Economics and the Constitution of India.
+# review_status is "sample" until a human reviewer checks each lesson.
+review_status: sample
+source_citation: "HeyMey original lesson (sample content, under review). TN State Board Social Science (Economics), Class 10; TN State Board Economics, Class 11; Constitution of India, Article 279A."
+lessons:
+  - topic_id: 0199f5a0-0401-7000-8000-000000000401
+    title: Five-Year Plans and NITI Aayog
+    reading_minutes: 3
+    body: |
+      # Five-Year Plans and NITI Aayog
+
+      After independence, India chose planned development. The government set goals for five years at a time and decided how to spend money to reach them.
+
+      ## Ideas before independence
+      M. Visvesvaraya wrote "Planned Economy for India" in 1934. In 1944 a group of industrialists put forward the Bombay Plan. Other proposals of that time included the Gandhian Plan and M. N. Roy's People's Plan.
+
+      ## The Planning Commission
+      The Planning Commission was set up in March 1950 by a resolution of the Union government. It was not created by the Constitution. The Prime Minister was its chairman. The National Development Council, which included the Chief Ministers, gave final approval to each plan.
+
+      ## Some plans to remember
+      The First Plan (1951-56) focused on agriculture and irrigation, because the country faced food shortages. It was based on the Harrod-Domar model.
+
+      The Second Plan (1956-61) focused on heavy industry. It was based on the model of P. C. Mahalanobis.
+
+      After the Third Plan, war and drought led to a gap from 1966 to 1969 with three annual plans, often called the plan holiday.
+
+      The Fifth Plan is remembered for the goal of removing poverty, expressed in the slogan Garibi Hatao. The Janata government replaced it early with a Rolling Plan (1978-80).
+
+      The Eighth Plan (1992-97) came after the economic reforms of 1991, which opened the economy through liberalisation, privatisation and globalisation.
+
+      The Eleventh Plan aimed at faster and more inclusive growth. The Twelfth Plan (2012-17) aimed at faster, more sustainable and more inclusive growth. It was the last Five-Year Plan.
+
+      ## NITI Aayog
+      On 1 January 2015 the government replaced the Planning Commission with the NITI Aayog. NITI stands for National Institution for Transforming India.
+
+      The Prime Minister is its chairperson, and a Vice-Chairperson is appointed by the Prime Minister. Its Governing Council includes the Chief Ministers of all states and the heads of Union Territories with legislatures.
+
+      NITI Aayog works as a think tank. It does not allot funds to states the way the Planning Commission did. It follows the idea of cooperative federalism, where the Union and the states work together, and it tracks progress on goals such as the Sustainable Development Goals.
+
+  - topic_id: 0199f5a0-0402-7000-8000-000000000402
+    title: National income
+    reading_minutes: 3
+    body: |
+      # National income
+
+      National income tells us how much a country produces and earns in a year. In India the year is the financial year, from April to March.
+
+      ## Key terms
+      Gross Domestic Product (GDP) is the market value of all final goods and services produced within a country's borders in a year.
+
+      Gross National Product (GNP) adds net factor income from abroad to GDP. That is what Indians earn abroad minus what foreigners earn in India.
+
+      Net National Product (NNP) is GNP minus depreciation, the wear and tear of machines and buildings.
+
+      NNP at factor cost is called national income. To get factor cost from market price, take away indirect taxes and add subsidies.
+
+      Per capita income is national income divided by the population. It gives the average income per person but hides inequality.
+
+      ## Why only final goods?
+      If we counted both the steel and the car made from that steel, the steel would be counted twice. To avoid double counting, only final goods and services are added, or only the value added at each stage. Transfer payments such as old-age pensions are also left out, because nothing is produced in return.
+
+      ## Nominal and real
+      Nominal GDP uses current prices. Real GDP uses the prices of a base year, so it removes the effect of inflation. The GDP deflator compares the two. India's present base year for national accounts is 2011-12.
+
+      ## Three methods
+      There are three ways to measure national income. The product (value added) method adds up output. The income method adds rent, wages, interest and profit. The expenditure method adds spending on consumption, investment, government purchases and net exports.
+
+      ## Who measures it in India
+      Dadabhai Naoroji made the first estimate of India's per capita income, in his book Poverty and Un-British Rule in India. After independence, the National Income Committee was set up in 1949 under P. C. Mahalanobis. Today the National Statistics Office under the Ministry of Statistics and Programme Implementation publishes the estimates.
+
+      ## Sectors
+      The economy has three sectors. The primary sector covers agriculture, forestry, fishing and mining. The secondary sector covers manufacturing and construction. The tertiary sector covers services such as banking, transport and trade. In India today the tertiary sector contributes the largest share of GDP.
+
+  - topic_id: 0199f5a0-0403-7000-8000-000000000403
+    title: Goods and Services Tax (GST)
+    reading_minutes: 3
+    body: |
+      # Goods and Services Tax (GST)
+
+      GST is an indirect tax on the supply of goods and services. It came into force across India on 1 July 2017 and replaced many separate taxes with one system. That is why it was described as "One Nation, One Tax". 1 July is observed as GST Day.
+
+      ## The constitutional basis
+      The Constitution (101st Amendment) Act, 2016 made GST possible. It gave both Parliament and the State Legislatures power to tax the same supply of goods and services.
+
+      ## What GST replaced
+      GST took the place of Union taxes such as central excise duty and service tax, and state taxes such as value added tax (VAT), entry tax and entertainment tax.
+
+      ## Three parts
+      India uses a dual GST, so both the Union and the states collect it.
+      - CGST (Central GST) is collected by the Union on supplies within a state.
+      - SGST (State GST) is collected by the state on the same supplies.
+      - IGST (Integrated GST) is collected by the Union on supplies from one state to another and on imports. It is later shared with the consuming state.
+
+      ## A destination-based tax
+      GST is collected where goods or services are consumed, not where they are produced. Consuming states therefore receive the revenue.
+
+      ## Input tax credit
+      A business can deduct the GST it paid on its inputs from the GST it collects on its sales. Tax is paid only on the value added at each stage, so the old problem of tax on tax (the cascading effect) is removed.
+
+      ## The GST Council
+      Article 279A created the GST Council. The Union Finance Minister is its chairperson, and the Finance Ministers of the states are members. The Council recommends tax rates, exemptions and rules.
+
+      ## Items kept outside
+      Alcohol for human consumption is outside GST. Petroleum products such as petrol, diesel and crude oil are not yet taxed under GST; the Council has to decide when to bring them in.
+
+      ## Small businesses
+      Small taxpayers can choose the composition scheme. They pay tax at a low fixed rate on turnover and file simpler returns, but they cannot claim input tax credit.
+
+      ## The technology
+      The Goods and Services Tax Network (GSTN) runs the online system for registration, returns and payments.
