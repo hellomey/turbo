@@ -15,6 +15,16 @@ $env:DATABASE_CA = (Get-Content -Raw "infra/supabase/supabase-root-2021-ca.crt")
 $env:DATABASE_URL = "postgresql://postgres.$ref`:$enc@$host_`:5432/postgres?sslmode=require"
 $env:DIRECT_URL   = $env:DATABASE_URL
 
+Write-Host "Installing dependencies and regenerating the database client (it must match the pulled schema)..."
+$ErrorActionPreference = "Continue"
+corepack pnpm install --frozen-lockfile 2>&1 | Out-Null
+Push-Location packages/db
+corepack pnpm exec prisma generate 2>&1 | Out-Null
+$genExit = $LASTEXITCODE
+Pop-Location
+$ErrorActionPreference = "Stop"
+if ($genExit -ne 0) { throw "prisma generate failed" }
+
 Write-Host "Applying migrations (fresh database) or confirming they are applied..."
 Push-Location packages/db
 # migrate deploy creates every table on a new project and is a no-op when all are applied.
