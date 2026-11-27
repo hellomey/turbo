@@ -1,8 +1,4 @@
-import 'dart:math' as math;
-
 import 'package:material_ui/material_ui.dart';
-
-import '../tokens.dart';
 
 /// Raster art cut from the approved mock-ups in design/ui/ by tools/design/crop-ui.mjs (BOLT-0117).
 /// Rerun that script to regenerate; never edit the PNGs by hand.
@@ -100,67 +96,24 @@ class HmPicture extends StatelessWidget {
 
 /// Mey, the lamp mascot, in one of its poses. It hovers gently (a 6 px bob every 2.4 s, four times) unless
 /// motion is reduced (platform setting, Calm Mode or Lite Mode), and pops in on first build.
-class HmMey extends StatefulWidget {
-  const HmMey(this.pose, {super.key, this.size = 120, this.float = true});
+/// Mey, the HeyMey mascot, standing still. Mey never moves on its own: motion is kept for the Study Map
+/// and Play, where it means something. On wide screens Mey grows a little so it does not look shrunk.
+class HmMey extends StatelessWidget {
+  const HmMey(this.pose, {super.key, this.size = 120, this.float = false});
 
   final HmPic pose;
 
-  /// The picture's height in logical pixels.
+  /// The picture's height in logical pixels on a phone.
   final double size;
+
+  /// Kept for older callers; ignored.
   final bool float;
 
   @override
-  State<HmMey> createState() => _HmMeyState();
-}
-
-class _HmMeyState extends State<HmMey> with SingleTickerProviderStateMixin {
-  late final AnimationController _bob = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 2400),
-  );
-  bool _started = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final still = !widget.float || HmModes.reduceMotion(context);
-    if (still) {
-      _bob.stop();
-    } else if (!_bob.isAnimating && !_started) {
-      _started = true;
-      // Four bobs (about 10 s), then rest: saves battery and lets tests settle.
-      _bob.repeat(count: 4);
-    }
-  }
-
-  @override
-  void dispose() {
-    _bob.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final still = !widget.float || HmModes.reduceMotion(context);
-    final pic = HmPicture(widget.pose, height: widget.size);
-    final body = still
-        ? pic
-        : AnimatedBuilder(
-            animation: _bob,
-            builder: (context, child) => Transform.translate(
-              offset: Offset(0, math.sin(_bob.value * 2 * math.pi) * 3),
-              child: child,
-            ),
-            child: pic,
-          );
-    if (still) return body;
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0.6, end: 1),
-      duration: HmMotion.pop,
-      curve: HmMotion.spring,
-      builder: (context, s, child) => Transform.scale(scale: s, child: child),
-      child: body,
-    );
+    final w = MediaQuery.sizeOf(context).width;
+    final scale = (w / 420).clamp(1.0, 1.35);
+    return HmPicture(pose, height: size * scale);
   }
 }
 

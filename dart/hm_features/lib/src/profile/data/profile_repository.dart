@@ -5,6 +5,7 @@ import 'package:hm_core/hm_core.dart';
 abstract interface class ProfileRepository {
   Future<MeInfo> me();
   Future<MeInfo> setCalmMode(bool on);
+  Future<MeInfo> setNickname(String name);
   Future<void> logout();
   Future<void> logoutAll();
 
@@ -42,6 +43,9 @@ class ApiProfileRepository implements ProfileRepository {
 
   @override
   Future<MeInfo> setCalmMode(bool on) => _api.updateMe(calmMode: on);
+
+  @override
+  Future<MeInfo> setNickname(String name) => _api.updateMe(nickname: name);
 
   @override
   Future<void> logout() => _api.logout();

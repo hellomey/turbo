@@ -235,6 +235,19 @@ class FakeProfileRepository implements ProfileRepository {
   }
 
   @override
+  Future<MeInfo> setNickname(String name) async {
+    calls.add('nick:$name');
+    return user = MeInfo(
+      id: user.id,
+      email: user.email,
+      calmMode: user.calmMode,
+      roles: user.roles,
+      isGuest: user.isGuest,
+      nickname: name,
+    );
+  }
+
+  @override
   Future<void> logout() async => calls.add('logout');
 
   @override

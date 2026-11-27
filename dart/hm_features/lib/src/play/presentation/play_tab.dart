@@ -251,16 +251,7 @@ class _SpinHero extends StatelessWidget {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Positioned.fill(
-                      child: CustomPaint(
-                        painter: SpinWheelPainter(
-                          prizes: _demoSlices,
-                          colors: spinWheelColors,
-                          edge: const Color(0xFF8A4B2A),
-                          turn: 0,
-                        ),
-                      ),
-                    ),
+                    Positioned.fill(child: _TurningWheel(turning: ready)),
                     Positioned(
                       right: -art * 0.12,
                       bottom: -art * 0.06,
@@ -414,4 +405,61 @@ class GameRulesScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// The hero's little wheel: turns slowly a few times while a spin is waiting, then rests. Still under reduce motion.
+class _TurningWheel extends StatefulWidget {
+  const _TurningWheel({required this.turning});
+
+  final bool turning;
+
+  @override
+  State<_TurningWheel> createState() => _TurningWheelState();
+}
+
+class _TurningWheelState extends State<_TurningWheel>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 7),
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(_TurningWheel old) {
+    super.didUpdateWidget(old);
+    _sync();
+  }
+
+  void _sync() {
+    if (widget.turning && !HmModes.reduceMotion(context)) {
+      if (!_c.isAnimating) _c.repeat(count: 3);
+    } else {
+      _c.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: _c,
+    builder: (context, _) => CustomPaint(
+      painter: SpinWheelPainter(
+        prizes: _demoSlices,
+        colors: spinWheelColors,
+        edge: const Color(0xFF8A4B2A),
+        turn: _c.value * 2 * math.pi,
+      ),
+    ),
+  );
 }

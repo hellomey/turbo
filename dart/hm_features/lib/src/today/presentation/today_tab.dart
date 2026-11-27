@@ -188,7 +188,6 @@ class TodayBody extends StatelessWidget {
                 ),
               ),
             ),
-            const HmBetaChip(),
           ],
         ),
       const SizedBox(height: HmSpace.xl),

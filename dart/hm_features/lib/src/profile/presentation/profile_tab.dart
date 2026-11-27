@@ -6,6 +6,7 @@ import '../../common/ports.dart';
 import '../../progress/application/progress_controller.dart';
 import '../../study_map/application/study_providers.dart';
 import '../application/profile_controller.dart';
+import 'name_screen.dart';
 
 /// Profile (§10.5). Phase 1: who you are, Calm Mode, log out, log out of all devices, delete account.
 class ProfileTab extends ConsumerWidget {
@@ -89,7 +90,9 @@ class ProfileTab extends ConsumerWidget {
         onRetry: () => ref.invalidate(meProvider),
       ),
       data: (user) {
-        final name = user.nickname ?? (user.isGuest ? 'Guest' : 'You');
+        final name = (user.nickname ?? '').trim().isNotEmpty
+            ? user.nickname!.trim()
+            : (user.isGuest ? 'Guest' : 'Add your name');
         final examName = switch (exam) {
           'tnpsc-group-4' => 'Group 4',
           'tnpsc-group-2' || 'tnpsc-group-2a' => 'Group 2/2A',
@@ -100,7 +103,11 @@ class ProfileTab extends ConsumerWidget {
           key: const Key('profile-header'),
           child: Row(
             children: [
-              _Avatar(letter: name.isEmpty ? '?' : name[0].toUpperCase()),
+              HmAvatar(
+                id: ref.watch(avatarProvider).value,
+                name: name,
+                size: 84,
+              ),
               const SizedBox(width: HmSpace.lg),
               Expanded(
                 child: Column(
@@ -227,6 +234,14 @@ class ProfileTab extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: HmSpace.sm),
           child: Column(
             children: [
+              _MenuRow(
+                key: const Key('profile-edit-name'),
+                icon: Icons.face_rounded,
+                label: 'Name and avatar',
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(builder: (_) => const NameScreen()),
+                ),
+              ),
               for (final (key, label, icon, onTap) in _links)
                 _MenuRow(key: Key(key), icon: icon, label: label, onTap: onTap),
               if (onOpenLeaderboard != null)
@@ -370,7 +385,12 @@ class ProfileTab extends ConsumerWidget {
                         child: const Text('Delete account'),
                       ),
                     const SizedBox(height: HmSpace.md),
-                    const Center(child: HmBetaChip()),
+                    Center(
+                      child: Text(
+                        "HeyMey is still being built. Thanks for trying it early.",
+                        style: text.bodySmall?.copyWith(color: p.textMuted),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -378,45 +398,6 @@ class ProfileTab extends ConsumerWidget {
           ],
         );
       },
-    );
-  }
-}
-
-/// The initial on a cream disc inside an amber ring. No photo: we never show a picture we did not get from you.
-class _Avatar extends StatelessWidget {
-  const _Avatar({required this.letter});
-
-  final String letter;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = context.hm;
-    return ExcludeSemantics(
-      child: Container(
-        width: 84,
-        height: 84,
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: SweepGradient(
-            colors: [p.primary, const Color(0xFFFFD36E), p.primary],
-          ),
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: HmTint.amber,
-          ),
-          child: Text(
-            letter,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.w900,
-              color: p.primaryText,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

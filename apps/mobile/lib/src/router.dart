@@ -63,20 +63,22 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/today',
-                builder: (context, _) => TodayTab(
-                  onOpenStudyMap: () => context.go('/map'),
-                  onOpenExamHall: () => context.push('/exam-hall'),
-                  // BOLT-0018: Today Card, My Plan, relight, pocket sessions (§10.6 Today).
-                  onOpenPlan: () => context.push('/plan'),
-                  onSetUpPlan: () => context.push('/plan-setup'),
-                  onStartItem: (item) => context.push(planItemRoute(item)),
-                  onOpenRelight: () => context.push('/relight'),
-                  onStartPocket: (_) => context.go('/map'),
-                  onOpenExpo: () => context.push('/expo'),
-                  onOpenLeaderboard: () => context.push('/leaderboard'),
-                  onOpenReadiness: () => context.push('/readiness'),
-                  onOpenAlerts: () => context.push('/alerts'),
-                  onOpenProfile: () => context.go('/profile'),
+                builder: (context, _) => NamePrompt(
+                  child: TodayTab(
+                    onOpenStudyMap: () => context.go('/map'),
+                    onOpenExamHall: () => context.push('/exam-hall'),
+                    // BOLT-0018: Today Card, My Plan, relight, pocket sessions (§10.6 Today).
+                    onOpenPlan: () => context.push('/plan'),
+                    onSetUpPlan: () => context.push('/plan-setup'),
+                    onStartItem: (item) => context.push(planItemRoute(item)),
+                    onOpenRelight: () => context.push('/relight'),
+                    onStartPocket: (_) => context.go('/map'),
+                    onOpenExpo: () => context.push('/expo'),
+                    onOpenLeaderboard: () => context.push('/leaderboard'),
+                    onOpenReadiness: () => context.push('/readiness'),
+                    onOpenAlerts: () => context.push('/alerts'),
+                    onOpenProfile: () => context.go('/profile'),
+                  ),
                 ),
               ),
             ],

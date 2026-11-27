@@ -21,6 +21,11 @@ class MeController extends AsyncNotifier<MeInfo> {
     state = AsyncData(updated);
   }
 
+  Future<void> setNickname(String name) async {
+    final updated = await ref.read(profileRepositoryProvider).setNickname(name);
+    state = AsyncData(updated);
+  }
+
   /// Log out (this device) or log out of all devices. Signed out locally even when offline.
   Future<void> logout({bool allDevices = false}) async {
     final repo = ref.read(profileRepositoryProvider);
