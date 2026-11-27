@@ -63,6 +63,14 @@ export const ERROR_CODES = {
   EXAM_CHANGE_ALREADY_REVIEWED: "This change was already reviewed.",
   SYNC_ACTION_TOO_OLD: "Saved as study history. Rings only change for the last 7 days.",
 
+  // BOLT-0112 stall: expo challenge + sticker codes
+  EXPO_CHALLENGE_NOT_FOUND: "We couldn't find that challenge. Please start a new one.",
+  EXPO_CHALLENGE_EXPIRED: "Time is up for this challenge. Please start a new one.",
+  EXPO_CHALLENGE_ALREADY_SUBMITTED: "This challenge is already done.",
+  EXPO_CHALLENGE_UNAVAILABLE: "The challenge is not ready yet. Please try again soon.",
+  STICKER_CODE_NOT_FOUND: "This sticker code is not valid.",
+  STICKER_CODE_ALREADY_REDEEMED: "This sticker code was already used.",
+
   FIREWALL_VIOLATION: "This action is not allowed.",
   GUEST_NOT_ALLOWED: "Sign in with your email to use this.",
   PURCHASE_NOT_VERIFIED: "We couldn't confirm this payment yet. If money was taken, we will add your purchase or refund you.",

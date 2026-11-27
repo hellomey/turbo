@@ -25,7 +25,7 @@ class ApiExpoRepository implements ExpoRepository {
 
   @override
   Future<ExpoChallenge> fetchChallenge() async =>
-      ExpoJson.challenge(await _api.getExpoChallenge());
+      ExpoJson.challenge(await _api.startExpoChallenge());
 
   @override
   Future<ExpoResult> submit(

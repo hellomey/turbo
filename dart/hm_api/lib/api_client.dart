@@ -288,6 +288,16 @@ class ApiClient {
           return ExamStructureFamily.fromJson(value);
         case 'ExamSummary':
           return ExamSummary.fromJson(value);
+        case 'ExpoChallenge':
+          return ExpoChallenge.fromJson(value);
+        case 'ExpoChallengeQuestionsInner':
+          return ExpoChallengeQuestionsInner.fromJson(value);
+        case 'ExpoChallengeQuestionsInnerOptionsInner':
+          return ExpoChallengeQuestionsInnerOptionsInner.fromJson(value);
+        case 'ExpoChallengeResult':
+          return ExpoChallengeResult.fromJson(value);
+        case 'ExpoChallengeResultResultsInner':
+          return ExpoChallengeResultResultsInner.fromJson(value);
         case 'GlossaryList':
           return GlossaryList.fromJson(value);
         case 'GlossaryListItemsInner':
@@ -352,6 +362,8 @@ class ApiClient {
           return MockSummary.fromJson(value);
         case 'MyProgress':
           return MyProgress.fromJson(value);
+        case 'MyStickerCode':
+          return MyStickerCode.fromJson(value);
         case 'OkResponse':
           return OkResponse.fromJson(value);
         case 'OtpPurpose':
@@ -440,6 +452,8 @@ class ApiClient {
           return ReadinessTrend.fromJson(value);
         case 'ReadinessTrendPointsInner':
           return ReadinessTrendPointsInner.fromJson(value);
+        case 'RedeemStickerCodeBody':
+          return RedeemStickerCodeBody.fromJson(value);
         case 'RefreshBody':
           return RefreshBody.fromJson(value);
         case 'RegisterPushTokenBody':
@@ -482,6 +496,8 @@ class ApiClient {
           return StateMockInfoMock.fromJson(value);
         case 'StatewideRank':
           return StatewideRank.fromJson(value);
+        case 'StickerCodeRedeemed':
+          return StickerCodeRedeemed.fromJson(value);
         case 'StretchPhase':
           return StretchPhaseTypeTransformer().decode(value);
         case 'StudyMap':
@@ -492,6 +508,10 @@ class ApiClient {
           return StudyMapTopic.fromJson(value);
         case 'SubmitCheckBody':
           return SubmitCheckBody.fromJson(value);
+        case 'SubmitExpoChallengeBody':
+          return SubmitExpoChallengeBody.fromJson(value);
+        case 'SubmitExpoChallengeBodyAnswersInner':
+          return SubmitExpoChallengeBodyAnswersInner.fromJson(value);
         case 'SundayReport':
           return SundayReport.fromJson(value);
         case 'SundayReportPage':

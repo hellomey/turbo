@@ -8,7 +8,7 @@ import type { SyllabusApi } from "../syllabus/index.js";
 import { getLesson, type LessonRepository } from "./application/get-lesson.js";
 import type { LessonDto } from "./domain/lesson.js";
 import { PrismaLessonRepository } from "./infrastructure/prisma-lesson-repository.js";
-import type { QuestionReader } from "./domain/question.js";
+import type { QuestionReader, QuestionWithKey } from "./domain/question.js";
 import { PrismaQuestionReader } from "./infrastructure/prisma-question-reader.js";
 import { questionBank, type QuestionBank } from "./application/question-bank.js";
 import { PrismaQuestionCandidates } from "./infrastructure/prisma-question-candidates.js";
@@ -75,4 +75,27 @@ export function createPracticeContent(deps: {
   randomInt: (maxExclusive: number) => number;
 }): PracticeContentApi {
   return practiceContent({ store: new PrismaPracticeContentStore(deps.prisma), syllabus: deps.syllabus, randomInt: deps.randomInt });
+}
+
+// ---- BOLT-0112 (stall): published questions of a named content set (Source.setName), with keys for server grading.
+export interface QuestionSetReader {
+  publishedIdsInSet(setName: string): Promise<string[]>;
+  withKeys(questionIds: readonly string[]): Promise<QuestionWithKey[]>;
+}
+
+export function createQuestionSetReader(deps: { prisma: PrismaClient }): QuestionSetReader {
+  const reader = new PrismaQuestionReader(deps.prisma);
+  return {
+    async publishedIdsInSet(setName) {
+      const source = await deps.prisma.source.findUnique({ where: { setName }, select: { id: true } });
+      if (!source) return [];
+      const rows = await deps.prisma.questionVersion.findMany({
+        where: { sourceId: source.id, status: "published", question: { status: "published" } },
+        select: { questionId: true },
+        distinct: ["questionId"],
+      });
+      return rows.map((r) => r.questionId);
+    },
+    withKeys: (ids) => reader.withKeys(ids),
+  };
 }
