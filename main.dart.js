@@ -24185,7 +24185,7 @@ _.w=h},
 tR:function tR(a){this.a=a},
 aIP:function aIP(){},
 b8V(a){var s=A.aT()
-return new A.zz(A.bmY("https://heymey-api.vercel.app",!0,s),a)},
+return new A.zz(A.bmY("https://api.heymey.app",!0,s),a)},
 bmY(a,b,c){var s=a.length
 if(s!==0)return B.d.ih(a,"/")?B.d.W(a,0,s-1):a
 return"http://localhost:4567"},
