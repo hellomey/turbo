@@ -81,6 +81,7 @@ Class | Method | HTTP request | Description
 *DeskApi* | [**approveExamChange**](doc//DeskApi.md#approveexamchange) | **POST** /v1/desk/exam-changes/{changeId}/approve | Human-approved: publishes an Exam Alert (exams.notification_published) to followers. Audited.
 *DeskApi* | [**enrollDeskTotp**](doc//DeskApi.md#enrolldesktotp) | **POST** /v1/auth/desk/totp/enroll | First Desk sign-in: create the authenticator secret for this staff/partner account.
 *DeskApi* | [**listExamChanges**](doc//DeskApi.md#listexamchanges) | **GET** /v1/desk/exam-changes | Ops queue of official-site changes waiting for a human check. Role OPS or ADMIN (checked in the handler).
+*DeskApi* | [**redeemStickerCode**](doc//DeskApi.md#redeemstickercode) | **POST** /v1/desk/sticker-codes/redeem | Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
 *DeskApi* | [**rejectExamChange**](doc//DeskApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
 *DeskApi* | [**verifyDeskTotp**](doc//DeskApi.md#verifydesktotp) | **POST** /v1/auth/desk/totp/verify | Complete Desk sign-in with the authenticator code.
 *EconomyApi* | [**checkIn**](doc//EconomyApi.md#checkin) | **POST** /v1/me/check-in | Daily check-in, once per IST day: small XP + Points. Missing a day resets nothing.
@@ -107,6 +108,10 @@ Class | Method | HTTP request | Description
 *ExamsApi* | [**putMyExams**](doc//ExamsApi.md#putmyexams) | **PUT** /v1/me/exams | 
 *ExamsApi* | [**receiveSiteChange**](doc//ExamsApi.md#receivesitechange) | **POST** /v1/webhooks/changedetection | changedetection.io site-change webhook. Stores a pending change; NOTHING is sent to users (§17.5).
 *ExamsApi* | [**rejectExamChange**](doc//ExamsApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
+*ExpoApi* | [**getMyStickerCode**](doc//ExpoApi.md#getmystickercode) | **GET** /v1/me/sticker-code | My sticker code, earned by finishing the expo challenge or lighting a first lamp. null until earned.
+*ExpoApi* | [**redeemStickerCode**](doc//ExpoApi.md#redeemstickercode) | **POST** /v1/desk/sticker-codes/redeem | Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
+*ExpoApi* | [**startExpoChallenge**](doc//ExpoApi.md#startexpochallenge) | **GET** /v1/expo/challenge | Start a 10-question stall challenge (guests allowed). Answers are never sent; the challenge expires in 15 minutes.
+*ExpoApi* | [**submitExpoChallenge**](doc//ExpoApi.md#submitexpochallenge) | **POST** /v1/expo/challenge/{challengeId}/submit | Grade once on the server. Finishing (any score) earns the user's sticker code.
 *MasteryApi* | [**completeLesson**](doc//MasteryApi.md#completelesson) | **POST** /v1/topics/{topicId}/lesson-complete | I finished the lesson or the mapped textbook pages. Opens the 3-question Lit check.
 *MasteryApi* | [**getMyMastery**](doc//MasteryApi.md#getmymastery) | **GET** /v1/me/mastery | Rank (from lamps only), XP and ring counts across my exams.
 *MasteryApi* | [**getRelightQueue**](doc//MasteryApi.md#getrelightqueue) | **GET** /v1/me/relight-queue | Dimming lamps I can open, oldest first, with minutes (\"Relight 4 · 8 min\").
@@ -203,6 +208,11 @@ Class | Method | HTTP request | Description
  - [ExamStructure](doc//ExamStructure.md)
  - [ExamStructureFamily](doc//ExamStructureFamily.md)
  - [ExamSummary](doc//ExamSummary.md)
+ - [ExpoChallenge](doc//ExpoChallenge.md)
+ - [ExpoChallengeQuestionsInner](doc//ExpoChallengeQuestionsInner.md)
+ - [ExpoChallengeQuestionsInnerOptionsInner](doc//ExpoChallengeQuestionsInnerOptionsInner.md)
+ - [ExpoChallengeResult](doc//ExpoChallengeResult.md)
+ - [ExpoChallengeResultResultsInner](doc//ExpoChallengeResultResultsInner.md)
  - [GlossaryList](doc//GlossaryList.md)
  - [GlossaryListItemsInner](doc//GlossaryListItemsInner.md)
  - [GradedAnswer](doc//GradedAnswer.md)
@@ -235,6 +245,7 @@ Class | Method | HTTP request | Description
  - [MockSectionView](doc//MockSectionView.md)
  - [MockSummary](doc//MockSummary.md)
  - [MyProgress](doc//MyProgress.md)
+ - [MyStickerCode](doc//MyStickerCode.md)
  - [OkResponse](doc//OkResponse.md)
  - [OtpPurpose](doc//OtpPurpose.md)
  - [OtpRequestBody](doc//OtpRequestBody.md)
@@ -279,6 +290,7 @@ Class | Method | HTTP request | Description
  - [ReadinessMeterCoverage](doc//ReadinessMeterCoverage.md)
  - [ReadinessTrend](doc//ReadinessTrend.md)
  - [ReadinessTrendPointsInner](doc//ReadinessTrendPointsInner.md)
+ - [RedeemStickerCodeBody](doc//RedeemStickerCodeBody.md)
  - [RefreshBody](doc//RefreshBody.md)
  - [RegisterPushTokenBody](doc//RegisterPushTokenBody.md)
  - [RejectExamChangeBody](doc//RejectExamChangeBody.md)
@@ -300,11 +312,14 @@ Class | Method | HTTP request | Description
  - [StateMockInfo](doc//StateMockInfo.md)
  - [StateMockInfoMock](doc//StateMockInfoMock.md)
  - [StatewideRank](doc//StatewideRank.md)
+ - [StickerCodeRedeemed](doc//StickerCodeRedeemed.md)
  - [StretchPhase](doc//StretchPhase.md)
  - [StudyMap](doc//StudyMap.md)
  - [StudyMapSubjectsInner](doc//StudyMapSubjectsInner.md)
  - [StudyMapTopic](doc//StudyMapTopic.md)
  - [SubmitCheckBody](doc//SubmitCheckBody.md)
+ - [SubmitExpoChallengeBody](doc//SubmitExpoChallengeBody.md)
+ - [SubmitExpoChallengeBodyAnswersInner](doc//SubmitExpoChallengeBodyAnswersInner.md)
  - [SundayReport](doc//SundayReport.md)
  - [SundayReportPage](doc//SundayReportPage.md)
  - [SundayReportSummary](doc//SundayReportSummary.md)

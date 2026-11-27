@@ -6,13 +6,16 @@
     "PracticeAnswer",
     "PracticeDayCounter",
     "MistakeTally",
-    "ConceptDrill"
+    "ConceptDrill",
+    "ExpoChallenge",
+    "StickerCode"
   ],
   "responsibilities": [
     "Practice + recall checks",
     "30/day free limit (IST day)",
     "mistake loop drills",
-    "offline answers accepted once by client UUID"
+    "offline answers accepted once by client UUID",
+    "stall expo challenge and one sticker code per user (BOLT-0112)"
   ],
   "dependsOn": [
     "content",

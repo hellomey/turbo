@@ -127,6 +127,12 @@
                   "WEBHOOK_REPLAYED",
                   "EXAM_CHANGE_ALREADY_REVIEWED",
                   "SYNC_ACTION_TOO_OLD",
+                  "EXPO_CHALLENGE_NOT_FOUND",
+                  "EXPO_CHALLENGE_EXPIRED",
+                  "EXPO_CHALLENGE_ALREADY_SUBMITTED",
+                  "EXPO_CHALLENGE_UNAVAILABLE",
+                  "STICKER_CODE_NOT_FOUND",
+                  "STICKER_CODE_ALREADY_REDEEMED",
                   "FIREWALL_VIOLATION",
                   "GUEST_NOT_ALLOWED",
                   "PURCHASE_NOT_VERIFIED",
@@ -4996,6 +5002,201 @@
           "optIn"
         ],
         "additionalProperties": false
+      },
+      "ExpoChallenge": {
+        "type": "object",
+        "properties": {
+          "challengeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "stem": {
+                  "type": "string"
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "text"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "stem",
+                "options"
+              ]
+            }
+          },
+          "secondsPerQuestion": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "challengeId",
+          "questions",
+          "secondsPerQuestion"
+        ]
+      },
+      "ExpoChallengeResult": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "correct": {
+                  "type": "boolean"
+                },
+                "correctOptionId": {
+                  "type": "string"
+                },
+                "explanation": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "questionId",
+                "correct",
+                "correctOptionId",
+                "explanation"
+              ]
+            }
+          },
+          "stickerCode": {
+            "$ref": "#/components/schemas/StickerCodeValue"
+          }
+        },
+        "required": [
+          "score",
+          "total",
+          "results",
+          "stickerCode"
+        ]
+      },
+      "StickerCodeValue": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "pattern": "^HM-[2-9A-HJ-NP-Z]{4}$"
+      },
+      "SubmitExpoChallengeBody": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "optionId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 16
+                },
+                "ms": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 600000
+                }
+              },
+              "required": [
+                "questionId",
+                "optionId",
+                "ms"
+              ]
+            },
+            "maxItems": 50
+          }
+        },
+        "required": [
+          "answers"
+        ]
+      },
+      "MyStickerCode": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/StickerCodeValue"
+          },
+          "redeemed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "redeemed"
+        ]
+      },
+      "StickerCodeRedeemed": {
+        "type": "object",
+        "properties": {
+          "redeemed": {
+            "type": "boolean"
+          },
+          "redeemedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "redeemed",
+          "redeemedAt"
+        ]
+      },
+      "RedeemStickerCodeBody": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          }
+        },
+        "required": [
+          "code"
+        ]
       }
     },
     "parameters": {}
@@ -11166,6 +11367,399 @@
           },
           "403": {
             "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/expo/challenge": {
+      "get": {
+        "tags": [
+          "expo"
+        ],
+        "operationId": "startExpoChallenge",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Start a 10-question stall challenge (guests allowed). Answers are never sent; the challenge expires in 15 minutes.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 30,
+            "windowSeconds": 3600
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Challenge",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpoChallenge"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No questions yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/expo/challenge/{challengeId}/submit": {
+      "post": {
+        "tags": [
+          "expo"
+        ],
+        "operationId": "submitExpoChallenge",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Grade once on the server. Finishing (any score) earns the user's sticker code.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 30,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "challengeId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitExpoChallengeBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpoChallengeResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such challenge",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already submitted or expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/sticker-code": {
+      "get": {
+        "tags": [
+          "expo"
+        ],
+        "operationId": "getMyStickerCode",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "My sticker code, earned by finishing the expo challenge or lighting a first lamp. null until earned.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyStickerCode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/desk/sticker-codes/redeem": {
+      "post": {
+        "tags": [
+          "expo",
+          "desk"
+        ],
+        "operationId": "redeemStickerCode",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.",
+        "x-heymey-auth": "desk",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 120,
+            "windowSeconds": 600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedeemStickerCodeBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Give a sticker",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StickerCodeRedeemed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "STICKER_CODE_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "STICKER_CODE_ALREADY_REDEEMED",
             "content": {
               "application/json": {
                 "schema": {

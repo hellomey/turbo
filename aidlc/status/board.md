@@ -55,6 +55,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0035 | `analytics` module: consent-gated, personal data stripped | 0031 | Kaaval | Nov 26 | todo | - |
 | BOLT-0036 | Sticker codes: issue a one-time code on first lit lamp, verify and burn from Desk | 0031 | Kaaval, Vizhi | Nov 24 | todo | - |
 | BOLT-0104 | Guest mode (founder decision 2026-11-27): `POST /v1/auth/guest` (18+, 30-day session), guest to email upgrade via OTP verify, inactive-guest cleanup, "Try it now" + "Save your progress" in the app | - | Kaaval, Vizhi | Nov 28 | review | `dart/hm_api` needs regenerating with Docker |
+| BOLT-0112 | Stall: expo challenge (`GET /v1/expo/challenge`, single-submit grading), one sticker code per user (challenge finished or first lit lamp), Desk "Sticker codes" check and redeem with audit. Covers BOLT-0036 | - | Kaaval, Vizhi | Nov 28 | review | - |
 
 ### Kalai (Flutter UI)
 

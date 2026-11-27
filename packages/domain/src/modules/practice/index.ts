@@ -31,6 +31,22 @@ import {
 } from "./application/practice-service.js";
 import type { PracticeUsageDto } from "./domain/limit.js";
 import { PrismaPracticeRepository } from "./infrastructure/prisma-practice-repository.js";
+import { PrismaExpoRepository } from "./infrastructure/prisma-expo-repository.js";
+import {
+  myStickerCode,
+  redeemStickerCode,
+  startChallenge,
+  submitChallenge,
+  type ExpoChallengeDto,
+  type ExpoChallengeResultDto,
+  type ExpoDeps,
+  type ExpoQuestions,
+  type ExpoRepository,
+  type MyStickerCodeDto,
+  type RedeemTxHook,
+  type StickerCodeRedeemedDto,
+  type SubmitExpoChallengeInput,
+} from "./application/expo-service.js";
 
 export const PracticeModule = { name: "practice" } as const;
 
@@ -103,5 +119,54 @@ export function createPracticeModule(
     drills: (userId) => listDrills(d, userId),
     searchPyqs: (userId, q) => searchPyqs(d, userId, q),
     pyqFacets: (userId, examCode) => pyqFacets(d, userId, examCode),
+  };
+}
+
+// ---------------------------------------------------------------- stall: expo challenge + sticker codes (BOLT-0112)
+export { EXPO_CONFIG, STICKER_ALPHABET, canRedeemStickerCodes, gradeExpo, newStickerCode, normalizeStickerCode } from "./domain/expo.js";
+export type { StickerReason } from "./domain/expo.js";
+export type {
+  ExpoChallengeDto,
+  ExpoChallengeRecord,
+  ExpoChallengeResultDto,
+  ExpoQuestions,
+  ExpoRepository,
+  MyStickerCodeDto,
+  RedeemOutcome,
+  RedeemTxHook,
+  StickerCodeRedeemedDto,
+  SubmitExpoChallengeInput,
+} from "./application/expo-service.js";
+
+export interface ExpoApi {
+  startChallenge(userId: string): Promise<ExpoChallengeDto>;
+  submit(userId: string, challengeId: string, body: SubmitExpoChallengeInput): Promise<ExpoChallengeResultDto>;
+  myStickerCode(userId: string): Promise<MyStickerCodeDto>;
+  /** Staff only (role checked by the caller with `canRedeemStickerCodes`). `inTx` writes the audit row. */
+  redeem(staffUserId: string, code: string, inTx?: RedeemTxHook): Promise<StickerCodeRedeemedDto>;
+}
+
+export function createExpoModule(
+  deps: ({ prisma: PrismaClient } | { repository: ExpoRepository }) & {
+    clock: Clock;
+    randomInt: (maxExclusive: number) => number;
+    /** content: published questions of a named set, with keys (server-side grading). */
+    questions: ExpoQuestions;
+    /** mastery: has the user lit (or gilded) any lamp. */
+    lamps: { hasLitLamp(userId: string): Promise<boolean> };
+  },
+): ExpoApi {
+  const d: ExpoDeps = {
+    repo: "repository" in deps ? deps.repository : new PrismaExpoRepository(deps.prisma),
+    questions: deps.questions,
+    lamps: deps.lamps,
+    clock: deps.clock,
+    randomInt: deps.randomInt,
+  };
+  return {
+    startChallenge: (userId) => startChallenge(d, userId),
+    submit: (userId, id, body) => submitChallenge(d, userId, id, body),
+    myStickerCode: (userId) => myStickerCode(d, userId),
+    redeem: (staff, code, inTx) => redeemStickerCode(d, staff, code, inTx),
   };
 }
