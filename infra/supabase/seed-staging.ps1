@@ -18,8 +18,23 @@ $env:DIRECT_URL   = $env:DATABASE_URL
 Write-Host "Applying migrations (fresh database) or confirming they are applied..."
 Push-Location packages/db
 # migrate deploy creates every table on a new project and is a no-op when all are applied.
-corepack pnpm exec prisma migrate deploy
-if ($LASTEXITCODE -ne 0) { Pop-Location; throw "migrate deploy failed" }
+# A project whose tables were created by hand-run SQL (02_schema.sql) has no migration history (Prisma P3005):
+# record every migration except the newest as applied (baseline), then deploy, which runs the newest.
+# Every migration is written to be safe if its change already exists.
+# Windows PowerShell turns native stderr into errors under "Stop", so relax it while capturing output.
+$ErrorActionPreference = "Continue"
+$out = corepack pnpm exec prisma migrate deploy 2>&1 | Out-String
+$deployExit = $LASTEXITCODE
+Write-Host $out
+if ($deployExit -ne 0 -and $out -match "P3005") {
+  Write-Host "Existing tables without migration history: baselining..."
+  $all = Get-ChildItem prisma/migrations -Directory | Sort-Object Name
+  foreach ($m in $all[0..($all.Count - 2)]) { corepack pnpm exec prisma migrate resolve --applied $m.Name | Out-Null }
+  corepack pnpm exec prisma migrate deploy
+  $deployExit = $LASTEXITCODE
+}
+$ErrorActionPreference = "Stop"
+if ($deployExit -ne 0) { Pop-Location; throw "migrate deploy failed" }
 Pop-Location
 
 Write-Host "Seeding catalogue..."
