@@ -341,8 +341,13 @@ class HmApi {
 
   Future<MeInfo> getMe() async => MeInfo.fromJson(_map(await _get('/v1/me')));
 
-  Future<MeInfo> updateMe({bool? calmMode, bool? hideFromLeaderboards}) async {
+  Future<MeInfo> updateMe({
+    bool? calmMode,
+    bool? hideFromLeaderboards,
+    String? nickname,
+  }) async {
     final json = await _write('PATCH', '/v1/me', {
+      'nickname': ?nickname,
       'calmMode': ?calmMode,
       'hideFromLeaderboards': ?hideFromLeaderboards,
     });

@@ -5,6 +5,7 @@ import 'package:hm_design/hm_design.dart';
 import '../../alerts/application/alerts_controller.dart';
 import '../../common/ports.dart';
 import '../../profile/application/profile_controller.dart';
+import '../../profile/presentation/name_screen.dart';
 import '../../progress/application/progress_controller.dart';
 import '../../readiness/application/readiness_providers.dart';
 import '../../readiness/domain/readiness_models.dart';
@@ -59,7 +60,6 @@ class TodayHeader extends ConsumerWidget {
       children: [
         Row(
           children: [
-            const HmBetaChip(),
             const SizedBox(width: HmSpace.xs),
             Expanded(
               child: Semantics(
@@ -73,9 +73,19 @@ class TodayHeader extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: HmSpace.sm),
-            _Avatar(
-              initial: name?.characters.first.toUpperCase(),
-              onTap: onOpenProfile,
+            Semantics(
+              button: true,
+              label: 'Open your profile',
+              child: InkWell(
+                key: const Key('today-avatar'),
+                customBorder: const CircleBorder(),
+                onTap: onOpenProfile,
+                child: HmAvatar(
+                  id: ref.watch(avatarProvider).value,
+                  name: name ?? '',
+                  size: 44,
+                ),
+              ),
             ),
           ],
         ),
@@ -117,42 +127,6 @@ class TodayHeader extends ConsumerWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _Avatar extends StatelessWidget {
-  const _Avatar({this.initial, this.onTap});
-
-  final String? initial;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = context.hm;
-    final circle = Container(
-      width: 48,
-      height: 48,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: HmTint.amber,
-        border: Border.all(color: p.primary, width: 2),
-      ),
-      child: initial == null
-          ? Icon(Icons.person_rounded, color: p.primaryText)
-          : Text(
-              initial!,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(color: p.primaryText),
-            ),
-    );
-    return Semantics(
-      button: onTap != null,
-      label: 'Open your profile',
-      excludeSemantics: true,
-      child: GestureDetector(onTap: onTap, child: circle),
     );
   }
 }

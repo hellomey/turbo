@@ -53,5 +53,14 @@ class LessonView {
   final String? citationUrl;
 
   /// What Listen Mode reads: the title, then the text without markdown symbols.
-  String get listenText => '$title.\n${plainText(blocks)}';
+  /// A first heading that repeats the title is skipped, so the title is read once.
+  String get listenText {
+    final first = blocks.isEmpty ? null : blocks.first;
+    final rest =
+        first is MdHeading &&
+            first.text.trim().toLowerCase() == title.trim().toLowerCase()
+        ? blocks.skip(1).toList()
+        : blocks;
+    return '$title.\n${plainText(rest)}';
+  }
 }

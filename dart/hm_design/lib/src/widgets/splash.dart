@@ -1,7 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../tokens.dart';
-import 'bento.dart';
 import 'mey.dart';
 
 /// The opening screen (design/ui/01, BOLT-0118): Beta chip, the round HeyMey logo (it carries the wordmark), the
@@ -52,7 +51,6 @@ class _HmSplashState extends State<HmSplash>
                 padding: const EdgeInsets.all(HmSpace.xl),
                 child: Column(
                   children: [
-                    const HmBetaChip(),
                     const Spacer(),
                     const HmMey(HmPic.logo, size: 260),
                     const SizedBox(height: HmSpace.lg),

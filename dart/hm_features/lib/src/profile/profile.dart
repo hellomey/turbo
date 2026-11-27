@@ -10,3 +10,4 @@ library;
 export 'application/profile_controller.dart';
 export 'data/profile_repository.dart';
 export 'presentation/profile_tab.dart';
+export 'presentation/name_screen.dart';
