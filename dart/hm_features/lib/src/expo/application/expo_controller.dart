@@ -132,9 +132,7 @@ class ExpoController extends Notifier<ExpoState> {
 }
 
 final expoControllerProvider =
-    NotifierProvider.autoDispose<ExpoController, ExpoState>(
-      ExpoController.new,
-    );
+    NotifierProvider.autoDispose<ExpoController, ExpoState>(ExpoController.new);
 
 /// The visitor's sticker code (`GET /v1/me/sticker-code`).
 final stickerCodeProvider = FutureProvider.autoDispose<StickerCode>(

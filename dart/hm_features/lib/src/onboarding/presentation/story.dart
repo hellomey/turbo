@@ -96,7 +96,12 @@ class StoryEntrance extends StatelessWidget {
 }
 
 class _ScenePanel extends StatelessWidget {
-  const _ScenePanel({super.key, required this.scene, this.onSkip, this.large = false});
+  const _ScenePanel({
+    super.key,
+    required this.scene,
+    this.onSkip,
+    this.large = false,
+  });
 
   final StoryScene scene;
   final VoidCallback? onSkip;

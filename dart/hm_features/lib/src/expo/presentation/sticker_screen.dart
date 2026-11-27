@@ -20,9 +20,10 @@ class StickerScreen extends ConsumerWidget {
       body = _CodeView(code: initialCode!, redeemed: false);
     } else {
       body = switch (ref.watch(stickerCodeProvider)) {
-        AsyncData(:final value) => value.code == null
-            ? const _NoCodeView()
-            : _CodeView(code: value.code!, redeemed: value.redeemed),
+        AsyncData(:final value) =>
+          value.code == null
+              ? const _NoCodeView()
+              : _CodeView(code: value.code!, redeemed: value.redeemed),
         AsyncError(:final error) => HmErrorView(
           message: messageOf(error),
           onRetry: () => ref.invalidate(stickerCodeProvider),

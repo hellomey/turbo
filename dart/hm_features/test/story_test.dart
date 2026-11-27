@@ -46,9 +46,7 @@ void main() {
     expect(find.byKey(const Key('dob-continue')), findsOneWidget);
   });
 
-  testWidgets('the story replays all five scenes from Profile', (
-    tester,
-  ) async {
+  testWidgets('the story replays all five scenes from Profile', (tester) async {
     tester.view.physicalSize = const Size(800, 2400);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);

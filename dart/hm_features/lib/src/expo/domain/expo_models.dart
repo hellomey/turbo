@@ -101,7 +101,8 @@ abstract final class ExpoJson {
             stem: '${q['stem']}',
             options: [
               for (final o in (q['options'] as List? ?? const []))
-                if (o is Map) ExpoOption(id: '${o['id']}', text: '${o['text']}'),
+                if (o is Map)
+                  ExpoOption(id: '${o['id']}', text: '${o['text']}'),
             ],
           ),
     ],

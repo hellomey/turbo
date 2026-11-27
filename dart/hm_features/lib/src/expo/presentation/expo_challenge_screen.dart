@@ -89,12 +89,13 @@ class _QuestionViewState extends ConsumerState<_QuestionView>
   @override
   void initState() {
     super.initState();
-    _time = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: _seconds),
-    )..addStatusListener((s) {
-        if (s == AnimationStatus.completed) _onTimeUp();
-      });
+    _time =
+        AnimationController(
+          vsync: this,
+          duration: Duration(seconds: _seconds),
+        )..addStatusListener((s) {
+          if (s == AnimationStatus.completed) _onTimeUp();
+        });
     _time.forward();
   }
 
@@ -161,7 +162,9 @@ class _QuestionViewState extends ConsumerState<_QuestionView>
                               Container(color: cs.surfaceContainerHighest),
                               FractionallySizedBox(
                                 key: const Key('expo-timer-bar'),
-                                widthFactor: (left / _seconds).clamp(0.0, 1.0).toDouble(),
+                                widthFactor: (left / _seconds)
+                                    .clamp(0.0, 1.0)
+                                    .toDouble(),
                                 child: Container(color: cs.primary),
                               ),
                             ],
@@ -185,10 +188,7 @@ class _QuestionViewState extends ConsumerState<_QuestionView>
           },
         ),
         const SizedBox(height: HmSpace.lg),
-        Semantics(
-          header: true,
-          child: Text(q.stem, style: text.titleLarge),
-        ),
+        Semantics(header: true, child: Text(q.stem, style: text.titleLarge)),
         const SizedBox(height: HmSpace.lg),
         for (final o in q.options) ...[
           _OptionButton(
@@ -266,8 +266,7 @@ class _OptionButton extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (picked)
-                    Icon(Icons.check_rounded, color: cs.onPrimary),
+                  if (picked) Icon(Icons.check_rounded, color: cs.onPrimary),
                 ],
               ),
             ),

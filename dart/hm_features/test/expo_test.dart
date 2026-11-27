@@ -7,7 +7,10 @@ import 'support/fakes.dart';
 
 /// Test stand-in for the Expo API. Option `a` is right on every question.
 class FakeExpoRepository implements ExpoRepository {
-  FakeExpoRepository({this.stickerCode = 'HM-7K2Q', this.failSubmitOnce = false});
+  FakeExpoRepository({
+    this.stickerCode = 'HM-7K2Q',
+    this.failSubmitOnce = false,
+  });
 
   final String? stickerCode;
   bool failSubmitOnce;
@@ -119,9 +122,7 @@ void main() {
       expect(find.text('You got 5 of 10'), findsOneWidget);
       expect(find.text('Explanation for q1.'), findsOneWidget);
 
-      await tester.ensureVisible(
-        find.byKey(const Key('expo-collect-sticker')),
-      );
+      await tester.ensureVisible(find.byKey(const Key('expo-collect-sticker')));
       await tester.tap(find.byKey(const Key('expo-collect-sticker')));
       await tester.pumpAndSettle();
       expect(find.text('HM-7K2Q'), findsOneWidget);
