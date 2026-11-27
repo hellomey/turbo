@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../domain/content_pack.dart';
 import '../domain/outbox_entry.dart';
+import 'connection_native.dart'
+    if (dart.library.js_interop) 'connection_web.dart';
 import 'local_stores.dart';
 
 /// The local SQLite database (§39), on Drift.
@@ -16,18 +14,11 @@ import 'local_stores.dart';
 class HmDatabase extends GeneratedDatabase {
   HmDatabase(super.executor);
 
-  /// Opens `heymey.sqlite` in the app support folder, on a background isolate.
-  factory HmDatabase.open() => HmDatabase(
-    LazyDatabase(() async {
-      final dir = await getApplicationSupportDirectory();
-      return NativeDatabase.createInBackground(
-        File('${dir.path}${Platform.pathSeparator}heymey.sqlite'),
-      );
-    }),
-  );
+  /// Opens the app database: a SQLite file on Android and iOS, SQLite on WebAssembly in the browser.
+  factory HmDatabase.open() => HmDatabase(openHmConnection());
 
   /// In memory (tests).
-  factory HmDatabase.memory() => HmDatabase(NativeDatabase.memory());
+  factory HmDatabase.memory() => HmDatabase(openHmMemoryConnection());
 
   /// Step `n` upgrades version `n` to `n + 1`; step 0 creates version 1.
   static const List<List<String>> _steps = [

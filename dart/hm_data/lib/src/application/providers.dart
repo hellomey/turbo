@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_core/hm_core.dart';
 import 'package:path_provider/path_provider.dart';
@@ -53,6 +54,9 @@ final packTransportProvider = Provider<PackTransport>(
 /// Where verified packs live.
 final packDirectoryProvider = Provider<Future<Directory> Function()>(
   (ref) => () async {
+    if (kIsWeb) {
+      throw UnsupportedError('Offline packs are not stored on web');
+    }
     final support = await getApplicationSupportDirectory();
     return Directory('${support.path}${Platform.pathSeparator}packs');
   },
