@@ -1,0 +1,1119 @@
+# Indian Polity: SAMPLE practice questions, under review.
+# Original questions written for HeyMey from the text of the Constitution of India and TN State Board Civics.
+# Not copied from any paper, book, app or website. review_status is "sample" until a human reviewer checks each item.
+set: polity-sample-1
+review_status: sample
+source:
+  kind: original
+  citation: "HeyMey original practice question (sample content, under review). Constitution of India, Preamble and Parts III, IV, V, IX, IXA."
+  url: null
+questions:
+  # The Preamble
+  - id: 5e000000-0101-4000-8000-000000000001
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 1
+    stem: "With which words does the Preamble to the Constitution of India begin?"
+    options:
+      - { id: a, text: "We, the people of India" }
+      - { id: b, text: "We, the citizens of Bharat" }
+      - { id: c, text: "In the name of the Republic" }
+      - { id: d, text: "We, the Constituent Assembly" }
+    correct: a
+    explanation: "The Preamble opens with 'We, the people of India', showing that the Constitution draws its authority from the people."
+  - id: 5e000000-0101-4000-8000-000000000002
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "Which amendment added the words 'socialist' and 'secular' to the Preamble?"
+    options:
+      - { id: a, text: "44th Amendment" }
+      - { id: b, text: "42nd Amendment" }
+      - { id: c, text: "73rd Amendment" }
+      - { id: d, text: "1st Amendment" }
+    correct: b
+    explanation: "The 42nd Amendment of 1976 added 'socialist', 'secular' and 'integrity' to the Preamble."
+  - id: 5e000000-0101-4000-8000-000000000003
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "Besides 'socialist' and 'secular', which other word did the 42nd Amendment add to the Preamble?"
+    options:
+      - { id: a, text: "Sovereign" }
+      - { id: b, text: "Republic" }
+      - { id: c, text: "Integrity" }
+      - { id: d, text: "Fraternity" }
+    correct: c
+    explanation: "The phrase 'unity of the Nation' became 'unity and integrity of the Nation' through the 42nd Amendment in 1976."
+  - id: 5e000000-0101-4000-8000-000000000004
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 1
+    stem: "On which date was the Constitution of India adopted by the Constituent Assembly?"
+    options:
+      - { id: a, text: "26 January 1950" }
+      - { id: b, text: "15 August 1947" }
+      - { id: c, text: "9 December 1946" }
+      - { id: d, text: "26 November 1949" }
+    correct: d
+    explanation: "The Constitution was adopted on 26 November 1949, a date the Preamble itself records. It came into force on 26 January 1950."
+  - id: 5e000000-0101-4000-8000-000000000005
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 1
+    stem: "The Constitution of India came into force on which date?"
+    options:
+      - { id: a, text: "26 January 1950" }
+      - { id: b, text: "26 November 1949" }
+      - { id: c, text: "15 August 1950" }
+      - { id: d, text: "2 October 1949" }
+    correct: a
+    explanation: "The Constitution came into force on 26 January 1950, celebrated every year as Republic Day."
+  - id: 5e000000-0101-4000-8000-000000000006
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "According to the Preamble, who is the source of authority of the Constitution?"
+    options:
+      - { id: a, text: "The President of India" }
+      - { id: b, text: "The people of India" }
+      - { id: c, text: "The Parliament" }
+      - { id: d, text: "The Supreme Court" }
+    correct: b
+    explanation: "By beginning with 'We, the people of India', the Preamble shows that the people are the source of all authority."
+  - id: 5e000000-0101-4000-8000-000000000007
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "The word 'Republic' in the Preamble means that India's head of state is:"
+    options:
+      - { id: a, text: "a hereditary monarch" }
+      - { id: b, text: "appointed by the Prime Minister" }
+      - { id: c, text: "elected, not hereditary" }
+      - { id: d, text: "nominated by the Supreme Court" }
+    correct: c
+    explanation: "A republic has an elected head of state. India's President is elected indirectly, not born into the office."
+  - id: 5e000000-0101-4000-8000-000000000008
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 3
+    stem: "In which case did the Supreme Court hold that the Preamble is a part of the Constitution?"
+    options:
+      - { id: a, text: "Berubari Union case" }
+      - { id: b, text: "Golaknath case" }
+      - { id: c, text: "Minerva Mills case" }
+      - { id: d, text: "Kesavananda Bharati case" }
+    correct: d
+    explanation: "In Kesavananda Bharati (1973) the Supreme Court held that the Preamble is part of the Constitution, reversing the view taken in the Berubari case."
+  - id: 5e000000-0101-4000-8000-000000000009
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "Which three kinds of justice does the Preamble promise?"
+    options:
+      - { id: a, text: "Social, economic and political" }
+      - { id: b, text: "Civil, criminal and military" }
+      - { id: c, text: "Religious, cultural and social" }
+      - { id: d, text: "Economic, judicial and moral" }
+    correct: a
+    explanation: "The Preamble secures to all citizens justice that is social, economic and political."
+  - id: 5e000000-0101-4000-8000-000000000010
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "Which of these is NOT listed under 'liberty' in the Preamble?"
+    options:
+      - { id: a, text: "Liberty of thought" }
+      - { id: b, text: "Liberty of property" }
+      - { id: c, text: "Liberty of belief" }
+      - { id: d, text: "Liberty of worship" }
+    correct: b
+    explanation: "The Preamble lists liberty of thought, expression, belief, faith and worship. Property is not in that list."
+  - id: 5e000000-0101-4000-8000-000000000011
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "The Preamble promises equality of:"
+    options:
+      - { id: a, text: "income and wealth" }
+      - { id: b, text: "property and land" }
+      - { id: c, text: "status and opportunity" }
+      - { id: d, text: "religion and language" }
+    correct: c
+    explanation: "The Preamble secures equality of status and of opportunity to all citizens."
+  - id: 5e000000-0101-4000-8000-000000000012
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 3
+    stem: "According to the Preamble, fraternity assures the dignity of the individual and:"
+    options:
+      - { id: a, text: "the power of the State" }
+      - { id: b, text: "the rule of the majority" }
+      - { id: c, text: "freedom of trade" }
+      - { id: d, text: "the unity and integrity of the Nation" }
+    correct: d
+    explanation: "The Preamble speaks of fraternity assuring the dignity of the individual and the unity and integrity of the Nation."
+  - id: 5e000000-0101-4000-8000-000000000013
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "How many times has the Preamble been amended so far?"
+    options:
+      - { id: a, text: "Once" }
+      - { id: b, text: "Never" }
+      - { id: c, text: "Three times" }
+      - { id: d, text: "Five times" }
+    correct: a
+    explanation: "The Preamble has been amended only once, by the 42nd Amendment in 1976."
+  - id: 5e000000-0101-4000-8000-000000000014
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "Who moved the Objectives Resolution in the Constituent Assembly, on which the Preamble is based?"
+    options:
+      - { id: a, text: "B. R. Ambedkar" }
+      - { id: b, text: "Jawaharlal Nehru" }
+      - { id: c, text: "Rajendra Prasad" }
+      - { id: d, text: "Sardar Vallabhbhai Patel" }
+    correct: b
+    explanation: "Jawaharlal Nehru moved the Objectives Resolution in December 1946. Its ideas were later shaped into the Preamble."
+  - id: 5e000000-0101-4000-8000-000000000015
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "Can a citizen go to court to enforce the Preamble directly?"
+    options:
+      - { id: a, text: "Yes, in any High Court" }
+      - { id: b, text: "Yes, only in the Supreme Court" }
+      - { id: c, text: "No, the Preamble is not enforceable in court" }
+      - { id: d, text: "Only with the President's permission" }
+    correct: c
+    explanation: "The Preamble is not justiciable. Courts use it to interpret the Constitution, but it cannot be enforced on its own."
+  - id: 5e000000-0101-4000-8000-000000000016
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 1
+    stem: "National Constitution Day (Samvidhan Divas) is observed on which day?"
+    options:
+      - { id: a, text: "26 January" }
+      - { id: b, text: "15 August" }
+      - { id: c, text: "2 October" }
+      - { id: d, text: "26 November" }
+    correct: d
+    explanation: "Constitution Day is observed on 26 November, the day the Constituent Assembly adopted the Constitution in 1949."
+  - id: 5e000000-0101-4000-8000-000000000017
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "The word 'Sovereign' in the Preamble means India:"
+    options:
+      - { id: a, text: "is free to decide its internal and external affairs" }
+      - { id: b, text: "has a king as head of state" }
+      - { id: c, text: "has no official religion" }
+      - { id: d, text: "owns all industries" }
+    correct: a
+    explanation: "Sovereign means India is independent and not under the control of any other country in its internal or external matters."
+  - id: 5e000000-0101-4000-8000-000000000018
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 2
+    stem: "The word 'secular' in the Preamble means that the State:"
+    options:
+      - { id: a, text: "bans all religions" }
+      - { id: b, text: "treats all religions equally and has no state religion" }
+      - { id: c, text: "follows the religion of the majority" }
+      - { id: d, text: "funds only one religion" }
+    correct: b
+    explanation: "A secular State has no official religion and treats every religion equally."
+  - id: 5e000000-0101-4000-8000-000000000019
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 3
+    stem: "The ideals of liberty, equality and fraternity in the Preamble are commonly traced to which revolution?"
+    options:
+      - { id: a, text: "The American Revolution" }
+      - { id: b, text: "The Russian Revolution" }
+      - { id: c, text: "The French Revolution" }
+      - { id: d, text: "The Industrial Revolution" }
+    correct: c
+    explanation: "Liberty, equality and fraternity were the slogans of the French Revolution, and textbooks trace these Preamble ideals to it."
+  - id: 5e000000-0101-4000-8000-000000000020
+    topic_id: 0199f5a0-0101-7000-8000-000000000101
+    difficulty: 3
+    stem: "Which set of words correctly describes India in the Preamble today, in order?"
+    options:
+      - { id: a, text: "Democratic, Sovereign, Secular, Socialist Republic" }
+      - { id: b, text: "Secular, Socialist, Sovereign, Democratic Republic" }
+      - { id: c, text: "Sovereign, Democratic, Socialist, Secular Republic" }
+      - { id: d, text: "Sovereign, Socialist, Secular, Democratic Republic" }
+    correct: d
+    explanation: "The Preamble describes India as a Sovereign Socialist Secular Democratic Republic."
+
+  # Fundamental Rights
+  - id: 5e000000-0102-4000-8000-000000000001
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 1
+    stem: "In which Part of the Constitution are the Fundamental Rights found?"
+    options:
+      - { id: a, text: "Part II" }
+      - { id: b, text: "Part III" }
+      - { id: c, text: "Part IV" }
+      - { id: d, text: "Part IVA" }
+    correct: b
+    explanation: "Fundamental Rights are in Part III, Articles 12 to 35. Part IV holds the Directive Principles."
+  - id: 5e000000-0102-4000-8000-000000000002
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 1
+    stem: "Which Article abolishes untouchability?"
+    options:
+      - { id: a, text: "Article 14" }
+      - { id: b, text: "Article 21" }
+      - { id: c, text: "Article 17" }
+      - { id: d, text: "Article 32" }
+    correct: c
+    explanation: "Article 17 abolishes untouchability and forbids its practice in any form."
+  - id: 5e000000-0102-4000-8000-000000000003
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "B. R. Ambedkar called which Article the 'heart and soul' of the Constitution?"
+    options:
+      - { id: a, text: "Article 32" }
+      - { id: b, text: "Article 14" }
+      - { id: c, text: "Article 19" }
+      - { id: d, text: "Article 44" }
+    correct: a
+    explanation: "Article 32, the right to constitutional remedies, lets a person go straight to the Supreme Court. Ambedkar called it the heart and soul of the Constitution."
+  - id: 5e000000-0102-4000-8000-000000000004
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Which right was removed from the list of Fundamental Rights by the 44th Amendment?"
+    options:
+      - { id: a, text: "Right to equality" }
+      - { id: b, text: "Right to freedom of religion" }
+      - { id: c, text: "Right against exploitation" }
+      - { id: d, text: "Right to property" }
+    correct: d
+    explanation: "The 44th Amendment (1978) removed the right to property from Part III. It is now a legal right under Article 300A."
+  - id: 5e000000-0102-4000-8000-000000000005
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Article 21A gives free and compulsory education to children of which age group?"
+    options:
+      - { id: a, text: "3 to 10 years" }
+      - { id: b, text: "6 to 14 years" }
+      - { id: c, text: "5 to 15 years" }
+      - { id: d, text: "6 to 18 years" }
+    correct: b
+    explanation: "Article 21A, added by the 86th Amendment in 2002, makes education free and compulsory for children aged 6 to 14."
+  - id: 5e000000-0102-4000-8000-000000000006
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Which writ orders a person who has been detained to be produced before a court?"
+    options:
+      - { id: a, text: "Mandamus" }
+      - { id: b, text: "Certiorari" }
+      - { id: c, text: "Habeas corpus" }
+      - { id: d, text: "Quo warranto" }
+    correct: c
+    explanation: "Habeas corpus means 'to have the body'. The court orders the detained person to be brought before it to check whether the detention is lawful."
+  - id: 5e000000-0102-4000-8000-000000000007
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 3
+    stem: "Which writ asks a person 'by what authority' they hold a public office?"
+    options:
+      - { id: a, text: "Quo warranto" }
+      - { id: b, text: "Prohibition" }
+      - { id: c, text: "Mandamus" }
+      - { id: d, text: "Habeas corpus" }
+    correct: a
+    explanation: "Quo warranto means 'by what authority'. It stops a person from holding a public office they have no right to."
+  - id: 5e000000-0102-4000-8000-000000000008
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 3
+    stem: "The writ of mandamus literally means:"
+    options:
+      - { id: a, text: "to be certified" }
+      - { id: b, text: "to have the body" }
+      - { id: c, text: "by what authority" }
+      - { id: d, text: "we command" }
+    correct: d
+    explanation: "Mandamus means 'we command'. The court orders a public official or body to perform a duty it has failed to do."
+  - id: 5e000000-0102-4000-8000-000000000009
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Article 24 prohibits employing children below what age in factories, mines and hazardous work?"
+    options:
+      - { id: a, text: "12 years" }
+      - { id: b, text: "16 years" }
+      - { id: c, text: "14 years" }
+      - { id: d, text: "18 years" }
+    correct: c
+    explanation: "Article 24 forbids employing children below 14 years in factories, mines and other hazardous work."
+  - id: 5e000000-0102-4000-8000-000000000010
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Which Article protects life and personal liberty?"
+    options:
+      - { id: a, text: "Article 21" }
+      - { id: b, text: "Article 19" }
+      - { id: c, text: "Article 25" }
+      - { id: d, text: "Article 15" }
+    correct: a
+    explanation: "Article 21 says no person shall be deprived of life or personal liberty except by procedure established by law."
+  - id: 5e000000-0102-4000-8000-000000000011
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Articles 25 to 28 deal with which Fundamental Right?"
+    options:
+      - { id: a, text: "Right to equality" }
+      - { id: b, text: "Right to freedom of religion" }
+      - { id: c, text: "Cultural and educational rights" }
+      - { id: d, text: "Right against exploitation" }
+    correct: b
+    explanation: "Articles 25 to 28 cover freedom of conscience and the free profession, practice and propagation of religion."
+  - id: 5e000000-0102-4000-8000-000000000012
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Article 18 deals with:"
+    options:
+      - { id: a, text: "freedom of speech" }
+      - { id: b, text: "protection of minorities" }
+      - { id: c, text: "right to constitutional remedies" }
+      - { id: d, text: "abolition of titles" }
+    correct: d
+    explanation: "Article 18 abolishes titles, except military and academic distinctions."
+  - id: 5e000000-0102-4000-8000-000000000013
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 3
+    stem: "Since the 44th Amendment, which Articles cannot be suspended even during a national emergency?"
+    options:
+      - { id: a, text: "Articles 14 and 15" }
+      - { id: b, text: "Articles 19 and 22" }
+      - { id: c, text: "Articles 20 and 21" }
+      - { id: d, text: "Articles 25 and 26" }
+    correct: c
+    explanation: "After the 44th Amendment, the rights under Articles 20 and 21 stay in force even during a national emergency."
+  - id: 5e000000-0102-4000-8000-000000000014
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 1
+    stem: "Article 14 guarantees:"
+    options:
+      - { id: a, text: "equality before the law and equal protection of the laws" }
+      - { id: b, text: "freedom of movement" }
+      - { id: c, text: "right to education" }
+      - { id: d, text: "freedom of religion" }
+    correct: a
+    explanation: "Article 14 says the State shall not deny any person equality before the law or the equal protection of the laws."
+  - id: 5e000000-0102-4000-8000-000000000015
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Under which Article can a High Court issue writs?"
+    options:
+      - { id: a, text: "Article 32" }
+      - { id: b, text: "Article 226" }
+      - { id: c, text: "Article 368" }
+      - { id: d, text: "Article 352" }
+    correct: b
+    explanation: "High Courts issue writs under Article 226. The Supreme Court issues them under Article 32."
+  - id: 5e000000-0102-4000-8000-000000000016
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Article 23 prohibits:"
+    options:
+      - { id: a, text: "discrimination in public places" }
+      - { id: b, text: "religious instruction in schools" }
+      - { id: c, text: "arrest without warrant" }
+      - { id: d, text: "traffic in human beings and forced labour" }
+    correct: d
+    explanation: "Article 23 bans human trafficking, begar and other forms of forced labour."
+  - id: 5e000000-0102-4000-8000-000000000017
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Articles 29 and 30 mainly protect the interests of:"
+    options:
+      - { id: a, text: "government employees" }
+      - { id: b, text: "farmers" }
+      - { id: c, text: "minorities" }
+      - { id: d, text: "foreign citizens" }
+    correct: c
+    explanation: "Articles 29 and 30 are cultural and educational rights. They protect the language, script and culture of minorities and let them run educational institutions."
+  - id: 5e000000-0102-4000-8000-000000000018
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 3
+    stem: "Article 15 prohibits discrimination on which of these grounds?"
+    options:
+      - { id: a, text: "Religion, race, caste, sex or place of birth" }
+      - { id: b, text: "Income, education or occupation" }
+      - { id: c, text: "Age, height or weight" }
+      - { id: d, text: "Political party membership only" }
+    correct: a
+    explanation: "Article 15 forbids the State from discriminating against citizens only on grounds of religion, race, caste, sex or place of birth."
+  - id: 5e000000-0102-4000-8000-000000000019
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "The idea of Fundamental Rights in the Indian Constitution was mainly borrowed from the constitution of:"
+    options:
+      - { id: a, text: "Ireland" }
+      - { id: b, text: "the United States" }
+      - { id: c, text: "Canada" }
+      - { id: d, text: "Australia" }
+    correct: b
+    explanation: "The Bill of Rights in the US Constitution inspired India's Fundamental Rights. The Directive Principles came from Ireland."
+  - id: 5e000000-0102-4000-8000-000000000020
+    topic_id: 0199f5a0-0102-7000-8000-000000000102
+    difficulty: 2
+    stem: "Article 16 guarantees equality of opportunity in:"
+    options:
+      - { id: a, text: "admission to private schools" }
+      - { id: b, text: "access to temples" }
+      - { id: c, text: "inheritance of property" }
+      - { id: d, text: "matters of public employment" }
+    correct: d
+    explanation: "Article 16 gives all citizens equal opportunity in matters of employment or appointment to any office under the State."
+
+  # Directive Principles of State Policy
+  - id: 5e000000-0103-4000-8000-000000000001
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 1
+    stem: "In which Part of the Constitution are the Directive Principles of State Policy?"
+    options:
+      - { id: a, text: "Part III" }
+      - { id: b, text: "Part V" }
+      - { id: c, text: "Part IV" }
+      - { id: d, text: "Part IX" }
+    correct: c
+    explanation: "The Directive Principles are in Part IV, Articles 36 to 51."
+  - id: 5e000000-0103-4000-8000-000000000002
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "The idea of the Directive Principles was borrowed from the constitution of:"
+    options:
+      - { id: a, text: "Ireland" }
+      - { id: b, text: "Britain" }
+      - { id: c, text: "the United States" }
+      - { id: d, text: "France" }
+    correct: a
+    explanation: "The Directive Principles were modelled on the Directive Principles of Social Policy in the Constitution of Ireland."
+  - id: 5e000000-0103-4000-8000-000000000003
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Which Article says the Directive Principles are not enforceable by any court?"
+    options:
+      - { id: a, text: "Article 36" }
+      - { id: b, text: "Article 37" }
+      - { id: c, text: "Article 40" }
+      - { id: d, text: "Article 51" }
+    correct: b
+    explanation: "Article 37 says the Directive Principles cannot be enforced by courts but are fundamental in the governance of the country."
+  - id: 5e000000-0103-4000-8000-000000000004
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Which Article directs the State to organise village panchayats?"
+    options:
+      - { id: a, text: "Article 44" }
+      - { id: b, text: "Article 48" }
+      - { id: c, text: "Article 50" }
+      - { id: d, text: "Article 40" }
+    correct: d
+    explanation: "Article 40 asks the State to organise village panchayats as units of self-government. It is a Gandhian principle."
+  - id: 5e000000-0103-4000-8000-000000000005
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Article 44 asks the State to secure a:"
+    options:
+      - { id: a, text: "living wage for workers" }
+      - { id: b, text: "separate judiciary" }
+      - { id: c, text: "Uniform Civil Code for citizens" }
+      - { id: d, text: "free legal aid system" }
+    correct: c
+    explanation: "Article 44 says the State shall try to secure a Uniform Civil Code for citizens throughout India."
+  - id: 5e000000-0103-4000-8000-000000000006
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Which Article asks for the separation of the judiciary from the executive?"
+    options:
+      - { id: a, text: "Article 50" }
+      - { id: b, text: "Article 39" }
+      - { id: c, text: "Article 45" }
+      - { id: d, text: "Article 47" }
+    correct: a
+    explanation: "Article 50 asks the State to separate the judiciary from the executive in public services."
+  - id: 5e000000-0103-4000-8000-000000000007
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 3
+    stem: "Article 48A, added by the 42nd Amendment, deals with:"
+    options:
+      - { id: a, text: "free legal aid" }
+      - { id: b, text: "protection of the environment, forests and wildlife" }
+      - { id: c, text: "protection of monuments" }
+      - { id: d, text: "promotion of international peace" }
+    correct: b
+    explanation: "Article 48A asks the State to protect and improve the environment and to safeguard forests and wildlife."
+  - id: 5e000000-0103-4000-8000-000000000008
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 3
+    stem: "Equal justice and free legal aid are covered by which Article?"
+    options:
+      - { id: a, text: "Article 38" }
+      - { id: b, text: "Article 41" }
+      - { id: c, text: "Article 43" }
+      - { id: d, text: "Article 39A" }
+    correct: d
+    explanation: "Article 39A, added by the 42nd Amendment in 1976, asks the State to provide free legal aid so that justice is not denied to anyone."
+  - id: 5e000000-0103-4000-8000-000000000009
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Which Article asks the State to raise the level of nutrition and public health and to bring in prohibition?"
+    options:
+      - { id: a, text: "Article 46" }
+      - { id: b, text: "Article 49" }
+      - { id: c, text: "Article 47" }
+      - { id: d, text: "Article 51" }
+    correct: c
+    explanation: "Article 47 deals with nutrition, the standard of living, public health and prohibition of intoxicating drinks and harmful drugs."
+  - id: 5e000000-0103-4000-8000-000000000010
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Equal pay for equal work for both men and women is a Directive Principle under which Article?"
+    options:
+      - { id: a, text: "Article 39" }
+      - { id: b, text: "Article 14" }
+      - { id: c, text: "Article 44" }
+      - { id: d, text: "Article 50" }
+    correct: a
+    explanation: "Article 39(d) asks the State to ensure equal pay for equal work for both men and women."
+  - id: 5e000000-0103-4000-8000-000000000011
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Which Article asks India to promote international peace and security?"
+    options:
+      - { id: a, text: "Article 48" }
+      - { id: b, text: "Article 51" }
+      - { id: c, text: "Article 43" }
+      - { id: d, text: "Article 36" }
+    correct: b
+    explanation: "Article 51 asks the State to promote international peace and security and respect for international law."
+  - id: 5e000000-0103-4000-8000-000000000012
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 3
+    stem: "After the 86th Amendment, Article 45 deals with early childhood care and education for children below what age?"
+    options:
+      - { id: a, text: "14 years" }
+      - { id: b, text: "10 years" }
+      - { id: c, text: "3 years" }
+      - { id: d, text: "6 years" }
+    correct: d
+    explanation: "The 86th Amendment moved education for 6 to 14 year olds to Article 21A, and Article 45 now covers early childhood care and education below six."
+  - id: 5e000000-0103-4000-8000-000000000013
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "The main difference between Fundamental Rights and Directive Principles is that Directive Principles:"
+    options:
+      - { id: a, text: "apply only to foreigners" }
+      - { id: b, text: "can be suspended by the President" }
+      - { id: c, text: "cannot be enforced in a court of law" }
+      - { id: d, text: "are found in Part III" }
+    correct: c
+    explanation: "Fundamental Rights are justiciable and can be enforced in court. Directive Principles are non-justiciable guidelines for the State."
+  - id: 5e000000-0103-4000-8000-000000000014
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 3
+    stem: "Promotion of cottage industries in rural areas appears in which Article?"
+    options:
+      - { id: a, text: "Article 43" }
+      - { id: b, text: "Article 45" }
+      - { id: c, text: "Article 50" }
+      - { id: d, text: "Article 51" }
+    correct: a
+    explanation: "Article 43 asks for a living wage for workers and for the promotion of cottage industries in rural areas."
+  - id: 5e000000-0103-4000-8000-000000000015
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Which of these is a Gandhian principle among the Directive Principles?"
+    options:
+      - { id: a, text: "Uniform Civil Code" }
+      - { id: b, text: "Organisation of village panchayats" }
+      - { id: c, text: "Separation of judiciary from executive" }
+      - { id: d, text: "Promotion of international peace" }
+    correct: b
+    explanation: "Organising village panchayats (Article 40) reflects Gandhi's idea of village self-rule. The others are usually grouped as liberal principles."
+  - id: 5e000000-0103-4000-8000-000000000016
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 3
+    stem: "Protecting monuments and places of national importance is a Directive Principle under:"
+    options:
+      - { id: a, text: "Article 40" }
+      - { id: b, text: "Article 41" }
+      - { id: c, text: "Article 46" }
+      - { id: d, text: "Article 49" }
+    correct: d
+    explanation: "Article 49 asks the State to protect monuments, places and objects of artistic or historic interest declared to be of national importance."
+  - id: 5e000000-0103-4000-8000-000000000017
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "Promoting the educational and economic interests of Scheduled Castes, Scheduled Tribes and weaker sections is covered by:"
+    options:
+      - { id: a, text: "Article 44" }
+      - { id: b, text: "Article 50" }
+      - { id: c, text: "Article 46" }
+      - { id: d, text: "Article 51" }
+    correct: c
+    explanation: "Article 46 asks the State to promote the educational and economic interests of weaker sections, especially SCs and STs."
+  - id: 5e000000-0103-4000-8000-000000000018
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 2
+    stem: "The Directive Principles span which range of Articles?"
+    options:
+      - { id: a, text: "Articles 36 to 51" }
+      - { id: b, text: "Articles 12 to 35" }
+      - { id: c, text: "Articles 52 to 78" }
+      - { id: d, text: "Articles 243 to 243O" }
+    correct: a
+    explanation: "Part IV, the Directive Principles, runs from Article 36 to Article 51."
+  - id: 5e000000-0103-4000-8000-000000000019
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 3
+    stem: "Organising agriculture and animal husbandry on modern lines is a Directive Principle under:"
+    options:
+      - { id: a, text: "Article 39A" }
+      - { id: b, text: "Article 48" }
+      - { id: c, text: "Article 47" }
+      - { id: d, text: "Article 43" }
+    correct: b
+    explanation: "Article 48 asks the State to organise agriculture and animal husbandry on modern and scientific lines."
+  - id: 5e000000-0103-4000-8000-000000000020
+    topic_id: 0199f5a0-0103-7000-8000-000000000103
+    difficulty: 3
+    stem: "Which Article speaks of the right to work, to education and to public assistance in old age, sickness and unemployment?"
+    options:
+      - { id: a, text: "Article 21" }
+      - { id: b, text: "Article 45" }
+      - { id: c, text: "Article 50" }
+      - { id: d, text: "Article 41" }
+    correct: d
+    explanation: "Article 41 asks the State, within its economic capacity, to secure the right to work, to education and to public assistance."
+
+  # Parliament
+  - id: 5e000000-0104-4000-8000-000000000001
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 1
+    stem: "Which Article says that Parliament consists of the President and two Houses?"
+    options:
+      - { id: a, text: "Article 79" }
+      - { id: b, text: "Article 52" }
+      - { id: c, text: "Article 110" }
+      - { id: d, text: "Article 368" }
+    correct: a
+    explanation: "Article 79 says Parliament consists of the President, the Council of States and the House of the People."
+  - id: 5e000000-0104-4000-8000-000000000002
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 1
+    stem: "Who is the ex-officio Chairman of the Rajya Sabha?"
+    options:
+      - { id: a, text: "The President" }
+      - { id: b, text: "The Speaker" }
+      - { id: c, text: "The Vice-President" }
+      - { id: d, text: "The Prime Minister" }
+    correct: c
+    explanation: "The Vice-President of India is the ex-officio Chairman of the Rajya Sabha."
+  - id: 5e000000-0104-4000-8000-000000000003
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 1
+    stem: "What is the minimum age to become a member of the Lok Sabha?"
+    options:
+      - { id: a, text: "18 years" }
+      - { id: b, text: "25 years" }
+      - { id: c, text: "30 years" }
+      - { id: d, text: "35 years" }
+    correct: b
+    explanation: "A Lok Sabha candidate must be at least 25 years old. For the Rajya Sabha the minimum age is 30."
+  - id: 5e000000-0104-4000-8000-000000000004
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "What is the term of a member of the Rajya Sabha?"
+    options:
+      - { id: a, text: "4 years" }
+      - { id: b, text: "5 years" }
+      - { id: c, text: "Life" }
+      - { id: d, text: "6 years" }
+    correct: d
+    explanation: "Each Rajya Sabha member serves six years, and one third of the members retire every two years."
+  - id: 5e000000-0104-4000-8000-000000000005
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "How many members can the President nominate to the Rajya Sabha?"
+    options:
+      - { id: a, text: "2" }
+      - { id: b, text: "10" }
+      - { id: c, text: "12" }
+      - { id: d, text: "14" }
+    correct: c
+    explanation: "The President nominates 12 members with special knowledge of literature, science, art or social service."
+  - id: 5e000000-0104-4000-8000-000000000006
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "A money bill can be introduced only in:"
+    options:
+      - { id: a, text: "the Lok Sabha" }
+      - { id: b, text: "the Rajya Sabha" }
+      - { id: c, text: "a joint sitting" }
+      - { id: d, text: "either House" }
+    correct: a
+    explanation: "Under Article 110 and the procedure in Article 109, a money bill can be introduced only in the Lok Sabha."
+  - id: 5e000000-0104-4000-8000-000000000007
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "Who decides whether a bill is a money bill?"
+    options:
+      - { id: a, text: "The President" }
+      - { id: b, text: "The Finance Minister" }
+      - { id: c, text: "The Chairman of the Rajya Sabha" }
+      - { id: d, text: "The Speaker of the Lok Sabha" }
+    correct: d
+    explanation: "The Speaker of the Lok Sabha certifies whether a bill is a money bill, and that decision is final."
+  - id: 5e000000-0104-4000-8000-000000000008
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "Within how many days must the Rajya Sabha return a money bill to the Lok Sabha?"
+    options:
+      - { id: a, text: "30 days" }
+      - { id: b, text: "14 days" }
+      - { id: c, text: "7 days" }
+      - { id: d, text: "60 days" }
+    correct: b
+    explanation: "The Rajya Sabha must return a money bill within 14 days. If it does not, the bill is deemed passed by both Houses."
+  - id: 5e000000-0104-4000-8000-000000000009
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "Who presides over a joint sitting of both Houses of Parliament?"
+    options:
+      - { id: a, text: "The President" }
+      - { id: b, text: "The Vice-President" }
+      - { id: c, text: "The Speaker of the Lok Sabha" }
+      - { id: d, text: "The Chief Justice of India" }
+    correct: c
+    explanation: "The Speaker of the Lok Sabha presides over a joint sitting called under Article 108."
+  - id: 5e000000-0104-4000-8000-000000000010
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "Which House of Parliament is a permanent body and cannot be dissolved?"
+    options:
+      - { id: a, text: "The Rajya Sabha" }
+      - { id: b, text: "The Lok Sabha" }
+      - { id: c, text: "Both Houses" }
+      - { id: d, text: "Neither House" }
+    correct: a
+    explanation: "The Rajya Sabha is never dissolved. Its members retire in batches, one third every two years."
+  - id: 5e000000-0104-4000-8000-000000000011
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "The Constitution calls the Union Budget the:"
+    options:
+      - { id: a, text: "Finance Bill" }
+      - { id: b, text: "Appropriation Account" }
+      - { id: c, text: "Vote on Account" }
+      - { id: d, text: "Annual Financial Statement" }
+    correct: d
+    explanation: "Article 112 calls the Budget the Annual Financial Statement."
+  - id: 5e000000-0104-4000-8000-000000000012
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "The first hour of a sitting of Parliament is usually:"
+    options:
+      - { id: a, text: "Zero Hour" }
+      - { id: b, text: "Question Hour" }
+      - { id: c, text: "Private Members' Hour" }
+      - { id: d, text: "Budget Hour" }
+    correct: b
+    explanation: "Question Hour is normally the first hour of a sitting, when members ask ministers questions."
+  - id: 5e000000-0104-4000-8000-000000000013
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 3
+    stem: "Which parliamentary practice is an Indian innovation not mentioned in the rules of procedure?"
+    options:
+      - { id: a, text: "Question Hour" }
+      - { id: b, text: "Adjournment motion" }
+      - { id: c, text: "Zero Hour" }
+      - { id: d, text: "No-confidence motion" }
+    correct: c
+    explanation: "Zero Hour began as an informal practice in India and is not mentioned in the rules of procedure."
+  - id: 5e000000-0104-4000-8000-000000000014
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 1
+    stem: "What is the normal term of the Lok Sabha?"
+    options:
+      - { id: a, text: "4 years" }
+      - { id: b, text: "6 years" }
+      - { id: c, text: "7 years" }
+      - { id: d, text: "5 years" }
+    correct: d
+    explanation: "The Lok Sabha's normal term is five years from its first meeting, unless it is dissolved earlier."
+  - id: 5e000000-0104-4000-8000-000000000015
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "Elected members of the Rajya Sabha are chosen by:"
+    options:
+      - { id: a, text: "the elected members of the State Legislative Assemblies" }
+      - { id: b, text: "the people directly" }
+      - { id: c, text: "the members of the Lok Sabha" }
+      - { id: d, text: "the President" }
+    correct: a
+    explanation: "Rajya Sabha members from the states are elected by the elected members of the State Legislative Assemblies."
+  - id: 5e000000-0104-4000-8000-000000000016
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "What is the minimum age for membership of the Rajya Sabha?"
+    options:
+      - { id: a, text: "21 years" }
+      - { id: b, text: "30 years" }
+      - { id: c, text: "25 years" }
+      - { id: d, text: "35 years" }
+    correct: b
+    explanation: "A person must be at least 30 years old to become a member of the Rajya Sabha."
+  - id: 5e000000-0104-4000-8000-000000000017
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 3
+    stem: "The gap between two sessions of Parliament cannot be more than:"
+    options:
+      - { id: a, text: "three months" }
+      - { id: b, text: "one year" }
+      - { id: c, text: "six months" }
+      - { id: d, text: "nine months" }
+    correct: c
+    explanation: "Article 85 says six months must not pass between the last sitting of one session and the first sitting of the next."
+  - id: 5e000000-0104-4000-8000-000000000018
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 1
+    stem: "Who presides over the sittings of the Lok Sabha?"
+    options:
+      - { id: a, text: "The Prime Minister" }
+      - { id: b, text: "The Vice-President" }
+      - { id: c, text: "The President" }
+      - { id: d, text: "The Speaker" }
+    correct: d
+    explanation: "The Speaker, elected by the members of the Lok Sabha, presides over its sittings."
+  - id: 5e000000-0104-4000-8000-000000000019
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "Which Article provides for a joint sitting of both Houses?"
+    options:
+      - { id: a, text: "Article 108" }
+      - { id: b, text: "Article 112" }
+      - { id: c, text: "Article 123" }
+      - { id: d, text: "Article 74" }
+    correct: a
+    explanation: "Article 108 lets the President call a joint sitting when the two Houses disagree on an ordinary bill."
+  - id: 5e000000-0104-4000-8000-000000000020
+    topic_id: 0199f5a0-0104-7000-8000-000000000104
+    difficulty: 2
+    stem: "The Lok Sabha is also known as the:"
+    options:
+      - { id: a, text: "Council of States" }
+      - { id: b, text: "House of the People" }
+      - { id: c, text: "Upper House" }
+      - { id: d, text: "Legislative Council" }
+    correct: b
+    explanation: "The Lok Sabha is the House of the People. The Rajya Sabha is the Council of States."
+
+  # Local government (Panchayati Raj)
+  - id: 5e000000-0105-4000-8000-000000000001
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 1
+    stem: "Which constitutional amendment gave constitutional status to Panchayati Raj institutions?"
+    options:
+      - { id: a, text: "42nd Amendment" }
+      - { id: b, text: "74th Amendment" }
+      - { id: c, text: "73rd Amendment" }
+      - { id: d, text: "86th Amendment" }
+    correct: c
+    explanation: "The 73rd Amendment of 1992 gave panchayats constitutional status. The 74th did the same for urban local bodies."
+  - id: 5e000000-0105-4000-8000-000000000002
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "How many subjects are listed in the Eleventh Schedule for panchayats?"
+    options:
+      - { id: a, text: "29" }
+      - { id: b, text: "18" }
+      - { id: c, text: "22" }
+      - { id: d, text: "12" }
+    correct: a
+    explanation: "The Eleventh Schedule lists 29 subjects for panchayats. The Twelfth Schedule lists 18 for municipalities."
+  - id: 5e000000-0105-4000-8000-000000000003
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "Which committee first recommended a three-tier Panchayati Raj system in 1957?"
+    options:
+      - { id: a, text: "Ashok Mehta Committee" }
+      - { id: b, text: "Sarkaria Commission" }
+      - { id: c, text: "Swaran Singh Committee" }
+      - { id: d, text: "Balwant Rai Mehta Committee" }
+    correct: d
+    explanation: "The Balwant Rai Mehta Committee (1957) recommended three tiers: village, block and district."
+  - id: 5e000000-0105-4000-8000-000000000004
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "Panchayati Raj was first introduced at Nagaur in which state?"
+    options:
+      - { id: a, text: "Andhra Pradesh" }
+      - { id: b, text: "Rajasthan" }
+      - { id: c, text: "Gujarat" }
+      - { id: d, text: "Tamil Nadu" }
+    correct: b
+    explanation: "Rajasthan launched Panchayati Raj at Nagaur on 2 October 1959."
+  - id: 5e000000-0105-4000-8000-000000000005
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 1
+    stem: "National Panchayati Raj Day is observed on:"
+    options:
+      - { id: a, text: "2 October" }
+      - { id: b, text: "26 January" }
+      - { id: c, text: "24 April" }
+      - { id: d, text: "15 August" }
+    correct: c
+    explanation: "24 April marks the day in 1993 when the 73rd Amendment came into force."
+  - id: 5e000000-0105-4000-8000-000000000006
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 1
+    stem: "What is the term of a panchayat under the 73rd Amendment?"
+    options:
+      - { id: a, text: "5 years" }
+      - { id: b, text: "3 years" }
+      - { id: c, text: "4 years" }
+      - { id: d, text: "6 years" }
+    correct: a
+    explanation: "Every panchayat has a term of five years from the date of its first meeting."
+  - id: 5e000000-0105-4000-8000-000000000007
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "Under the 73rd Amendment, what is the minimum share of panchayat seats reserved for women?"
+    options:
+      - { id: a, text: "One fourth" }
+      - { id: b, text: "One half" }
+      - { id: c, text: "One fifth" }
+      - { id: d, text: "One third" }
+    correct: d
+    explanation: "The amendment reserves at least one third of the seats for women. Several states, including Tamil Nadu, have raised it to one half."
+  - id: 5e000000-0105-4000-8000-000000000008
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "Who conducts elections to panchayats?"
+    options:
+      - { id: a, text: "The Election Commission of India" }
+      - { id: b, text: "The State Election Commission" }
+      - { id: c, text: "The District Collector" }
+      - { id: d, text: "The Governor" }
+    correct: b
+    explanation: "Under Article 243K, the State Election Commission conducts elections to panchayats."
+  - id: 5e000000-0105-4000-8000-000000000009
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "The Gram Sabha consists of:"
+    options:
+      - { id: a, text: "only the elected ward members" }
+      - { id: b, text: "the panchayat president and the Block officer" }
+      - { id: c, text: "all persons on the electoral roll of the village" }
+      - { id: d, text: "the MLA and MP of the area" }
+    correct: c
+    explanation: "The Gram Sabha is made up of all persons registered on the electoral roll of the village panchayat area."
+  - id: 5e000000-0105-4000-8000-000000000010
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "Which Part of the Constitution deals with panchayats?"
+    options:
+      - { id: a, text: "Part IX" }
+      - { id: b, text: "Part IXA" }
+      - { id: c, text: "Part IV" }
+      - { id: d, text: "Part XI" }
+    correct: a
+    explanation: "Part IX deals with panchayats. Part IXA, added by the 74th Amendment, deals with municipalities."
+  - id: 5e000000-0105-4000-8000-000000000011
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "The 74th Amendment deals with:"
+    options:
+      - { id: a, text: "anti-defection" }
+      - { id: b, text: "village panchayats" }
+      - { id: c, text: "Goods and Services Tax" }
+      - { id: d, text: "urban local bodies" }
+    correct: d
+    explanation: "The 74th Amendment of 1992 gave constitutional status to urban local bodies such as municipalities and corporations."
+  - id: 5e000000-0105-4000-8000-000000000012
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "How many subjects are listed in the Twelfth Schedule for municipalities?"
+    options:
+      - { id: a, text: "29" }
+      - { id: b, text: "18" }
+      - { id: c, text: "25" }
+      - { id: d, text: "10" }
+    correct: b
+    explanation: "The Twelfth Schedule, added by the 74th Amendment, lists 18 subjects for urban local bodies."
+  - id: 5e000000-0105-4000-8000-000000000013
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 3
+    stem: "Which committee of 1977 recommended a two-tier Panchayati Raj system?"
+    options:
+      - { id: a, text: "Balwant Rai Mehta Committee" }
+      - { id: b, text: "L. M. Singhvi Committee" }
+      - { id: c, text: "Ashok Mehta Committee" }
+      - { id: d, text: "G. V. K. Rao Committee" }
+    correct: c
+    explanation: "The Ashok Mehta Committee (1977) suggested a two-tier system with district and mandal panchayats."
+  - id: 5e000000-0105-4000-8000-000000000014
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "A State Finance Commission to review panchayat finances is set up every:"
+    options:
+      - { id: a, text: "five years" }
+      - { id: b, text: "two years" }
+      - { id: c, text: "ten years" }
+      - { id: d, text: "year" }
+    correct: a
+    explanation: "Article 243I asks the Governor to set up a State Finance Commission every five years."
+  - id: 5e000000-0105-4000-8000-000000000015
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "If a panchayat is dissolved early, a fresh election must be held within:"
+    options:
+      - { id: a, text: "one year" }
+      - { id: b, text: "three months" }
+      - { id: c, text: "two years" }
+      - { id: d, text: "six months" }
+    correct: d
+    explanation: "Under the 73rd Amendment, elections to a dissolved panchayat must be completed within six months of the dissolution."
+  - id: 5e000000-0105-4000-8000-000000000016
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "In Tamil Nadu, the intermediate tier of Panchayati Raj is called the:"
+    options:
+      - { id: a, text: "Zilla Parishad" }
+      - { id: b, text: "Panchayat Union" }
+      - { id: c, text: "Mandal Parishad" }
+      - { id: d, text: "Town Panchayat" }
+    correct: b
+    explanation: "Tamil Nadu has village panchayats, panchayat unions at block level and district panchayats."
+  - id: 5e000000-0105-4000-8000-000000000017
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "Which Directive Principle Article is the basis of Panchayati Raj?"
+    options:
+      - { id: a, text: "Article 44" }
+      - { id: b, text: "Article 48" }
+      - { id: c, text: "Article 40" }
+      - { id: d, text: "Article 50" }
+    correct: c
+    explanation: "Article 40 asks the State to organise village panchayats and give them powers to work as units of self-government."
+  - id: 5e000000-0105-4000-8000-000000000018
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 2
+    stem: "What are the three tiers of Panchayati Raj under the 73rd Amendment?"
+    options:
+      - { id: a, text: "Village, intermediate (block) and district" }
+      - { id: b, text: "Ward, town and city" }
+      - { id: c, text: "Village, state and union" }
+      - { id: d, text: "District, state and national" }
+    correct: a
+    explanation: "The three tiers are the village panchayat, the intermediate or block panchayat and the district panchayat."
+  - id: 5e000000-0105-4000-8000-000000000019
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 3
+    stem: "Which Act puts the 73rd Amendment into effect in Tamil Nadu?"
+    options:
+      - { id: a, text: "Tamil Nadu Municipalities Act" }
+      - { id: b, text: "Tamil Nadu Local Boards Act" }
+      - { id: c, text: "Tamil Nadu Village Courts Act" }
+      - { id: d, text: "Tamil Nadu Panchayats Act, 1994" }
+    correct: d
+    explanation: "The Tamil Nadu Panchayats Act, 1994 created the three-tier panchayat system in the state in line with the 73rd Amendment."
+  - id: 5e000000-0105-4000-8000-000000000020
+    topic_id: 0199f5a0-0105-7000-8000-000000000105
+    difficulty: 1
+    stem: "Who among these is the elected head of a village panchayat in Tamil Nadu?"
+    options:
+      - { id: a, text: "Village Administrative Officer" }
+      - { id: b, text: "Panchayat President" }
+      - { id: c, text: "Block Development Officer" }
+      - { id: d, text: "Tahsildar" }
+    correct: b
+    explanation: "The panchayat president is elected by the voters. The VAO, BDO and Tahsildar are government officials, not elected heads."

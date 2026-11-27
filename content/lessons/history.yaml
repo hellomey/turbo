@@ -1,0 +1,95 @@
+# History of India: SAMPLE lessons, under review.
+# Original explanations written for HeyMey in simple English from TN State Board Social Science (History).
+# The Harappan Civilisation lesson already ships with the catalogue seed; these cover the other history topics.
+# review_status is "sample" until a human reviewer checks each lesson.
+review_status: sample
+source_citation: "HeyMey original lesson (sample content, under review). TN State Board Social Science (History), Classes 6, 7 and 10."
+lessons:
+  - topic_id: 0199f5a0-0202-7000-8000-000000000202
+    title: The Mauryan Empire
+    reading_minutes: 3
+    body: |
+      # The Mauryan Empire
+
+      The Mauryas built the first empire that covered most of the Indian subcontinent. Their capital was Pataliputra, near present-day Patna in Bihar.
+
+      ## Chandragupta Maurya
+      Chandragupta Maurya founded the empire around 321 BCE after overthrowing the Nanda dynasty of Magadha. His adviser was Chanakya, also known as Kautilya. The Arthashastra, a book on statecraft, economy and administration, is credited to Kautilya.
+
+      Chandragupta defeated Seleucus Nicator, a general of Alexander. Seleucus later sent an ambassador, Megasthenes, to the Mauryan court. Megasthenes wrote Indica, which survives only in quotations by later Greek writers. It describes Pataliputra and Mauryan society.
+
+      Jain tradition says Chandragupta became a Jain in his last years and went to Shravanabelagola in present-day Karnataka. The play Mudrarakshasa by Vishakhadatta tells the story of his rise.
+
+      ## Bindusara
+      Chandragupta's son Bindusara ruled next and kept the empire together.
+
+      ## Ashoka
+      Ashoka, son of Bindusara, is the best-known Mauryan ruler. He fought the Kalinga war (in present-day Odisha) around 261 BCE. The loss of life in that war changed him. He gave up conquest by war and turned to Dhamma, a code of moral conduct based on tolerance, respect for elders, kindness to animals and care for all people.
+
+      Ashoka spread his message through edicts carved on rocks and pillars. Most are in the Prakrit language and the Brahmi script. James Prinsep deciphered Brahmi in 1837. In the edicts Ashoka calls himself Devanampiya Piyadasi, "beloved of the gods". One of his rock edicts names the Cholas, Pandyas, Cheras and Satiyaputras as neighbours beyond his empire, which tells us the far south was outside Mauryan rule.
+
+      Ashoka appointed officers called Dhamma Mahamattas to spread Dhamma. He sent his son Mahendra and daughter Sanghamitra to Sri Lanka to spread Buddhism. The third Buddhist Council was held at Pataliputra during his reign.
+
+      The Lion Capital of the Ashokan pillar at Sarnath is India's national emblem, and the wheel on it appears on the national flag.
+
+      ## Decline
+      The empire weakened after Ashoka. Pushyamitra Shunga killed the last Mauryan king, Brihadratha, and founded the Shunga dynasty.
+
+  - topic_id: 0199f5a0-0203-7000-8000-000000000203
+    title: The Delhi Sultanate
+    reading_minutes: 3
+    body: |
+      # The Delhi Sultanate
+
+      The Delhi Sultanate is the name for five dynasties that ruled from Delhi between 1206 and 1526. In order they are the Slave (Mamluk), Khalji, Tughlaq, Sayyid and Lodi dynasties. A simple way to remember the order is S-K-T-S-L.
+
+      ## The Slave dynasty
+      Qutb-ud-din Aibak, a former slave of Muhammad Ghori, founded the Sultanate in 1206. He began building the Qutb Minar in Delhi, and his successor Iltutmish completed it.
+
+      Iltutmish organised the state. He introduced the silver tanka and the copper jital coins and developed the iqta system, under which officers were given the revenue of a territory in return for service. His daughter Razia became the first and only woman ruler of the Delhi Sultanate.
+
+      Balban raised the dignity of the Sultan. He followed a policy of "blood and iron" against rebels and introduced court customs such as sijda (prostration) and paibos (kissing the Sultan's feet).
+
+      ## The Khaljis
+      Jalal-ud-din Khalji founded the dynasty in 1290. His nephew Alauddin Khalji was its strongest ruler. Alauddin fixed the prices of grain and other goods in Delhi's markets, kept a large standing army, and branded horses (dagh) to stop cheating at musters. His general Malik Kafur led campaigns deep into South India. Alauddin also built the Alai Darwaza near the Qutb Minar. The poet Amir Khusrau lived in this period.
+
+      ## The Tughlaqs
+      Ghiyas-ud-din Tughlaq founded the dynasty. His son Muhammad bin Tughlaq is remembered for bold experiments that failed. He shifted the capital from Delhi to Daulatabad (Devagiri) and issued token currency in copper and brass. The Moroccan traveller Ibn Battuta visited his court.
+
+      Firoz Shah Tughlaq built canals and new towns. In 1398 Timur invaded India and sacked Delhi, which weakened the Sultanate badly.
+
+      ## The Sayyids and the Lodis
+      The Sayyids ruled a much smaller kingdom. The Lodis, an Afghan dynasty, followed. Sikandar Lodi founded the city of Agra.
+
+      ## The end
+      In 1526 Babur defeated Ibrahim Lodi at the First Battle of Panipat. That battle ended the Delhi Sultanate and began Mughal rule.
+
+  - topic_id: 0199f5a0-0204-7000-8000-000000000204
+    title: Indian National Movement (1885-1947)
+    reading_minutes: 4
+    body: |
+      # Indian National Movement (1885-1947)
+
+      ## The Congress is born
+      The Indian National Congress was founded in 1885 at Bombay. A. O. Hume, a retired British officer, helped organise it, and W. C. Bonnerjee was its first president. The early leaders, called the Moderates, used petitions and speeches.
+
+      ## Partition of Bengal and Swadeshi
+      In 1905 Lord Curzon partitioned Bengal. People protested with the Swadeshi movement, boycotting British goods and using Indian ones. In Tamil Nadu, V. O. Chidambaram started the Swadeshi Steam Navigation Company at Thoothukudi (Tuticorin) to compete with British shipping, and the poet Subramania Bharathi wrote patriotic songs. The Muslim League was founded in 1906 at Dhaka. The Congress split into Moderates and Extremists at Surat in 1907.
+
+      ## Home Rule and Lucknow
+      In 1916 the Congress and the Muslim League signed the Lucknow Pact. The same year Bal Gangadhar Tilak and Annie Besant started Home Rule Leagues.
+
+      ## Gandhi's arrival
+      Gandhi led his first satyagraha in India at Champaran in Bihar in 1917, for indigo farmers. In 1919 the Rowlatt Act allowed detention without trial. On 13 April 1919, troops under General Dyer fired on a peaceful crowd at Jallianwala Bagh in Amritsar.
+
+      ## Non-Cooperation
+      Gandhi launched the Non-Cooperation Movement in 1920. He called it off in 1922 after a crowd set fire to a police station at Chauri Chaura.
+
+      ## Towards complete independence
+      The all-British Simon Commission came in 1928 and was met with the slogan "Simon, go back". At the Lahore session of 1929, presided over by Jawaharlal Nehru, the Congress adopted Purna Swaraj (complete independence) as its goal. 26 January 1930 was celebrated as Independence Day, and that date was later chosen for the Constitution to come into force.
+
+      ## Salt Satyagraha
+      On 12 March 1930 Gandhi began the Dandi March to break the salt law, starting the Civil Disobedience Movement. In Tamil Nadu, C. Rajagopalachari led a salt march from Tiruchirappalli to Vedaranyam. The Gandhi-Irwin Pact followed in 1931, and Gandhi attended the Second Round Table Conference in London. In 1932 Gandhi and B. R. Ambedkar signed the Poona Pact on representation for the depressed classes.
+
+      ## Quit India and after
+      On 8 August 1942 the Congress launched the Quit India Movement, and Gandhi gave the call "Do or Die". Subhas Chandra Bose led the Indian National Army against the British. The Cabinet Mission came in 1946, and the Mountbatten Plan of June 1947 led to the partition of the country. India became independent on 15 August 1947.

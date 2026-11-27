@@ -1,0 +1,161 @@
+# General Science: SAMPLE lessons, under review.
+# Original explanations written for HeyMey in simple English from TN State Board Science textbooks.
+# review_status is "sample" until a human reviewer checks each lesson.
+review_status: sample
+source_citation: "HeyMey original lesson (sample content, under review). TN State Board Science, Classes 8, 9 and 10."
+lessons:
+  - topic_id: 0199f5a0-0501-7000-8000-000000000501
+    title: Human body systems
+    reading_minutes: 3
+    body: |
+      # Human body systems
+
+      The body is built from cells. Cells form tissues, tissues form organs, and organs that work together form a system.
+
+      ## Skeleton
+      An adult has 206 bones. The femur (thigh bone) is the longest, and the stapes in the middle ear is the smallest. Bones protect organs, give shape and work with muscles to move the body.
+
+      ## Blood and circulation
+      The heart has four chambers: two upper atria and two lower ventricles. William Harvey described how blood circulates through the body. Arteries carry blood away from the heart, and veins bring it back.
+
+      Blood has three kinds of cells. Red blood cells carry oxygen using haemoglobin, an iron-containing protein. White blood cells fight infection. Platelets help blood clot. A normal adult blood pressure is about 120/80 mm Hg.
+
+      There are four main blood groups: A, B, AB and O. People with group O negative are called universal donors, and people with group AB positive are called universal recipients.
+
+      ## Breathing
+      Air passes through the nose, windpipe and bronchi into the lungs. In tiny air sacs called alveoli, oxygen enters the blood and carbon dioxide leaves it.
+
+      ## Digestion
+      Digestion starts in the mouth, where saliva begins to break down starch. The liver, the largest gland, makes bile, which is stored in the gall bladder and helps digest fats. Most digestion and absorption happen in the small intestine, whose inner wall has finger-like villi.
+
+      ## Excretion
+      The kidneys filter waste from the blood and make urine. Each kidney has about a million tiny filtering units called nephrons.
+
+      ## Nervous system
+      The neuron (nerve cell) is the basic unit. The brain has three main parts. The cerebrum handles thinking and memory, the cerebellum keeps balance and coordinates movement, and the medulla controls automatic actions such as heartbeat and breathing.
+
+      ## Glands and hormones
+      The pituitary is called the master gland because it controls other glands. The pancreas makes insulin, which lowers blood sugar; too little insulin causes diabetes. The thyroid needs iodine to make its hormone.
+
+      ## Skin
+      The skin is the largest organ of the body. Normal body temperature is about 37 degrees Celsius.
+
+  - topic_id: 0199f5a0-0502-7000-8000-000000000502
+    title: Light
+    reading_minutes: 3
+    body: |
+      # Light
+
+      Light is a form of energy that lets us see. It travels in straight lines and moves through a vacuum at about 3 x 10^8 metres per second. Sunlight takes a little over eight minutes to reach the Earth.
+
+      ## Reflection
+      When light falls on a smooth, shiny surface it bounces back. The angle of incidence equals the angle of reflection.
+
+      A plane mirror forms an image that is virtual, upright, the same size as the object and laterally inverted (left and right are swapped). That is why AMBULANCE is written in reverse on the front of ambulances.
+
+      A concave mirror can form a large, upright image when the object is close, so dentists and shaving mirrors use it. Torches and vehicle headlights also use concave reflectors. A convex mirror shows a smaller, upright image of a wide area, so vehicles use it as a rear-view mirror.
+
+      ## Refraction
+      Light bends when it passes from one medium to another, because its speed changes. A pencil in a glass of water looks bent for this reason. The refractive index tells how much a medium slows light.
+
+      ## Lenses and the eye
+      A convex lens converges light and a concave lens diverges it. The power of a lens is measured in dioptres.
+
+      The eye lens forms a real, inverted image on the retina. The pupil changes size to control how much light enters.
+
+      Short-sightedness (myopia) means you cannot see far objects clearly. A concave lens corrects it. Long-sightedness (hypermetropia) means you cannot see near objects clearly. A convex lens corrects it.
+
+      ## Dispersion and scattering
+      A glass prism splits white light into seven colours: violet, indigo, blue, green, yellow, orange and red (VIBGYOR). This is dispersion. A rainbow forms when sunlight is refracted, dispersed and reflected inside raindrops.
+
+      Air scatters short wavelengths, such as blue, much more than long ones, so the sky looks blue. Red light has the longest wavelength and scatters least, so it travels far through haze and is used for danger signals.
+
+      ## Total internal reflection
+      When light inside a denser medium strikes the boundary at a large enough angle, it reflects back completely. Optical fibres use this to carry light signals over long distances.
+
+      ## An Indian discovery
+      C. V. Raman discovered the Raman effect, about how light changes when it is scattered by molecules. He received the Nobel Prize in Physics in 1930. National Science Day, 28 February, marks the date of his discovery.
+
+  - topic_id: 0199f5a0-0503-7000-8000-000000000503
+    title: Electricity
+    reading_minutes: 3
+    body: |
+      # Electricity
+
+      Electric current is the flow of electric charge. In metal wires the charge is carried by electrons. By convention, current is said to flow from the positive terminal to the negative, the opposite of the direction the electrons move.
+
+      ## Units to remember
+      - Current (I) is measured in amperes (A) with an ammeter, connected in series.
+      - Potential difference (V) is measured in volts (V) with a voltmeter, connected in parallel.
+      - Resistance (R) is measured in ohms.
+      - Power (P) is measured in watts (W).
+
+      ## Ohm's law
+      At constant temperature, the current through a conductor is proportional to the potential difference across it: V = I x R. Example: a 12 V battery across a 4 ohm resistor gives I = 12 / 4 = 3 A.
+
+      ## What resistance depends on
+      Resistance increases with the length of a wire and decreases as the wire gets thicker. It also depends on the material. Silver is the best conductor, and copper is used in household wiring because it conducts well and costs less.
+
+      ## Combining resistors
+      In series, resistances add: R = R1 + R2. The same current flows through each.
+
+      In parallel, the combined resistance is smaller than the smallest one: 1/R = 1/R1 + 1/R2. Each appliance gets the full voltage and can be switched on or off on its own, so homes are wired in parallel.
+
+      ## Heating effect
+      Current produces heat in a resistor: H = I^2 x R x t. Heaters and irons use nichrome coils, which have high resistance. Filament bulbs use tungsten, which has a very high melting point.
+
+      ## Power and energy
+      Power P = V x I. A 1000 W heater used for one hour consumes 1 kilowatt-hour (kWh), which is the "unit" on your electricity bill. 1 kWh = 3.6 x 10^6 joules.
+
+      ## Safety
+      A fuse is a wire with a low melting point. If too much current flows, it melts and breaks the circuit. Miniature circuit breakers (MCBs) do the same job and can be reset. The earth wire, usually green, carries leaked current safely to the ground.
+
+      ## AC and DC
+      Batteries give direct current (DC), which flows in one direction. Homes get alternating current (AC), which changes direction many times a second. In India its frequency is 50 hertz.
+
+  - topic_id: 0199f5a0-0504-7000-8000-000000000504
+    title: Nutrition and health
+    reading_minutes: 3
+    body: |
+      # Nutrition and health
+
+      Food gives us energy, helps us grow and protects us from disease. A balanced diet contains all the nutrients the body needs, in the right amounts.
+
+      ## The main nutrients
+      Carbohydrates are the main source of energy. Rice, wheat and potatoes are rich in them. One gram gives about 4 kilocalories.
+
+      Fats give the most energy, about 9 kilocalories per gram, and store energy in the body.
+
+      Proteins build and repair the body. Pulses, milk, eggs, fish and meat are good sources.
+
+      Vitamins and minerals are needed in small amounts but protect against disease.
+
+      Roughage (dietary fibre) from vegetables, fruits and whole grains helps the bowels move and prevents constipation.
+
+      Water carries nutrients, removes waste and controls body temperature.
+
+      ## Vitamins
+      Vitamins A, D, E and K dissolve in fat. Vitamins B and C dissolve in water, so the body cannot store much of them.
+
+      | Vitamin | Lack of it causes |
+      | --- | --- |
+      | A | Night blindness |
+      | B1 (thiamine) | Beriberi |
+      | B3 (niacin) | Pellagra |
+      | C | Scurvy (bleeding gums) |
+      | D | Rickets in children |
+      | K | Slow clotting of blood |
+
+      The skin makes vitamin D in sunlight. Citrus fruits and amla are rich in vitamin C. Carrots and green leafy vegetables help with vitamin A.
+
+      ## Minerals
+      Iron is needed for haemoglobin; a lack of it causes anaemia. Iodine is needed by the thyroid; a lack of it causes goitre, which is why salt is iodised. Calcium builds strong bones and teeth.
+
+      ## Protein-energy malnutrition
+      Kwashiorkor is caused mainly by a lack of protein. The child has a swollen belly and swollen limbs. Marasmus is caused by a lack of both protein and energy. The child becomes very thin and weak.
+
+      ## Dehydration
+      Diarrhoea can drain water and salts from the body quickly. Oral rehydration solution (ORS), a mixture of water, salt and sugar, replaces them and saves lives.
+
+      ## Body mass index
+      Body mass index (BMI) is weight in kilograms divided by the square of height in metres. It is a quick check of whether weight suits height.

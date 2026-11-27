@@ -1,0 +1,675 @@
+# Indian Economy: SAMPLE practice questions, under review.
+# Original questions written for HeyMey from TN State Board Economics and the Constitution of India.
+# Not copied from any paper, book, app or website. review_status is "sample" until a human reviewer checks each item.
+set: economy-sample-1
+review_status: sample
+source:
+  kind: original
+  citation: "HeyMey original practice question (sample content, under review). TN State Board Social Science (Economics), Class 10; TN State Board Economics, Class 11; Constitution of India."
+  url: null
+questions:
+  # Five-Year Plans and NITI Aayog
+  - id: 5e000000-0401-4000-8000-000000000001
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 1
+    stem: "NITI Aayog replaced which body?"
+    options:
+      - { id: a, text: "Finance Commission" }
+      - { id: b, text: "Reserve Bank of India" }
+      - { id: c, text: "Planning Commission" }
+      - { id: d, text: "National Statistics Office" }
+    correct: c
+    explanation: "NITI Aayog replaced the Planning Commission on 1 January 2015."
+  - id: 5e000000-0401-4000-8000-000000000002
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 1
+    stem: "What does NITI in NITI Aayog stand for?"
+    options:
+      - { id: a, text: "National Institution for Transforming India" }
+      - { id: b, text: "National Institute of Trade and Industry" }
+      - { id: c, text: "New India Tax Initiative" }
+      - { id: d, text: "National Integration and Taxation Institute" }
+    correct: a
+    explanation: "NITI stands for National Institution for Transforming India."
+  - id: 5e000000-0401-4000-8000-000000000003
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 1
+    stem: "Who is the chairperson of NITI Aayog?"
+    options:
+      - { id: a, text: "The President" }
+      - { id: b, text: "The Finance Minister" }
+      - { id: c, text: "The RBI Governor" }
+      - { id: d, text: "The Prime Minister" }
+    correct: d
+    explanation: "The Prime Minister chairs NITI Aayog, as the Prime Minister chaired the Planning Commission before it."
+  - id: 5e000000-0401-4000-8000-000000000004
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "In which year was the Planning Commission set up?"
+    options:
+      - { id: a, text: "1947" }
+      - { id: b, text: "1950" }
+      - { id: c, text: "1951" }
+      - { id: d, text: "1956" }
+    correct: b
+    explanation: "The Planning Commission was set up in March 1950 by a resolution of the Union government."
+  - id: 5e000000-0401-4000-8000-000000000005
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "The First Five-Year Plan (1951-56) gave top priority to:"
+    options:
+      - { id: a, text: "heavy industry" }
+      - { id: b, text: "information technology" }
+      - { id: c, text: "agriculture and irrigation" }
+      - { id: d, text: "space research" }
+    correct: c
+    explanation: "With food shortages after independence, the First Plan focused on agriculture, irrigation and power."
+  - id: 5e000000-0401-4000-8000-000000000006
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "The Second Five-Year Plan, which stressed heavy industry, was based on the model of:"
+    options:
+      - { id: a, text: "P. C. Mahalanobis" }
+      - { id: b, text: "Dadabhai Naoroji" }
+      - { id: c, text: "M. Visvesvaraya" }
+      - { id: d, text: "Amartya Sen" }
+    correct: a
+    explanation: "The Second Plan (1956-61) followed the Mahalanobis model, which gave priority to heavy and basic industries."
+  - id: 5e000000-0401-4000-8000-000000000007
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "Which was the last Five-Year Plan in India?"
+    options:
+      - { id: a, text: "Ninth" }
+      - { id: b, text: "Tenth" }
+      - { id: c, text: "Eleventh" }
+      - { id: d, text: "Twelfth" }
+    correct: d
+    explanation: "The Twelfth Plan (2012-17) was the last. Five-Year Plans ended after NITI Aayog replaced the Planning Commission."
+  - id: 5e000000-0401-4000-8000-000000000008
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 3
+    stem: "The period from 1966 to 1969, when annual plans were used instead of a Five-Year Plan, is called the:"
+    options:
+      - { id: a, text: "Rolling Plan" }
+      - { id: b, text: "Plan holiday" }
+      - { id: c, text: "Green Plan" }
+      - { id: d, text: "People's Plan" }
+    correct: b
+    explanation: "War and drought delayed the Fourth Plan, so three annual plans were used from 1966 to 1969. This gap is called the plan holiday."
+  - id: 5e000000-0401-4000-8000-000000000009
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "Who wrote the book 'Planned Economy for India' in 1934?"
+    options:
+      - { id: a, text: "Jawaharlal Nehru" }
+      - { id: b, text: "P. C. Mahalanobis" }
+      - { id: c, text: "M. Visvesvaraya" }
+      - { id: d, text: "M. N. Roy" }
+    correct: c
+    explanation: "M. Visvesvaraya, the engineer and statesman, wrote Planned Economy for India in 1934."
+  - id: 5e000000-0401-4000-8000-000000000010
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "The Bombay Plan of 1944 was prepared by:"
+    options:
+      - { id: a, text: "a group of leading industrialists" }
+      - { id: b, text: "the British government" }
+      - { id: c, text: "the Muslim League" }
+      - { id: d, text: "the Reserve Bank of India" }
+    correct: a
+    explanation: "The Bombay Plan was put forward by a group of Indian industrialists in 1944."
+  - id: 5e000000-0401-4000-8000-000000000011
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "Which body, including the Chief Ministers, gave final approval to Five-Year Plans?"
+    options:
+      - { id: a, text: "Finance Commission" }
+      - { id: b, text: "Inter-State Council" }
+      - { id: c, text: "Rajya Sabha" }
+      - { id: d, text: "National Development Council" }
+    correct: d
+    explanation: "The National Development Council, with the Prime Minister and Chief Ministers, approved each Five-Year Plan."
+  - id: 5e000000-0401-4000-8000-000000000012
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "The slogan 'Garibi Hatao' is associated with which Five-Year Plan?"
+    options:
+      - { id: a, text: "Third" }
+      - { id: b, text: "Fifth" }
+      - { id: c, text: "Seventh" }
+      - { id: d, text: "Ninth" }
+    correct: b
+    explanation: "The Fifth Plan made removal of poverty (Garibi Hatao) a central aim."
+  - id: 5e000000-0401-4000-8000-000000000013
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 3
+    stem: "The Rolling Plan (1978-80) was introduced by:"
+    options:
+      - { id: a, text: "the Congress government under Indira Gandhi" }
+      - { id: b, text: "the NITI Aayog" }
+      - { id: c, text: "the Janata government" }
+      - { id: d, text: "the British government" }
+    correct: c
+    explanation: "The Janata government ended the Fifth Plan early and brought in a Rolling Plan for 1978-80."
+  - id: 5e000000-0401-4000-8000-000000000014
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "On which date did NITI Aayog come into being?"
+    options:
+      - { id: a, text: "1 January 2015" }
+      - { id: b, text: "15 August 2014" }
+      - { id: c, text: "1 April 2015" }
+      - { id: d, text: "26 January 2016" }
+    correct: a
+    explanation: "NITI Aayog was set up on 1 January 2015."
+  - id: 5e000000-0401-4000-8000-000000000015
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "How is NITI Aayog's role different from that of the old Planning Commission?"
+    options:
+      - { id: a, text: "It collects income tax" }
+      - { id: b, text: "It prints currency" }
+      - { id: c, text: "It conducts general elections" }
+      - { id: d, text: "It acts as a think tank and does not allot plan funds to states" }
+    correct: d
+    explanation: "NITI Aayog gives policy advice and promotes cooperative federalism. Unlike the Planning Commission, it does not allot funds to states."
+  - id: 5e000000-0401-4000-8000-000000000016
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "The Governing Council of NITI Aayog includes:"
+    options:
+      - { id: a, text: "only Union Cabinet ministers" }
+      - { id: b, text: "the Chief Ministers of all states" }
+      - { id: c, text: "the judges of the Supreme Court" }
+      - { id: d, text: "the Governors of all states" }
+    correct: b
+    explanation: "The Governing Council includes the Chief Ministers of all states and the heads of Union Territories with legislatures."
+  - id: 5e000000-0401-4000-8000-000000000017
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 3
+    stem: "The First Five-Year Plan was based on which economic model?"
+    options:
+      - { id: a, text: "Mahalanobis model" }
+      - { id: b, text: "Lewis model" }
+      - { id: c, text: "Harrod-Domar model" }
+      - { id: d, text: "Solow model" }
+    correct: c
+    explanation: "The First Plan used the Harrod-Domar model, which links growth to savings and investment."
+  - id: 5e000000-0401-4000-8000-000000000018
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "The Eighth Five-Year Plan (1992-97) began soon after which major event?"
+    options:
+      - { id: a, text: "The economic reforms of 1991" }
+      - { id: b, text: "The bank nationalisation of 1969" }
+      - { id: c, text: "The launch of GST" }
+      - { id: d, text: "The Green Revolution of the 1960s" }
+    correct: a
+    explanation: "The Eighth Plan followed the 1991 reforms that brought liberalisation, privatisation and globalisation."
+  - id: 5e000000-0401-4000-8000-000000000019
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "Was the Planning Commission created by the Constitution?"
+    options:
+      - { id: a, text: "Yes, under Article 280" }
+      - { id: b, text: "Yes, under Article 324" }
+      - { id: c, text: "Yes, under Article 79" }
+      - { id: d, text: "No, it was set up by a government resolution" }
+    correct: d
+    explanation: "The Planning Commission was an extra-constitutional body created by a Cabinet resolution in 1950. Article 280 is about the Finance Commission."
+  - id: 5e000000-0401-4000-8000-000000000020
+    topic_id: 0199f5a0-0401-7000-8000-000000000401
+    difficulty: 2
+    stem: "The Twelfth Five-Year Plan aimed at:"
+    options:
+      - { id: a, text: "self-reliance in defence only" }
+      - { id: b, text: "faster, more sustainable and more inclusive growth" }
+      - { id: c, text: "rapid growth of heavy industry only" }
+      - { id: d, text: "removing all imports" }
+    correct: b
+    explanation: "The theme of the Twelfth Plan (2012-17) was faster, more sustainable and more inclusive growth."
+
+  # National income
+  - id: 5e000000-0402-4000-8000-000000000001
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 1
+    stem: "GDP measures the market value of all final goods and services produced:"
+    options:
+      - { id: a, text: "by citizens anywhere in the world" }
+      - { id: b, text: "by the government only" }
+      - { id: c, text: "within the country in a year" }
+      - { id: d, text: "for export only" }
+    correct: c
+    explanation: "Gross Domestic Product counts final output produced within the country's borders in a year, whoever produces it."
+  - id: 5e000000-0402-4000-8000-000000000002
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "GNP is equal to GDP plus:"
+    options:
+      - { id: a, text: "net factor income from abroad" }
+      - { id: b, text: "depreciation" }
+      - { id: c, text: "indirect taxes" }
+      - { id: d, text: "subsidies" }
+    correct: a
+    explanation: "GNP = GDP + net factor income from abroad (income earned by residents abroad minus income earned by foreigners here)."
+  - id: 5e000000-0402-4000-8000-000000000003
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Net National Product is GNP minus:"
+    options:
+      - { id: a, text: "exports" }
+      - { id: b, text: "subsidies" }
+      - { id: c, text: "taxes" }
+      - { id: d, text: "depreciation" }
+    correct: d
+    explanation: "NNP = GNP - depreciation, the wear and tear of capital goods during the year."
+  - id: 5e000000-0402-4000-8000-000000000004
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 1
+    stem: "Per capita income is national income divided by:"
+    options:
+      - { id: a, text: "the number of workers" }
+      - { id: b, text: "the population" }
+      - { id: c, text: "the number of families" }
+      - { id: d, text: "the number of states" }
+    correct: b
+    explanation: "Per capita income is the average income per person: national income divided by population."
+  - id: 5e000000-0402-4000-8000-000000000005
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Who made the first estimate of India's per capita income, in 'Poverty and Un-British Rule in India'?"
+    options:
+      - { id: a, text: "R. C. Dutt" }
+      - { id: b, text: "V. K. R. V. Rao" }
+      - { id: c, text: "Dadabhai Naoroji" }
+      - { id: d, text: "Gopal Krishna Gokhale" }
+    correct: c
+    explanation: "Dadabhai Naoroji estimated India's per capita income and argued that British rule drained India's wealth."
+  - id: 5e000000-0402-4000-8000-000000000006
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "The National Income Committee set up in 1949 was chaired by:"
+    options:
+      - { id: a, text: "P. C. Mahalanobis" }
+      - { id: b, text: "Manmohan Singh" }
+      - { id: c, text: "C. Rangarajan" }
+      - { id: d, text: "Raja Chelliah" }
+    correct: a
+    explanation: "P. C. Mahalanobis chaired the National Income Committee of 1949."
+  - id: 5e000000-0402-4000-8000-000000000007
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Why are intermediate goods left out when calculating GDP?"
+    options:
+      - { id: a, text: "They are imported" }
+      - { id: b, text: "They are not taxed" }
+      - { id: c, text: "They have no price" }
+      - { id: d, text: "To avoid double counting" }
+    correct: d
+    explanation: "The value of intermediate goods is already included in the final product, so counting them again would double count."
+  - id: 5e000000-0402-4000-8000-000000000008
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 1
+    stem: "India's financial year runs from:"
+    options:
+      - { id: a, text: "January to December" }
+      - { id: b, text: "April to March" }
+      - { id: c, text: "July to June" }
+      - { id: d, text: "October to September" }
+    correct: b
+    explanation: "India's financial year starts on 1 April and ends on 31 March."
+  - id: 5e000000-0402-4000-8000-000000000009
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Real GDP differs from nominal GDP because real GDP:"
+    options:
+      - { id: a, text: "includes black money" }
+      - { id: b, text: "counts only farm output" }
+      - { id: c, text: "uses base-year prices and removes the effect of inflation" }
+      - { id: d, text: "is measured in dollars" }
+    correct: c
+    explanation: "Real GDP values output at constant base-year prices, so changes reflect output, not price rises."
+  - id: 5e000000-0402-4000-8000-000000000010
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 1
+    stem: "Agriculture, fishing and mining belong to which sector?"
+    options:
+      - { id: a, text: "Primary" }
+      - { id: b, text: "Secondary" }
+      - { id: c, text: "Tertiary" }
+      - { id: d, text: "Quaternary" }
+    correct: a
+    explanation: "Activities that take goods directly from nature form the primary sector."
+  - id: 5e000000-0402-4000-8000-000000000011
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 1
+    stem: "Banking, transport and trade are part of which sector?"
+    options:
+      - { id: a, text: "Primary" }
+      - { id: b, text: "Secondary" }
+      - { id: c, text: "Informal" }
+      - { id: d, text: "Tertiary" }
+    correct: d
+    explanation: "Services such as banking, transport and trade make up the tertiary or service sector."
+  - id: 5e000000-0402-4000-8000-000000000012
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Which sector contributes the largest share of India's GDP today?"
+    options:
+      - { id: a, text: "Primary" }
+      - { id: b, text: "Tertiary (services)" }
+      - { id: c, text: "Secondary" }
+      - { id: d, text: "All three contribute equally" }
+    correct: b
+    explanation: "The service sector contributes the largest share of India's GDP, even though agriculture employs many people."
+  - id: 5e000000-0402-4000-8000-000000000013
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Manufacturing and construction belong to which sector?"
+    options:
+      - { id: a, text: "Primary" }
+      - { id: b, text: "Tertiary" }
+      - { id: c, text: "Secondary" }
+      - { id: d, text: "Public" }
+    correct: c
+    explanation: "Turning raw materials into products, and building, form the secondary sector."
+  - id: 5e000000-0402-4000-8000-000000000014
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 3
+    stem: "Which of these is NOT included in national income?"
+    options:
+      - { id: a, text: "An old-age pension paid by the government" }
+      - { id: b, text: "Wages paid to a factory worker" }
+      - { id: c, text: "Rent received by a landlord" }
+      - { id: d, text: "Profit earned by a company" }
+    correct: a
+    explanation: "A pension is a transfer payment. Nothing is produced in return for it, so it is left out of national income."
+  - id: 5e000000-0402-4000-8000-000000000015
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Which of these is NOT a method of measuring national income?"
+    options:
+      - { id: a, text: "Product method" }
+      - { id: b, text: "Income method" }
+      - { id: c, text: "Expenditure method" }
+      - { id: d, text: "Population method" }
+    correct: d
+    explanation: "The three methods are the product (value added), income and expenditure methods."
+  - id: 5e000000-0402-4000-8000-000000000016
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 3
+    stem: "To convert GDP at market prices into GDP at factor cost, you:"
+    options:
+      - { id: a, text: "add indirect taxes and subtract subsidies" }
+      - { id: b, text: "subtract indirect taxes and add subsidies" }
+      - { id: c, text: "add depreciation" }
+      - { id: d, text: "subtract exports" }
+    correct: b
+    explanation: "Market prices include indirect taxes and are lowered by subsidies, so factor cost = market price - indirect taxes + subsidies."
+  - id: 5e000000-0402-4000-8000-000000000017
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 3
+    stem: "What is the present base year used for India's national accounts?"
+    options:
+      - { id: a, text: "2004-05" }
+      - { id: b, text: "1999-2000" }
+      - { id: c, text: "2011-12" }
+      - { id: d, text: "1950-51" }
+    correct: c
+    explanation: "India's current series of national accounts uses 2011-12 as the base year."
+  - id: 5e000000-0402-4000-8000-000000000018
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Which office now publishes India's national income estimates?"
+    options:
+      - { id: a, text: "National Statistics Office" }
+      - { id: b, text: "Election Commission" }
+      - { id: c, text: "Comptroller and Auditor General" }
+      - { id: d, text: "Union Public Service Commission" }
+    correct: a
+    explanation: "The National Statistics Office, under the Ministry of Statistics and Programme Implementation, releases GDP and national income data."
+  - id: 5e000000-0402-4000-8000-000000000019
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 2
+    stem: "Under the expenditure method, GDP is the sum of consumption, investment, government spending and:"
+    options:
+      - { id: a, text: "depreciation" }
+      - { id: b, text: "transfer payments" }
+      - { id: c, text: "indirect taxes" }
+      - { id: d, text: "net exports" }
+    correct: d
+    explanation: "GDP = C + I + G + (X - M), where X - M is net exports."
+  - id: 5e000000-0402-4000-8000-000000000020
+    topic_id: 0199f5a0-0402-7000-8000-000000000402
+    difficulty: 3
+    stem: "A country's GNP is Rs 500 crore and depreciation is Rs 50 crore. What is its NNP?"
+    options:
+      - { id: a, text: "Rs 550 crore" }
+      - { id: b, text: "Rs 450 crore" }
+      - { id: c, text: "Rs 500 crore" }
+      - { id: d, text: "Rs 10 crore" }
+    correct: b
+    explanation: "NNP = GNP - depreciation = 500 - 50 = Rs 450 crore."
+
+  # Goods and Services Tax (GST)
+  - id: 5e000000-0403-4000-8000-000000000001
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 1
+    stem: "GST came into force across India on:"
+    options:
+      - { id: a, text: "1 April 2017" }
+      - { id: b, text: "1 January 2017" }
+      - { id: c, text: "1 July 2017" }
+      - { id: d, text: "15 August 2016" }
+    correct: c
+    explanation: "GST was launched on 1 July 2017, now observed as GST Day."
+  - id: 5e000000-0403-4000-8000-000000000002
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Which constitutional amendment made GST possible?"
+    options:
+      - { id: a, text: "101st Amendment" }
+      - { id: b, text: "73rd Amendment" }
+      - { id: c, text: "86th Amendment" }
+      - { id: d, text: "42nd Amendment" }
+    correct: a
+    explanation: "The Constitution (101st Amendment) Act, 2016 gave Parliament and the states the power to levy GST."
+  - id: 5e000000-0403-4000-8000-000000000003
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 1
+    stem: "Who is the chairperson of the GST Council?"
+    options:
+      - { id: a, text: "The Prime Minister" }
+      - { id: b, text: "The RBI Governor" }
+      - { id: c, text: "The President" }
+      - { id: d, text: "The Union Finance Minister" }
+    correct: d
+    explanation: "The Union Finance Minister chairs the GST Council. State Finance Ministers are its members."
+  - id: 5e000000-0403-4000-8000-000000000004
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Which Article of the Constitution provides for the GST Council?"
+    options:
+      - { id: a, text: "Article 280" }
+      - { id: b, text: "Article 279A" }
+      - { id: c, text: "Article 265" }
+      - { id: d, text: "Article 112" }
+    correct: b
+    explanation: "Article 279A, inserted by the 101st Amendment, creates the GST Council."
+  - id: 5e000000-0403-4000-8000-000000000005
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 1
+    stem: "GST is what kind of tax?"
+    options:
+      - { id: a, text: "Direct tax on income" }
+      - { id: b, text: "Tax on property" }
+      - { id: c, text: "Indirect tax on goods and services" }
+      - { id: d, text: "Tax on agricultural land" }
+    correct: c
+    explanation: "GST is an indirect tax: the seller collects it from the buyer and pays it to the government."
+  - id: 5e000000-0403-4000-8000-000000000006
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "On the sale of goods from Tamil Nadu to Kerala, which GST is charged?"
+    options:
+      - { id: a, text: "IGST" }
+      - { id: b, text: "CGST only" }
+      - { id: c, text: "SGST only" }
+      - { id: d, text: "No GST" }
+    correct: a
+    explanation: "Supplies from one state to another attract Integrated GST, collected by the Union and shared with the consuming state."
+  - id: 5e000000-0403-4000-8000-000000000007
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "On a sale within Tamil Nadu, GST is collected as:"
+    options:
+      - { id: a, text: "IGST only" }
+      - { id: b, text: "customs duty" }
+      - { id: c, text: "VAT and excise" }
+      - { id: d, text: "CGST and SGST" }
+    correct: d
+    explanation: "A supply within a state attracts both Central GST and State GST."
+  - id: 5e000000-0403-4000-8000-000000000008
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "GST is called a destination-based tax because:"
+    options:
+      - { id: a, text: "it is charged only on exports" }
+      - { id: b, text: "the revenue goes to the state where goods are consumed" }
+      - { id: c, text: "it is paid at the port of entry only" }
+      - { id: d, text: "it is collected by the producing state" }
+    correct: b
+    explanation: "GST revenue goes to the state where the goods or services are finally consumed."
+  - id: 5e000000-0403-4000-8000-000000000009
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Which of these taxes did GST replace?"
+    options:
+      - { id: a, text: "Income tax" }
+      - { id: b, text: "Corporation tax" }
+      - { id: c, text: "Value added tax (VAT)" }
+      - { id: d, text: "Property tax" }
+    correct: c
+    explanation: "GST replaced indirect taxes such as state VAT, central excise and service tax. Income tax and corporation tax are direct taxes."
+  - id: 5e000000-0403-4000-8000-000000000010
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Which of these is outside GST?"
+    options:
+      - { id: a, text: "Alcohol for human consumption" }
+      - { id: b, text: "Mobile phones" }
+      - { id: c, text: "Restaurant services" }
+      - { id: d, text: "Clothes" }
+    correct: a
+    explanation: "Alcoholic liquor for human consumption is kept outside GST by the Constitution. States tax it separately."
+  - id: 5e000000-0403-4000-8000-000000000011
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "What does input tax credit allow a business to do?"
+    options:
+      - { id: a, text: "Skip filing returns" }
+      - { id: b, text: "Borrow money from the government" }
+      - { id: c, text: "Avoid registration" }
+      - { id: d, text: "Deduct the GST paid on inputs from the GST collected on sales" }
+    correct: d
+    explanation: "Input tax credit lets a business set off the tax it paid on purchases, so tax falls only on the value it adds."
+  - id: 5e000000-0403-4000-8000-000000000012
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "GST removed the 'cascading effect'. What does that mean?"
+    options:
+      - { id: a, text: "Prices rising every month" }
+      - { id: b, text: "Tax being charged on tax already paid" }
+      - { id: c, text: "Goods moving between states" }
+      - { id: d, text: "Taxes being collected only once a year" }
+    correct: b
+    explanation: "Under the old system, tax was often charged on a price that already included tax. Input tax credit under GST stops this."
+  - id: 5e000000-0403-4000-8000-000000000013
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Which network runs the online system for GST registration, returns and payments?"
+    options:
+      - { id: a, text: "NPCI" }
+      - { id: b, text: "NIC" }
+      - { id: c, text: "GSTN" }
+      - { id: d, text: "SEBI" }
+    correct: c
+    explanation: "The Goods and Services Tax Network (GSTN) runs the IT system behind GST."
+  - id: 5e000000-0403-4000-8000-000000000014
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 1
+    stem: "Which slogan was used when GST was launched?"
+    options:
+      - { id: a, text: "One Nation, One Tax" }
+      - { id: b, text: "Make in India" }
+      - { id: c, text: "Digital India" }
+      - { id: d, text: "Garibi Hatao" }
+    correct: a
+    explanation: "GST was described as 'One Nation, One Tax' because it replaced many separate taxes with one system."
+  - id: 5e000000-0403-4000-8000-000000000015
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Which tax did GST replace at the Union level?"
+    options:
+      - { id: a, text: "Income tax" }
+      - { id: b, text: "Wealth tax" }
+      - { id: c, text: "Stamp duty" }
+      - { id: d, text: "Service tax" }
+    correct: d
+    explanation: "GST replaced Union taxes such as service tax and central excise duty."
+  - id: 5e000000-0403-4000-8000-000000000016
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Why is India's GST called a 'dual' GST?"
+    options:
+      - { id: a, text: "It has two tax rates only" }
+      - { id: b, text: "Both the Union and the states levy it" }
+      - { id: c, text: "It is paid twice a year" }
+      - { id: d, text: "It applies only to two sectors" }
+    correct: b
+    explanation: "In dual GST the Union levies CGST and the states levy SGST on the same transaction."
+  - id: 5e000000-0403-4000-8000-000000000017
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 3
+    stem: "A small trader under the GST composition scheme:"
+    options:
+      - { id: a, text: "pays no tax at all" }
+      - { id: b, text: "can claim double input tax credit" }
+      - { id: c, text: "pays tax at a low fixed rate on turnover and cannot claim input tax credit" }
+      - { id: d, text: "must file returns every day" }
+    correct: c
+    explanation: "The composition scheme offers a simple low rate on turnover and easier returns, but the trader gives up input tax credit."
+  - id: 5e000000-0403-4000-8000-000000000018
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Who are the members of the GST Council besides its chairperson?"
+    options:
+      - { id: a, text: "Finance Ministers of the states and the Union Minister of State for Finance" }
+      - { id: b, text: "Chief Justices of the High Courts" }
+      - { id: c, text: "Members of the Rajya Sabha" }
+      - { id: d, text: "Governors of the states" }
+    correct: a
+    explanation: "The Council has the Union Finance Minister as chair, the Union Minister of State for Finance, and the Finance Ministers (or nominated ministers) of each state."
+  - id: 5e000000-0403-4000-8000-000000000019
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Under GST, what happens to tax on goods imported into India?"
+    options:
+      - { id: a, text: "They are fully exempt" }
+      - { id: b, text: "Only SGST is charged" }
+      - { id: c, text: "Only the exporting country taxes them" }
+      - { id: d, text: "They attract IGST" }
+    correct: d
+    explanation: "Imports are treated like inter-state supplies and attract IGST along with basic customs duty."
+  - id: 5e000000-0403-4000-8000-000000000020
+    topic_id: 0199f5a0-0403-7000-8000-000000000403
+    difficulty: 2
+    stem: "Which of these fuels is currently NOT taxed under GST?"
+    options:
+      - { id: a, text: "Cooking gas cylinders sold to homes" }
+      - { id: b, text: "Petrol" }
+      - { id: c, text: "Coal" }
+      - { id: d, text: "Lubricating oil" }
+    correct: b
+    explanation: "Petrol, diesel, crude oil, natural gas and aviation turbine fuel are not yet taxed under GST. The GST Council has to decide when to bring them in."
