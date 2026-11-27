@@ -28,3 +28,31 @@ model GameResult {
 }
 
 // To model in week 3: GameRoom (turn persistence for District Quest), League.
+
+/// BOLT-0115. One free Daily Spin per user per IST day; the row is the idempotency record. `roll` is the CSPRNG draw
+/// in [0, total weight) and `oddsVersion` the prize table it was drawn from (§18, §40). Prizes are Points or nothing.
+model DailySpin {
+  userId      String   @db.Uuid
+  day         String // IST calendar day, "2026-11-25"
+  prizeId     String
+  amount      Int // Points credited (0 = "Better luck tomorrow")
+  roll        Int
+  oddsVersion Int
+  createdAt   DateTime
+
+  @@id([userId, day])
+}
+
+/// BOLT-0115. A solo Confidence Duel. Questions are stored with the version served, so grading uses that version.
+model ConfidenceDuel {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  userId        String    @db.Uuid
+  examCode      String
+  questions     Json // [{ questionId, version }]
+  startedAt     DateTime
+  submittedAt   DateTime?
+  pointsAwarded Int       @default(0)
+  result        Json?
+
+  @@index([userId, submittedAt])
+}

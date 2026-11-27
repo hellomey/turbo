@@ -777,6 +777,41 @@ class HmApi {
   Future<Map<String, dynamic>> putLeaderboardOptIn(bool optIn) async =>
       _map(await _write('PUT', '/v1/me/leaderboard-opt-in', {'optIn': optIn}));
 
+  // ------------------------------------------------------------------ games: Daily Spin, Confidence Duel (BOLT-0115)
+
+  /// `GET /v1/games/rules` (contract `GameRules` JSON): odds, scoring, limits.
+  Future<Map<String, dynamic>> getGameRules() async =>
+      _map(await _get('/v1/games/rules'));
+
+  /// `GET /v1/games/daily-spin` (contract `DailySpinState` JSON).
+  Future<Map<String, dynamic>> getDailySpin() async =>
+      _map(await _get('/v1/games/daily-spin'));
+
+  /// `POST /v1/games/daily-spin` (contract `DailySpinResult` JSON). The server draws.
+  Future<Map<String, dynamic>> spinDailySpin() async =>
+      _map(await _write('POST', '/v1/games/daily-spin', null));
+
+  /// `GET /v1/games/confidence-duel?examCode=` (contract `ConfidenceDuel` JSON).
+  Future<Map<String, dynamic>> startConfidenceDuel(
+    String examCode,
+  ) async => _map(
+    await _get(
+      '/v1/games/confidence-duel?examCode=${Uri.encodeQueryComponent(examCode)}',
+    ),
+  );
+
+  /// `POST /v1/games/confidence-duel/{duelId}/submit` (contract `DuelResult` JSON).
+  Future<Map<String, dynamic>> submitConfidenceDuel(
+    String duelId,
+    List<Map<String, Object>> answers,
+  ) async => _map(
+    await _write(
+      'POST',
+      '/v1/games/confidence-duel/${Uri.encodeComponent(duelId)}/submit',
+      {'answers': answers},
+    ),
+  );
+
   // ------------------------------------------------------------------ Desk: exam changes (§20.2, OPS / ADMIN)
 
   /// `GET /v1/desk/exam-changes?status=` (contract `ExamChangePage`).

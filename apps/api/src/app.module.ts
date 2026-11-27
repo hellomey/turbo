@@ -5,6 +5,7 @@ import { AuditHttpModule } from "./http/audit/audit.http-module.js";
 import { AuthHttpModule } from "./http/auth/auth.http-module.js";
 import { ContentHttpModule } from "./http/content/content.http-module.js";
 import { EconomyHttpModule } from "./http/economy/economy.http-module.js";
+import { GamesHttpModule } from "./http/games/games.http-module.js";
 import { ExamHallHttpModule } from "./http/exam-hall/exam-hall.http-module.js";
 import { ExamAlertsHttpModule } from "./http/exams/exam-alerts.http-module.js";
 import { ExamsHttpModule } from "./http/exams/exams.http-module.js";
@@ -45,6 +46,7 @@ import { PlatformGuard } from "./platform/platform.guard.js";
     ReadinessHttpModule,
     PlanHttpModule, // BOLT-0012
     EconomyHttpModule, // BOLT-0113
+    GamesHttpModule, // BOLT-0115
   ],
   controllers: [HealthController],
   providers: [

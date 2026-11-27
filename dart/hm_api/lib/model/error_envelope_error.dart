@@ -168,6 +168,9 @@ class ErrorEnvelopeErrorCodeEnum {
   static const AI_BUSY = ErrorEnvelopeErrorCodeEnum._(r'AI_BUSY');
   static const GAMES_SLEEPING = ErrorEnvelopeErrorCodeEnum._(r'GAMES_SLEEPING');
   static const RANKED_DAILY_CAP = ErrorEnvelopeErrorCodeEnum._(r'RANKED_DAILY_CAP');
+  static const DUEL_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'DUEL_NOT_FOUND');
+  static const DUEL_ALREADY_SUBMITTED = ErrorEnvelopeErrorCodeEnum._(r'DUEL_ALREADY_SUBMITTED');
+  static const DUEL_NO_QUESTIONS = ErrorEnvelopeErrorCodeEnum._(r'DUEL_NO_QUESTIONS');
   static const TOPIC_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'TOPIC_NOT_FOUND');
   static const QUESTION_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'QUESTION_NOT_FOUND');
   static const CHECK_NOT_AVAILABLE = ErrorEnvelopeErrorCodeEnum._(r'CHECK_NOT_AVAILABLE');
@@ -228,6 +231,9 @@ class ErrorEnvelopeErrorCodeEnum {
     AI_BUSY,
     GAMES_SLEEPING,
     RANKED_DAILY_CAP,
+    DUEL_NOT_FOUND,
+    DUEL_ALREADY_SUBMITTED,
+    DUEL_NO_QUESTIONS,
     TOPIC_NOT_FOUND,
     QUESTION_NOT_FOUND,
     CHECK_NOT_AVAILABLE,
@@ -323,6 +329,9 @@ class ErrorEnvelopeErrorCodeEnumTypeTransformer {
         case r'AI_BUSY': return ErrorEnvelopeErrorCodeEnum.AI_BUSY;
         case r'GAMES_SLEEPING': return ErrorEnvelopeErrorCodeEnum.GAMES_SLEEPING;
         case r'RANKED_DAILY_CAP': return ErrorEnvelopeErrorCodeEnum.RANKED_DAILY_CAP;
+        case r'DUEL_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.DUEL_NOT_FOUND;
+        case r'DUEL_ALREADY_SUBMITTED': return ErrorEnvelopeErrorCodeEnum.DUEL_ALREADY_SUBMITTED;
+        case r'DUEL_NO_QUESTIONS': return ErrorEnvelopeErrorCodeEnum.DUEL_NO_QUESTIONS;
         case r'TOPIC_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.TOPIC_NOT_FOUND;
         case r'QUESTION_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.QUESTION_NOT_FOUND;
         case r'CHECK_NOT_AVAILABLE': return ErrorEnvelopeErrorCodeEnum.CHECK_NOT_AVAILABLE;

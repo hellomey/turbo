@@ -15,6 +15,10 @@
     "FW-022": "Offline-synced study actions never produce ranked rewards (only study progress)",
     "FW-023": "Points can never be bought: no purchase, store or Sparks reason is accepted, and billing never touches Points",
     "FW-024": "Daily check-in and games never credit Sparks",
-    "FW-025": "XP is awarded only for learning events and check-in, never for a purchase or a game stake"
+    "FW-025": "XP is awarded only for learning events and check-in, never for a purchase or a game stake",
+    "FW-026": "Games credit only Points, through the economy firewall API: never Sparks, never XP",
+    "FW-027": "The Daily Spin odds published by the API are exactly the table the draw uses",
+    "FW-028": "No game route or request accepts a stake, entry fee, bet or payment",
+    "FW-029": "Game Points are capped per day, never negative, and a duel never takes Points away"
   }
 }

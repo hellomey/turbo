@@ -105,6 +105,9 @@
                   "AI_BUSY",
                   "GAMES_SLEEPING",
                   "RANKED_DAILY_CAP",
+                  "DUEL_NOT_FOUND",
+                  "DUEL_ALREADY_SUBMITTED",
+                  "DUEL_NO_QUESTIONS",
                   "TOPIC_NOT_FOUND",
                   "QUESTION_NOT_FOUND",
                   "CHECK_NOT_AVAILABLE",
@@ -4994,6 +4997,442 @@
         },
         "required": [
           "optIn"
+        ],
+        "additionalProperties": false
+      },
+      "GameRules": {
+        "type": "object",
+        "properties": {
+          "prizeCurrencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "POINTS"
+              ]
+            }
+          },
+          "stake": {
+            "type": "string",
+            "enum": [
+              "none"
+            ]
+          },
+          "sleep": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "timeZone": {
+                "type": "string",
+                "enum": [
+                  "Asia/Kolkata"
+                ]
+              }
+            },
+            "required": [
+              "from",
+              "to",
+              "timeZone"
+            ]
+          },
+          "dailySpin": {
+            "type": "object",
+            "properties": {
+              "oddsVersion": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "spinsPerDay": {
+                "type": "integer",
+                "exclusiveMinimum": 0
+              },
+              "prizes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SpinPrize"
+                }
+              }
+            },
+            "required": [
+              "oddsVersion",
+              "spinsPerDay",
+              "prizes"
+            ]
+          },
+          "confidenceDuel": {
+            "$ref": "#/components/schemas/DuelRules"
+          }
+        },
+        "required": [
+          "prizeCurrencies",
+          "stake",
+          "sleep",
+          "dailySpin",
+          "confidenceDuel"
+        ]
+      },
+      "SpinPrize": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "points",
+              "none"
+            ]
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "percent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "kind",
+          "amount",
+          "percent"
+        ]
+      },
+      "DuelRules": {
+        "type": "object",
+        "properties": {
+          "questionsPerDuel": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "timeLimitSeconds": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "minSecondsForPoints": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "graceSeconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "dailyPointsCap": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "scoring": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DuelScoringRow"
+            }
+          }
+        },
+        "required": [
+          "questionsPerDuel",
+          "timeLimitSeconds",
+          "minSecondsForPoints",
+          "graceSeconds",
+          "dailyPointsCap",
+          "scoring"
+        ]
+      },
+      "DuelScoringRow": {
+        "type": "object",
+        "properties": {
+          "confidence": {
+            "$ref": "#/components/schemas/DuelConfidence"
+          },
+          "label": {
+            "type": "string"
+          },
+          "correctPoints": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "wrongPoints": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "confidence",
+          "label",
+          "correctPoints",
+          "wrongPoints"
+        ]
+      },
+      "DuelConfidence": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 3
+      },
+      "DailySpinState": {
+        "type": "object",
+        "properties": {
+          "oddsVersion": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "prizes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpinPrize"
+            }
+          },
+          "spunToday": {
+            "type": "boolean"
+          },
+          "todaysPrize": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SpinPrize"
+              },
+              {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            ]
+          },
+          "nextSpinAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "asleep": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "oddsVersion",
+          "prizes",
+          "spunToday",
+          "todaysPrize",
+          "nextSpinAt",
+          "asleep"
+        ]
+      },
+      "DailySpinResult": {
+        "type": "object",
+        "properties": {
+          "prize": {
+            "$ref": "#/components/schemas/SpinPrize"
+          },
+          "oddsVersion": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "odds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpinPrize"
+            }
+          },
+          "nextSpinAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alreadySpun": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "prize",
+          "oddsVersion",
+          "odds",
+          "nextSpinAt",
+          "alreadySpun"
+        ]
+      },
+      "ConfidenceDuel": {
+        "type": "object",
+        "properties": {
+          "duelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "examCode": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            }
+          },
+          "rules": {
+            "$ref": "#/components/schemas/DuelRules"
+          },
+          "pointsToday": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "duelId",
+          "examCode",
+          "startedAt",
+          "questions",
+          "rules",
+          "pointsToday"
+        ]
+      },
+      "DuelResult": {
+        "type": "object",
+        "properties": {
+          "duelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DuelAnswerResult"
+            }
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pointsAwarded": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pointsWithheld": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "too_fast",
+              "too_late",
+              "daily_cap",
+              null
+            ]
+          },
+          "pointsToday": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "dailyPointsCap": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "duelId",
+          "results",
+          "score",
+          "pointsAwarded",
+          "pointsWithheld",
+          "pointsToday",
+          "dailyPointsCap"
+        ]
+      },
+      "DuelAnswerResult": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "correct": {
+            "type": "boolean"
+          },
+          "correctOptionIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "chosenOptionId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "confidence": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DuelConfidence"
+              },
+              {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            ]
+          },
+          "explanationMarkdown": {
+            "type": "string"
+          },
+          "points": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "questionId",
+          "correct",
+          "correctOptionIds",
+          "chosenOptionId",
+          "confidence",
+          "explanationMarkdown",
+          "points"
+        ]
+      },
+      "SubmitDuelBody": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "optionId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64
+                },
+                "confidence": {
+                  "$ref": "#/components/schemas/DuelConfidence"
+                }
+              },
+              "required": [
+                "questionId",
+                "optionId",
+                "confidence"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 10
+          }
+        },
+        "required": [
+          "answers"
         ],
         "additionalProperties": false
       }
@@ -11166,6 +11605,430 @@
           },
           "403": {
             "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/games/rules": {
+      "get": {
+        "tags": [
+          "games"
+        ],
+        "operationId": "getGameRules",
+        "summary": "Game Rules & Odds: the Daily Spin prize table with exact odds, Confidence Duel scoring, limits and sleep hours.",
+        "x-heymey-auth": "public",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Rules",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameRules"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/games/daily-spin": {
+      "get": {
+        "tags": [
+          "games"
+        ],
+        "operationId": "getDailySpin",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "The published prize table with exact odds, and whether today's free spin is used.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Spin state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailySpinState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "games"
+        ],
+        "operationId": "spinDailySpin",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Today's one free spin (IST day). The server draws with a CSPRNG. A second call the same day returns the same prize.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 20,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prize",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailySpinResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Games are sleeping (12 AM to 5 AM IST)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/games/confidence-duel": {
+      "get": {
+        "tags": [
+          "games"
+        ],
+        "operationId": "startConfidenceDuel",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Start a solo duel against the clock: 5 published practice questions (no answers) and the scoring rules.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 60,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/ExamCode"
+            },
+            "required": true,
+            "name": "examCode",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Duel",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfidenceDuel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Exam not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Sleeping or not enough questions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/games/confidence-duel/{duelId}/submit": {
+      "post": {
+        "tags": [
+          "games"
+        ],
+        "operationId": "submitConfidenceDuel",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Submit answers with a confidence (1 to 3) each. The server grades and scores calibration; Points are capped per day.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 60,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "duelId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitDuelBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Graded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuelResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Duel not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already submitted",
             "content": {
               "application/json": {
                 "schema": {

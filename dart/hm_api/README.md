@@ -107,6 +107,11 @@ Class | Method | HTTP request | Description
 *ExamsApi* | [**putMyExams**](doc//ExamsApi.md#putmyexams) | **PUT** /v1/me/exams | 
 *ExamsApi* | [**receiveSiteChange**](doc//ExamsApi.md#receivesitechange) | **POST** /v1/webhooks/changedetection | changedetection.io site-change webhook. Stores a pending change; NOTHING is sent to users (§17.5).
 *ExamsApi* | [**rejectExamChange**](doc//ExamsApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
+*GamesApi* | [**getDailySpin**](doc//GamesApi.md#getdailyspin) | **GET** /v1/games/daily-spin | The published prize table with exact odds, and whether today's free spin is used.
+*GamesApi* | [**getGameRules**](doc//GamesApi.md#getgamerules) | **GET** /v1/games/rules | Game Rules & Odds: the Daily Spin prize table with exact odds, Confidence Duel scoring, limits and sleep hours.
+*GamesApi* | [**spinDailySpin**](doc//GamesApi.md#spindailyspin) | **POST** /v1/games/daily-spin | Today's one free spin (IST day). The server draws with a CSPRNG. A second call the same day returns the same prize.
+*GamesApi* | [**startConfidenceDuel**](doc//GamesApi.md#startconfidenceduel) | **GET** /v1/games/confidence-duel | Start a solo duel against the clock: 5 published practice questions (no answers) and the scoring rules.
+*GamesApi* | [**submitConfidenceDuel**](doc//GamesApi.md#submitconfidenceduel) | **POST** /v1/games/confidence-duel/{duelId}/submit | Submit answers with a confidence (1 to 3) each. The server grades and scores calibration; Points are capped per day.
 *MasteryApi* | [**completeLesson**](doc//MasteryApi.md#completelesson) | **POST** /v1/topics/{topicId}/lesson-complete | I finished the lesson or the mapped textbook pages. Opens the 3-question Lit check.
 *MasteryApi* | [**getMyMastery**](doc//MasteryApi.md#getmymastery) | **GET** /v1/me/mastery | Rank (from lamps only), XP and ring counts across my exams.
 *MasteryApi* | [**getRelightQueue**](doc//MasteryApi.md#getrelightqueue) | **GET** /v1/me/relight-queue | Dimming lamps I can open, oldest first, with minutes (\"Relight 4 · 8 min\").
@@ -163,6 +168,7 @@ Class | Method | HTTP request | Description
  - [Community](doc//Community.md)
  - [ConceptDrill](doc//ConceptDrill.md)
  - [ConceptDrillList](doc//ConceptDrillList.md)
+ - [ConfidenceDuel](doc//ConfidenceDuel.md)
  - [ConsentChoicesBody](doc//ConsentChoicesBody.md)
  - [ConsentChoicesBodyChoicesInner](doc//ConsentChoicesBodyChoicesInner.md)
  - [ConsentNotice](doc//ConsentNotice.md)
@@ -173,6 +179,9 @@ Class | Method | HTTP request | Description
  - [ContentLanguage](doc//ContentLanguage.md)
  - [ContentPack](doc//ContentPack.md)
  - [ContentPackList](doc//ContentPackList.md)
+ - [DailySpinResult](doc//DailySpinResult.md)
+ - [DailySpinState](doc//DailySpinState.md)
+ - [DailySpinStateTodaysPrize](doc//DailySpinStateTodaysPrize.md)
  - [DeleteAccountBody](doc//DeleteAccountBody.md)
  - [DeleteAccountResponse](doc//DeleteAccountResponse.md)
  - [DeskChallenge](doc//DeskChallenge.md)
@@ -180,6 +189,10 @@ Class | Method | HTTP request | Description
  - [DeskTotpEnrollResponse](doc//DeskTotpEnrollResponse.md)
  - [DeskTotpVerifyBody](doc//DeskTotpVerifyBody.md)
  - [District](doc//District.md)
+ - [DuelAnswerResult](doc//DuelAnswerResult.md)
+ - [DuelResult](doc//DuelResult.md)
+ - [DuelRules](doc//DuelRules.md)
+ - [DuelScoringRow](doc//DuelScoringRow.md)
  - [EarnedTrophy](doc//EarnedTrophy.md)
  - [EligibilityCheckBody](doc//EligibilityCheckBody.md)
  - [EligibilityReason](doc//EligibilityReason.md)
@@ -203,6 +216,9 @@ Class | Method | HTTP request | Description
  - [ExamStructure](doc//ExamStructure.md)
  - [ExamStructureFamily](doc//ExamStructureFamily.md)
  - [ExamSummary](doc//ExamSummary.md)
+ - [GameRules](doc//GameRules.md)
+ - [GameRulesDailySpin](doc//GameRulesDailySpin.md)
+ - [GameRulesSleep](doc//GameRulesSleep.md)
  - [GlossaryList](doc//GlossaryList.md)
  - [GlossaryListItemsInner](doc//GlossaryListItemsInner.md)
  - [GradedAnswer](doc//GradedAnswer.md)
@@ -294,6 +310,7 @@ Class | Method | HTTP request | Description
  - [SiteChangeAck](doc//SiteChangeAck.md)
  - [SiteChangeWebhookBody](doc//SiteChangeWebhookBody.md)
  - [SpecialCategory](doc//SpecialCategory.md)
+ - [SpinPrize](doc//SpinPrize.md)
  - [StartCheckBody](doc//StartCheckBody.md)
  - [StartMockBody](doc//StartMockBody.md)
  - [StartPracticeBody](doc//StartPracticeBody.md)
@@ -305,6 +322,8 @@ Class | Method | HTTP request | Description
  - [StudyMapSubjectsInner](doc//StudyMapSubjectsInner.md)
  - [StudyMapTopic](doc//StudyMapTopic.md)
  - [SubmitCheckBody](doc//SubmitCheckBody.md)
+ - [SubmitDuelBody](doc//SubmitDuelBody.md)
+ - [SubmitDuelBodyAnswersInner](doc//SubmitDuelBodyAnswersInner.md)
  - [SundayReport](doc//SundayReport.md)
  - [SundayReportPage](doc//SundayReportPage.md)
  - [SundayReportSummary](doc//SundayReportSummary.md)

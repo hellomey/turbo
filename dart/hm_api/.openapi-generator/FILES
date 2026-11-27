@@ -17,6 +17,7 @@ doc/ClientKind.md
 doc/Community.md
 doc/ConceptDrill.md
 doc/ConceptDrillList.md
+doc/ConfidenceDuel.md
 doc/ConsentChoicesBody.md
 doc/ConsentChoicesBodyChoicesInner.md
 doc/ConsentNotice.md
@@ -28,6 +29,9 @@ doc/ContentApi.md
 doc/ContentLanguage.md
 doc/ContentPack.md
 doc/ContentPackList.md
+doc/DailySpinResult.md
+doc/DailySpinState.md
+doc/DailySpinStateTodaysPrize.md
 doc/DeleteAccountBody.md
 doc/DeleteAccountResponse.md
 doc/DeskApi.md
@@ -36,6 +40,10 @@ doc/DeskTotpEnrollBody.md
 doc/DeskTotpEnrollResponse.md
 doc/DeskTotpVerifyBody.md
 doc/District.md
+doc/DuelAnswerResult.md
+doc/DuelResult.md
+doc/DuelRules.md
+doc/DuelScoringRow.md
 doc/EarnedTrophy.md
 doc/EconomyApi.md
 doc/EligibilityCheckBody.md
@@ -62,6 +70,10 @@ doc/ExamStructure.md
 doc/ExamStructureFamily.md
 doc/ExamSummary.md
 doc/ExamsApi.md
+doc/GameRules.md
+doc/GameRulesDailySpin.md
+doc/GameRulesSleep.md
+doc/GamesApi.md
 doc/GlossaryList.md
 doc/GlossaryListItemsInner.md
 doc/GradedAnswer.md
@@ -159,6 +171,7 @@ doc/SessionGranted.md
 doc/SiteChangeAck.md
 doc/SiteChangeWebhookBody.md
 doc/SpecialCategory.md
+doc/SpinPrize.md
 doc/StartCheckBody.md
 doc/StartMockBody.md
 doc/StartPracticeBody.md
@@ -170,6 +183,8 @@ doc/StudyMap.md
 doc/StudyMapSubjectsInner.md
 doc/StudyMapTopic.md
 doc/SubmitCheckBody.md
+doc/SubmitDuelBody.md
+doc/SubmitDuelBodyAnswersInner.md
 doc/SundayReport.md
 doc/SundayReportPage.md
 doc/SundayReportSummary.md
@@ -207,6 +222,7 @@ lib/api/desk_api.dart
 lib/api/economy_api.dart
 lib/api/exam_hall_api.dart
 lib/api/exams_api.dart
+lib/api/games_api.dart
 lib/api/mastery_api.dart
 lib/api/notifications_api.dart
 lib/api/plan_api.dart
@@ -238,6 +254,7 @@ lib/model/client_kind.dart
 lib/model/community.dart
 lib/model/concept_drill.dart
 lib/model/concept_drill_list.dart
+lib/model/confidence_duel.dart
 lib/model/consent_choices_body.dart
 lib/model/consent_choices_body_choices_inner.dart
 lib/model/consent_notice.dart
@@ -248,6 +265,9 @@ lib/model/consent_state_choices_inner.dart
 lib/model/content_language.dart
 lib/model/content_pack.dart
 lib/model/content_pack_list.dart
+lib/model/daily_spin_result.dart
+lib/model/daily_spin_state.dart
+lib/model/daily_spin_state_todays_prize.dart
 lib/model/delete_account_body.dart
 lib/model/delete_account_response.dart
 lib/model/desk_challenge.dart
@@ -255,6 +275,10 @@ lib/model/desk_totp_enroll_body.dart
 lib/model/desk_totp_enroll_response.dart
 lib/model/desk_totp_verify_body.dart
 lib/model/district.dart
+lib/model/duel_answer_result.dart
+lib/model/duel_result.dart
+lib/model/duel_rules.dart
+lib/model/duel_scoring_row.dart
 lib/model/earned_trophy.dart
 lib/model/eligibility_check_body.dart
 lib/model/eligibility_reason.dart
@@ -278,6 +302,9 @@ lib/model/exam_stage.dart
 lib/model/exam_structure.dart
 lib/model/exam_structure_family.dart
 lib/model/exam_summary.dart
+lib/model/game_rules.dart
+lib/model/game_rules_daily_spin.dart
+lib/model/game_rules_sleep.dart
 lib/model/glossary_list.dart
 lib/model/glossary_list_items_inner.dart
 lib/model/graded_answer.dart
@@ -369,6 +396,7 @@ lib/model/session_granted.dart
 lib/model/site_change_ack.dart
 lib/model/site_change_webhook_body.dart
 lib/model/special_category.dart
+lib/model/spin_prize.dart
 lib/model/start_check_body.dart
 lib/model/start_mock_body.dart
 lib/model/start_practice_body.dart
@@ -380,6 +408,8 @@ lib/model/study_map.dart
 lib/model/study_map_subjects_inner.dart
 lib/model/study_map_topic.dart
 lib/model/submit_check_body.dart
+lib/model/submit_duel_body.dart
+lib/model/submit_duel_body_answers_inner.dart
 lib/model/sunday_report.dart
 lib/model/sunday_report_page.dart
 lib/model/sunday_report_summary.dart
@@ -420,6 +450,7 @@ test/client_kind_test.dart
 test/community_test.dart
 test/concept_drill_list_test.dart
 test/concept_drill_test.dart
+test/confidence_duel_test.dart
 test/consent_choices_body_choices_inner_test.dart
 test/consent_choices_body_test.dart
 test/consent_notice_purposes_inner_test.dart
@@ -431,6 +462,9 @@ test/content_api_test.dart
 test/content_language_test.dart
 test/content_pack_list_test.dart
 test/content_pack_test.dart
+test/daily_spin_result_test.dart
+test/daily_spin_state_test.dart
+test/daily_spin_state_todays_prize_test.dart
 test/delete_account_body_test.dart
 test/delete_account_response_test.dart
 test/desk_api_test.dart
@@ -439,6 +473,10 @@ test/desk_totp_enroll_body_test.dart
 test/desk_totp_enroll_response_test.dart
 test/desk_totp_verify_body_test.dart
 test/district_test.dart
+test/duel_answer_result_test.dart
+test/duel_result_test.dart
+test/duel_rules_test.dart
+test/duel_scoring_row_test.dart
 test/earned_trophy_test.dart
 test/economy_api_test.dart
 test/eligibility_check_body_test.dart
@@ -465,6 +503,10 @@ test/exam_structure_family_test.dart
 test/exam_structure_test.dart
 test/exam_summary_test.dart
 test/exams_api_test.dart
+test/game_rules_daily_spin_test.dart
+test/game_rules_sleep_test.dart
+test/game_rules_test.dart
+test/games_api_test.dart
 test/glossary_list_items_inner_test.dart
 test/glossary_list_test.dart
 test/graded_answer_test.dart
@@ -562,6 +604,7 @@ test/session_granted_test.dart
 test/site_change_ack_test.dart
 test/site_change_webhook_body_test.dart
 test/special_category_test.dart
+test/spin_prize_test.dart
 test/start_check_body_test.dart
 test/start_mock_body_test.dart
 test/start_practice_body_test.dart
@@ -573,6 +616,8 @@ test/study_map_subjects_inner_test.dart
 test/study_map_test.dart
 test/study_map_topic_test.dart
 test/submit_check_body_test.dart
+test/submit_duel_body_answers_inner_test.dart
+test/submit_duel_body_test.dart
 test/sunday_report_page_test.dart
 test/sunday_report_summary_test.dart
 test/sunday_report_test.dart

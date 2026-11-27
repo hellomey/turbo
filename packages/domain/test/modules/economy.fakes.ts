@@ -24,6 +24,11 @@ export class FakeEconomyRepo implements EconomyRepository {
   async hasCheckedIn(userId: string, day: string) {
     return this.points.some((p) => p.key === `check_in:${userId}:${day}`);
   }
+  async awardPoints(a: { userId: string; delta: number; reason: string; key: string; at: Date }) {
+    if (this.points.some((p) => p.key === a.key)) return false;
+    this.points.push({ userId: a.userId, delta: a.delta, reason: a.reason, key: a.key });
+    return true;
+  }
   async xpTotal(userId: string) {
     return this.xp.filter((x) => x.userId === userId).reduce((s, x) => s + x.amount, 0);
   }

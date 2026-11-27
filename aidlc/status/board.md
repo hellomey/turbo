@@ -74,6 +74,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0042 | Daily Spin + Lucky Slot with server odds table, odds button and rules card | 0041, 0046 | Kanakku, Kaaval, Vizhi | Nov 26 | todo | Founder approves odds and prizes |
 | BOLT-0043 | Confidence Duel + Clue Poker | 0041 | Kanakku, Kaaval, Vizhi | Nov 27 | todo | - |
 | BOLT-0044 | Squad Battles (with Koottam) | 0041, 0049 | Kanakku, Kaaval, Vizhi | Nov 27 | todo | - |
+| BOLT-0115 | Daily Spin (server CSPRNG, published odds) + solo Confidence Duel (calibration scoring, daily Points cap), `/v1/games/rules`, marketing `/rules` games section, Play hub (Flutter) | 0113 | Kanakku, Kaaval, Vizhi | Nov 28 | review | Founder approves prize table, odds and duel Points cap |
 
 ### Kanakku (economy and billing)
 

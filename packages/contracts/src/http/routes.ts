@@ -22,6 +22,7 @@ import { ConsentChoicesBody, ConsentNotice, ConsentState, Me, ProfileAnswers, Up
 import { EligibilityCheckBody, EligibilityResult, ExamCode, ExamDetail, ExamList, UserExams, UserExamsBody } from "./exams.js";
 import { GlossaryList, GlossaryQuery, Lesson, StudyMap } from "./study.js";
 import { studyRoutes } from "./routes-study.js";
+import { gamesRoutes } from "./routes-games.js";
 
 const json = <T extends z.ZodType>(schema: T) => ({ content: { "application/json": { schema } } });
 const err = (description: string) => ({ description, ...json(ErrorEnvelope) });
@@ -208,4 +209,7 @@ export const routes: HmRoute[] = [
 
   // ---------------------------------------------------------------- Phase 2 core study (BOLT-0008)
   ...studyRoutes,
+
+  // ---------------------------------------------------------------- games (BOLT-0115)
+  ...gamesRoutes,
 ];

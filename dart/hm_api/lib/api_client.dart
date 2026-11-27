@@ -208,6 +208,8 @@ class ApiClient {
           return ConceptDrill.fromJson(value);
         case 'ConceptDrillList':
           return ConceptDrillList.fromJson(value);
+        case 'ConfidenceDuel':
+          return ConfidenceDuel.fromJson(value);
         case 'ConsentChoicesBody':
           return ConsentChoicesBody.fromJson(value);
         case 'ConsentChoicesBodyChoicesInner':
@@ -228,6 +230,12 @@ class ApiClient {
           return ContentPack.fromJson(value);
         case 'ContentPackList':
           return ContentPackList.fromJson(value);
+        case 'DailySpinResult':
+          return DailySpinResult.fromJson(value);
+        case 'DailySpinState':
+          return DailySpinState.fromJson(value);
+        case 'DailySpinStateTodaysPrize':
+          return DailySpinStateTodaysPrize.fromJson(value);
         case 'DeleteAccountBody':
           return DeleteAccountBody.fromJson(value);
         case 'DeleteAccountResponse':
@@ -242,6 +250,14 @@ class ApiClient {
           return DeskTotpVerifyBody.fromJson(value);
         case 'District':
           return DistrictTypeTransformer().decode(value);
+        case 'DuelAnswerResult':
+          return DuelAnswerResult.fromJson(value);
+        case 'DuelResult':
+          return DuelResult.fromJson(value);
+        case 'DuelRules':
+          return DuelRules.fromJson(value);
+        case 'DuelScoringRow':
+          return DuelScoringRow.fromJson(value);
         case 'EarnedTrophy':
           return EarnedTrophy.fromJson(value);
         case 'EligibilityCheckBody':
@@ -288,6 +304,12 @@ class ApiClient {
           return ExamStructureFamily.fromJson(value);
         case 'ExamSummary':
           return ExamSummary.fromJson(value);
+        case 'GameRules':
+          return GameRules.fromJson(value);
+        case 'GameRulesDailySpin':
+          return GameRulesDailySpin.fromJson(value);
+        case 'GameRulesSleep':
+          return GameRulesSleep.fromJson(value);
         case 'GlossaryList':
           return GlossaryList.fromJson(value);
         case 'GlossaryListItemsInner':
@@ -470,6 +492,8 @@ class ApiClient {
           return SiteChangeWebhookBody.fromJson(value);
         case 'SpecialCategory':
           return SpecialCategoryTypeTransformer().decode(value);
+        case 'SpinPrize':
+          return SpinPrize.fromJson(value);
         case 'StartCheckBody':
           return StartCheckBody.fromJson(value);
         case 'StartMockBody':
@@ -492,6 +516,10 @@ class ApiClient {
           return StudyMapTopic.fromJson(value);
         case 'SubmitCheckBody':
           return SubmitCheckBody.fromJson(value);
+        case 'SubmitDuelBody':
+          return SubmitDuelBody.fromJson(value);
+        case 'SubmitDuelBodyAnswersInner':
+          return SubmitDuelBodyAnswersInner.fromJson(value);
         case 'SundayReport':
           return SundayReport.fromJson(value);
         case 'SundayReportPage':

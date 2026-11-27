@@ -14,6 +14,8 @@ Spin, Slot, Duel, Clue Poker, District Quest, Memory Pits, Tiger Trap; odds; lea
 - OddsConfig (versioned)
 - League
 - Trophy
+- DailySpin (BOLT-0115)
+- ConfidenceDuel (BOLT-0115)
 
 ## Responsibilities
 - Server-authoritative rooms
