@@ -52,7 +52,7 @@ jobs:
             const api = process.env.API_BASE_URL;
             const csp = ["default-src '\''self'\''", "script-src '\''self'\'' '\''wasm-unsafe-eval'\''",
               "style-src '\''self'\'' '\''unsafe-inline'\''", "img-src '\''self'\'' data: blob:",
-              "font-src '\''self'\'' data: https://fonts.gstatic.com", `connect-src '\''self'\'' ${api}`,
+              "font-src '\''self'\'' data: https://fonts.gstatic.com", `connect-src '\''self'\'' ${api} https://fonts.gstatic.com`,
               "worker-src '\''self'\'' blob:", "object-src '\''none'\''", "base-uri '\''self'\''",
               "frame-ancestors '\''none'\''"].join("; ");
             const cfg = {
