@@ -53,9 +53,9 @@ class ProfileTab extends ConsumerWidget {
                     backgroundColor: context.hm.primary,
                     foregroundColor: context.hm.onPrimary,
                     child: Text(
-                      (user.nickname ?? user.email).isEmpty
+                      (user.nickname ?? user.email ?? '').isEmpty
                           ? '?'
-                          : (user.nickname ?? user.email)[0].toUpperCase(),
+                          : (user.nickname ?? user.email!)[0].toUpperCase(),
                       style: text.titleLarge?.copyWith(
                         color: context.hm.onPrimary,
                       ),
@@ -70,7 +70,7 @@ class ProfileTab extends ConsumerWidget {
                       if (user.nickname != null)
                         Text(user.nickname!, style: text.titleMedium),
                       Text(
-                        user.email,
+                        user.email ?? 'Guest',
                         key: const Key('profile-email'),
                         style: text.bodyLarge?.copyWith(
                           color: context.hm.textMuted,
@@ -82,6 +82,33 @@ class ProfileTab extends ConsumerWidget {
               ],
             ),
           ),
+          if (user.isGuest) ...[
+            const SizedBox(height: HmSpace.md),
+            HmCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Save your progress', style: text.titleMedium),
+                  const SizedBox(height: HmSpace.sm),
+                  Text(
+                    'You are trying HeyMey as a guest. Sign in with your email to keep your progress. '
+                    'A guest account that is not saved is deleted after a while.',
+                    style: text.bodyMedium,
+                  ),
+                  const SizedBox(height: HmSpace.md),
+                  HmPrimaryButton(
+                    key: const Key('profile-save-progress'),
+                    label: 'Save your progress',
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const SaveProgressScreen(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           const HmSectionTitle('Settings', icon: Icons.tune_rounded),
           SwitchListTile(
             key: const Key('calm-mode'),
@@ -154,6 +181,8 @@ class ProfileTab extends ConsumerWidget {
                 ref.read(meProvider.notifier).logout(allDevices: true),
           ),
           const SizedBox(height: 24),
+          // A guest has no email to confirm deletion with; unsaved guest accounts are deleted automatically.
+          if (user.email case final email?)
           TextButton(
             key: const Key('delete-account'),
             style: TextButton.styleFrom(
@@ -162,7 +191,7 @@ class ProfileTab extends ConsumerWidget {
             ),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (_) => DeleteAccountScreen(email: user.email),
+                builder: (_) => DeleteAccountScreen(email: email),
               ),
             ),
             child: const Text('Delete account'),
@@ -351,6 +380,96 @@ class LegalLinks extends ConsumerWidget {
           child: SelectableText('Questions or complaints: $grievanceEmail'),
         ),
       ],
+    );
+  }
+}
+
+/// Guest mode "Save your progress": email, then the 6-digit code. Same account when the email is new;
+/// when the email already has an account, the app says plainly that the guest progress was not moved.
+class SaveProgressScreen extends ConsumerStatefulWidget {
+  const SaveProgressScreen({super.key});
+
+  @override
+  ConsumerState<SaveProgressScreen> createState() => _SaveProgressScreenState();
+}
+
+class _SaveProgressScreenState extends ConsumerState<SaveProgressScreen> {
+  final _email = TextEditingController();
+
+  @override
+  void dispose() {
+    _email.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(saveProgressProvider);
+    final c = ref.read(saveProgressProvider.notifier);
+    final text = Theme.of(context).textTheme;
+    return Scaffold(
+      appBar: AppBar(title: const Text('Save your progress')),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: switch (state.step) {
+          SaveProgressStep.email => [
+            Text(
+              'We will send a 6-digit code to your email. You do not need a password.',
+              style: text.bodyLarge,
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              key: const Key('save-progress-email'),
+              controller: _email,
+              keyboardType: TextInputType.emailAddress,
+              autofillHints: const [AutofillHints.email],
+              autocorrect: false,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                prefixIcon: const Icon(Icons.mail_outline_rounded),
+                errorText: state.error,
+              ),
+              onSubmitted: c.sendCode,
+            ),
+            const SizedBox(height: 16),
+            HmPrimaryButton(
+              key: const Key('save-progress-send'),
+              label: 'Send code',
+              busy: state.busy,
+              onPressed: () => c.sendCode(_email.text),
+            ),
+          ],
+          SaveProgressStep.code => [
+            Text(
+              'Enter the code we sent to ${state.email}.',
+              style: text.bodyLarge,
+            ),
+            const SizedBox(height: 16),
+            HmCodeEntry(
+              onSubmit: c.confirm,
+              onResend: () => c.sendCode(state.email),
+              resendAfter: Duration(seconds: state.resendAfterSeconds),
+              errorText: state.error,
+              busy: state.busy,
+            ),
+          ],
+          SaveProgressStep.done => [
+            Text(
+              state.merged
+                  ? 'Your progress is saved. Sign in with ${state.email} on any phone to continue.'
+                  : '${state.email} already has a HeyMey account, so you are now signed in to it. '
+                        'Your guest progress was not moved into that account.',
+              key: const Key('save-progress-result'),
+              style: text.bodyLarge,
+            ),
+            const SizedBox(height: 16),
+            HmPrimaryButton(
+              label: 'Done',
+              onPressed: () => Navigator.of(context).maybePop(),
+            ),
+          ],
+        },
+      ),
     );
   }
 }

@@ -68,7 +68,7 @@ class DeskSignInController extends Notifier<DeskSignInState> {
     try {
       if (await _repo.hasSession()) {
         final me = await _repo.me();
-        state = DeskSignInState(step: DeskStep.home, me: me, email: me.email);
+        state = DeskSignInState(step: DeskStep.home, me: me, email: me.email ?? '');
         return;
       }
     } on HmApiException {

@@ -15,6 +15,9 @@ abstract interface class OnboardingRepository {
   /// Signs in (tokens stored). Returns true for a brand-new account.
   Future<bool> verifyCode(String email, String code);
 
+  /// "Try it now": starts a guest session (no email; tokens stored). Only after the 18+ check.
+  Future<void> startGuest();
+
   Future<ConsentNoticeInfo> consentNotice();
 
   /// [choices]: purpose wire value → granted.
@@ -57,6 +60,16 @@ class ApiOnboardingRepository implements OnboardingRepository {
       ),
     };
   }
+
+  @override
+  Future<void> startGuest() async => _api.startGuestSession(
+    deviceId: await _deviceIds.deviceId(),
+    platform: kIsWeb
+        ? ClientPlatform.web
+        : defaultTargetPlatform == TargetPlatform.iOS
+        ? ClientPlatform.ios
+        : ClientPlatform.android,
+  );
 
   @override
   Future<ConsentNoticeInfo> consentNotice() => _api.getConsentNotice();

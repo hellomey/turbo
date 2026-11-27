@@ -225,6 +225,49 @@ void main() {
       expect(h.container.read(sessionProvider), SessionStatus.signedOut);
     });
 
+    testWidgets('a guest sees "Save your progress" and no delete button', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 2400);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      final h = Harness();
+      h.profile.user = const MeInfo(
+        id: 'g-1',
+        email: null,
+        isGuest: true,
+        calmMode: false,
+        roles: ['ASPIRANT'],
+      );
+      await tester.pumpWidget(h.app(const Scaffold(body: ProfileTab())));
+      await tester.pumpAndSettle();
+      expect(find.text('Guest'), findsOneWidget);
+      expect(find.byKey(const Key('profile-save-progress')), findsOneWidget);
+      expect(find.byKey(const Key('delete-account')), findsNothing);
+    });
+
+    for (final (progress, message) in [
+      ('kept', 'Your progress is saved.'),
+      ('not_merged', 'Your guest progress was not moved into that account.'),
+    ]) {
+      testWidgets('save your progress: $progress', (tester) async {
+        final h = Harness();
+        h.profile.guestProgress = progress;
+        await tester.pumpWidget(h.app(const SaveProgressScreen()));
+        await tester.enterText(
+          find.byKey(const Key('save-progress-email')),
+          'priya@example.com',
+        );
+        await tester.tap(find.byKey(const Key('save-progress-send')));
+        await tester.pumpAndSettle();
+        expect(h.profile.calls, ['saveCode:priya@example.com']);
+        await tester.enterText(find.byKey(const Key('hm-code-field')), '123456');
+        await tester.pumpAndSettle();
+        expect(h.profile.calls.last, 'saveProgress:priya@example.com:123456');
+        expect(find.textContaining(message), findsOneWidget);
+      });
+    }
+
     testWidgets('delete account explains 7 days, sends a code, schedules', (
       tester,
     ) async {

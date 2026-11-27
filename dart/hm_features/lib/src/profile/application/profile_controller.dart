@@ -5,7 +5,10 @@ import 'package:hm_core/hm_core.dart';
 import '../data/profile_repository.dart';
 
 final profileRepositoryProvider = Provider<ProfileRepository>(
-  (ref) => ApiProfileRepository(ref.watch(hmApiProvider)),
+  (ref) => ApiProfileRepository(
+    ref.watch(hmApiProvider),
+    ref.watch(deviceIdStoreProvider),
+  ),
 );
 
 /// The signed-in user, with Calm Mode switching (§10.7).
@@ -103,6 +106,97 @@ class DeleteAccountController extends Notifier<DeleteAccountState> {
 final deleteAccountProvider =
     NotifierProvider.autoDispose<DeleteAccountController, DeleteAccountState>(
       DeleteAccountController.new,
+    );
+
+enum SaveProgressStep { email, code, done }
+
+@immutable
+class SaveProgressState {
+  const SaveProgressState({
+    this.step = SaveProgressStep.email,
+    this.email = '',
+    this.busy = false,
+    this.error,
+    this.resendAfterSeconds = 60,
+    this.merged = true,
+  });
+
+  final SaveProgressStep step;
+  final String email;
+  final bool busy;
+  final String? error;
+  final int resendAfterSeconds;
+
+  /// False when the email already had an account: signed in there, guest progress not moved.
+  final bool merged;
+}
+
+/// Guest mode "Save your progress": email → code → signed in with the email (same account, or the
+/// email's existing account with the guest progress left behind, said plainly).
+class SaveProgressController extends Notifier<SaveProgressState> {
+  static final _emailPattern = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+
+  @override
+  SaveProgressState build() => const SaveProgressState();
+
+  Future<void> sendCode(String email) async {
+    final trimmed = email.trim();
+    if (!_emailPattern.hasMatch(trimmed)) {
+      state = SaveProgressState(
+        email: trimmed,
+        error: 'Please enter a valid email address.',
+      );
+      return;
+    }
+    state = SaveProgressState(email: trimmed, busy: true);
+    try {
+      final seconds = await ref
+          .read(profileRepositoryProvider)
+          .requestSaveProgressCode(trimmed);
+      state = SaveProgressState(
+        step: SaveProgressStep.code,
+        email: trimmed,
+        resendAfterSeconds: seconds,
+      );
+    } on HmApiException catch (e) {
+      state = SaveProgressState(email: trimmed, error: e.message);
+    }
+  }
+
+  Future<void> confirm(String code) async {
+    if (state.busy) return;
+    final email = state.email;
+    final resend = state.resendAfterSeconds;
+    state = SaveProgressState(
+      step: SaveProgressStep.code,
+      email: email,
+      busy: true,
+      resendAfterSeconds: resend,
+    );
+    try {
+      final progress = await ref
+          .read(profileRepositoryProvider)
+          .saveGuestProgress(email, code);
+      state = SaveProgressState(
+        step: SaveProgressStep.done,
+        email: email,
+        merged: progress != 'not_merged',
+      );
+      ref.invalidate(meProvider);
+    } on HmApiException catch (e) {
+      state = SaveProgressState(
+        step: SaveProgressStep.code,
+        email: email,
+        error: e.message,
+        resendAfterSeconds: resend,
+      );
+    }
+  }
+}
+
+final saveProgressProvider =
+    NotifierProvider.autoDispose<SaveProgressController, SaveProgressState>(
+      SaveProgressController.new,
     );
 
 /// The user's DPDP choices: the current notice and the latest choice per purpose (§23, §30).
