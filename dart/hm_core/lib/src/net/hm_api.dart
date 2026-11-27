@@ -759,6 +759,24 @@ class HmApi {
     null,
   );
 
+  // ------------------------------------------------------------------ economy: XP, Points, trophies (BOLT-0113)
+
+  /// `GET /v1/me/progress` (contract `MyProgress` JSON).
+  Future<Map<String, dynamic>> getMyProgress() async =>
+      _map(await _get('/v1/me/progress'));
+
+  /// `POST /v1/me/check-in` (contract `CheckInResult` JSON). Once per IST day.
+  Future<Map<String, dynamic>> checkIn() async =>
+      _map(await _write('POST', '/v1/me/check-in', null));
+
+  /// `GET /v1/leaderboard/weekly` (contract `WeeklyLeaderboard` JSON).
+  Future<Map<String, dynamic>> getWeeklyLeaderboard() async =>
+      _map(await _get('/v1/leaderboard/weekly'));
+
+  /// `PUT /v1/me/leaderboard-opt-in` (contract `LeaderboardOptIn` JSON).
+  Future<Map<String, dynamic>> putLeaderboardOptIn(bool optIn) async =>
+      _map(await _write('PUT', '/v1/me/leaderboard-opt-in', {'optIn': optIn}));
+
   // ------------------------------------------------------------------ Desk: exam changes (§20.2, OPS / ADMIN)
 
   /// `GET /v1/desk/exam-changes?status=` (contract `ExamChangePage`).

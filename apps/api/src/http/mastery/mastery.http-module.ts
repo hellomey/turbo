@@ -6,7 +6,9 @@ import type { ExamsApi } from "@heymey/domain/modules/exams";
 import { createMasteryModule } from "@heymey/domain/modules/mastery";
 import type { SyllabusApi } from "@heymey/domain/modules/syllabus";
 import type { Clock } from "@heymey/domain/shared";
-import { CLOCK, CONTENT_API, EXAMS_API, MASTERY_API, PRISMA, SYLLABUS_API } from "../../platform/tokens.js";
+import type { EconomyProgressionApi } from "@heymey/domain/modules/economy";
+import { CLOCK, CONTENT_API, ECONOMY_API, EXAMS_API, MASTERY_API, PRISMA, SYLLABUS_API } from "../../platform/tokens.js";
+import { economyEvents } from "../economy/economy.http-module.js";
 import { MasteryController } from "./mastery.controller.js";
 
 /**
@@ -20,8 +22,8 @@ import { MasteryController } from "./mastery.controller.js";
   providers: [
     {
       provide: MASTERY_API,
-      inject: [PRISMA, CLOCK, SYLLABUS_API, CONTENT_API, EXAMS_API],
-      useFactory: (prisma: PrismaClient, clock: Clock, syllabus: SyllabusApi, content: ContentApi, exams: ExamsApi) =>
+      inject: [PRISMA, CLOCK, SYLLABUS_API, CONTENT_API, EXAMS_API, ECONOMY_API],
+      useFactory: (prisma: PrismaClient, clock: Clock, syllabus: SyllabusApi, content: ContentApi, exams: ExamsApi, economy: EconomyProgressionApi) =>
         createMasteryModule({
           prisma,
           clock,
@@ -36,6 +38,7 @@ import { MasteryController } from "./mastery.controller.js";
             },
             publishedExamCodes: () => exams.publishedCodes(),
           },
+          events: economyEvents(economy), // BOLT-0113: lamp changes earn XP and trophies
         }),
     },
   ],

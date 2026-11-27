@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **tokens** | [**TokenPair**](TokenPair.md) |  | 
 **isNewUser** | **bool** |  | 
 **deletionCancelled** | **bool** |  | 
+**guestProgress** | **String** |  | [optional] 
 **challengeToken** | **String** |  | 
 **totpEnrolled** | **bool** |  | 
 

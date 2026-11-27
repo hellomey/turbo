@@ -52,7 +52,7 @@ export async function writeLamp(deps: MasteryDeps, w: LampWrite, decide: (s: Lam
       await deps.events.publish({
         type: "mastery.lamp_changed",
         occurredAt: now,
-        payload: { userId: w.userId, topicId: w.topicId, ring: ringOf(state), source: w.source },
+        payload: { userId: w.userId, topicId: w.topicId, ring: ringOf(state), source: w.source, kinds: t.events.map((e) => e.kind) },
       });
       return { outcome: "ok", state, changed: true, now };
     }

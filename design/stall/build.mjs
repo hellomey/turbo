@@ -1,8 +1,9 @@
 // Generates the stall print SVGs. Run from the repo root: node design/stall/build.mjs
-// Topic names come from content/syllabus/tnpsc-group-4.yaml. No dependencies.
+// Topic names come from content/syllabus/tnpsc-group-4.yaml. QR codes use the root devDependency `qrcode`.
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import QRCode from "qrcode";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const C = { red: "#D7261E", yellow: "#F5C518", blue: "#1F4FA3", ink: "#111111", paper: "#FAF6EE", white: "#FFFFFF" };
@@ -26,17 +27,16 @@ ${body}
 `;
 }
 
-// QR placeholder. Replace with a real QR code (error correction M or higher) before print.
-function qr(x, y, size, url, sw) {
-  const f = size * 0.2;
-  const finder = (fx, fy) =>
-    `<rect x="${fx}" y="${fy}" width="${f}" height="${f}" fill="none" stroke="${C.ink}" stroke-width="${f / 7}"/>` +
-    `<rect x="${fx + f * 0.3}" y="${fy + f * 0.3}" width="${f * 0.4}" height="${f * 0.4}" fill="${C.ink}"/>`;
-  return `<g id="QR-PLACEHOLDER" data-url="${esc(url)}">
-<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${C.white}" stroke="${C.ink}" stroke-width="${sw}"/>
-${finder(x + size * 0.08, y + size * 0.08)}${finder(x + size * 0.72, y + size * 0.08)}${finder(x + size * 0.08, y + size * 0.72)}
-${text(x + size / 2, y + size * 0.48, size * 0.07, "QR PLACEHOLDER", { anchor: "middle", fill: C.red })}
-${text(x + size / 2, y + size * 0.58, size * 0.04, url, { anchor: "middle", w: 700 })}
+// Real QR code: error correction Q, 4-module quiet zone inside the box, one path of dark modules.
+const TRY = "https://www.heymey.app/try?src=";
+function qr(x, y, size, url) {
+  const m = QRCode.create(url, { errorCorrectionLevel: "Q" }).modules;
+  const u = size / (m.size + 8);
+  let d = "";
+  for (let r = 0; r < m.size; r++) for (let c = 0; c < m.size; c++) if (m.get(r, c)) d += `M${c + 4} ${r + 4}h1v1h-1z`;
+  return `<g id="QR" data-url="${esc(url)}" data-ecc="Q" data-modules="${m.size}">
+<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${C.white}"/>
+<path transform="translate(${x} ${y}) scale(${u})" fill="${C.ink}" shape-rendering="crispEdges" d="${d}"/>
 </g>`;
 }
 
@@ -77,12 +77,14 @@ function flex() {
   b.push(text(500, 360, 150, "HeyMey"));
   b.push(text(150, 720, 210, "Light up your"));
   b.push(text(150, 950, 210, "TNPSC syllabus."));
-  b.push(`<rect x="150" y="1060" width="1560" height="190" fill="${C.yellow}" stroke="${C.ink}" stroke-width="${sw}"/>`);
+  b.push(
+    `<rect x="150" y="1060" width="1560" height="190" fill="${C.yellow}" stroke="${C.ink}" stroke-width="${sw}"/>`,
+  );
   b.push(text(190, 1195, 110, "Try it free. No install."));
   b.push(text(150, 1450, 110, "Group 4 · Group 2/2A", { w: 800 }));
   b.push(`<rect x="2340" y="700" width="420" height="140" fill="${C.ink}"/>`);
   b.push(text(2550, 805, 100, "BETA", { anchor: "middle", fill: C.paper }));
-  b.push(qr(2200, 900, 420, "https://heymey.app/try?src=flex", sw));
+  b.push(qr(2200, 900, 420, TRY + "flex"));
   b.push(text(2410, 1430, 70, "Scan to try", { anchor: "middle" }));
   b.push(text(2410, 1510, 50, "heymey.app/try", { anchor: "middle", w: 800 }));
   return doc("HeyMey flex banner", 3000, 2000, 10, b.join("\n"));
@@ -117,15 +119,25 @@ function poster() {
         } else cur = (cur + " " + w).trim();
       }
       lines.push(cur);
-      lines.slice(0, 2).forEach((l, k) => b.push(text(cx + cell / 2, cy + 23 + k * 4, 3.4, l, { anchor: "middle", w: 700 })));
+      lines
+        .slice(0, 2)
+        .forEach((l, k) => b.push(text(cx + cell / 2, cy + 23 + k * 4, 3.4, l, { anchor: "middle", w: 700 })));
     });
     y += Math.ceil(s.topics.length / per) * 30 + 4;
   });
-  b.push(qr(222, 340, 62, "https://heymey.app/try?src=poster", sw * 1.5));
+  b.push(qr(222, 340, 62, TRY + "poster"));
   b.push(text(14, 356, 10, "Track every lamp in the app."));
   b.push(text(14, 370, 7, "Scan to try HeyMey in your browser. Free, no install.", { w: 700 }));
   b.push(text(14, 382, 5.5, "HeyMey is in beta and still being built.", { w: 700 }));
-  b.push(text(14, 398, 4.2, "A starting set of topics from the HeyMey Study Map. The full official syllabus is at tnpsc.gov.in.", { w: 600 }));
+  b.push(
+    text(
+      14,
+      398,
+      4.2,
+      "A starting set of topics from the HeyMey Study Map. The full official syllabus is at tnpsc.gov.in.",
+      { w: 600 },
+    ),
+  );
   b.push(text(14, 410, 5, "heymey.app/try", { w: 800 }));
   return doc("HeyMey A3 Group 4 checklist poster", 297, 420, 3, b.join("\n"));
 }
@@ -142,13 +154,23 @@ function tent() {
   ];
   steps.forEach(([label, col, shape], i) => {
     const y = 40 + i * 30;
-    if (shape === "circle") b.push(`<circle cx="24" cy="${y + 10}" r="10" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
-    if (shape === "tri") b.push(`<polygon points="24,${y} 35,${y + 20} 13,${y + 20}" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
-    if (shape === "square") b.push(`<rect x="14" y="${y}" width="20" height="20" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
+    if (shape === "circle")
+      b.push(`<circle cx="24" cy="${y + 10}" r="10" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
+    if (shape === "tri")
+      b.push(
+        `<polygon points="24,${y} 35,${y + 20} 13,${y + 20}" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`,
+      );
+    if (shape === "square")
+      b.push(`<rect x="14" y="${y}" width="20" height="20" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
     b.push(text(42, y + 14, 11, `${i + 1}. ${label}`));
   });
-  b.push(qr(39, 132, 70, "https://heymey.app/try?src=table", sw));
-  b.push(text(74, 208, 4.2, "Stickers are for visitors who light a lamp in the app. HeyMey is in beta.", { anchor: "middle", w: 700 }));
+  b.push(qr(39, 132, 70, TRY + "table"));
+  b.push(
+    text(74, 208, 4.2, "Stickers are for visitors who light a lamp in the app. HeyMey is in beta.", {
+      anchor: "middle",
+      w: 700,
+    }),
+  );
   return doc("HeyMey A5 table tent face", 148, 210, 3, b.join("\n"));
 }
 
@@ -157,12 +179,17 @@ function sticker(name, l1, l2, shape, col) {
   const sw = 1.2;
   const b = [];
   b.push(`<circle cx="25" cy="25" r="23.5" fill="${C.paper}" stroke="${C.ink}" stroke-width="${sw * 1.5}"/>`);
-  if (shape === "circle") b.push(`<circle cx="25" cy="19" r="10" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
-  if (shape === "tri") b.push(`<polygon points="25,6 37,28 13,28" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
-  if (shape === "square") b.push(`<rect x="15" y="9" width="20" height="20" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
+  if (shape === "circle")
+    b.push(`<circle cx="25" cy="19" r="10" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
+  if (shape === "tri")
+    b.push(`<polygon points="25,6 37,28 13,28" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
+  if (shape === "square")
+    b.push(`<rect x="15" y="9" width="20" height="20" fill="${col}" stroke="${C.ink}" stroke-width="${sw}"/>`);
   b.push(text(25, 37, 4.6, l1, { anchor: "middle" }));
   b.push(text(25, 42.5, 4.6, l2, { anchor: "middle" }));
-  b.push(`<g id="die-cut" display="none"><circle cx="25" cy="25" r="25" fill="none" stroke="#EC008C" stroke-width="0.3"/></g>`);
+  b.push(
+    `<g id="die-cut" display="none"><circle cx="25" cy="25" r="25" fill="none" stroke="#EC008C" stroke-width="0.3"/></g>`,
+  );
   return doc(`HeyMey sticker: ${name}`, 50, 50, 2, b.join("\n"));
 }
 
@@ -174,5 +201,8 @@ const files = {
   "sticker-group4-lamplighter.svg": sticker("Group 4 Lamplighter", "Group 4", "Lamplighter", "tri", C.yellow),
   "sticker-exam-hall-survivor.svg": sticker("Exam Hall survivor", "Exam Hall", "survivor", "square", C.blue),
 };
+// Standalone QR files (30 mm, quiet zone included) for any piece that needs one, including the sticker sheet.
+for (const src of ["flex", "poster", "table", "sticker"])
+  files[`qr-${src}.svg`] = doc(`HeyMey QR ${src}`, 30, 30, 0, qr(0, 0, 30, TRY + src));
 for (const [f, svg] of Object.entries(files)) writeFileSync(join(here, f), svg);
 console.log(Object.keys(files).join("\n"));

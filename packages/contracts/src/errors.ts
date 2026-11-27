@@ -64,6 +64,7 @@ export const ERROR_CODES = {
   SYNC_ACTION_TOO_OLD: "Saved as study history. Rings only change for the last 7 days.",
 
   FIREWALL_VIOLATION: "This action is not allowed.",
+  GUEST_NOT_ALLOWED: "Sign in with your email to use this.",
   PURCHASE_NOT_VERIFIED: "We couldn't confirm this payment yet. If money was taken, we will add your purchase or refund you.",
   SPENDING_LIMIT_REACHED: "This is over the spending limit you set.",
 } as const;

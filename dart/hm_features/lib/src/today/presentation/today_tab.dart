@@ -10,6 +10,7 @@ import '../../plan/presentation/plan_card.dart';
 import '../../plan/presentation/rank_bar.dart';
 import '../../practice/domain/practice_models.dart' show rankUpSubtitle;
 import '../../profile/application/profile_controller.dart';
+import '../../progress/presentation/progress_card.dart';
 
 /// Today (§10.5, §10.6 Today, INT-002-S12): rank badge + XP bar, one big Today Card, "Relight N · M min",
 /// pocket sessions, then the Study Map, My Plan and the Exam Hall.
@@ -27,12 +28,15 @@ class TodayTab extends ConsumerWidget {
     this.onOpenRelight,
     this.onStartPocket,
     this.onOpenExpo,
+    this.onOpenLeaderboard,
   });
 
   final VoidCallback onOpenStudyMap;
 
   /// Opens the Expo Challenge (BOLT-0111). The hero tile is hidden when null.
   final VoidCallback? onOpenExpo;
+  /// BOLT-0113: shows the XP / level + check-in card when set; opens the weekly leaderboard.
+  final VoidCallback? onOpenLeaderboard;
 
   /// Opens the Exam Hall (§10.6). Hidden when null.
   final VoidCallback? onOpenExamHall;
@@ -81,6 +85,9 @@ class TodayTab extends ConsumerWidget {
       onOpenRelight: onOpenRelight,
       onStartPocket: onStartPocket,
       onOpenExpo: onOpenExpo,
+      progress: onOpenLeaderboard == null || calm
+          ? null
+          : ProgressCard(onOpenLeaderboard: onOpenLeaderboard),
       onMarkDone: (item) => ref
           .read(planControllerProvider.notifier)
           .mark(item, PlanItemStatusView.done),
@@ -115,6 +122,7 @@ class TodayBody extends StatelessWidget {
     this.onMarkDone,
     this.onRetry,
     this.onOpenExpo,
+    this.progress,
   });
 
   /// Opens the Expo Challenge. The hero tile is hidden when null.
@@ -133,6 +141,9 @@ class TodayBody extends StatelessWidget {
   final ValueChanged<int>? onStartPocket;
   final ValueChanged<PlanItemView>? onMarkDone;
   final VoidCallback? onRetry;
+
+  /// XP / level + check-in card (BOLT-0113). Not shown when null.
+  final Widget? progress;
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +173,10 @@ class TodayBody extends StatelessWidget {
         if (onOpenExpo != null) ...[
           ExpoHeroTile(onOpen: onOpenExpo!),
           const SizedBox(height: HmSpace.lg),
+        ],
+        if (progress != null) ...[
+          progress!,
+          const SizedBox(height: HmSpace.md),
         ],
         if (today != null) ...[
           ...switch (today!) {

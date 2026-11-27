@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **tokens** | [**TokenPair**](TokenPair.md) |  | 
 **isNewUser** | **bool** |  | 
 **deletionCancelled** | **bool** |  | 
+**guestProgress** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

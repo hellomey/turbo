@@ -356,6 +356,64 @@ class AuthApi {
     return null;
   }
 
+  /// Try HeyMey without an email (18+ only). Guest sessions last 30 days; sign in with email to keep progress.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] idempotencyKey (required):
+  ///
+  /// * [GuestSessionBody] guestSessionBody:
+  Future<Response> startGuestSessionWithHttpInfo(String idempotencyKey, { GuestSessionBody? guestSessionBody, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/v1/auth/guest';
+
+    // ignore: prefer_final_locals
+    Object? postBody = guestSessionBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    headerParams[r'idempotency-key'] = parameterToString(idempotencyKey);
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Try HeyMey without an email (18+ only). Guest sessions last 30 days; sign in with email to keep progress.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] idempotencyKey (required):
+  ///
+  /// * [GuestSessionBody] guestSessionBody:
+  Future<TokenPair?> startGuestSession(String idempotencyKey, { GuestSessionBody? guestSessionBody, }) async {
+    final response = await startGuestSessionWithHttpInfo(idempotencyKey,  guestSessionBody: guestSessionBody, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'TokenPair',) as TokenPair;
+    
+    }
+    return null;
+  }
+
   /// Complete Desk sign-in with the authenticator code.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -414,7 +472,7 @@ class AuthApi {
     return null;
   }
 
-  /// Exchange email + code for a session bound to this device (or a Desk 2FA challenge).
+  /// Exchange email + code for a session bound to this device (or a Desk 2FA challenge). With a guest token it keeps the guest progress (see guestProgress).
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -450,7 +508,7 @@ class AuthApi {
     );
   }
 
-  /// Exchange email + code for a session bound to this device (or a Desk 2FA challenge).
+  /// Exchange email + code for a session bound to this device (or a Desk 2FA challenge). With a guest token it keeps the guest progress (see guestProgress).
   ///
   /// Parameters:
   ///

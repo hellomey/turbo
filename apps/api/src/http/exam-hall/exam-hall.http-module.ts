@@ -3,7 +3,9 @@ import type { PrismaClient } from "@heymey/db";
 import { createExamHallModule } from "@heymey/domain/modules/exam-hall";
 import { createExamCatalogueModule } from "@heymey/domain/modules/exams";
 import type { Clock, DomainEvent } from "@heymey/domain/shared";
-import { CLOCK, EXAM_CATALOGUE_API, EXAM_HALL_API, PRISMA } from "../../platform/tokens.js";
+import type { EconomyProgressionApi } from "@heymey/domain/modules/economy";
+import { CLOCK, ECONOMY_API, EXAM_CATALOGUE_API, EXAM_HALL_API, PRISMA } from "../../platform/tokens.js";
+import { economyEvents } from "../economy/economy.http-module.js";
 import { ExamStructureController } from "../exams/exam-structure.controller.js";
 import { ExamHallController } from "./exam-hall.controller.js";
 
@@ -19,17 +21,18 @@ const log = new Logger("exam-hall");
     { provide: EXAM_CATALOGUE_API, inject: [PRISMA], useFactory: (prisma: PrismaClient) => createExamCatalogueModule({ prisma }) },
     {
       provide: EXAM_HALL_API,
-      inject: [PRISMA, CLOCK],
-      useFactory: (prisma: PrismaClient, clock: Clock) =>
+      inject: [PRISMA, CLOCK, ECONOMY_API],
+      useFactory: (prisma: PrismaClient, clock: Clock, economy: EconomyProgressionApi) =>
         createExamHallModule({
           prisma,
           clock,
-          events: {
+          // BOLT-0113: a finished mock earns XP and the first-mock trophy.
+          events: economyEvents(economy, {
             publish: async (e: DomainEvent) => {
               const p = e.payload as { attemptId?: string; mockId?: string };
               log.log({ event: e.type, attemptId: p.attemptId, mockId: p.mockId });
             },
-          },
+          }),
         }),
     },
   ],

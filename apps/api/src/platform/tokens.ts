@@ -30,3 +30,4 @@ export const PRACTICE_API = Symbol("PRACTICE_API"); // BOLT-0010
 export const PRACTICE_CONTENT_API = Symbol("PRACTICE_CONTENT_API"); // BOLT-0010 (content: practice questions, PYQ, reports, packs)
 export const ENTITLEMENTS = Symbol("ENTITLEMENTS"); // BOLT-0010 (billing Phase 2 stub: everyone Free)
 export const PLAN_API = Symbol("PLAN_API"); // BOLT-0012
+export const ECONOMY_API = Symbol("ECONOMY_API"); // BOLT-0113
