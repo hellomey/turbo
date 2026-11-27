@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_design/hm_design.dart';
 
 import '../../common/ports.dart';
+import '../../progress/presentation/trophies_section.dart';
 import '../application/profile_controller.dart';
 
 /// Profile (§10.5). Phase 1: who you are, Calm Mode, log out, log out of all devices, delete account.
@@ -13,6 +14,7 @@ class ProfileTab extends ConsumerWidget {
     this.onOpenReports,
     this.onOpenAlerts,
     this.onOpenAlertSettings,
+    this.onOpenLeaderboard,
   });
 
   /// Profile links (§10.5 Profile: Readiness Meter, reports, Exam Alerts, settings). Hidden when null.
@@ -20,6 +22,9 @@ class ProfileTab extends ConsumerWidget {
   final VoidCallback? onOpenReports;
   final VoidCallback? onOpenAlerts;
   final VoidCallback? onOpenAlertSettings;
+
+  /// BOLT-0113: shows Trophies and the weekly leaderboard link when set.
+  final VoidCallback? onOpenLeaderboard;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -109,6 +114,8 @@ class ProfileTab extends ConsumerWidget {
               ),
             ),
           ],
+          if (onOpenLeaderboard != null)
+            TrophiesSection(onOpenLeaderboard: onOpenLeaderboard),
           const HmSectionTitle('Settings', icon: Icons.tune_rounded),
           SwitchListTile(
             key: const Key('calm-mode'),

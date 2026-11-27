@@ -362,6 +362,36 @@ CREATE TABLE "TrophyLedger" (
 );
 
 -- CreateTable
+CREATE TABLE "XpAward" (
+    "id" BIGSERIAL NOT NULL,
+    "userId" UUID NOT NULL,
+    "amount" INTEGER NOT NULL,
+    "reason" TEXT NOT NULL,
+    "sourceKey" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "XpAward_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserTrophy" (
+    "userId" UUID NOT NULL,
+    "code" TEXT NOT NULL,
+    "earnedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "UserTrophy_pkey" PRIMARY KEY ("userId","code")
+);
+
+-- CreateTable
+CREATE TABLE "LeaderboardOptIn" (
+    "userId" UUID NOT NULL,
+    "optIn" BOOLEAN NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "LeaderboardOptIn_pkey" PRIMARY KEY ("userId")
+);
+
+-- CreateTable
 CREATE TABLE "Mock" (
     "id" UUID NOT NULL,
     "code" TEXT NOT NULL,
@@ -1178,6 +1208,12 @@ CREATE UNIQUE INDEX "TrophyLedger_idempotencyKey_key" ON "TrophyLedger"("idempot
 
 -- CreateIndex
 CREATE INDEX "TrophyLedger_userId_seasonId_idx" ON "TrophyLedger"("userId", "seasonId");
+
+-- CreateIndex
+CREATE INDEX "XpAward_createdAt_idx" ON "XpAward"("createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "XpAward_userId_sourceKey_key" ON "XpAward"("userId", "sourceKey");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Mock_code_key" ON "Mock"("code");

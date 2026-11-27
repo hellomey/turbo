@@ -115,6 +115,9 @@ String parameterToString(dynamic value) {
   if (value is StretchPhase) {
     return StretchPhaseTypeTransformer().encode(value).toString();
   }
+  if (value is TrophyCode) {
+    return TrophyCodeTypeTransformer().encode(value).toString();
+  }
   return value.toString();
 }
 

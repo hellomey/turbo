@@ -9,6 +9,7 @@ import '../../plan/presentation/plan_card.dart';
 import '../../plan/presentation/rank_bar.dart';
 import '../../practice/domain/practice_models.dart' show rankUpSubtitle;
 import '../../profile/application/profile_controller.dart';
+import '../../progress/presentation/progress_card.dart';
 
 /// Today (§10.5, §10.6 Today, INT-002-S12): rank badge + XP bar, one big Today Card, "Relight N · M min",
 /// pocket sessions, then the Study Map, My Plan and the Exam Hall.
@@ -25,9 +26,13 @@ class TodayTab extends ConsumerWidget {
     this.onStartItem,
     this.onOpenRelight,
     this.onStartPocket,
+    this.onOpenLeaderboard,
   });
 
   final VoidCallback onOpenStudyMap;
+
+  /// BOLT-0113: shows the XP / level + check-in card when set; opens the weekly leaderboard.
+  final VoidCallback? onOpenLeaderboard;
 
   /// Opens the Exam Hall (§10.6). Hidden when null.
   final VoidCallback? onOpenExamHall;
@@ -75,6 +80,9 @@ class TodayTab extends ConsumerWidget {
       onStartItem: onStartItem,
       onOpenRelight: onOpenRelight,
       onStartPocket: onStartPocket,
+      progress: onOpenLeaderboard == null || calm
+          ? null
+          : ProgressCard(onOpenLeaderboard: onOpenLeaderboard),
       onMarkDone: (item) => ref
           .read(planControllerProvider.notifier)
           .mark(item, PlanItemStatusView.done),
@@ -108,6 +116,7 @@ class TodayBody extends StatelessWidget {
     this.onStartPocket,
     this.onMarkDone,
     this.onRetry,
+    this.progress,
   });
 
   final AsyncValue<TodayView>? today;
@@ -123,6 +132,9 @@ class TodayBody extends StatelessWidget {
   final ValueChanged<int>? onStartPocket;
   final ValueChanged<PlanItemView>? onMarkDone;
   final VoidCallback? onRetry;
+
+  /// XP / level + check-in card (BOLT-0113). Not shown when null.
+  final Widget? progress;
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +161,10 @@ class TodayBody extends StatelessWidget {
           style: text.bodyLarge?.copyWith(color: context.hm.textMuted),
         ),
         const SizedBox(height: HmSpace.lg),
+        if (progress != null) ...[
+          progress!,
+          const SizedBox(height: HmSpace.md),
+        ],
         if (today != null) ...[
           ...switch (today!) {
             AsyncData(:final value) => _plan(context, value),

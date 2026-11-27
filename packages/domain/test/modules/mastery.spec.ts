@@ -224,7 +224,7 @@ describe("mastery use cases (fakes)", () => {
     const b = await api.completeLesson(U1, T1);
     expect(b.lessonCompletedAt).toBe(a.lessonCompletedAt);
     expect(repo.events.map((e) => e.kind)).toEqual(["lesson_done", "lesson_done"]);
-    expect(published.filter((e) => e.type === "mastery.lamp_changed")).toHaveLength(1);
+    expect(published.filter((e) => e.type === "mastery.lamp_changed").map((e) => (e.payload as { kinds: string[] }).kinds)).toEqual([["lesson_done"]]); // economy XP (BOLT-0113)
   });
 
   it("lit check: not before the lesson; pass lights the lamp; second submit -> CHECK_ALREADY_SUBMITTED (inv. 4)", async () => {

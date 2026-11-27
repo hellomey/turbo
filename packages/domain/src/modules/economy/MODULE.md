@@ -17,6 +17,9 @@ Currencies with the money/game FIREWALL, cosmetics, check-in, seasons, Season Pa
 - CheckInTrack
 - Season
 - SeasonPassProgress
+- XpAward
+- UserTrophy
+- LeaderboardOptIn
 
 ## Responsibilities
 - Two append-only ledgers that never convert
@@ -24,6 +27,9 @@ Currencies with the money/game FIREWALL, cosmetics, check-in, seasons, Season Pa
 - check-in track that never resets
 - Season Pass (cosmetic only)
 - spending limits
+- XP and levels from learning events only (idempotent per source event)
+- trophies (badges)
+- opt-in weekly XP leaderboard
 
 ## May depend on (public `index.ts` only)
 - `audit`
