@@ -14,6 +14,8 @@ class ProfileTab extends ConsumerWidget {
     this.onOpenReports,
     this.onOpenAlerts,
     this.onOpenAlertSettings,
+    this.onReplayStory,
+    this.onOpenSticker,
     this.onOpenLeaderboard,
   });
 
@@ -22,6 +24,12 @@ class ProfileTab extends ConsumerWidget {
   final VoidCallback? onOpenReports;
   final VoidCallback? onOpenAlerts;
   final VoidCallback? onOpenAlertSettings;
+
+  /// Replays "The Lamplighter" story (BOLT-0111). Hidden when null.
+  final VoidCallback? onReplayStory;
+
+  /// Opens "Collect your sticker". Hidden when null.
+  final VoidCallback? onOpenSticker;
 
   /// BOLT-0113: shows Trophies and the weekly leaderboard link when set.
   final VoidCallback? onOpenLeaderboard;
@@ -160,6 +168,18 @@ class ProfileTab extends ConsumerWidget {
               'Alert settings',
               Icons.notifications_outlined,
               onOpenAlertSettings,
+            ),
+            (
+              'profile-replay-story',
+              'Replay the story',
+              Icons.auto_stories_outlined,
+              onReplayStory,
+            ),
+            (
+              'profile-sticker',
+              'Your sticker code',
+              Icons.confirmation_number_outlined,
+              onOpenSticker,
             ),
           ])
             if (onTap != null)

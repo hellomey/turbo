@@ -6,6 +6,7 @@ import 'package:hm_design/hm_design.dart';
 import '../application/onboarding_controller.dart';
 import '../domain/age_gate.dart';
 import 'onboarding_page.dart';
+import 'story.dart';
 
 const _months = [
   'January', 'February', 'March', 'April', 'May', 'June', //
@@ -43,6 +44,7 @@ class _DobStepState extends ConsumerState<DobStep> {
     final ready = _day != null && _month != null && _year != null;
     return OnboardingPage(
       title: "Let's find your exams",
+      scene: StoryScene.darkHall,
       illustration: HmIllustrationKind.welcome,
       subtitle:
           'Answer a few quick questions. We will show the government exams you can write.',

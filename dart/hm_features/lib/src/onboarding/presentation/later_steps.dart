@@ -9,6 +9,7 @@ import '../../study_map/application/study_providers.dart';
 import '../../study_map/presentation/study_map_body.dart';
 import '../application/onboarding_controller.dart';
 import 'onboarding_page.dart';
+import 'story.dart';
 
 /// Step 3: the eligibility result with share + official links.
 class ResultStep extends ConsumerWidget {
@@ -46,6 +47,7 @@ class PickExamsStep extends ConsumerWidget {
     final full = state.otherExams.length >= OnboardingState.maxOtherExams;
     return OnboardingPage(
       title: 'Pick your main exam',
+      scene: StoryScene.chooseExam,
       illustration: HmIllustrationKind.trophy,
       subtitle:
           'Your Study Map is built for this exam. You can change it later.',
@@ -134,6 +136,7 @@ class MapPreviewStep extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const StorySceneCard(scene: StoryScene.yourPlan),
                       Semantics(
                         header: true,
                         child: Text(
@@ -197,6 +200,7 @@ class _EmailStepState extends ConsumerState<EmailStep> {
     final c = ref.read(onboardingControllerProvider.notifier);
     return OnboardingPage(
       title: state.signInOnly ? 'Sign in' : 'Save your progress',
+      scene: state.signInOnly ? null : StoryScene.firstLesson,
       illustration: HmIllustrationKind.shield,
       subtitle:
           'We will send a 6-digit code to your email. You do not need a password.',
@@ -298,6 +302,7 @@ class ConsentStep extends ConsumerWidget {
 
     return OnboardingPage(
       title: 'Your data, your choice',
+      scene: StoryScene.firstLamp,
       illustration: HmIllustrationKind.shield,
       subtitle: 'Please read and choose. Nothing is ticked for you.',
       children: [

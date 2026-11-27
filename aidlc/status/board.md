@@ -66,6 +66,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0039 | Finish stubs: `current_affairs`, `library`, `support`, `wellbeing`, `staff_quick_actions` | 0037 | Vizhi | Nov 27 | todo | - |
 | BOLT-0040 | Flutter web target, in-app "update available" prompt, "Collect your sticker" screen | 0030, 0036 | Vizhi, Kaaval | Nov 26 | todo | - |
 | BOLT-0103 | Aspirant app builds for web: drift WASM storage, committed `apps/mobile/web/`, web-deploy without `flutter create` (part of 0040) | - | Vizhi | Nov 27 | review (PR #33) | - |
+| BOLT-0111 | Story onboarding "The Lamplighter", Expo Challenge (`/expo`) with timer, lamp finale and "Collect your sticker", beta line (part of 0040) | Thoon expo API | Vizhi | Nov 28 | review | API built in parallel by Thoon |
 
 ### Vilaiyattu (games)
 

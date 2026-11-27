@@ -821,16 +821,24 @@ class HmApi {
 
   /// `POST /v1/expo/challenge/{id}/submit` (contract `SubmitExpoChallengeBody` -> `ExpoChallengeResult`).
   /// Each answer: `{questionId, optionId (null = no answer), ms}`.
+  /// Pass the same [idempotencyKey] on a retry so the server scores the attempt once; a fresh key is
+  /// used when it is null.
   Future<Map<String, dynamic>> submitExpoChallenge(
     String challengeId,
-    List<Map<String, Object?>> answers,
-  ) async => _map(
-    await _write(
+    List<Map<String, Object?>> answers, {
+    String? idempotencyKey,
+  }) async => _map(
+    await _call(
       'POST',
       '/v1/expo/challenge/${Uri.encodeComponent(challengeId)}/submit',
-      {'answers': answers},
+      body: {'answers': answers},
+      idempotent: true,
+      idempotencyKey: idempotencyKey,
     ),
   );
+
+  /// A fresh Idempotency-Key for a write the caller may retry.
+  String newIdempotencyKey() => _newKey();
 
   /// `GET /v1/me/sticker-code` (contract `MyStickerCode`): `{code: String?, redeemed: bool}`.
   Future<Map<String, dynamic>> getMyStickerCode() async =>
