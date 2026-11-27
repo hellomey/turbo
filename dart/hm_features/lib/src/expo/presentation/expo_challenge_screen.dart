@@ -90,11 +90,10 @@ class _QuestionViewState extends ConsumerState<_QuestionView>
   @override
   void initState() {
     super.initState();
-    _time =
-        AnimationController(
-          vsync: this,
-          duration: Duration(seconds: _seconds),
-        );
+    _time = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: _seconds),
+    );
     _time.forward();
     // The deadline is a plain timer so it fires on time even when frames are skipped.
     _deadline = Timer(Duration(seconds: _seconds), _onTimeUp);
