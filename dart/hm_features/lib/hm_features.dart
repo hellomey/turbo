@@ -21,5 +21,6 @@ export 'src/progress/progress.dart';
 export 'src/profile/profile.dart';
 export 'src/wellbeing/wellbeing.dart';
 export 'src/support/support.dart';
+export 'src/expo/expo.dart';
 export 'src/staff_quick_actions/staff_quick_actions.dart';
 export 'src/common/ports.dart';

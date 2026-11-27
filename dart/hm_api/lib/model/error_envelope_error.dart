@@ -193,6 +193,12 @@ class ErrorEnvelopeErrorCodeEnum {
   static const WEBHOOK_REPLAYED = ErrorEnvelopeErrorCodeEnum._(r'WEBHOOK_REPLAYED');
   static const EXAM_CHANGE_ALREADY_REVIEWED = ErrorEnvelopeErrorCodeEnum._(r'EXAM_CHANGE_ALREADY_REVIEWED');
   static const SYNC_ACTION_TOO_OLD = ErrorEnvelopeErrorCodeEnum._(r'SYNC_ACTION_TOO_OLD');
+  static const EXPO_CHALLENGE_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'EXPO_CHALLENGE_NOT_FOUND');
+  static const EXPO_CHALLENGE_EXPIRED = ErrorEnvelopeErrorCodeEnum._(r'EXPO_CHALLENGE_EXPIRED');
+  static const EXPO_CHALLENGE_ALREADY_SUBMITTED = ErrorEnvelopeErrorCodeEnum._(r'EXPO_CHALLENGE_ALREADY_SUBMITTED');
+  static const EXPO_CHALLENGE_UNAVAILABLE = ErrorEnvelopeErrorCodeEnum._(r'EXPO_CHALLENGE_UNAVAILABLE');
+  static const STICKER_CODE_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'STICKER_CODE_NOT_FOUND');
+  static const STICKER_CODE_ALREADY_REDEEMED = ErrorEnvelopeErrorCodeEnum._(r'STICKER_CODE_ALREADY_REDEEMED');
   static const FIREWALL_VIOLATION = ErrorEnvelopeErrorCodeEnum._(r'FIREWALL_VIOLATION');
   static const GUEST_NOT_ALLOWED = ErrorEnvelopeErrorCodeEnum._(r'GUEST_NOT_ALLOWED');
   static const PURCHASE_NOT_VERIFIED = ErrorEnvelopeErrorCodeEnum._(r'PURCHASE_NOT_VERIFIED');
@@ -256,6 +262,12 @@ class ErrorEnvelopeErrorCodeEnum {
     WEBHOOK_REPLAYED,
     EXAM_CHANGE_ALREADY_REVIEWED,
     SYNC_ACTION_TOO_OLD,
+    EXPO_CHALLENGE_NOT_FOUND,
+    EXPO_CHALLENGE_EXPIRED,
+    EXPO_CHALLENGE_ALREADY_SUBMITTED,
+    EXPO_CHALLENGE_UNAVAILABLE,
+    STICKER_CODE_NOT_FOUND,
+    STICKER_CODE_ALREADY_REDEEMED,
     FIREWALL_VIOLATION,
     GUEST_NOT_ALLOWED,
     PURCHASE_NOT_VERIFIED,
@@ -354,6 +366,12 @@ class ErrorEnvelopeErrorCodeEnumTypeTransformer {
         case r'WEBHOOK_REPLAYED': return ErrorEnvelopeErrorCodeEnum.WEBHOOK_REPLAYED;
         case r'EXAM_CHANGE_ALREADY_REVIEWED': return ErrorEnvelopeErrorCodeEnum.EXAM_CHANGE_ALREADY_REVIEWED;
         case r'SYNC_ACTION_TOO_OLD': return ErrorEnvelopeErrorCodeEnum.SYNC_ACTION_TOO_OLD;
+        case r'EXPO_CHALLENGE_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.EXPO_CHALLENGE_NOT_FOUND;
+        case r'EXPO_CHALLENGE_EXPIRED': return ErrorEnvelopeErrorCodeEnum.EXPO_CHALLENGE_EXPIRED;
+        case r'EXPO_CHALLENGE_ALREADY_SUBMITTED': return ErrorEnvelopeErrorCodeEnum.EXPO_CHALLENGE_ALREADY_SUBMITTED;
+        case r'EXPO_CHALLENGE_UNAVAILABLE': return ErrorEnvelopeErrorCodeEnum.EXPO_CHALLENGE_UNAVAILABLE;
+        case r'STICKER_CODE_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.STICKER_CODE_NOT_FOUND;
+        case r'STICKER_CODE_ALREADY_REDEEMED': return ErrorEnvelopeErrorCodeEnum.STICKER_CODE_ALREADY_REDEEMED;
         case r'FIREWALL_VIOLATION': return ErrorEnvelopeErrorCodeEnum.FIREWALL_VIOLATION;
         case r'GUEST_NOT_ALLOWED': return ErrorEnvelopeErrorCodeEnum.GUEST_NOT_ALLOWED;
         case r'PURCHASE_NOT_VERIFIED': return ErrorEnvelopeErrorCodeEnum.PURCHASE_NOT_VERIFIED;

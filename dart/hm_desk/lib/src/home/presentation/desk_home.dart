@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_design/hm_design.dart';
 
 import '../../desk_ops/presentation/exam_changes_screen.dart';
+import '../../desk_ops/presentation/sticker_codes_screen.dart';
 import '../../sign_in/application/desk_sign_in_controller.dart';
 
 /// Plain-English role names (§16).
@@ -37,6 +38,13 @@ const deskAreas = [
   ),
 ];
 
+/// Stall sticker check (CLAUDE.md section 8). Shown first, and only to roles in [stickerCodeRoles].
+const stickerCodesArea = (
+  'Sticker codes',
+  "Check a visitor's code and give one sticker.",
+  Icons.verified_outlined,
+);
+
 class DeskHome extends ConsumerWidget {
   const DeskHome({super.key});
 
@@ -50,6 +58,8 @@ class DeskHome extends ConsumerWidget {
     final open = <String, Widget Function()>{
       if (held.contains('OPS') || held.contains('ADMIN'))
         'Ops Desk': () => const ExamChangesScreen(),
+      if (held.any(stickerCodeRoles.contains))
+        stickerCodesArea.$1: () => const StickerCodesScreen(),
     };
     final roles = [
       for (final r in me?.roles ?? const <String>[])
@@ -91,7 +101,10 @@ class DeskHome extends ConsumerWidget {
                 crossAxisSpacing: 12,
                 childAspectRatio: 1.8,
                 children: [
-                  for (final (title, body, icon) in deskAreas)
+                  for (final (title, body, icon) in [
+                    if (open.containsKey(stickerCodesArea.$1)) stickerCodesArea,
+                    ...deskAreas,
+                  ])
                     HmCard(
                       semanticLabel: open.containsKey(title)
                           ? '$title. Open.'

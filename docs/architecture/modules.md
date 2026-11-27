@@ -86,7 +86,7 @@ Thick border = founder approval on every change (money, personal data, game fair
 | [`mastery`](../../packages/domain/src/modules/mastery/MODULE.md) | 2 | 90% | — | UserTopicState, TopicCheck, RingEvent, UserRank | syllabus, content |
 | [`notifications`](../../packages/domain/src/modules/notifications/MODULE.md) | 2 | 70% | — | PushToken, AlertPreference, SendLog | users, liveops |
 | [`plan`](../../packages/domain/src/modules/plan/MODULE.md) | 2 | 70% | — | Plan, PlanExam, PlanItem, StudyLog | syllabus, mastery, exams |
-| [`practice`](../../packages/domain/src/modules/practice/MODULE.md) | 2 | 70% | — | PracticeSession, PracticeAnswer, PracticeDayCounter, MistakeTally, ConceptDrill | content, mastery, billing |
+| [`practice`](../../packages/domain/src/modules/practice/MODULE.md) | 2 | 70% | — | PracticeSession, PracticeAnswer, PracticeDayCounter, MistakeTally, ConceptDrill, ExpoChallenge, StickerCode | content, mastery, billing |
 | [`readiness`](../../packages/domain/src/modules/readiness/MODULE.md) | 2 | 70% | — | ReadinessSnapshot, SundayReport | mastery, practice, exam-hall |
 | [`ai`](../../packages/domain/src/modules/ai/MODULE.md) | 3 | 70% | — | AiTask, AiModelRoute, AiUsage | — |
 | [`billing`](../../packages/domain/src/modules/billing/MODULE.md) | 3 | 90% | yes | Product, Purchase, Entitlement, Refund, Gift, RazorpayOrder | economy, audit |

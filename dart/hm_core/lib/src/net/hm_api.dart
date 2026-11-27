@@ -848,6 +848,43 @@ class HmApi {
     ),
   );
 
+  // ------------------------------------------------------------------ Stall: expo challenge + sticker codes (BOLT-0112)
+
+  /// `GET /v1/expo/challenge` (contract `ExpoChallenge`). Never carries answers.
+  Future<Map<String, dynamic>> startExpoChallenge() async =>
+      _map(await _get('/v1/expo/challenge'));
+
+  /// `POST /v1/expo/challenge/{id}/submit` (contract `SubmitExpoChallengeBody` -> `ExpoChallengeResult`).
+  /// Each answer: `{questionId, optionId (null = no answer), ms}`.
+  /// Pass the same [idempotencyKey] on a retry so the server scores the attempt once; a fresh key is
+  /// used when it is null.
+  Future<Map<String, dynamic>> submitExpoChallenge(
+    String challengeId,
+    List<Map<String, Object?>> answers, {
+    String? idempotencyKey,
+  }) async => _map(
+    await _call(
+      'POST',
+      '/v1/expo/challenge/${Uri.encodeComponent(challengeId)}/submit',
+      body: {'answers': answers},
+      idempotent: true,
+      idempotencyKey: idempotencyKey,
+    ),
+  );
+
+  /// A fresh Idempotency-Key for a write the caller may retry.
+  String newIdempotencyKey() => _newKey();
+
+  /// `GET /v1/me/sticker-code` (contract `MyStickerCode`): `{code: String?, redeemed: bool}`.
+  Future<Map<String, dynamic>> getMyStickerCode() async =>
+      _map(await _get('/v1/me/sticker-code'));
+
+  /// `POST /v1/desk/sticker-codes/redeem` (OPS, ADMIN, SUPPORT_AGENT). Throws `STICKER_CODE_NOT_FOUND` or
+  /// `STICKER_CODE_ALREADY_REDEEMED`.
+  Future<Map<String, dynamic>> deskRedeemStickerCode(String code) async => _map(
+    await _write('POST', '/v1/desk/sticker-codes/redeem', {'code': code}),
+  );
+
   void dispose() {
     _http.close();
     updateRequired.dispose();

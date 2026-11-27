@@ -22,6 +22,7 @@ import { ConsentChoicesBody, ConsentNotice, ConsentState, Me, ProfileAnswers, Up
 import { EligibilityCheckBody, EligibilityResult, ExamCode, ExamDetail, ExamList, UserExams, UserExamsBody } from "./exams.js";
 import { GlossaryList, GlossaryQuery, Lesson, StudyMap } from "./study.js";
 import { studyRoutes } from "./routes-study.js";
+import { ExpoChallenge, ExpoChallengeResult, MyStickerCode, RedeemStickerCodeBody, StickerCodeRedeemed, SubmitExpoChallengeBody } from "./expo.js";
 import { gamesRoutes } from "./routes-games.js";
 
 const json = <T extends z.ZodType>(schema: T) => ({ content: { "application/json": { schema } } });
@@ -209,6 +210,43 @@ export const routes: HmRoute[] = [
 
   // ---------------------------------------------------------------- Phase 2 core study (BOLT-0008)
   ...studyRoutes,
+
+  // ---------------------------------------------------------------- stall: expo challenge + sticker codes (BOLT-0112)
+  {
+    method: "get", path: "/v1/expo/challenge", tags: ["expo"], operationId: "startExpoChallenge",
+    auth: "user", idempotent: false, security: bearer,
+    rateLimit: [{ scope: "user", limit: 30, windowSeconds: 3600 }],
+    summary: "Start a 10-question stall challenge (guests allowed). Answers are never sent; the challenge expires in 15 minutes.",
+    responses: { 200: { description: "Challenge", ...json(ExpoChallenge) }, 503: err("No questions yet"), ...authErrors },
+  },
+  {
+    method: "post", path: "/v1/expo/challenge/{challengeId}/submit", tags: ["expo"], operationId: "submitExpoChallenge",
+    auth: "user", idempotent: true, security: bearer,
+    rateLimit: [{ scope: "user", limit: 30, windowSeconds: 3600 }],
+    summary: "Grade once on the server. Finishing (any score) earns the user's sticker code.",
+    request: { params: z.object({ challengeId: z.uuid() }), headers: idempotency, body: json(SubmitExpoChallengeBody) },
+    responses: {
+      200: { description: "Result", ...json(ExpoChallengeResult) },
+      404: err("No such challenge"), 409: err("Already submitted or expired"), ...authErrors,
+    },
+  },
+  {
+    method: "get", path: "/v1/me/sticker-code", tags: ["expo"], operationId: "getMyStickerCode",
+    auth: "user", idempotent: false, security: bearer,
+    summary: "My sticker code, earned by finishing the expo challenge or lighting a first lamp. null until earned.",
+    responses: { 200: { description: "Code", ...json(MyStickerCode) }, ...authErrors },
+  },
+  {
+    method: "post", path: "/v1/desk/sticker-codes/redeem", tags: ["expo", "desk"], operationId: "redeemStickerCode",
+    auth: "desk", idempotent: true, security: bearer,
+    rateLimit: [{ scope: "user", limit: 120, windowSeconds: 600 }],
+    summary: "Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.",
+    request: { headers: idempotency, body: json(RedeemStickerCodeBody) },
+    responses: {
+      200: { description: "Give a sticker", ...json(StickerCodeRedeemed) },
+      404: err("STICKER_CODE_NOT_FOUND"), 409: err("STICKER_CODE_ALREADY_REDEEMED"), ...authErrors,
+    },
+  },
 
   // ---------------------------------------------------------------- games (BOLT-0115)
   ...gamesRoutes,

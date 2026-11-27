@@ -55,6 +55,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0035 | `analytics` module: consent-gated, personal data stripped | 0031 | Kaaval | Nov 26 | todo | - |
 | BOLT-0036 | Sticker codes: issue a one-time code on first lit lamp, verify and burn from Desk | 0031 | Kaaval, Vizhi | Nov 24 | todo | - |
 | BOLT-0104 | Guest mode (founder decision 2026-11-27): `POST /v1/auth/guest` (18+, 30-day session), guest to email upgrade via OTP verify, inactive-guest cleanup, "Try it now" + "Save your progress" in the app | - | Kaaval, Vizhi | Nov 28 | review | `dart/hm_api` needs regenerating with Docker |
+| BOLT-0112 | Stall: expo challenge (`GET /v1/expo/challenge`, single-submit grading), one sticker code per user (challenge finished or first lit lamp), Desk "Sticker codes" check and redeem with audit. Covers BOLT-0036 | - | Kaaval, Vizhi | Nov 28 | review | - |
 
 ### Kalai (Flutter UI)
 
@@ -65,6 +66,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0039 | Finish stubs: `current_affairs`, `library`, `support`, `wellbeing`, `staff_quick_actions` | 0037 | Vizhi | Nov 27 | todo | - |
 | BOLT-0040 | Flutter web target, in-app "update available" prompt, "Collect your sticker" screen | 0030, 0036 | Vizhi, Kaaval | Nov 26 | todo | - |
 | BOLT-0103 | Aspirant app builds for web: drift WASM storage, committed `apps/mobile/web/`, web-deploy without `flutter create` (part of 0040) | - | Vizhi | Nov 27 | review (PR #33) | - |
+| BOLT-0111 | Story onboarding "The Lamplighter", Expo Challenge (`/expo`) with timer, lamp finale and "Collect your sticker", beta line (part of 0040) | Thoon expo API | Vizhi | Nov 28 | review | API built in parallel by Thoon |
 
 ### Vilaiyattu (games)
 

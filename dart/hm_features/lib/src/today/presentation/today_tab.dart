@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_design/hm_design.dart';
 
 import '../../common/ports.dart';
+import '../../expo/presentation/expo_hero_tile.dart';
 import '../../plan/application/plan_controller.dart';
 import '../../plan/domain/plan_models.dart';
 import '../../plan/presentation/plan_card.dart';
@@ -26,10 +27,14 @@ class TodayTab extends ConsumerWidget {
     this.onStartItem,
     this.onOpenRelight,
     this.onStartPocket,
+    this.onOpenExpo,
     this.onOpenLeaderboard,
   });
 
   final VoidCallback onOpenStudyMap;
+
+  /// Opens the Expo Challenge (BOLT-0111). The hero tile is hidden when null.
+  final VoidCallback? onOpenExpo;
 
   /// BOLT-0113: shows the XP / level + check-in card when set; opens the weekly leaderboard.
   final VoidCallback? onOpenLeaderboard;
@@ -80,6 +85,7 @@ class TodayTab extends ConsumerWidget {
       onStartItem: onStartItem,
       onOpenRelight: onOpenRelight,
       onStartPocket: onStartPocket,
+      onOpenExpo: onOpenExpo,
       progress: onOpenLeaderboard == null || calm
           ? null
           : ProgressCard(onOpenLeaderboard: onOpenLeaderboard),
@@ -116,8 +122,12 @@ class TodayBody extends StatelessWidget {
     this.onStartPocket,
     this.onMarkDone,
     this.onRetry,
+    this.onOpenExpo,
     this.progress,
   });
+
+  /// Opens the Expo Challenge. The hero tile is hidden when null.
+  final VoidCallback? onOpenExpo;
 
   final AsyncValue<TodayView>? today;
   final bool calm;
@@ -161,6 +171,10 @@ class TodayBody extends StatelessWidget {
           style: text.bodyLarge?.copyWith(color: context.hm.textMuted),
         ),
         const SizedBox(height: HmSpace.lg),
+        if (onOpenExpo != null) ...[
+          ExpoHeroTile(onOpen: onOpenExpo!),
+          const SizedBox(height: HmSpace.lg),
+        ],
         if (progress != null) ...[
           progress!,
           const SizedBox(height: HmSpace.md),

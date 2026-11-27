@@ -118,3 +118,17 @@ export function createMasteryActivity(deps: { prisma: PrismaClient }): MasteryAc
   const a = new PrismaMasteryActivity(deps.prisma);
   return { activeUserIds: (q) => a.activeUserIds(q), weekCounts: (u, f, t) => a.weekCounts(u, f, t) };
 }
+
+// ---------------------------------------------------------------- read-only "first lamp" check (added by BOLT-0112 for sticker codes)
+/** Has the user a lit or Gold lamp right now (any topic). Read-only. */
+export function createLampCheck(deps: { prisma: PrismaClient }): { hasLitLamp(userId: string): Promise<boolean> } {
+  return {
+    async hasLitLamp(userId) {
+      const row = await deps.prisma.userTopicState.findFirst({
+        where: { userId, OR: [{ litAt: { not: null } }, { goldAt: { not: null } }] },
+        select: { topicId: true },
+      });
+      return row !== null;
+    },
+  };
+}
