@@ -82,6 +82,7 @@ class _QuestionViewState extends ConsumerState<_QuestionView>
   late final AnimationController _time;
   final _watch = Stopwatch()..start();
   Timer? _pause;
+  Timer? _deadline;
   bool _timedOut = false;
 
   int get _seconds => widget.state.challenge!.secondsPerQuestion;
@@ -93,15 +94,16 @@ class _QuestionViewState extends ConsumerState<_QuestionView>
         AnimationController(
           vsync: this,
           duration: Duration(seconds: _seconds),
-        )..addStatusListener((s) {
-          if (s == AnimationStatus.completed) _onTimeUp();
-        });
+        );
     _time.forward();
+    // The deadline is a plain timer so it fires on time even when frames are skipped.
+    _deadline = Timer(Duration(seconds: _seconds), _onTimeUp);
   }
 
   @override
   void dispose() {
     _pause?.cancel();
+    _deadline?.cancel();
     _time.dispose();
     super.dispose();
   }
@@ -116,6 +118,7 @@ class _QuestionViewState extends ConsumerState<_QuestionView>
     final c = ref.read(expoControllerProvider.notifier);
     if (ref.read(expoControllerProvider).answeredCurrent) return;
     _time.stop();
+    _deadline?.cancel();
     c.answer(optionId, _watch.elapsedMilliseconds);
     if (optionId != null) HapticFeedback.selectionClick();
     _pause = Timer(expoFeedbackPause, c.next);

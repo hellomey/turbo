@@ -101,7 +101,8 @@ void main() {
 
       // Question 2: let the 20 s bar run out.
       expect(find.text('Question 2 of 10'), findsOneWidget);
-      await tester.pump(const Duration(seconds: 20));
+      await tester.pump(const Duration(seconds: 10));
+      await tester.pump(const Duration(seconds: 11));
       await tester.pump();
       expect(find.text("Time's up. On to the next one."), findsOneWidget);
       await tester.pump(expoFeedbackPause);
