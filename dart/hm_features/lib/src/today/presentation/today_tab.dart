@@ -35,6 +35,7 @@ class TodayTab extends ConsumerWidget {
 
   /// Opens the Expo Challenge (BOLT-0111). The hero tile is hidden when null.
   final VoidCallback? onOpenExpo;
+
   /// BOLT-0113: shows the XP / level + check-in card when set; opens the weekly leaderboard.
   final VoidCallback? onOpenLeaderboard;
 

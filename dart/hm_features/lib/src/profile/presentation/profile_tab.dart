@@ -30,6 +30,7 @@ class ProfileTab extends ConsumerWidget {
 
   /// Opens "Collect your sticker". Hidden when null.
   final VoidCallback? onOpenSticker;
+
   /// BOLT-0113: shows Trophies and the weekly leaderboard link when set.
   final VoidCallback? onOpenLeaderboard;
 
