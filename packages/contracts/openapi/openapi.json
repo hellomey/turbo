@@ -4990,10 +4990,7 @@
         "type": "object",
         "properties": {
           "redeemed": {
-            "type": "boolean",
-            "enum": [
-              true
-            ]
+            "type": "boolean"
           },
           "redeemedAt": {
             "type": "string",

@@ -54,5 +54,6 @@ export const RedeemStickerCodeBody = z
   .openapi("RedeemStickerCodeBody");
 
 export const StickerCodeRedeemed = z
-  .object({ redeemed: z.literal(true), redeemedAt: z.iso.datetime() })
+  /** `redeemed` is always true on success (a boolean rather than a literal, so the Dart client generates cleanly). */
+  .object({ redeemed: z.boolean(), redeemedAt: z.iso.datetime() })
   .openapi("StickerCodeRedeemed");

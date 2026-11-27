@@ -17,7 +17,7 @@ class StickerCodeRedeemed {
     required this.redeemedAt,
   });
 
-  StickerCodeRedeemedRedeemedEnum redeemed;
+  bool redeemed;
 
   DateTime redeemedAt;
 
@@ -63,7 +63,7 @@ class StickerCodeRedeemed {
       }());
 
       return StickerCodeRedeemed(
-        redeemed: StickerCodeRedeemedRedeemedEnum.fromJson(json[r'redeemed'])!,
+        redeemed: mapValueOfType<bool>(json, r'redeemed')!,
         redeemedAt: mapDateTime(json, r'redeemedAt', r'')!,
       );
     }
@@ -116,75 +116,4 @@ class StickerCodeRedeemed {
     'redeemedAt',
   };
 }
-
-
-class StickerCodeRedeemedRedeemedEnum {
-  /// Instantiate a new enum with the provided [value].
-  const StickerCodeRedeemedRedeemedEnum._(this.value);
-
-  /// The underlying value of this enum member.
-  final bool value;
-
-  @override
-  String toString() => value.toString();
-
-  bool toJson() => value;
-
-  static const true_ = StickerCodeRedeemedRedeemedEnum._('true');
-
-  /// List of all possible values in this [enum][StickerCodeRedeemedRedeemedEnum].
-  static const values = <StickerCodeRedeemedRedeemedEnum>[
-    true_,
-  ];
-
-  static StickerCodeRedeemedRedeemedEnum? fromJson(dynamic value) => StickerCodeRedeemedRedeemedEnumTypeTransformer().decode(value);
-
-  static List<StickerCodeRedeemedRedeemedEnum> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <StickerCodeRedeemedRedeemedEnum>[];
-    if (json is List && json.isNotEmpty) {
-      for (final row in json) {
-        final value = StickerCodeRedeemedRedeemedEnum.fromJson(row);
-        if (value != null) {
-          result.add(value);
-        }
-      }
-    }
-    return result.toList(growable: growable);
-  }
-}
-
-/// Transformation class that can [encode] an instance of [StickerCodeRedeemedRedeemedEnum] to bool,
-/// and [decode] dynamic data back to [StickerCodeRedeemedRedeemedEnum].
-class StickerCodeRedeemedRedeemedEnumTypeTransformer {
-  factory StickerCodeRedeemedRedeemedEnumTypeTransformer() => _instance ??= const StickerCodeRedeemedRedeemedEnumTypeTransformer._();
-
-  const StickerCodeRedeemedRedeemedEnumTypeTransformer._();
-
-  bool encode(StickerCodeRedeemedRedeemedEnum data) => data.value;
-
-  /// Decodes a [dynamic value][data] to a StickerCodeRedeemedRedeemedEnum.
-  ///
-  /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
-  /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
-  /// cannot be decoded successfully, then an [UnimplementedError] is thrown.
-  ///
-  /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
-  /// and users are still using an old app with the old code.
-  StickerCodeRedeemedRedeemedEnum? decode(dynamic data, {bool allowNull = true}) {
-    if (data != null) {
-      switch (data) {
-        case 'true': return StickerCodeRedeemedRedeemedEnum.true_;
-        default:
-          if (!allowNull) {
-            throw ArgumentError('Unknown enum value to decode: $data');
-          }
-      }
-    }
-    return null;
-  }
-
-  /// Singleton [StickerCodeRedeemedRedeemedEnumTypeTransformer] instance.
-  static StickerCodeRedeemedRedeemedEnumTypeTransformer? _instance;
-}
-
 
