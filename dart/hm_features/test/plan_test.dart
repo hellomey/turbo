@@ -137,7 +137,7 @@ void main() {
       await tester.pumpWidget(f.harness().app(today(log)));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('rank-bar')), findsOneWidget);
-      expect(find.text('Relight 4 · 8 min'), findsOneWidget);
+      expect(find.text('4 lamps dimming · 8 min'), findsOneWidget);
       expect(find.byKey(const Key('today-pocket-10')), findsOneWidget);
       expect(find.byKey(const Key('today-open-exam-hall')), findsOneWidget);
 
@@ -215,7 +215,14 @@ void main() {
       await tester.pumpWidget(f.harness().app(const ReadinessScreen()));
       await tester.pumpAndSettle();
       expect(find.text('Readiness: Building'), findsOneWidget);
-      expect(find.text('42%'), findsOneWidget);
+      // The hero ring also shows the share of lamps lit (BOLT-0117), so look inside the bar.
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('readiness-bar-coverage')),
+          matching: find.text('42%'),
+        ),
+        findsOneWidget,
+      );
       expect(find.text('Lit 42% · Steady 30% · Gold 5%'), findsOneWidget);
       expect(find.text('Pro'), findsNWidgets(2));
       expect(
@@ -251,6 +258,11 @@ void main() {
         f.harness().app(const SundayReportScreen(reportId: 'r2')),
       );
       await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(
+        find.text('Next week'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('You lit 12 new lamps this week.'), findsOneWidget);
       expect(find.text('Next week'), findsOneWidget);
       expect(find.textContaining('selected'), findsNothing);

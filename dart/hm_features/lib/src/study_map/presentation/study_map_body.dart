@@ -9,9 +9,11 @@ import '../../practice/domain/practice_models.dart';
 import '../../practice/domain/study_rules.dart';
 import '../application/study_providers.dart';
 import '../domain/study_map_view.dart';
+import 'lamp_path.dart';
 
-/// Subjects as islands with their lamps (§10.6), or a static list in Lite Mode (§10.8).
-class StudyMapBody extends StatelessWidget {
+/// The Study Map (§10.6): a winding lamp path with a subject filter and a floating lamp count
+/// (design/ui/06, BOLT-0117), or a static list in Lite Mode (§10.8).
+class StudyMapBody extends StatefulWidget {
   const StudyMapBody({
     super.key,
     required this.map,
@@ -25,6 +27,14 @@ class StudyMapBody extends StatelessWidget {
   final bool lite;
   final Widget? header;
 
+  @override
+  State<StudyMapBody> createState() => _StudyMapBodyState();
+}
+
+class _StudyMapBodyState extends State<StudyMapBody> {
+  /// null = every subject.
+  String? _subject;
+
   void _tap(BuildContext context, TopicView topic) {
     if (!topic.hasLesson) {
       ScaffoldMessenger.of(context)
@@ -32,117 +42,120 @@ class StudyMapBody extends StatelessWidget {
         ..showSnackBar(const SnackBar(content: Text('Lesson coming soon.')));
       return;
     }
-    onOpenTopic?.call(topic);
+    widget.onOpenTopic?.call(topic);
   }
 
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
     final p = context.hm;
-    final all = [for (final s in map.subjects) ...s.topics];
-    final lit = all.where((t) => t.lamp.lit).length;
-    // Bauhaus colours and shapes take turns, so each subject reads as its own block.
-    final shapes = [HmShape.circle, HmShape.square, HmShape.triangle];
-    final colours = [p.primary, p.gold, p.blue];
-    // Bento (BOLT-0110): the hero tile counts lit lamps; each subject is a tile of lamps.
-    return ListView(
-      key: const Key('study-map'),
-      padding: const EdgeInsets.fromLTRB(
-        HmSpace.lg,
-        HmSpace.lg,
-        HmSpace.lg,
-        HmSpace.xxl,
+    final subjects = widget.map.subjects;
+    final shown = [
+      for (final s in subjects)
+        if (_subject == null || s.code == _subject) ...s.topics,
+    ];
+    final title = Semantics(
+      header: true,
+      child: Text(
+        'Study Map',
+        style: text.headlineLarge?.copyWith(fontWeight: FontWeight.w900),
       ),
-      children: [
-        HmBentoHero(
-          eyebrow: 'Study Map',
-          title: lit == 0
-              ? 'Light your first lamp'
-              : '$lit of ${all.length} lamps lit',
-          message: lit == 0
-              ? 'Every topic is a lamp. Read a lesson and pass its check to light it.'
-              : 'Keep them bright: relight a lamp when it starts to dim.',
-          art: lit == 0 ? HmArtName.sceneDarkHall : HmArtName.sceneFirstLamp,
-          footer: all.isEmpty
-              ? null
-              : HmProgressBar(
-                  value: lit / all.length,
-                  height: 14,
-                  color: p.gold,
-                  semanticLabel: 'Lamps lit',
+    );
+    if (widget.lite) {
+      return ListView(
+        key: const Key('study-map'),
+        padding: const EdgeInsets.all(HmSpace.lg),
+        children: [
+          title,
+          const SizedBox(height: HmSpace.lg),
+          ?widget.header,
+          for (final subject in subjects)
+            _LiteSubject(subject: subject, onTap: (t) => _tap(context, t)),
+        ],
+      );
+    }
+    Widget chip(String label, String? id) {
+      final on = _subject == id;
+      return Padding(
+        padding: const EdgeInsets.only(right: HmSpace.sm),
+        child: Semantics(
+          button: true,
+          selected: on,
+          label: id == null ? 'All subjects' : label,
+          excludeSemantics: true,
+          child: InkWell(
+            key: Key('map-filter-${id ?? 'all'}'),
+            borderRadius: BorderRadius.circular(HmRadius.pill),
+            onTap: () => setState(() => _subject = id),
+            child: AnimatedContainer(
+              duration: HmMotion.fast,
+              constraints: const BoxConstraints(minHeight: 44),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: HmSpace.lg),
+              decoration: BoxDecoration(
+                color: on ? p.primary : Colors.transparent,
+                borderRadius: BorderRadius.circular(HmRadius.pill),
+                border: Border.all(
+                  color: on ? p.primary : p.outline,
+                  width: HmBauhaus.stroke,
                 ),
-        ),
-        const SizedBox(height: HmSpace.lg),
-        ?header,
-        for (final (i, subject) in map.subjects.indexed) ...[
-          if (lite)
-            _LiteSubject(subject: subject, onTap: (t) => _tap(context, t))
-          else
-            HmEnter(
-              index: i,
-              child: HmBentoTile(
-                shape: shapes[i % 3],
-                shapeColor: colours[i % 3],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: HmSpace.xl),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Semantics(
-                            header: true,
-                            child: Text(subject.name, style: text.titleLarge),
-                          ),
-                          Text(
-                            '${subject.topics.length} lamps',
-                            style: text.bodySmall?.copyWith(color: p.textMuted),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: HmSpace.md),
-                    HmProgressBar(
-                      value: subject.topics.isEmpty
-                          ? 0
-                          : subject.topics.where((t) => t.lamp.lit).length /
-                                subject.topics.length,
-                      height: 10,
-                      color: p.gold,
-                      semanticLabel: '${subject.name} lamps lit',
-                    ),
-                    const SizedBox(height: HmSpace.lg),
-                    Wrap(
-                      spacing: HmSpace.sm,
-                      runSpacing: HmSpace.md,
-                      children: [
-                        for (final topic in subject.topics)
-                          SizedBox(
-                            width: 96,
-                            // Shared element with the topic's lesson (Study Map -> topic).
-                            child: Hero(
-                              tag: 'lamp-${topic.id}',
-                              child: Lamp(
-                                key: Key('lamp-${topic.id}'),
-                                label: topic.name,
-                                state: topic.lamp,
-                                size: 52,
-                                showLabel: true,
-                                onTap: onOpenTopic == null
-                                    ? null
-                                    : () => _tap(context, topic),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
+              ),
+              child: Text(
+                label,
+                style: text.titleMedium?.copyWith(
+                  color: on ? p.onPrimary : p.textMuted,
+                  fontWeight: on ? FontWeight.w800 : FontWeight.w600,
                 ),
               ),
             ),
-          const SizedBox(height: HmSpace.lg),
-        ],
+          ),
+        ),
+      );
+    }
+
+    return Stack(
+      children: [
+        ListView(
+          key: const Key('study-map'),
+          padding: const EdgeInsets.fromLTRB(
+            HmSpace.xl,
+            HmSpace.lg,
+            HmSpace.xl,
+            120,
+          ),
+          children: [
+            title,
+            const SizedBox(height: HmSpace.md),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              clipBehavior: Clip.none,
+              child: Row(
+                children: [
+                  chip('All', null),
+                  for (final s in subjects) chip(s.name, s.code),
+                ],
+              ),
+            ),
+            const SizedBox(height: HmSpace.lg),
+            ?widget.header,
+            if (shown.isEmpty)
+              const HmEmptyView(title: 'No topics here yet.')
+            else
+              LampPath(
+                topics: shown,
+                onTap: widget.onOpenTopic == null
+                    ? null
+                    : (t) => _tap(context, t),
+              ),
+          ],
+        ),
+        if (shown.isNotEmpty)
+          Positioned(
+            left: HmSpace.xl,
+            right: HmSpace.xl,
+            bottom: HmSpace.md,
+            child: LampSummary(topics: shown),
+          ),
       ],
     );
   }
@@ -366,48 +379,77 @@ class StudyActionsRow extends StatelessWidget {
   final String examCode;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: HmSpace.lg),
-    child: HmBentoTile(
-      eyebrow: 'Keep your lamps bright',
-      shape: HmShape.triangle,
-      shapeColor: context.hm.blue,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          HmPrimaryButton(
-            key: const Key('study-relight'),
-            label: 'Relight lamps',
-            icon: Icons.lightbulb_outline,
-            onPressed: actions.onRelight,
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
+  Widget build(BuildContext context) {
+    final p = context.hm;
+    Widget action(
+      Key key,
+      String label,
+      IconData icon,
+      Color tint,
+      VoidCallback onTap,
+    ) => Expanded(
+      child: HmCard(
+        key: key,
+        color: tint,
+        onTap: onTap,
+        semanticLabel: label,
+        padding: const EdgeInsets.symmetric(
+          vertical: HmSpace.md,
+          horizontal: HmSpace.xs,
+        ),
+        child: ExcludeSemantics(
+          child: Column(
             children: [
-              HmSecondaryButton(
-                key: const Key('study-practice'),
-                label: 'Practise',
-                expand: false,
-                onPressed: () => actions.onPractice(examCode),
-              ),
-              HmSecondaryButton(
-                key: const Key('study-mistakes'),
-                label: 'Mistakes',
-                expand: false,
-                onPressed: actions.onMistakes,
-              ),
-              HmSecondaryButton(
-                key: const Key('study-pyq'),
-                label: 'PYQ Vault',
-                expand: false,
-                onPressed: () => actions.onPyqVault(examCode),
+              Icon(icon, color: p.text, size: 26),
+              const SizedBox(height: HmSpace.xs),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ],
           ),
+        ),
+      ),
+    );
+    return Padding(
+      padding: const EdgeInsets.only(bottom: HmSpace.lg),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          action(
+            const Key('study-relight'),
+            'Relight',
+            Icons.local_fire_department_rounded,
+            HmTint.coral,
+            actions.onRelight,
+          ),
+          const SizedBox(width: HmSpace.sm),
+          action(
+            const Key('study-practice'),
+            'Practise',
+            Icons.edit_rounded,
+            HmTint.amber,
+            () => actions.onPractice(examCode),
+          ),
+          const SizedBox(width: HmSpace.sm),
+          action(
+            const Key('study-mistakes'),
+            'Mistakes',
+            Icons.replay_rounded,
+            HmTint.mint,
+            actions.onMistakes,
+          ),
+          const SizedBox(width: HmSpace.sm),
+          action(
+            const Key('study-pyq'),
+            'PYQ',
+            Icons.inventory_2_rounded,
+            HmTint.sky,
+            () => actions.onPyqVault(examCode),
+          ),
         ],
       ),
-    ),
-  );
+    );
+  }
 }

@@ -80,7 +80,7 @@ void main() {
       );
     }
 
-    testWidgets('chunky button: label for screen readers, sinks on press', (
+    testWidgets('chunky button: label for screen readers, dips on press', (
       tester,
     ) async {
       final handle = tester.ensureSemantics();
@@ -106,8 +106,9 @@ void main() {
         tester.getCenter(find.byType(HmChunkyButton)),
       );
       await tester.pumpAndSettle();
-      final pad = tester.widget<AnimatedPadding>(find.byType(AnimatedPadding));
-      expect((pad.padding as EdgeInsets).top, HmElevation.buttonDepth);
+      // Warm light (BOLT-0117): the pill shrinks a little while pressed.
+      final scale = tester.widget<AnimatedScale>(find.byType(AnimatedScale));
+      expect(scale.scale, lessThan(1));
       await g.up();
       await tester.pumpAndSettle();
       expect(taps, 1);
@@ -124,8 +125,13 @@ void main() {
           ),
         ),
       );
-      final pad = tester.widget<AnimatedPadding>(find.byType(AnimatedPadding));
-      expect(pad.padding, EdgeInsets.zero);
+      final g = await tester.startGesture(
+        tester.getCenter(find.byType(HmChunkyButton)),
+      );
+      await tester.pumpAndSettle();
+      final scale = tester.widget<AnimatedScale>(find.byType(AnimatedScale));
+      expect(scale.scale, 1, reason: 'no press motion in the Exam Hall');
+      await g.up();
     });
 
     testWidgets('a disabled button does nothing', (tester) async {

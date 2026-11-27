@@ -57,67 +57,57 @@ class LessonBody extends ConsumerWidget {
         HmSpace.xxl,
       ),
       children: [
-        HmCard(
-          color: p.gold,
-          padding: const EdgeInsets.all(HmSpace.xl),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Semantics(
-                      header: true,
-                      child: Text(
-                        lesson.title,
-                        style: text.headlineMedium?.copyWith(color: p.onGold),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: HmSpace.md),
-                  // Shared element with the lamp on the Study Map.
-                  Hero(
-                    tag: 'lamp-${lesson.topicId}',
-                    child: const HmArt(HmArtName.lampDark, size: 56),
-                  ),
-                ],
-              ),
-              const SizedBox(height: HmSpace.sm),
-              Row(
-                children: [
-                  Icon(Icons.schedule_rounded, size: 18, color: p.onGold),
-                  const SizedBox(width: HmSpace.xs),
-                  Text(
-                    '${lesson.readingMinutes} min read',
-                    style: text.labelLarge?.copyWith(color: p.onGold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: HmSpace.lg),
-              if (status == ListenStatus.speaking)
-                HmSecondaryButton(
+        Align(
+          alignment: Alignment.centerRight,
+          child: status == ListenStatus.speaking
+              ? HmChunkyButton(
                   key: const Key('lesson-stop'),
                   label: 'Stop',
-                  icon: Icons.stop,
+                  icon: Icons.stop_rounded,
+                  expand: false,
+                  tone: HmButtonTone.secondary,
                   onPressed: listen.stop,
                 )
-              else
-                HmSecondaryButton(
+              : HmChunkyButton(
                   key: const Key('lesson-listen'),
                   label: 'Listen',
-                  icon: Icons.volume_up_outlined,
+                  icon: Icons.volume_up_rounded,
+                  expand: false,
+                  tone: HmButtonTone.secondary,
                   onPressed: () => listen.listen(lesson.listenText),
                 ),
-              if (status == ListenStatus.unavailable)
-                Padding(
-                  padding: const EdgeInsets.only(top: HmSpace.sm),
-                  child: Text(
-                    'Listen is not available on this phone.',
-                    style: text.bodyMedium?.copyWith(color: p.onGold),
-                  ),
-                ),
-            ],
+        ),
+        if (status == ListenStatus.unavailable)
+          Padding(
+            padding: const EdgeInsets.only(top: HmSpace.sm),
+            child: Text(
+              'Listen is not available on this phone.',
+              textAlign: TextAlign.right,
+              style: text.bodyMedium?.copyWith(color: p.textMuted),
+            ),
+          ),
+        const SizedBox(height: HmSpace.md),
+        // Shared element with the lamp on the Study Map.
+        Center(
+          child: Hero(
+            tag: 'lamp-${lesson.topicId}',
+            child: const HmMey(HmPic.meyReading, size: 170),
+          ),
+        ),
+        const SizedBox(height: HmSpace.lg),
+        Semantics(
+          header: true,
+          child: Text(
+            lesson.title,
+            style: text.headlineLarge?.copyWith(fontWeight: FontWeight.w900),
+          ),
+        ),
+        const SizedBox(height: HmSpace.sm),
+        Text(
+          '${lesson.readingMinutes} min read',
+          style: text.titleMedium?.copyWith(
+            color: p.textMuted,
+            fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: HmSpace.xl),

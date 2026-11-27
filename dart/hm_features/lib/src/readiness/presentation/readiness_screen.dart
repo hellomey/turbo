@@ -59,32 +59,54 @@ class ReadinessBody extends StatelessWidget {
           children: [
             HmBentoTile(
               span: 2,
-              color: p.gold,
-              shape: HmShape.circle,
-              shapeColor: p.primary,
               padding: const EdgeInsets.all(HmSpace.xl),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Warm light (BOLT-0117, design/ui/15): the ring is the share of lamps lit, a
+                  // real number; there is no overall readiness percentage (invariant 4).
+                  Row(
+                    children: [
+                      HmRing(
+                        value: view.litPct / 100,
+                        size: 132,
+                        semanticLabel: 'Lamps lit',
+                        center: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '${view.litPct}%',
+                              style: text.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            Text('lamps lit', style: text.labelMedium),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      const HmMey(HmPic.meyProud, size: 130),
+                    ],
+                  ),
+                  const SizedBox(height: HmSpace.lg),
                   Semantics(
                     header: true,
                     child: Text(
                       'Readiness: ${ReadinessCopy.label(view.label)}',
                       key: const Key('readiness-label'),
-                      style: text.headlineMedium?.copyWith(color: p.onGold),
+                      style: text.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
                   const SizedBox(height: HmSpace.xs),
                   Text(
                     'Updated ${formatIst(view.computedAt)}',
-                    style: text.bodyMedium?.copyWith(color: p.onGold),
+                    style: text.bodyMedium?.copyWith(color: p.textMuted),
                   ),
                   if (view.noEvidence) ...[
                     const SizedBox(height: HmSpace.sm),
-                    Text(
-                      ReadinessCopy.noEvidence,
-                      style: text.bodyLarge?.copyWith(color: p.onGold),
-                    ),
+                    Text(ReadinessCopy.noEvidence, style: text.bodyLarge),
                   ],
                   if (view.readyForFullMocks) ...[
                     const SizedBox(height: HmSpace.sm),
@@ -101,6 +123,14 @@ class ReadinessBody extends StatelessWidget {
                 ],
               ),
             ),
+            HmBentoTile(
+              span: 2,
+              color: HmTint.cream,
+              child: Text(
+                'How we calculate this: each bar below is one part of the meter, with the evidence under it. No hidden factors.',
+                style: text.bodyLarge,
+              ),
+            ),
             for (final bar in view.bars)
               HmBentoTile(
                 span: bar.locked ? 1 : 2,
@@ -111,8 +141,7 @@ class ReadinessBody extends StatelessWidget {
               HmBentoTile(
                 span: 2,
                 eyebrow: 'Next step',
-                shape: HmShape.triangle,
-                shapeColor: p.blue,
+                color: HmTint.mint,
                 child: Text(view.suggestion!, style: text.bodyLarge),
               ),
           ],

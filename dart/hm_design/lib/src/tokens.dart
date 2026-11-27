@@ -97,41 +97,42 @@ class HmPalette extends ThemeExtension<HmPalette> {
   /// The hard offset shadow behind outlined cards and buttons: no blur (BOLT-0110).
   final Color shadow;
 
-  /// Bauhaus light (BOLT-0110), the default: warm off-white paper, near-black ink, 3 px black
-  /// outlines with hard offset shadows, a red main action, yellow rewards and blue steady rings.
+  /// Warm light (BOLT-0117), the default and the only theme the app uses: warm white paper, white
+  /// cards with soft shadows, lamp-amber actions, mint/coral/sky for right/wrong/info. Matches the
+  /// approved mock-ups in design/ui/.
   static const light = HmPalette(
     brightness: Brightness.light,
-    background: Color(0xFFF4EFE4),
-    surface: Color(0xFFFFFCF5),
-    surface2: Color(0xFFEFE7D6),
-    surface3: Color(0xFFE5DAC4),
-    outline: Color(0xFF141414),
-    text: Color(0xFF141414),
-    textMuted: Color(0xFF4D4740),
-    primary: Color(0xFFD7261E),
-    primaryShade: Color(0xFF141414),
-    onPrimary: Color(0xFFFFFFFF),
-    primaryText: Color(0xFFB01E17),
-    gold: Color(0xFFF5C400),
-    goldShade: Color(0xFF141414),
-    onGold: Color(0xFF141414),
-    goldText: Color(0xFF6E5100),
-    flame: Color(0xFFE8501C),
-    steady: Color(0xFF1F4FBF),
-    success: Color(0xFF1E8A4C),
-    successTint: Color(0xFFDDF1E3),
-    onSuccessTint: Color(0xFF125A31),
-    error: Color(0xFFD7261E),
-    errorTint: Color(0xFFFBE3DF),
-    onErrorTint: Color(0xFF9E1A13),
-    info: Color(0xFF1F4FBF),
-    infoTint: Color(0xFFDCE6FA),
-    onInfoTint: Color(0xFF163C94),
-    disabled: Color(0xFFE5DCCB),
-    onDisabled: Color(0xFF4D4740),
-    blue: Color(0xFF1F4FBF),
+    background: Color(0xFFF8F5EF),
+    surface: Color(0xFFFFFFFF),
+    surface2: Color(0xFFF3EEE5),
+    surface3: Color(0xFFEAE3D6),
+    outline: Color(0xFFE8E0D2),
+    text: Color(0xFF1C1C1E),
+    textMuted: Color(0xFF5F5B55),
+    primary: Color(0xFFF5A524),
+    primaryShade: Color(0xFFD9820B),
+    onPrimary: Color(0xFF1C1C1E),
+    primaryText: Color(0xFF9A5800),
+    gold: Color(0xFFF5A524),
+    goldShade: Color(0xFFD9820B),
+    onGold: Color(0xFF1C1C1E),
+    goldText: Color(0xFF8A5000),
+    flame: Color(0xFFF5A524),
+    steady: Color(0xFF2A6FB8),
+    success: Color(0xFF2BB673),
+    successTint: Color(0xFFE3F6EC),
+    onSuccessTint: Color(0xFF17663F),
+    error: Color(0xFFF2645A),
+    errorTint: Color(0xFFFDE3DF),
+    onErrorTint: Color(0xFFA8261C),
+    info: Color(0xFF3A8DDE),
+    infoTint: Color(0xFFE4F0FB),
+    onInfoTint: Color(0xFF1F5A9E),
+    disabled: Color(0xFFEFEAE1),
+    onDisabled: Color(0xFF5F5B55),
+    blue: Color(0xFF2A6FB8),
     onBlue: Color(0xFFFFFFFF),
-    shadow: Color(0xFF141414),
+    shadow: Color(0x1A5A4020),
   );
 
   /// Bauhaus dark (BOLT-0110): warm near-black paper, cream ink and outlines, brighter primaries.
@@ -265,12 +266,12 @@ abstract final class HmSpace {
   static const xxxl = 48.0;
 }
 
-/// Corner radius scale. Bauhaus (BOLT-0110): squares stay nearly square; circles use [pill].
+/// Corner radius scale (BOLT-0117): soft, rounded cards (20) and pill buttons.
 abstract final class HmRadius {
-  static const sm = 3.0;
-  static const md = 4.0;
-  static const lg = 6.0;
-  static const xl = 10.0;
+  static const sm = 8.0;
+  static const md = 14.0;
+  static const lg = 20.0;
+  static const xl = 28.0;
   static const pill = 999.0;
 }
 
@@ -284,21 +285,30 @@ abstract final class HmElevation {
 
 /// Bauhaus shape language (BOLT-0110): thick ink outlines and hard offset shadows with no blur.
 abstract final class HmBauhaus {
-  /// Outline width of cards, buttons and inputs.
-  static const stroke = 3.0;
+  /// Outline width of cards, buttons and inputs. Warm light (BOLT-0117): a thin beige line.
+  static const stroke = 1.5;
 
   /// Outline width of small pieces (chips, pills, progress tracks).
-  static const strokeSmall = 2.0;
+  static const strokeSmall = 1.5;
 
   /// Hard shadow offsets (down and right).
   static const shadow = Offset(4, 4);
   static const shadowSmall = Offset(3, 3);
 
-  /// A hard, blur-free shadow in the palette's shadow colour.
+  /// The card shadow. Warm light (BOLT-0117): soft and blurred, always falling straight down;
+  /// [offset] only scales its depth so older call sites keep working.
   static List<BoxShadow> hardShadow(
     HmPalette p, {
     Offset offset = HmBauhaus.shadow,
-  }) => [BoxShadow(color: p.shadow, offset: offset)];
+  }) => p.brightness == Brightness.light
+      ? [
+          BoxShadow(
+            color: p.shadow,
+            offset: Offset(0, offset.dy + 2),
+            blurRadius: offset.dy * 5,
+          ),
+        ]
+      : [BoxShadow(color: p.shadow, offset: offset)];
 
   /// The standard outlined box: a fill, a 3 px ink outline, a small radius and a hard shadow.
   /// Pass `shadow: false` inside the Exam Hall ([HmPlain]) and for nested boxes.

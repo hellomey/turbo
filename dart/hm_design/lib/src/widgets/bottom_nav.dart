@@ -40,48 +40,57 @@ class HmBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = context.hm;
     final text = Theme.of(context).textTheme;
-    return Container(
-      decoration: BoxDecoration(
-        color: p.surface,
-        border: Border(
-          top: BorderSide(color: p.outline, width: HmBauhaus.stroke),
-        ),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: HmSpace.xs,
-            vertical: HmSpace.xs,
-          ),
-          child: Row(
-            children: [
-              for (var i = 0; i < items.length; i++)
-                Expanded(
-                  child: Semantics(
-                    button: true,
-                    selected: i == currentIndex,
-                    label: '${items[i].label}, tab ${i + 1} of ${items.length}',
-                    onTap: () => onSelect(i),
-                    excludeSemantics: true,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(HmRadius.md),
+    // Warm light (BOLT-0117): a floating white pill with a soft shadow; the selected tab sits on
+    // an amber pill with a bold label, so selection shows by shape and weight, not colour alone.
+    return SafeArea(
+      top: false,
+      child: Center(
+        heightFactor: 1,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 520),
+          child: Container(
+            margin: const EdgeInsets.fromLTRB(
+              HmSpace.lg,
+              0,
+              HmSpace.lg,
+              HmSpace.md,
+            ),
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: p.surface,
+              borderRadius: BorderRadius.circular(HmRadius.pill),
+              boxShadow: HmBauhaus.hardShadow(p, offset: const Offset(0, 6)),
+            ),
+            child: Row(
+              children: [
+                for (var i = 0; i < items.length; i++)
+                  Expanded(
+                    child: Semantics(
+                      button: true,
+                      selected: i == currentIndex,
+                      label:
+                          '${items[i].label}, tab ${i + 1} of ${items.length}',
                       onTap: () => onSelect(i),
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          minHeight: HmSizes.minTapTarget + 8,
-                        ),
-                        child: _Tab(
-                          item: items[i],
-                          selected: i == currentIndex,
-                          palette: p,
-                          style: text.labelSmall,
+                      excludeSemantics: true,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(HmRadius.pill),
+                        onTap: () => onSelect(i),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            minHeight: HmSizes.minTapTarget + 8,
+                          ),
+                          child: _Tab(
+                            item: items[i],
+                            selected: i == currentIndex,
+                            palette: p,
+                            style: text.labelSmall,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -105,45 +114,45 @@ class _Tab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = palette;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        AnimatedContainer(
-          duration: HmMotion.fast,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-          decoration: BoxDecoration(
-            color: selected ? p.gold : Colors.transparent,
-            borderRadius: BorderRadius.circular(HmRadius.sm),
-            border: Border.all(
-              color: selected ? p.outline : Colors.transparent,
-              width: HmBauhaus.strokeSmall,
+    final fg = selected ? p.onPrimary : p.textMuted;
+    return AnimatedContainer(
+      duration: HmMotion.fast,
+      curve: HmMotion.standard,
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      decoration: BoxDecoration(
+        color: selected ? p.primary : Colors.transparent,
+        borderRadius: BorderRadius.circular(HmRadius.pill),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedScale(
+            duration: HmMotion.pop,
+            curve: HmMotion.spring,
+            scale: selected ? 1.1 : 1,
+            child: item.art != null
+                ? HmArt(item.art!, size: 24, color: fg)
+                : Icon(
+                    selected ? item.selectedIcon : item.icon,
+                    color: fg,
+                    size: 24,
+                  ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            item.label,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: style?.copyWith(
+              color: selected ? p.onPrimary : p.textMuted,
+              fontSize: 12,
+              fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
             ),
           ),
-          child: item.art != null
-              ? HmArt(
-                  item.art!,
-                  size: 24,
-                  color: selected ? p.onGold : p.textMuted,
-                )
-              : Icon(
-                  selected ? item.selectedIcon : item.icon,
-                  color: selected ? p.onGold : p.textMuted,
-                  size: 24,
-                ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          item.label,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: style?.copyWith(
-            color: selected ? p.text : p.textMuted,
-            fontWeight: selected ? FontWeight.w900 : FontWeight.w700,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

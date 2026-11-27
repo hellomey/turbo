@@ -2,8 +2,6 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_design/hm_design.dart';
 
-import '../../common/lamp_art.dart';
-
 /// "The Lamplighter" (BOLT-0111): five short story scenes woven into onboarding. Each scene sits at the
 /// top of an existing step and changes nothing about the step itself.
 enum StoryScene {
@@ -35,6 +33,15 @@ enum StoryScene {
 
   /// The lamp warms a little with each scene: dark in the first, lit in the last.
   double get glow => index / (StoryScene.values.length - 1);
+
+  /// Mey's pose for this scene (BOLT-0117).
+  HmPic get pose => switch (this) {
+    darkHall => HmPic.meySleepy,
+    chooseExam => HmPic.meyThink,
+    yourPlan => HmPic.meyCalendar,
+    firstLesson => HmPic.meyReading,
+    firstLamp => HmPic.meyCheer,
+  };
 }
 
 /// Shown on the welcome scene while HeyMey is in testing.
@@ -109,86 +116,77 @@ class _ScenePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final p = context.hm;
     final text = Theme.of(context).textTheme;
-    // The hall is drawn dark in both themes: inverse surface with its own text colour.
-    final ink = cs.onInverseSurface;
+    final narrow = MediaQuery.textScalerOf(context).scale(16) / 16 > 1.4;
+    final pic = HmMey(scene.pose, size: large ? 150 : 84);
+    // Warm light (BOLT-0117): an amber-tinted card with Mey in the scene's pose.
     return Semantics(
       container: true,
       label: 'Story, ${scene.title}',
-      child: Container(
+      child: HmCard(
         key: Key('story-${scene.name}'),
-        color: cs.inverseSurface,
+        color: HmTint.amber,
         padding: EdgeInsets.all(large ? HmSpace.xl : HmSpace.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                LampArt(glow: scene.glow, size: large ? 120 : 64),
-                const SizedBox(width: HmSpace.md),
+                if (!narrow) ...[pic, const SizedBox(width: HmSpace.md)],
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'The Lamplighter · ${scene.index + 1} of ${StoryScene.values.length}',
-                        style: text.labelMedium?.copyWith(color: ink),
+                        style: text.labelLarge?.copyWith(color: p.goldText),
                       ),
                       const SizedBox(height: HmSpace.xs),
                       Text(
                         scene.title,
-                        style: (large ? text.headlineSmall : text.titleMedium)
-                            ?.copyWith(color: ink, fontWeight: FontWeight.w800),
+                        style: (large ? text.headlineSmall : text.titleLarge)
+                            ?.copyWith(fontWeight: FontWeight.w800),
+                      ),
+                      const SizedBox(height: HmSpace.xs),
+                      Text(
+                        scene.line,
+                        style: (large ? text.titleMedium : text.bodyLarge)
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: HmSpace.md),
-            Text(
-              scene.line,
-              style: (large ? text.titleLarge : text.bodyLarge)?.copyWith(
-                color: ink,
-              ),
-            ),
             if (scene == StoryScene.darkHall) ...[
               const SizedBox(height: HmSpace.md),
               Container(
                 key: const Key('story-beta'),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: HmSpace.sm,
+                  horizontal: HmSpace.md,
                   vertical: HmSpace.xs,
                 ),
                 decoration: BoxDecoration(
-                  border: Border.all(color: ink, width: 1.5),
+                  color: p.surface,
+                  borderRadius: BorderRadius.circular(HmRadius.pill),
                 ),
                 child: Text(
                   storyBetaLine,
-                  style: text.labelLarge?.copyWith(color: ink),
+                  style: text.labelLarge?.copyWith(color: p.primaryText),
                 ),
               ),
             ],
-            if (onSkip != null) ...[
-              const SizedBox(height: HmSpace.sm),
+            if (onSkip != null)
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(
+                child: HmGhostButton(
                   key: const Key('story-skip'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: ink,
-                    minimumSize: const Size(
-                      HmSizes.minTapTarget,
-                      HmSizes.minTapTarget,
-                    ),
-                  ),
+                  label: 'Skip story',
                   onPressed: onSkip,
-                  child: const Text('Skip story'),
                 ),
               ),
-            ],
           ],
         ),
       ),

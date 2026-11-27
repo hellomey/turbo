@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../tokens.dart';
 import 'art.dart';
 import 'buttons.dart';
+import 'mey.dart';
 import 'motion.dart';
 import 'views.dart';
 
@@ -114,7 +115,9 @@ class HmBentoTile extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Stack(
         children: [
-          if (!plain && shape != HmShape.none)
+          if (!plain &&
+              shape != HmShape.none &&
+              p.brightness == Brightness.dark)
             Positioned(
               right: -10,
               top: -10,
@@ -166,8 +169,9 @@ Color _onColor(HmPalette p, Color fill) {
   return p.text;
 }
 
-/// The hero tile of a bento screen: a big heading, a line of text, Bauhaus art on the right and
-/// one main action. [color] defaults to the palette blue; text colours follow the fill.
+/// The hero tile of a bento screen (warm light, BOLT-0117): an amber-tinted card with an eyebrow,
+/// a big title, a line of text and one pill action on the left, and Mey (or other art) on the
+/// right. At 200% text the picture moves under the text so nothing is squeezed.
 class HmBentoHero extends StatelessWidget {
   const HmBentoHero({
     super.key,
@@ -175,10 +179,13 @@ class HmBentoHero extends StatelessWidget {
     this.eyebrow,
     this.message,
     this.art,
+    this.pic,
+    this.picSize = 132,
     this.footer,
     this.actionLabel,
     this.onAction,
     this.actionIcon,
+    this.actionKey,
     this.color,
   });
 
@@ -186,10 +193,17 @@ class HmBentoHero extends StatelessWidget {
   final String? eyebrow;
   final String? message;
   final HmArtName? art;
+
+  /// A mascot pose or illustration; wins over [art].
+  final HmPic? pic;
+  final double picSize;
   final Widget? footer;
   final String? actionLabel;
   final VoidCallback? onAction;
   final IconData? actionIcon;
+
+  /// Key for the action button, for tests.
+  final Key? actionKey;
   final Color? color;
 
   @override
@@ -197,76 +211,86 @@ class HmBentoHero extends StatelessWidget {
     final p = context.hm;
     final plain = HmPlain.of(context);
     final text = Theme.of(context).textTheme;
-    final fill = plain ? p.surface : (color ?? p.blue);
+    final fill = plain
+        ? p.surface
+        : (color ??
+              (p.brightness == Brightness.light ? HmTint.amber : p.surface2));
     final on = _onColor(p, fill);
     final narrow = MediaQuery.textScalerOf(context).scale(16) / 16 > 1.4;
-    final artWidget = art == null || plain
+    final Widget? picture = plain
         ? null
-        : HmArt(art!, size: narrow ? 72 : 96);
+        : pic != null
+        ? HmMey(pic!, size: narrow ? picSize * 0.75 : picSize)
+        : art != null
+        ? HmArt(art!, size: narrow ? 72 : 96)
+        : null;
+    final left = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (eyebrow != null) ...[
+          Text(
+            eyebrow!.toUpperCase(),
+            style: text.labelLarge?.copyWith(
+              color: p.brightness == Brightness.light ? p.goldText : on,
+              letterSpacing: 0.6,
+            ),
+          ),
+          const SizedBox(height: HmSpace.sm),
+        ],
+        Semantics(
+          header: true,
+          child: Text(
+            title,
+            style: text.headlineSmall?.copyWith(
+              color: on,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+        if (message != null) ...[
+          const SizedBox(height: HmSpace.xs),
+          Text(
+            message!,
+            style: text.bodyLarge?.copyWith(
+              color: on.withValues(alpha: 0.8),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+        if (footer != null) ...[const SizedBox(height: HmSpace.md), footer!],
+        if (actionLabel != null && onAction != null) ...[
+          const SizedBox(height: HmSpace.lg),
+          HmPrimaryButton(
+            key: actionKey,
+            label: actionLabel!,
+            onPressed: onAction,
+            icon: actionIcon,
+          ),
+        ],
+      ],
+    );
     return HmCard(
       color: fill,
       padding: const EdgeInsets.all(HmSpace.xl),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (eyebrow != null) ...[
-                      Text(
-                        eyebrow!.toUpperCase(),
-                        style: text.labelMedium?.copyWith(
-                          color: on,
-                          letterSpacing: 1.4,
-                        ),
-                      ),
-                      const SizedBox(height: HmSpace.sm),
-                    ],
-                    Semantics(
-                      header: true,
-                      child: Text(
-                        title,
-                        style: text.headlineMedium?.copyWith(color: on),
-                      ),
-                    ),
-                    if (message != null) ...[
-                      const SizedBox(height: HmSpace.sm),
-                      Text(
-                        message!,
-                        style: text.bodyLarge?.copyWith(color: on),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              if (artWidget != null && !narrow) ...[
-                const SizedBox(width: HmSpace.md),
-                artWidget,
+      child: narrow || picture == null
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                left,
+                if (picture != null) ...[
+                  const SizedBox(height: HmSpace.md),
+                  Center(child: picture),
+                ],
               ],
-            ],
-          ),
-          if (artWidget != null && narrow) ...[
-            const SizedBox(height: HmSpace.md),
-            artWidget,
-          ],
-          if (footer != null) ...[const SizedBox(height: HmSpace.lg), footer!],
-          if (actionLabel != null && onAction != null) ...[
-            const SizedBox(height: HmSpace.lg),
-            HmPrimaryButton(
-              label: actionLabel!,
-              onPressed: onAction,
-              icon: actionIcon,
-              tone: fill == p.primary
-                  ? HmButtonTone.gold
-                  : HmButtonTone.primary,
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(flex: 3, child: left),
+                const SizedBox(width: HmSpace.sm),
+                Flexible(flex: 2, child: Center(child: picture)),
+              ],
             ),
-          ],
-        ],
-      ),
     );
   }
 }
@@ -394,21 +418,18 @@ class HmBetaChip extends StatelessWidget {
               widthFactor: 1,
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: HmSpace.sm,
-                  vertical: HmSpace.xxs,
+                  horizontal: HmSpace.md,
+                  vertical: HmSpace.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: p.gold,
-                  border: Border.all(
-                    color: p.outline,
-                    width: HmBauhaus.strokeSmall,
-                  ),
+                  color: const Color(0xFFFFEFD5),
+                  borderRadius: BorderRadius.circular(HmRadius.pill),
                 ),
                 child: Text(
-                  'BETA',
-                  style: text.labelMedium?.copyWith(
-                    color: p.onGold,
-                    letterSpacing: 1.2,
+                  'Beta',
+                  style: text.labelLarge?.copyWith(
+                    color: p.primaryText,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
               ),

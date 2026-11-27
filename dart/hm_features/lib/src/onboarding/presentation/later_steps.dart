@@ -35,6 +35,14 @@ class ResultStep extends ConsumerWidget {
 }
 
 /// Step 4: main exam + up to 2 more.
+/// The exam picture in the picker (design/ui/03, BOLT-0117): book for Group 4, office for Group 2/2A,
+/// gopuram for Group 1, book again for anything else.
+HmPic examPic(String code) => code.contains('group-1') || code.endsWith('g1')
+    ? HmPic.icGroup1
+    : code.contains('group-2') || code.contains('g2')
+    ? HmPic.icGroup2
+    : HmPic.icGroup4;
+
 class PickExamsStep extends ConsumerWidget {
   const PickExamsStep({super.key});
 
@@ -46,9 +54,8 @@ class PickExamsStep extends ConsumerWidget {
     final text = Theme.of(context).textTheme;
     final full = state.otherExams.length >= OnboardingState.maxOtherExams;
     return OnboardingPage(
-      title: 'Pick your main exam',
+      title: 'Which exam are you preparing for?',
       scene: StoryScene.chooseExam,
-      illustration: HmIllustrationKind.trophy,
       subtitle:
           'Your Study Map is built for this exam. You can change it later.',
       children: [
@@ -60,15 +67,31 @@ class PickExamsStep extends ConsumerWidget {
               selected: state.mainExam == e.code,
               child: ListTile(
                 key: Key('main-${e.code}'),
-                minTileHeight: 48,
-                leading: Icon(
-                  state.mainExam == e.code
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_unchecked,
-                  color: state.mainExam == e.code ? context.hm.primary : null,
+                minTileHeight: 84,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: HmSpace.lg,
+                  vertical: HmSpace.sm,
                 ),
-                title: Text(e.name, style: text.titleSmall),
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(HmRadius.md),
+                  child: HmPicture(examPic(e.code), width: 60, height: 60),
+                ),
+                title: Text(
+                  e.name,
+                  style: text.titleMedium?.copyWith(
+                    fontWeight: state.mainExam == e.code
+                        ? FontWeight.w900
+                        : FontWeight.w700,
+                  ),
+                ),
                 subtitle: Text(e.conductingBody),
+                trailing: state.mainExam == e.code
+                    ? Icon(
+                        Icons.check_circle_rounded,
+                        color: context.hm.primary,
+                        size: 32,
+                      )
+                    : null,
                 onTap: () => c.chooseMainExam(e.code),
               ),
             ),

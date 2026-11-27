@@ -60,7 +60,7 @@ class _HmProgressBarState extends State<HmProgressBar>
     final v = widget.value.clamp(0.0, 1.0);
     final still = _still(context);
     final fill = widget.color ?? p.primary;
-    final r = BorderRadius.circular(HmRadius.sm);
+    final r = BorderRadius.circular(HmRadius.pill);
     return Semantics(
       label: widget.semanticLabel,
       value: '${(v * 100).round()} percent',
@@ -68,9 +68,10 @@ class _HmProgressBarState extends State<HmProgressBar>
       child: Container(
         height: widget.height,
         decoration: BoxDecoration(
-          color: p.surface2,
+          color: p.brightness == Brightness.light
+              ? const Color(0xFFF6E8D2)
+              : p.surface2,
           borderRadius: r,
-          border: Border.all(color: p.outline, width: HmBauhaus.strokeSmall),
         ),
         child: LayoutBuilder(
           builder: (context, box) => Align(
@@ -124,4 +125,83 @@ class _HmProgressBarState extends State<HmProgressBar>
       ),
     );
   }
+}
+
+/// A round progress ring (warm light, BOLT-0117): a pale track and an amber arc that grows from the
+/// top when [value] changes. [center] sits in the middle, usually a big number.
+class HmRing extends StatelessWidget {
+  const HmRing({
+    super.key,
+    required this.value,
+    required this.semanticLabel,
+    this.size = 120,
+    this.stroke = 12,
+    this.color,
+    this.center,
+  });
+
+  /// 0..1.
+  final double value;
+  final String semanticLabel;
+  final double size;
+  final double stroke;
+  final Color? color;
+  final Widget? center;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.hm;
+    final still = HmModes.reduceMotion(context);
+    return Semantics(
+      label: semanticLabel,
+      value: '${(value.clamp(0, 1) * 100).round()} percent',
+      excludeSemantics: true,
+      child: SizedBox.square(
+        dimension: size,
+        child: TweenAnimationBuilder<double>(
+          tween: Tween(end: value.clamp(0.0, 1.0)),
+          duration: still ? Duration.zero : HmMotion.progress * 1.5,
+          curve: HmMotion.standard,
+          builder: (context, t, child) => CustomPaint(
+            painter: _RingPainter(
+              t,
+              color ?? p.primary,
+              p.brightness == Brightness.light
+                  ? const Color(0xFFEDE7DD)
+                  : p.surface3,
+              stroke,
+            ),
+            child: child,
+          ),
+          child: Center(child: center),
+        ),
+      ),
+    );
+  }
+}
+
+class _RingPainter extends CustomPainter {
+  _RingPainter(this.t, this.color, this.track, this.stroke);
+
+  final double t;
+  final Color color;
+  final Color track;
+  final double stroke;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = (Offset.zero & size).deflate(stroke / 2);
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = stroke
+      ..strokeCap = StrokeCap.round;
+    canvas.drawArc(rect, 0, 6.283185, false, paint..color = track);
+    if (t > 0) {
+      canvas.drawArc(rect, -1.5708, 6.283185 * t, false, paint..color = color);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_RingPainter old) =>
+      old.t != t || old.color != color || old.track != track;
 }

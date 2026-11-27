@@ -17,8 +17,7 @@ class HmPlain extends InheritedWidget {
   bool updateShouldNotify(HmPlain old) => false;
 }
 
-/// A chunky press button (BOLT-0021, Bauhaus since BOLT-0110): a 3 px ink outline and a hard offset
-/// shadow that the face slides onto when pressed. At least 48 dp tall (§10.9); labels wrap at 200% text; screen readers hear [label]
+/// A press button (BOLT-0021; warm light pill since BOLT-0117). At least 48 dp tall (§10.9); labels wrap at 200% text; screen readers hear [label]
 /// (or [semanticLabel]) as a button. Inside [HmPlain] it renders flat.
 class HmChunkyButton extends StatefulWidget {
   const HmChunkyButton({
@@ -70,13 +69,15 @@ class _HmChunkyButtonState extends State<HmChunkyButton> {
       HmButtonTone.danger => (p.errorTint, p.onErrorTint),
       HmButtonTone.secondary => (p.surface, p.text),
     };
-    final depth = plain || !enabled ? 0.0 : HmBauhaus.shadow.dx;
-    final sink = _pressed ? depth : 0.0;
-    final radius = BorderRadius.circular(HmRadius.md);
-    final edge = enabled ? p.outline : p.onDisabled.withValues(alpha: 0.5);
-    final labelStyle = Theme.of(
-      context,
-    ).textTheme.labelLarge?.copyWith(color: ink, fontWeight: FontWeight.w900);
+    // Warm light (BOLT-0117): a pill with a soft glow under filled tones and a thin outline on
+    // secondary; it shrinks a little while pressed. Inside [HmPlain] it renders flat.
+    final radius = BorderRadius.circular(HmRadius.pill);
+    final filled = widget.tone != HmButtonTone.secondary && enabled;
+    final labelStyle = Theme.of(context).textTheme.labelLarge?.copyWith(
+      color: ink,
+      fontWeight: FontWeight.w900,
+      fontSize: 17,
+    );
 
     final content = widget.busy
         ? SizedBox.square(
@@ -101,46 +102,42 @@ class _HmChunkyButtonState extends State<HmChunkyButton> {
             ],
           );
 
-    final faceBox = AnimatedContainer(
+    final body = AnimatedScale(
       duration: HmMotion.press,
       curve: HmMotion.standard,
-      constraints: const BoxConstraints(minHeight: HmSizes.buttonHeight),
-      padding: const EdgeInsets.symmetric(
-        horizontal: HmSpace.xl,
-        vertical: HmSpace.md,
-      ),
-      decoration: BoxDecoration(
-        color: face,
-        borderRadius: radius,
-        border: Border.all(
-          color: _focused ? p.blue : edge,
-          width: _focused ? HmBauhaus.stroke + 1 : HmBauhaus.stroke,
+      scale: _pressed && !plain ? 0.96 : 1,
+      child: AnimatedContainer(
+        duration: HmMotion.press,
+        curve: HmMotion.standard,
+        constraints: const BoxConstraints(minHeight: HmSizes.buttonHeight),
+        padding: const EdgeInsets.symmetric(
+          horizontal: HmSpace.xl,
+          vertical: HmSpace.md,
+        ),
+        decoration: BoxDecoration(
+          color: face,
+          borderRadius: radius,
+          border: _focused
+              ? Border.all(color: p.blue, width: 3)
+              : widget.tone == HmButtonTone.secondary
+              ? Border.all(color: p.outline, width: HmBauhaus.stroke)
+              : null,
+          boxShadow: filled && !plain
+              ? [
+                  BoxShadow(
+                    color: face.withValues(alpha: _pressed ? 0.2 : 0.35),
+                    offset: Offset(0, _pressed ? 2 : 6),
+                    blurRadius: _pressed ? 6 : 16,
+                  ),
+                ]
+              : null,
+        ),
+        child: Center(
+          heightFactor: 1,
+          widthFactor: widget.expand ? null : 1,
+          child: content,
         ),
       ),
-      child: Center(
-        heightFactor: 1,
-        widthFactor: widget.expand ? null : 1,
-        child: content,
-      ),
-    );
-
-    final body = Stack(
-      children: [
-        if (depth > 0)
-          Positioned.fill(
-            left: depth,
-            top: depth,
-            child: DecoratedBox(
-              decoration: BoxDecoration(color: p.shadow, borderRadius: radius),
-            ),
-          ),
-        AnimatedPadding(
-          duration: HmMotion.press,
-          curve: HmMotion.standard,
-          padding: EdgeInsets.fromLTRB(sink, sink, depth - sink, depth - sink),
-          child: faceBox,
-        ),
-      ],
     );
 
     return Semantics(

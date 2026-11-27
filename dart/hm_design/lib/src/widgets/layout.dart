@@ -44,30 +44,38 @@ class HmStepHeader extends StatelessWidget {
           HmSpace.lg,
           HmSpace.md,
         ),
+        // Warm light (BOLT-0117): amber segments, one per step, with "2 of 8" under them.
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    label ?? stepText,
-                    style: text.labelLarge?.copyWith(color: p.textMuted),
-                  ),
-                ),
-                if (label != null)
-                  Text(
-                    '$s/$safeTotal',
-                    style: text.labelLarge?.copyWith(color: p.primaryText),
-                  ),
-              ],
-            ),
+            if (safeTotal <= 12)
+              Row(
+                children: [
+                  for (var i = 0; i < safeTotal; i++) ...[
+                    if (i > 0) const SizedBox(width: 6),
+                    Expanded(
+                      child: AnimatedContainer(
+                        duration: HmMotion.fast,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: i < s ? p.primary : const Color(0xFFE9E4DB),
+                          borderRadius: BorderRadius.circular(HmRadius.pill),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              )
+            else
+              HmProgressBar(
+                value: s / safeTotal,
+                semanticLabel: stepText,
+                height: 8,
+                animate: false,
+              ),
             const SizedBox(height: HmSpace.sm),
-            HmProgressBar(
-              value: s / safeTotal,
-              semanticLabel: stepText,
-              height: 12,
-              animate: false,
+            Text(
+              label == null ? '$s of $safeTotal' : '$label · $s of $safeTotal',
+              style: text.labelLarge?.copyWith(color: p.textMuted),
             ),
           ],
         ),

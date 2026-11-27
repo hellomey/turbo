@@ -5,9 +5,9 @@ import 'art.dart';
 import 'buttons.dart';
 import 'illustrations.dart';
 
-/// A Bauhaus surface card (BOLT-0110): a 3 px ink outline and a hard offset shadow, no blur.
-/// Tappable cards slide onto their shadow when pressed and are buttons for screen readers.
-/// Inside [HmPlain] (the Exam Hall) the shadow goes and the outline thins.
+/// A surface card (warm light, BOLT-0117): white, 20 px corners and a soft shadow. Tappable cards
+/// dip slightly when pressed and are buttons for screen readers. Inside [HmPlain] (the Exam Hall)
+/// the shadow goes and a thin outline takes its place.
 class HmCard extends StatefulWidget {
   const HmCard({
     super.key,
@@ -41,48 +41,45 @@ class _HmCardState extends State<HmCard> {
   Widget build(BuildContext context) {
     final p = context.hm;
     final plain = HmPlain.of(context);
-    final depth = plain ? 0.0 : HmBauhaus.shadow.dx;
-    final sink = _pressed ? depth : 0.0;
+    // Warm light (BOLT-0117): a soft rounded card that dips slightly when pressed. Highlighted
+    // cards (selected options, "you" rows) get a 2 px amber edge.
     final radius = BorderRadius.circular(HmRadius.lg);
-    final lift = depth - sink;
-    Widget card = AnimatedContainer(
+    final fill = widget.color ?? p.surface;
+    Widget card = AnimatedScale(
       duration: HmMotion.press,
-      margin: EdgeInsets.fromLTRB(sink, sink, lift, lift),
-      decoration: BoxDecoration(
-        color: widget.color ?? p.surface,
-        borderRadius: radius,
-        border: Border.all(
-          color: p.outline,
-          width: plain ? HmBauhaus.strokeSmall : HmBauhaus.stroke,
+      scale: _pressed ? 0.98 : 1,
+      child: AnimatedContainer(
+        duration: HmMotion.fast,
+        decoration: BoxDecoration(
+          color: fill,
+          borderRadius: radius,
+          border: widget.highlighted
+              ? Border.all(color: p.primary, width: 2)
+              : plain
+              ? Border.all(color: p.outline, width: HmBauhaus.strokeSmall)
+              : null,
+          boxShadow: plain ? null : HmBauhaus.hardShadow(p),
         ),
-        boxShadow: lift > 0
-            ? [
-                BoxShadow(
-                  color: widget.highlighted ? p.gold : p.shadow,
-                  offset: Offset(lift, lift),
-                ),
-              ]
-            : null,
-      ),
-      child: ClipRRect(
-        borderRadius: radius,
-        child: Material(
-          type: MaterialType.transparency,
-          child: widget.onTap == null
-              ? Padding(padding: widget.padding, child: widget.child)
-              : InkWell(
-                  onTap: widget.onTap,
-                  onHighlightChanged: (v) => setState(() => _pressed = v),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      minHeight: HmSizes.minTapTarget,
-                    ),
-                    child: Padding(
-                      padding: widget.padding,
-                      child: widget.child,
+        child: ClipRRect(
+          borderRadius: radius,
+          child: Material(
+            type: MaterialType.transparency,
+            child: widget.onTap == null
+                ? Padding(padding: widget.padding, child: widget.child)
+                : InkWell(
+                    onTap: widget.onTap,
+                    onHighlightChanged: (v) => setState(() => _pressed = v),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minHeight: HmSizes.minTapTarget,
+                      ),
+                      child: Padding(
+                        padding: widget.padding,
+                        child: widget.child,
+                      ),
                     ),
                   ),
-                ),
+          ),
         ),
       ),
     );

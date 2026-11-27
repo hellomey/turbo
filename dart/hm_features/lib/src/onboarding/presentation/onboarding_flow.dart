@@ -8,16 +8,28 @@ import '../application/onboarding_controller.dart';
 import 'answers_step.dart';
 import 'dob_step.dart';
 import 'later_steps.dart';
+import 'story_intro.dart';
 
 /// Onboarding (§17.1): value before login. When it finishes the session becomes signed in and the
 /// app router opens the shell.
-class OnboardingFlow extends ConsumerWidget {
-  const OnboardingFlow({super.key, this.onFinished});
+class OnboardingFlow extends ConsumerStatefulWidget {
+  const OnboardingFlow({super.key, this.onFinished, this.showIntro = false});
 
   final VoidCallback? onFinished;
 
+  /// Shows the four swipeable story cards before the first step (design/ui/02, BOLT-0117).
+  final bool showIntro;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OnboardingFlow> createState() => _OnboardingFlowState();
+}
+
+class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
+  late bool _intro = widget.showIntro;
+
+  @override
+  Widget build(BuildContext context) {
+    final onFinished = widget.onFinished;
     ref.listen(onboardingControllerProvider.select((s) => s.step), (_, step) {
       if (step == OnboardingStep.done) {
         // Plan setup comes next (§17.1 step 9, BOLT-0018); set before sign-in so the router sees it.
@@ -37,6 +49,11 @@ class OnboardingFlow extends ConsumerWidget {
       OnboardingStep.code => true,
       _ => false,
     };
+    if (_intro && step == OnboardingStep.dob) {
+      return Scaffold(
+        body: StoryIntro(onDone: () => setState(() => _intro = false)),
+      );
+    }
     return PopScope(
       canPop: !canGoBack,
       onPopInvokedWithResult: (didPop, _) {

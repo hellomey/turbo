@@ -49,7 +49,12 @@ class OnboardingPage extends StatelessWidget {
                 ],
                 Semantics(
                   header: true,
-                  child: Text(title, style: text.headlineSmall),
+                  child: Text(
+                    title,
+                    style: text.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ),
                 if (subtitle != null) ...[
                   const SizedBox(height: HmSpace.sm),
@@ -125,18 +130,17 @@ class ChoiceBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = context.hm;
     return Padding(
-      padding: const EdgeInsets.only(bottom: HmSpace.sm),
+      padding: const EdgeInsets.only(bottom: HmSpace.md),
       child: AnimatedContainer(
         duration: HmMotion.fast,
         decoration: BoxDecoration(
-          color: selected
-              ? Color.alphaBlend(p.primary.withValues(alpha: 0.10), p.surface)
-              : p.surface,
+          color: selected ? HmTint.amber : p.surface,
           borderRadius: BorderRadius.circular(HmRadius.lg),
           border: Border.all(
-            color: selected ? p.primary : p.outline,
-            width: selected ? 2.5 : 1.5,
+            color: selected ? p.primary : Colors.transparent,
+            width: 2,
           ),
+          boxShadow: HmBauhaus.hardShadow(p, offset: const Offset(0, 3)),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(HmRadius.lg),

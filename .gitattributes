@@ -17,3 +17,6 @@ graphify-out/graph.json merge=graphify
 .claude/skills/**/*.ttf filter=lfs diff=lfs merge=lfs -text
 .claude/skills/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
 .claude/skills/**/*.otf filter=lfs diff=lfs merge=lfs -text
+
+# Approved UI mock-ups (BOLT-0117): large source PNGs; the app uses crops in dart/hm_design/assets/img.
+design/ui/*.png filter=lfs diff=lfs merge=lfs -text

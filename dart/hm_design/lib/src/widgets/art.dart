@@ -2,6 +2,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../tokens.dart';
+import 'mey.dart';
 
 /// Every hand-drawn Bauhaus SVG in `hm_design/assets/svg` (BOLT-0110). Features ask for art by name
 /// ([HmArt]) and never by path, so files can be redrawn without touching a screen.
@@ -61,6 +62,34 @@ enum HmArtName {
 
   /// Line icons are drawn in one ink colour and may be tinted.
   bool get isIcon => name.startsWith('nav');
+
+  /// The warm light picture that replaces this Bauhaus drawing (BOLT-0117), or null to keep the SVG.
+  HmPic? get warm => switch (this) {
+    lampDark => HmPic.lampDim,
+    lampLit => HmPic.lampLit,
+    lampFading => HmPic.lampFading,
+    lampGold => HmPic.lampGold,
+    mascotWave => HmPic.meySmall,
+    mascotThink => HmPic.meyThink,
+    mascotCheer => HmPic.meyCheer,
+    mascotPoint => HmPic.meyThumbs,
+    mascotSleep => HmPic.meySleepy,
+    sceneDarkHall => HmPic.story1,
+    sceneTamilNadu => HmPic.meyWink,
+    scenePlanBoard => HmPic.meyCalendar,
+    sceneFirstLesson => HmPic.meyReading,
+    sceneFirstLamp => HmPic.meyHoldLamp,
+    badgeFirstLamp => HmPic.lampLit,
+    badgeTenLamps => HmPic.meyProud,
+    badgeGoldLamp => HmPic.lampGold,
+    badgeLevelUp => HmPic.meyCelebrate,
+    badgeMockDone => HmPic.chest,
+    badgeWeekPlan => HmPic.meyCalendar,
+    emptyNoAlerts => HmPic.envelope,
+    emptyNoMistakes => HmPic.meyProud,
+    emptyOffline => HmPic.meySleepy,
+    _ => null,
+  };
 }
 
 /// Draws one named Bauhaus SVG. Decorative by default (hidden from screen readers); pass
@@ -91,6 +120,16 @@ class HmArt extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = width ?? size;
     final h = height ?? size;
+    final warm = art.warm;
+    if (warm != null && context.hm.brightness == Brightness.light) {
+      return HmPicture(
+        warm,
+        width: w,
+        height: h,
+        fit: fit,
+        semanticLabel: semanticLabel,
+      );
+    }
     final tint = color ?? (art.isIcon ? context.hm.text : null);
     final picture = SvgPicture.asset(
       art.asset,
