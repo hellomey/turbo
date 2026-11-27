@@ -261,7 +261,10 @@ void main() {
         await tester.tap(find.byKey(const Key('save-progress-send')));
         await tester.pumpAndSettle();
         expect(h.profile.calls, ['saveCode:priya@example.com']);
-        await tester.enterText(find.byKey(const Key('hm-code-field')), '123456');
+        await tester.enterText(
+          find.byKey(const Key('hm-code-field')),
+          '123456',
+        );
         await tester.pumpAndSettle();
         expect(h.profile.calls.last, 'saveProgress:priya@example.com:123456');
         expect(find.textContaining(message), findsOneWidget);

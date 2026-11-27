@@ -183,19 +183,19 @@ class ProfileTab extends ConsumerWidget {
           const SizedBox(height: 24),
           // A guest has no email to confirm deletion with; unsaved guest accounts are deleted automatically.
           if (user.email case final email?)
-          TextButton(
-            key: const Key('delete-account'),
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.error,
-              minimumSize: const Size(48, 48),
-            ),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => DeleteAccountScreen(email: email),
+            TextButton(
+              key: const Key('delete-account'),
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error,
+                minimumSize: const Size(48, 48),
               ),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => DeleteAccountScreen(email: email),
+                ),
+              ),
+              child: const Text('Delete account'),
             ),
-            child: const Text('Delete account'),
-          ),
         ],
       ),
     );
