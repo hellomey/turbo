@@ -6,11 +6,10 @@ import '../../common/ports.dart';
 import '../../expo/presentation/expo_hero_tile.dart';
 import '../../plan/application/plan_controller.dart';
 import '../../plan/domain/plan_models.dart';
-import '../../plan/presentation/plan_card.dart';
 import '../../plan/presentation/rank_bar.dart';
 import '../../practice/domain/practice_models.dart' show rankUpSubtitle;
 import '../../profile/application/profile_controller.dart';
-import '../../progress/presentation/progress_card.dart';
+import 'today_tiles.dart';
 
 /// Today (§10.5, §10.6 Today, INT-002-S12): rank badge + XP bar, one big Today Card, "Relight N · M min",
 /// pocket sessions, then the Study Map, My Plan and the Exam Hall.
@@ -29,9 +28,17 @@ class TodayTab extends ConsumerWidget {
     this.onStartPocket,
     this.onOpenExpo,
     this.onOpenLeaderboard,
+    this.onOpenReadiness,
+    this.onOpenAlerts,
+    this.onOpenProfile,
   });
 
   final VoidCallback onOpenStudyMap;
+
+  /// BOLT-0117: the readiness tile, the exam-alert tile and the avatar open these.
+  final VoidCallback? onOpenReadiness;
+  final VoidCallback? onOpenAlerts;
+  final VoidCallback? onOpenProfile;
 
   /// Opens the Expo Challenge (BOLT-0111). The hero tile is hidden when null.
   final VoidCallback? onOpenExpo;
@@ -86,9 +93,11 @@ class TodayTab extends ConsumerWidget {
       onOpenRelight: onOpenRelight,
       onStartPocket: onStartPocket,
       onOpenExpo: onOpenExpo,
-      progress: onOpenLeaderboard == null || calm
-          ? null
-          : ProgressCard(onOpenLeaderboard: onOpenLeaderboard),
+      live: onOpenLeaderboard != null,
+      onOpenLeaderboard: onOpenLeaderboard,
+      onOpenReadiness: onOpenReadiness,
+      onOpenAlerts: onOpenAlerts,
+      onOpenProfile: onOpenProfile,
       onMarkDone: (item) => ref
           .read(planControllerProvider.notifier)
           .mark(item, PlanItemStatusView.done),
@@ -108,12 +117,17 @@ class TodayTab extends ConsumerWidget {
 }
 
 /// Layout only, for tests and goldens. [today] null = no plan section (Phase 1 wiring).
+///
+/// Warm light layout (design/ui/05, BOLT-0117): greeting header, one amber hero ("Your next lamp"),
+/// then mint check-in + coral recall beside the lamps-lit ring, the sky exam-alert tile, and quieter
+/// tiles below. [live] turns on the tiles that read their own providers (check-in, ring, alert).
 class TodayBody extends StatelessWidget {
   const TodayBody({
     super.key,
     required this.today,
     required this.onOpenStudyMap,
     this.calm = false,
+    this.live = false,
     this.onOpenExamHall,
     this.onOpenPlan,
     this.onSetUpPlan,
@@ -123,7 +137,10 @@ class TodayBody extends StatelessWidget {
     this.onMarkDone,
     this.onRetry,
     this.onOpenExpo,
-    this.progress,
+    this.onOpenLeaderboard,
+    this.onOpenReadiness,
+    this.onOpenAlerts,
+    this.onOpenProfile,
   });
 
   /// Opens the Expo Challenge. The hero tile is hidden when null.
@@ -131,6 +148,7 @@ class TodayBody extends StatelessWidget {
 
   final AsyncValue<TodayView>? today;
   final bool calm;
+  final bool live;
   final VoidCallback onOpenStudyMap;
   final VoidCallback? onOpenExamHall;
   final VoidCallback? onOpenPlan;
@@ -142,80 +160,299 @@ class TodayBody extends StatelessWidget {
   final ValueChanged<int>? onStartPocket;
   final ValueChanged<PlanItemView>? onMarkDone;
   final VoidCallback? onRetry;
-
-  /// XP / level + check-in card (BOLT-0113). Not shown when null.
-  final Widget? progress;
+  final VoidCallback? onOpenLeaderboard;
+  final VoidCallback? onOpenReadiness;
+  final VoidCallback? onOpenAlerts;
+  final VoidCallback? onOpenProfile;
 
   @override
   Widget build(BuildContext context) {
+    final t = today?.value;
+    final wide = MediaQuery.textScalerOf(context).scale(16) / 16 <= 1.4;
+    var n = 0;
+    Widget enter(Widget w) => HmEnter(index: n++, child: w);
+    const gap = SizedBox(height: HmSpace.lg);
+    final stretch = t == null ? null : PlanCopy.stretch(t.stretch);
+    final children = <Widget>[
+      if (live)
+        TodayHeader(onOpenProfile: onOpenProfile)
+      else
+        Row(
+          children: [
+            Expanded(
+              child: Semantics(
+                header: true,
+                child: Text(
+                  'Today',
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+              ),
+            ),
+            const HmBetaChip(),
+          ],
+        ),
+      const SizedBox(height: HmSpace.xl),
+      enter(_hero(context)),
+      if (onOpenExpo != null) ...[
+        gap,
+        enter(ExpoHeroTile(onOpen: onOpenExpo!)),
+      ],
+      if (today case AsyncError(:final error)) ...[
+        gap,
+        enter(
+          HmCard(
+            key: const Key('today-plan-error'),
+            child: Row(
+              children: [
+                const HmMey(HmPic.meySleepy, size: 72, float: false),
+                const SizedBox(width: HmSpace.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(messageOf(error)),
+                      if (onRetry != null)
+                        TextButton(
+                          onPressed: onRetry,
+                          child: const Text('Try again'),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+      if (live && !calm) ...[
+        gap,
+        enter(
+          wide
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const CheckInTile(),
+                          const SizedBox(height: HmSpace.lg),
+                          RecallTile(
+                            count: t?.relightCount ?? 0,
+                            minutes: t?.relightMinutes,
+                            onOpen: onOpenRelight,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: HmSpace.lg),
+                    Expanded(child: ReadinessTile(onOpen: onOpenReadiness)),
+                  ],
+                )
+              : Column(
+                  children: [
+                    const CheckInTile(),
+                    gap,
+                    RecallTile(
+                      count: t?.relightCount ?? 0,
+                      minutes: t?.relightMinutes,
+                      onOpen: onOpenRelight,
+                    ),
+                    gap,
+                    ReadinessTile(onOpen: onOpenReadiness),
+                  ],
+                ),
+        ),
+        gap,
+        enter(AlertTile(onOpen: onOpenAlerts)),
+      ] else if (t != null && t.relightCount > 0 && onOpenRelight != null) ...[
+        gap,
+        enter(
+          RecallTile(
+            count: t.relightCount,
+            minutes: t.relightMinutes,
+            onOpen: onOpenRelight,
+          ),
+        ),
+      ],
+      if (t != null &&
+          (t.welcomeBack != null || (stretch != null && !calm))) ...[
+        gap,
+        enter(_notes(context, t, stretch)),
+      ],
+      gap,
+      enter(HmBentoGrid(children: _links(context))),
+      if (!calm &&
+          t != null &&
+          onStartPocket != null &&
+          t.pocketSessions.isNotEmpty) ...[
+        gap,
+        enter(_pocket(context, t)),
+      ],
+      if (!calm && t != null) ...[
+        gap,
+        enter(
+          HmBentoTile(
+            span: 2,
+            eyebrow: 'Your rank',
+            child: RankBar(rank: t.rank),
+          ),
+        ),
+      ],
+    ];
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 640),
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(
+            HmSpace.xl,
+            HmSpace.lg,
+            HmSpace.xl,
+            HmSpace.xxl,
+          ),
+          children: children,
+        ),
+      ),
+    );
+  }
+
+  /// The amber hero: the plan's next step (or its done state), "set up your plan", or the Study Map.
+  Widget _hero(BuildContext context) {
+    final t = today?.value;
     final text = Theme.of(context).textTheme;
     final p = context.hm;
-    final t = today?.value;
-    // One clear next action (§10.1): when the Today Card has a pending item it is the primary button.
-    final cardIsPrimary =
-        t != null && (t.hasPlan ? t.todayCard.canMark : onSetUpPlan != null);
-    // Bento (BOLT-0110): one hero tile (the Today Card, or Study when there is no plan step), then
-    // smaller tiles. Calm Mode keeps only the Today Card, Study and Relight.
-    final expo = onOpenExpo;
-    final tiles = <HmBentoTile>[
-      if (progress != null)
-        HmBentoTile(
-          span: 2,
-          eyebrow: 'Your progress',
-          shape: HmShape.square,
-          shapeColor: p.gold,
-          child: progress!,
+    if (today != null && t == null && today is! AsyncError) {
+      return Semantics(
+        label: 'Loading today',
+        liveRegion: true,
+        child: ExcludeSemantics(child: HmSkeleton.card()),
+      );
+    }
+    if (t != null && t.hasPlan) {
+      final item = t.todayCard;
+      final lesson = item.kind == PlanItemKindView.lesson;
+      if (item.canMark) {
+        return HmBentoHero(
+          key: const Key('today-card'),
+          eyebrow: lesson ? 'Your next lamp' : 'Your next step',
+          title: item.title,
+          message:
+              '${item.minutes} min ${PlanCopy.kind(item.kind).toLowerCase()}',
+          pic: HmPic.meyHoldLamp,
+          actionKey: const Key('today-card-start'),
+          actionLabel: 'Start',
+          onAction: onStartItem == null ? null : () => onStartItem!(item),
+          footer: onMarkDone == null
+              ? null
+              : HmGhostButton(
+                  key: const Key('today-card-done'),
+                  label: 'Mark as done',
+                  semanticLabel: 'Mark ${item.title} as done',
+                  onPressed: () => onMarkDone!(item),
+                ),
+        );
+      }
+      return HmBentoHero(
+        key: const Key('today-card'),
+        eyebrow: "Today's step",
+        title: item.title,
+        pic: HmPic.meyCheer,
+        footer: Semantics(
+          liveRegion: true,
+          child: Row(
+            children: [
+              Icon(Icons.check_circle_rounded, color: p.success),
+              const SizedBox(width: HmSpace.sm),
+              Expanded(
+                child: Text(
+                  item.status == PlanItemStatusView.done
+                      ? 'Done. Well done.'
+                      : PlanCopy.status(item.status),
+                  style: text.bodyLarge,
+                ),
+              ),
+            ],
+          ),
         ),
-      if (today != null)
-        ...switch (today!) {
-          AsyncData(:final value) => _plan(context, value),
-          AsyncError(:final error) => [
-            HmBentoTile(
-              key: const Key('today-plan-error'),
-              span: 2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const HmArt(HmArtName.emptyOffline, size: 64),
-                  const SizedBox(width: HmSpace.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(messageOf(error), style: text.bodyLarge),
-                        if (onRetry != null)
-                          TextButton(
-                            onPressed: onRetry,
-                            child: const Text('Try again'),
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+        actionKey: const Key('today-open-map'),
+        actionLabel: 'Open Study Map',
+        onAction: onOpenStudyMap,
+      );
+    }
+    if (t != null && onSetUpPlan != null) {
+      return HmBentoHero(
+        key: const Key('today-no-plan'),
+        eyebrow: 'Start here',
+        title: 'Build your study plan',
+        message: PlanCopy.noPlan,
+        pic: HmPic.meyThink,
+        actionKey: const Key('today-setup-plan'),
+        actionLabel: 'Set up your plan',
+        onAction: onSetUpPlan,
+      );
+    }
+    return HmBentoHero(
+      key: Key(t == null ? 'today-study' : 'today-no-plan'),
+      eyebrow: 'Study',
+      title: 'Light your next lamp',
+      message: t == null
+          ? 'Open a topic on the Study Map and read its lesson.'
+          : PlanCopy.noPlan,
+      pic: HmPic.meyHoldLamp,
+      actionKey: const Key('today-open-map'),
+      actionLabel: 'Open Study Map',
+      onAction: onOpenStudyMap,
+    );
+  }
+
+  Widget _notes(BuildContext context, TodayView t, String? stretch) => HmCard(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (t.welcomeBack != null)
+          Semantics(
+            liveRegion: true,
+            child: Text(
+              t.welcomeBack!,
+              key: const Key('today-welcome-back'),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-          ],
-          _ => [
-            HmBentoTile(
-              span: 2,
-              child: Semantics(
-                label: 'Loading today',
-                liveRegion: true,
-                child: ExcludeSemantics(child: HmSkeleton.card()),
-              ),
-            ),
-          ],
-        },
-      _studyTile(context, hero: !cardIsPrimary && expo == null),
+          ),
+        if (stretch != null && !calm) ...[
+          if (t.welcomeBack != null) const SizedBox(height: HmSpace.sm),
+          Chip(
+            key: const Key('today-stretch'),
+            avatar: const Icon(Icons.flag_outlined),
+            label: Text(stretch),
+          ),
+        ],
+      ],
+    ),
+  );
+
+  List<HmBentoTile> _links(BuildContext context) {
+    final t = today?.value;
+    final mapIsHero =
+        t == null || (t.hasPlan ? !t.todayCard.canMark : onSetUpPlan == null);
+    return [
+      if (!mapIsHero)
+        HmBentoTile(
+          key: const Key('today-open-map'),
+          semanticLabel: 'Open the Study Map',
+          onTap: onOpenStudyMap,
+          child: const _TileLink(
+            pic: HmPic.lampLit,
+            title: 'Study Map',
+            line: 'Every topic is a lamp',
+          ),
+        ),
       if (onOpenPlan != null && !calm)
         HmBentoTile(
           key: const Key('today-open-plan'),
           semanticLabel: 'Open My Plan, the next 14 days',
           onTap: onOpenPlan,
-          shape: HmShape.square,
-          shapeColor: p.gold,
           child: const _TileLink(
-            art: HmArtName.badgeWeekPlan,
+            pic: HmPic.meyCalendar,
             title: 'My Plan',
             line: 'The next 14 days',
           ),
@@ -225,241 +462,56 @@ class TodayBody extends StatelessWidget {
           key: const Key('today-open-exam-hall'),
           semanticLabel: 'Open Exam Hall mocks',
           onTap: onOpenExamHall,
-          shape: HmShape.triangle,
-          shapeColor: p.primary,
           child: const _TileLink(
-            art: HmArtName.badgeMockDone,
+            pic: HmPic.chest,
             title: 'Exam Hall',
             line: 'Timed mock tests',
           ),
         ),
+      if (onOpenLeaderboard != null && !calm)
+        HmBentoTile(
+          key: const Key('today-open-leaderboard'),
+          semanticLabel: 'Open the weekly leaderboard',
+          onTap: onOpenLeaderboard,
+          child: const _TileLink(
+            pic: HmPic.meyCelebrate,
+            title: 'Leaderboard',
+            line: 'Opt-in, XP from learning',
+          ),
+        ),
     ];
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(
-        HmSpace.lg,
-        HmSpace.lg,
-        HmSpace.lg,
-        HmSpace.xxl,
-      ),
+  }
+
+  Widget _pocket(BuildContext context, TodayView t) => HmCard(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Text('Short on time?', style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: HmSpace.sm),
+        Wrap(
+          spacing: HmSpace.sm,
+          runSpacing: HmSpace.sm,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Semantics(
-                    header: true,
-                    child: Text('Today', style: text.displaySmall),
-                  ),
-                  const SizedBox(height: HmSpace.xs),
-                  Text(
-                    'One small step at a time.',
-                    style: text.bodyLarge?.copyWith(color: p.textMuted),
-                  ),
-                ],
+            for (final m in t.pocketSessions)
+              HmSecondaryButton(
+                key: Key('today-pocket-$m'),
+                label: '$m min',
+                semanticLabel: 'Start a $m minute session',
+                expand: false,
+                onPressed: () => onStartPocket!(m),
               ),
-            ),
-            const HmBetaChip(),
           ],
         ),
-        const SizedBox(height: HmSpace.xl),
-        // The Expo Challenge is the hero while it is available (BOLT-0111).
-        if (expo != null) ...[
-          HmEnter(child: ExpoHeroTile(onOpen: expo)),
-          const SizedBox(height: HmSpace.lg),
-        ],
-        HmBentoGrid(children: tiles),
       ],
-    );
-  }
-
-  /// Study: the blue hero tile when there is no pending plan step, otherwise a quiet tile.
-  HmBentoTile _studyTile(BuildContext context, {required bool hero}) {
-    final text = Theme.of(context).textTheme;
-    final p = context.hm;
-    final on = hero ? p.onBlue : p.text;
-    return HmBentoTile(
-      span: 2,
-      color: hero ? p.blue : null,
-      shape: hero ? HmShape.circle : HmShape.none,
-      shapeColor: p.gold,
-      padding: EdgeInsets.all(hero ? HmSpace.xl : HmSpace.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const ExcludeSemantics(
-                child: Lamp(
-                  label: 'Lamp',
-                  size: 52,
-                  state: HmLampState(lit: true),
-                ),
-              ),
-              const SizedBox(width: HmSpace.md),
-              Expanded(
-                child: Text(
-                  'Study',
-                  style: (hero ? text.headlineMedium : text.titleLarge)
-                      ?.copyWith(color: on),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: HmSpace.sm),
-          Text(
-            'See every subject of your exam. Open a topic and read its lesson.',
-            style: text.bodyLarge?.copyWith(color: on),
-          ),
-          const SizedBox(height: HmSpace.lg),
-          if (hero)
-            HmPrimaryButton(
-              key: const Key('today-open-map'),
-              label: 'Open Study Map',
-              tone: HmButtonTone.gold,
-              onPressed: onOpenStudyMap,
-            )
-          else
-            HmSecondaryButton(
-              key: const Key('today-open-map'),
-              label: 'Open Study Map',
-              onPressed: onOpenStudyMap,
-            ),
-        ],
-      ),
-    );
-  }
-
-  List<HmBentoTile> _plan(BuildContext context, TodayView t) {
-    final text = Theme.of(context).textTheme;
-    final p = context.hm;
-    final stretch = PlanCopy.stretch(t.stretch);
-    return [
-      if (t.hasPlan)
-        HmBentoTile(
-          span: 2,
-          padding: EdgeInsets.zero,
-          color: t.todayCard.canMark ? p.gold : null,
-          child: PlanCard(
-            item: t.todayCard,
-            onStart: () => onStartItem?.call(t.todayCard),
-            onMarkDone: () => onMarkDone?.call(t.todayCard),
-            bare: true,
-          ),
-        )
-      else
-        HmBentoTile(
-          key: const Key('today-no-plan'),
-          span: 2,
-          color: onSetUpPlan != null ? p.gold : null,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      PlanCopy.noPlan,
-                      style: text.bodyLarge?.copyWith(
-                        color: onSetUpPlan != null ? p.onGold : p.text,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: HmSpace.sm),
-                  const HmArt(HmArtName.scenePlanBoard, width: 96, height: 60),
-                ],
-              ),
-              if (onSetUpPlan != null) ...[
-                const SizedBox(height: HmSpace.md),
-                HmPrimaryButton(
-                  key: const Key('today-setup-plan'),
-                  label: 'Set up your plan',
-                  onPressed: onSetUpPlan,
-                ),
-              ],
-            ],
-          ),
-        ),
-      if (t.welcomeBack != null || (stretch != null && !calm))
-        HmBentoTile(
-          span: 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (t.welcomeBack != null)
-                Semantics(
-                  liveRegion: true,
-                  child: Text(
-                    t.welcomeBack!,
-                    key: const Key('today-welcome-back'),
-                    style: text.bodyLarge,
-                  ),
-                ),
-              if (stretch != null && !calm) ...[
-                if (t.welcomeBack != null) const SizedBox(height: HmSpace.sm),
-                Chip(
-                  key: const Key('today-stretch'),
-                  avatar: const Icon(Icons.flag_outlined),
-                  label: Text(stretch),
-                ),
-              ],
-            ],
-          ),
-        ),
-      if (!calm)
-        HmBentoTile(
-          span: 2,
-          eyebrow: 'Your rank',
-          child: RankBar(rank: t.rank),
-        ),
-      if (t.relightCount > 0 && onOpenRelight != null)
-        HmBentoTile(
-          key: const Key('today-relight'),
-          span: 2,
-          semanticLabel:
-              'Relight ${t.relightCount} lamps, about ${t.relightMinutes} minutes',
-          onTap: onOpenRelight,
-          shape: HmShape.circle,
-          shapeColor: p.primary,
-          child: ExcludeSemantics(
-            child: _TileLink(
-              art: HmArtName.lampFading,
-              title: 'Relight ${t.relightCount} · ${t.relightMinutes} min',
-              line: 'Bring dimming lamps back to full light',
-            ),
-          ),
-        ),
-      if (!calm && onStartPocket != null && t.pocketSessions.isNotEmpty)
-        HmBentoTile(
-          span: 2,
-          eyebrow: 'Short on time?',
-          child: Wrap(
-            spacing: HmSpace.sm,
-            runSpacing: HmSpace.sm,
-            children: [
-              for (final m in t.pocketSessions)
-                HmSecondaryButton(
-                  key: Key('today-pocket-$m'),
-                  label: '$m min',
-                  semanticLabel: 'Start a $m minute session',
-                  expand: false,
-                  onPressed: () => onStartPocket!(m),
-                ),
-            ],
-          ),
-        ),
-    ];
-  }
+    ),
+  );
 }
 
-/// A tile body that opens something: art, a bold title and one short line.
+/// A tile body that opens something: a picture, a bold title and one short line.
 class _TileLink extends StatelessWidget {
-  const _TileLink({required this.art, required this.title, required this.line});
+  const _TileLink({required this.pic, required this.title, required this.line});
 
-  final HmArtName art;
+  final HmPic pic;
   final String title;
   final String line;
 
@@ -469,7 +521,7 @@ class _TileLink extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        HmArt(art, size: 44),
+        HmPicture(pic, height: 52),
         const SizedBox(height: HmSpace.sm),
         Text(title, style: text.titleMedium),
         const SizedBox(height: HmSpace.xxs),

@@ -74,8 +74,25 @@ class PyqVaultBody extends StatelessWidget {
       (y) => y.year == filter.year && y.locked,
     );
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(
+        HmSpace.xl,
+        HmSpace.md,
+        HmSpace.xl,
+        HmSpace.xxl,
+      ),
       children: [
+        // Warm light (BOLT-0117, design/ui/12). Each question says where it came from.
+        const HmEnter(
+          child: HmBentoHero(
+            key: Key('pyq-hero'),
+            eyebrow: 'Past papers',
+            title: 'Real TNPSC questions',
+            message: 'Each one shows its paper and question number.',
+            pic: HmPic.chest,
+            picSize: 120,
+          ),
+        ),
+        const SizedBox(height: HmSpace.xl),
         Semantics(header: true, child: Text('Year', style: text.titleSmall)),
         Wrap(
           spacing: 8,

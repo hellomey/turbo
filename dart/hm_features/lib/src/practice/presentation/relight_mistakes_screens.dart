@@ -51,71 +51,127 @@ class RelightQueueBody extends StatelessWidget {
         message: 'All your lamps are bright. Nothing to relight.',
       );
     }
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Semantics(
-          header: true,
-          child: Text(
-            '${queue.items.length} lamps to relight · about ${queue.totalMinutes} min',
-            style: text.titleMedium,
-          ),
-        ),
-        const SizedBox(height: 12),
-        for (final item in queue.items)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.outlineVariant,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    ExcludeSemantics(
-                      child: CustomPaint(
-                        size: const Size.square(32),
-                        painter: LampPainter(
-                          state: HmLampState(lit: true, dim: item.dim),
-                          faint: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.3),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.topicName, style: text.titleSmall),
-                          Text(
-                            '${item.dim == HmLampDim.dim ? 'Dim' : 'Dimming'} · ${item.minutes} min',
-                            style: text.bodySmall,
+    final p = context.hm;
+    final n = queue.items.length;
+    final fading = [
+      for (final i in queue.items)
+        if (i.dim == HmLampDim.dim) i,
+    ];
+    final dimming = [
+      for (final i in queue.items)
+        if (i.dim != HmLampDim.dim) i,
+    ];
+    Widget row(RelightItemView item) => Padding(
+      padding: const EdgeInsets.only(bottom: HmSpace.md),
+      child: HmCard(
+        padding: const EdgeInsets.all(HmSpace.md),
+        child: Row(
+          children: [
+            const HmPicture(HmPic.lampFading, height: 52),
+            const SizedBox(width: HmSpace.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(item.topicName, style: text.titleMedium),
+                  const SizedBox(height: HmSpace.xs),
+                  // Three segments: how much light is left (dim = 1, dimming = 2).
+                  ExcludeSemantics(
+                    child: Row(
+                      children: [
+                        for (var k = 0; k < 3; k++) ...[
+                          if (k > 0) const SizedBox(width: 4),
+                          Expanded(
+                            child: Container(
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: k < (item.dim == HmLampDim.dim ? 1 : 2)
+                                    ? p.primary
+                                    : const Color(0xFFF3E6D3),
+                                borderRadius: BorderRadius.circular(
+                                  HmRadius.pill,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
-                      ),
+                      ],
                     ),
-                    Semantics(
-                      container: true,
-                      child: HmSecondaryButton(
-                        key: Key('relight-${item.topicId}'),
-                        label: 'Relight',
-                        semanticLabel: 'Relight ${item.topicName}',
-                        expand: false,
-                        onPressed: () => onRelight(item.topicId),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: HmSpace.xs),
+                  Text(
+                    '${item.dim == HmLampDim.dim ? 'Dim' : 'Dimming'} · ${item.minutes} min',
+                    style: text.bodySmall,
+                  ),
+                ],
               ),
             ),
+            const SizedBox(width: HmSpace.sm),
+            Semantics(
+              container: true,
+              child: HmChunkyButton(
+                key: Key('relight-${item.topicId}'),
+                label: 'Relight',
+                semanticLabel: 'Relight ${item.topicName}',
+                expand: false,
+                tone: HmButtonTone.secondary,
+                onPressed: () => onRelight(item.topicId),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    Widget section(String title, List<RelightItemView> items) => Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: HmSpace.lg, bottom: HmSpace.sm),
+          child: Semantics(
+            header: true,
+            child: Text(
+              title,
+              style: text.titleLarge?.copyWith(color: p.textMuted),
+            ),
           ),
+        ),
+        for (final i in items) row(i),
       ],
+    );
+    // Warm light (BOLT-0117, design/ui/09): a coral hero with Mey dimming, then the lamps.
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 640),
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(
+            HmSpace.xl,
+            HmSpace.md,
+            HmSpace.xl,
+            HmSpace.xxl,
+          ),
+          children: [
+            Text(
+              'Lamps fade as memory fades. A short relight brings them back.',
+              style: text.bodyLarge?.copyWith(color: p.textMuted),
+            ),
+            const SizedBox(height: HmSpace.lg),
+            HmEnter(
+              child: HmBentoHero(
+                key: const Key('relight-hero'),
+                color: HmTint.coral,
+                title: '$n ${n == 1 ? 'lamp needs' : 'lamps need'} you',
+                message: 'About ${queue.totalMinutes} min in all',
+                pic: HmPic.meySleepy,
+                actionLabel: 'Relight the first',
+                onAction: () => onRelight(queue.items.first.topicId),
+              ),
+            ),
+            if (fading.isNotEmpty) section('Fading now', fading),
+            if (dimming.isNotEmpty) section('Dimming', dimming),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -169,8 +225,25 @@ class MistakesBody extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     final drills = view.drills;
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(
+        HmSpace.xl,
+        HmSpace.md,
+        HmSpace.xl,
+        HmSpace.xxl,
+      ),
       children: [
+        // Warm light (BOLT-0117, design/ui/11).
+        const HmEnter(
+          child: HmBentoHero(
+            key: Key('mistakes-hero'),
+            color: HmTint.cream,
+            title: 'Every wrong answer is a free lesson',
+            message: 'Look at why, then relight the lamp it came from.',
+            pic: HmPic.meyPuzzled,
+            picSize: 116,
+          ),
+        ),
+        const SizedBox(height: HmSpace.xl),
         Semantics(
           header: true,
           child: Text('Concept drills', style: text.titleMedium),

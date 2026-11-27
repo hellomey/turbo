@@ -511,7 +511,8 @@ void main() {
           f.harness().app(RelightQueueScreen(onRelight: opened.add)),
         );
         await tester.pumpAndSettle();
-        expect(find.text('2 lamps to relight · about 7 min'), findsOneWidget);
+        expect(find.text('2 lamps need you'), findsOneWidget);
+        expect(find.text('About 7 min in all'), findsOneWidget);
         expect(find.bySemanticsLabel('Relight Sangam Age'), findsOneWidget);
         await tester.tap(find.byKey(const Key('relight-t-3')));
         expect(opened, ['t-3']);
@@ -521,6 +522,9 @@ void main() {
     testWidgets('mistakes: drill locked for Free, relight link', (
       tester,
     ) async {
+      tester.view.physicalSize = const Size(412, 2400);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       final f = StudyFakes();
       final relit = <String>[];
       await tester.pumpWidget(

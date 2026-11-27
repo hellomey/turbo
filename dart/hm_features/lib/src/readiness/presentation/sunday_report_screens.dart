@@ -50,30 +50,60 @@ class SundayReportListBody extends StatelessWidget {
         message: 'Your first report comes on Sunday morning.',
       );
     }
+    // Warm light (BOLT-0117, design/ui/16): the newest report is the amber hero with the envelope.
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(
+        HmSpace.xl,
+        HmSpace.md,
+        HmSpace.xl,
+        HmSpace.xxl,
+      ),
       children: [
-        for (final r in page.items)
+        for (final (i, r) in page.items.indexed)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: HmSpace.lg),
             child: HmCard(
               key: Key('report-${r.id}'),
+              color: i == 0 ? HmTint.amber : null,
+              padding: const EdgeInsets.all(HmSpace.xl),
               semanticLabel:
                   'Open report for the week of ${formatDay(r.weekStart)}, ${ReadinessCopy.tier(r.tier)}',
               onTap: () => onOpenReport(r.id),
               child: ExcludeSemantics(
                 child: Row(
                   children: [
-                    const Icon(Icons.event_note_outlined),
-                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Week of ${formatDay(r.weekStart)}',
-                            style: text.titleMedium,
+                            style: text.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
+                          if (i == 0) ...[
+                            const SizedBox(height: HmSpace.sm),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: HmSpace.md,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: context.hm.primaryShade,
+                                borderRadius: BorderRadius.circular(
+                                  HmRadius.pill,
+                                ),
+                              ),
+                              child: Text(
+                                'New',
+                                style: text.labelLarge?.copyWith(
+                                  color: const Color(0xFFFFFFFF),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: HmSpace.sm),
+                          ],
                           Text(
                             ReadinessCopy.tier(r.tier),
                             style: text.bodyMedium,
@@ -81,7 +111,8 @@ class SundayReportListBody extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Icon(Icons.chevron_right),
+                    if (i == 0) const HmMey(HmPic.envelope, size: 92),
+                    const Icon(Icons.chevron_right_rounded, size: 30),
                   ],
                 ),
               ),
@@ -135,18 +166,96 @@ class SundayReportBody extends StatelessWidget {
       ('Mocks taken', '${r.mocksTaken}'),
       ('Study time', '${r.studyMinutes} min'),
     ];
+    final p = context.hm;
+    Widget big(String value, String label, {HmPic? pic}) => Expanded(
+      child: MergeSemantics(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (pic != null) HmPicture(pic, height: 40),
+                Flexible(
+                  child: FittedBox(
+                    child: Text(
+                      value,
+                      style: text.displaySmall?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              label,
+              style: text.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      ),
+    );
+    // Warm light (BOLT-0117, design/ui/17).
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(
+        HmSpace.xl,
+        HmSpace.md,
+        HmSpace.xl,
+        HmSpace.xxl,
+      ),
       children: [
-        Semantics(
-          header: true,
-          child: Text(
-            'Week of ${formatDay(r.weekStart)}',
-            style: text.headlineSmall,
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      'Week of ${formatDay(r.weekStart)}',
+                      style: text.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    ReadinessCopy.tier(r.tier),
+                    style: text.bodyMedium?.copyWith(color: p.textMuted),
+                  ),
+                ],
+              ),
+            ),
+            const HmMey(HmPic.meyCelebrate, size: 96),
+          ],
+        ),
+        const SizedBox(height: HmSpace.lg),
+        HmEnter(
+          child: HmCard(
+            key: const Key('report-summary'),
+            color: HmTint.amber,
+            padding: const EdgeInsets.all(HmSpace.xl),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Weekly summary',
+                  style: text.titleLarge?.copyWith(color: p.goldText),
+                ),
+                const SizedBox(height: HmSpace.md),
+                Row(
+                  children: [
+                    big('${r.lampsLit}', 'lit', pic: HmPic.lampLit),
+                    big('${r.relit}', 'relit'),
+                    if (r.accuracyPct != null)
+                      big('${r.accuracyPct}%', 'accuracy'),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-        Text(ReadinessCopy.tier(r.tier), style: text.bodyMedium),
-        const SizedBox(height: 16),
+        const SizedBox(height: HmSpace.lg),
         HmCard(
           child: Column(
             children: [

@@ -6,43 +6,34 @@ import 'package:go_router/go_router.dart';
 import 'package:hm_design/hm_design.dart';
 import 'package:hm_features/hm_features.dart';
 
-/// The five tabs (blueprint §10.5). Signed in, it starts the BOLT-0016 sync triggers and shows the outbox
+/// The tab shell (blueprint §10.5; four tabs since BOLT-0117). Signed in, it starts the BOLT-0016 sync triggers and shows the outbox
 /// note ("Will sync when online" / "Couldn't save", §39).
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key, required this.shell});
 
   final StatefulNavigationShell shell;
 
+  /// Four tabs, as in the approved design (BOLT-0117): Today, Map, Play, Me.
   static const tabs = [
     HmNavItem(
       label: 'Today',
       icon: Icons.wb_sunny_outlined,
       selectedIcon: Icons.wb_sunny_rounded,
-      art: HmArtName.navToday,
     ),
     HmNavItem(
-      label: 'Study Map',
-      icon: Icons.map_outlined,
-      selectedIcon: Icons.map_rounded,
-      art: HmArtName.navMap,
+      label: 'Map',
+      icon: Icons.local_fire_department_outlined,
+      selectedIcon: Icons.local_fire_department_rounded,
     ),
     HmNavItem(
       label: 'Play',
-      icon: Icons.sports_esports_outlined,
-      selectedIcon: Icons.sports_esports_rounded,
-      art: HmArtName.navPlay,
+      icon: Icons.casino_outlined,
+      selectedIcon: Icons.casino_rounded,
     ),
     HmNavItem(
-      label: 'Squad',
-      icon: Icons.groups_outlined,
-      selectedIcon: Icons.groups_rounded,
-      art: HmArtName.navSquad,
-    ),
-    HmNavItem(
-      label: 'Profile',
-      icon: Icons.person_outline,
+      label: 'Me',
+      icon: Icons.person_outline_rounded,
       selectedIcon: Icons.person_rounded,
-      art: HmArtName.navProfile,
     ),
   ];
 

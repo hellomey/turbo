@@ -43,12 +43,19 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
     },
     routes: [
+      GoRoute(path: '/loading', builder: (_, _) => const HmSplash()),
+      // Squads are not built yet (BOLT-0117 moved them out of the tab bar); the page stays reachable.
       GoRoute(
-        path: '/loading',
-        builder: (_, _) =>
-            const Scaffold(body: HmLoadingView(label: 'Opening HeyMey')),
+        path: '/squad',
+        builder: (context, _) => Scaffold(
+          appBar: AppBar(title: const Text('Squad')),
+          body: const SquadTab(),
+        ),
       ),
-      GoRoute(path: '/start', builder: (_, _) => const OnboardingFlow()),
+      GoRoute(
+        path: '/start',
+        builder: (_, _) => const OnboardingFlow(showIntro: true),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => AppShell(shell: shell),
         branches: [
@@ -67,6 +74,9 @@ final routerProvider = Provider<GoRouter>((ref) {
                   onStartPocket: (_) => context.go('/map'),
                   onOpenExpo: () => context.push('/expo'),
                   onOpenLeaderboard: () => context.push('/leaderboard'),
+                  onOpenReadiness: () => context.push('/readiness'),
+                  onOpenAlerts: () => context.push('/alerts'),
+                  onOpenProfile: () => context.go('/profile'),
                 ),
               ),
             ],
@@ -92,11 +102,6 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(path: '/play', builder: (_, _) => const PlayTab()),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(path: '/squad', builder: (_, _) => const SquadTab()),
             ],
           ),
           StatefulShellBranch(

@@ -28,10 +28,10 @@ class _HmPill extends StatelessWidget {
         vertical: HmSpace.xs,
       ),
       decoration: BoxDecoration(
-        color: p.surface,
+        color: p.brightness == Brightness.light
+            ? const Color(0xFFFFEFD5)
+            : p.surface,
         borderRadius: BorderRadius.circular(HmRadius.pill),
-        border: Border.all(color: p.outline, width: HmBauhaus.strokeSmall),
-        boxShadow: HmBauhaus.hardShadow(p, offset: const Offset(2, 2)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

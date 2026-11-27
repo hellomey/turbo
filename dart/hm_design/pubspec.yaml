@@ -21,6 +21,8 @@ flutter:
   # Bauhaus SVG art (BOLT-0110): hand-written, each file under 10 KB. Use HmArt, never paths.
   assets:
     - assets/svg/
+    # Mascot and illustrations cut from the design/ui/ mock-ups by tools/design/crop-ui.mjs (BOLT-0117).
+    - assets/img/
   # Bundled so the app works offline; never fetched at runtime (BOLT-0021). Licence: assets/fonts/OFL.txt.
   fonts:
     - family: Nunito

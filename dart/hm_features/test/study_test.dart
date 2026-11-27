@@ -22,9 +22,9 @@ void main() {
 
       expect(find.text('Indian Polity'), findsOneWidget);
       expect(find.text('History of Tamil Nadu'), findsOneWidget);
-      expect(find.byType(Lamp), findsNWidgets(3));
-      for (final lamp in tester.widgetList<Lamp>(find.byType(Lamp))) {
-        expect(lamp.state, HmLampState.unlit, reason: 'Phase 1: all unlit');
+      // The map is a lamp path since BOLT-0117: one node per topic, named for screen readers.
+      for (final id in ['t-1', 't-2', 't-3']) {
+        expect(find.byKey(Key('lamp-$id')), findsOneWidget);
       }
       expect(
         find.bySemanticsLabel(
@@ -121,6 +121,9 @@ void main() {
     testWidgets('renders the reading view, refs and source; Listen and Stop', (
       tester,
     ) async {
+      tester.view.physicalSize = const Size(412, 2400);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       final h = Harness();
       await tester.pumpWidget(h.app(const LessonScreen(topicId: 't-1')));
       await tester.pumpAndSettle();

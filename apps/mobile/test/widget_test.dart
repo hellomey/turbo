@@ -20,12 +20,12 @@ Widget _app(TokenStore tokens) => ProviderScope(
 );
 
 void main() {
-  testWidgets('signed in: the shell shows the five tabs (§10.5)', (
+  testWidgets('signed in: the shell shows the four tabs (§10.5, BOLT-0117)', (
     tester,
   ) async {
     await tester.pumpWidget(_app(MemoryTokenStore(_tokens)));
     await tester.pumpAndSettle();
-    for (final tab in ['Today', 'Study Map', 'Play', 'Squad', 'Profile']) {
+    for (final tab in ['Today', 'Map', 'Play', 'Me']) {
       expect(find.text(tab), findsWidgets);
     }
     expect(find.text('Open Study Map'), findsOneWidget);
@@ -39,6 +39,10 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(_app(MemoryTokenStore()));
+    await tester.pumpAndSettle();
+    // The four story cards come first (BOLT-0117); Skip goes straight to the first step.
+    expect(find.text('Every topic is a lamp'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('story-intro-skip')));
     await tester.pumpAndSettle();
     expect(find.text("Let's find your exams"), findsOneWidget);
     expect(find.text('Today'), findsNothing);

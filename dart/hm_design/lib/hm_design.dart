@@ -18,3 +18,5 @@ export 'src/widgets/views.dart';
 export 'src/widgets/art.dart';
 export 'src/widgets/bento.dart';
 export 'src/widgets/motion.dart';
+export 'src/widgets/mey.dart';
+export 'src/widgets/splash.dart';
