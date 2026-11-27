@@ -13,6 +13,8 @@ class ProfileTab extends ConsumerWidget {
     this.onOpenReports,
     this.onOpenAlerts,
     this.onOpenAlertSettings,
+    this.onReplayStory,
+    this.onOpenSticker,
   });
 
   /// Profile links (§10.5 Profile: Readiness Meter, reports, Exam Alerts, settings). Hidden when null.
@@ -20,6 +22,12 @@ class ProfileTab extends ConsumerWidget {
   final VoidCallback? onOpenReports;
   final VoidCallback? onOpenAlerts;
   final VoidCallback? onOpenAlertSettings;
+
+  /// Replays "The Lamplighter" story (BOLT-0111). Hidden when null.
+  final VoidCallback? onReplayStory;
+
+  /// Opens "Collect your sticker". Hidden when null.
+  final VoidCallback? onOpenSticker;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -153,6 +161,18 @@ class ProfileTab extends ConsumerWidget {
               'Alert settings',
               Icons.notifications_outlined,
               onOpenAlertSettings,
+            ),
+            (
+              'profile-replay-story',
+              'Replay the story',
+              Icons.auto_stories_outlined,
+              onReplayStory,
+            ),
+            (
+              'profile-sticker',
+              'Your sticker code',
+              Icons.confirmation_number_outlined,
+              onOpenSticker,
             ),
           ])
             if (onTap != null)

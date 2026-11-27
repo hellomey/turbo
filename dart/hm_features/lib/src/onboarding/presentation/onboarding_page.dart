@@ -1,6 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:hm_design/hm_design.dart';
 
+import 'story.dart';
+
 /// Layout shared by onboarding steps: a scrollable column (200% text never overflows) with a
 /// readable maximum width.
 class OnboardingPage extends StatelessWidget {
@@ -10,6 +12,7 @@ class OnboardingPage extends StatelessWidget {
     required this.children,
     this.subtitle,
     this.illustration,
+    this.scene,
   });
 
   final String title;
@@ -17,6 +20,9 @@ class OnboardingPage extends StatelessWidget {
 
   /// A friendly drawn picture above the title (BOLT-0022).
   final HmIllustrationKind? illustration;
+
+  /// A Lamplighter story scene shown above the step (BOLT-0111). Hidden after "Skip story".
+  final StoryScene? scene;
   final List<Widget> children;
 
   @override
@@ -36,6 +42,7 @@ class OnboardingPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                if (scene != null) StorySceneCard(scene: scene!),
                 if (illustration != null) ...[
                   Center(child: HmIllustration(kind: illustration!, size: 104)),
                   const SizedBox(height: HmSpace.lg),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hm_design/hm_design.dart';
 
 import '../../common/ports.dart';
+import '../../expo/presentation/expo_hero_tile.dart';
 import '../../plan/application/plan_controller.dart';
 import '../../plan/domain/plan_models.dart';
 import '../../plan/presentation/plan_card.dart';
@@ -25,9 +26,13 @@ class TodayTab extends ConsumerWidget {
     this.onStartItem,
     this.onOpenRelight,
     this.onStartPocket,
+    this.onOpenExpo,
   });
 
   final VoidCallback onOpenStudyMap;
+
+  /// Opens the Expo Challenge (BOLT-0111). The hero tile is hidden when null.
+  final VoidCallback? onOpenExpo;
 
   /// Opens the Exam Hall (§10.6). Hidden when null.
   final VoidCallback? onOpenExamHall;
@@ -75,6 +80,7 @@ class TodayTab extends ConsumerWidget {
       onStartItem: onStartItem,
       onOpenRelight: onOpenRelight,
       onStartPocket: onStartPocket,
+      onOpenExpo: onOpenExpo,
       onMarkDone: (item) => ref
           .read(planControllerProvider.notifier)
           .mark(item, PlanItemStatusView.done),
@@ -108,7 +114,11 @@ class TodayBody extends StatelessWidget {
     this.onStartPocket,
     this.onMarkDone,
     this.onRetry,
+    this.onOpenExpo,
   });
+
+  /// Opens the Expo Challenge. The hero tile is hidden when null.
+  final VoidCallback? onOpenExpo;
 
   final AsyncValue<TodayView>? today;
   final bool calm;
@@ -149,6 +159,10 @@ class TodayBody extends StatelessWidget {
           style: text.bodyLarge?.copyWith(color: context.hm.textMuted),
         ),
         const SizedBox(height: HmSpace.lg),
+        if (onOpenExpo != null) ...[
+          ExpoHeroTile(onOpen: onOpenExpo!),
+          const SizedBox(height: HmSpace.lg),
+        ],
         if (today != null) ...[
           ...switch (today!) {
             AsyncData(:final value) => _plan(context, value),
