@@ -62,6 +62,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0038 | Harden learning screens; bento Today, Readiness, Profile; offline cache for Today, plan, meter; goldens at 200% text | 0037 | Vizhi | Nov 27 | todo | - |
 | BOLT-0039 | Finish stubs: `current_affairs`, `library`, `support`, `wellbeing`, `staff_quick_actions` | 0037 | Vizhi | Nov 27 | todo | - |
 | BOLT-0040 | Flutter web target, in-app "update available" prompt, "Collect your sticker" screen | 0030, 0036 | Vizhi, Kaaval | Nov 26 | todo | - |
+| BOLT-0103 | Aspirant app builds for web: drift WASM storage, committed `apps/mobile/web/`, web-deploy without `flutter create` (part of 0040) | - | Vizhi | Nov 27 | review (PR #33) | - |
 
 ### Vilaiyattu (games)
 
