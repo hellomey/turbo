@@ -1,5 +1,5 @@
 name: heymey_mobile
-description: HeyMey mobile app (Android + iOS). Every user lives here. No web build for aspirants.
+description: HeyMey mobile app (Android + iOS). Every user lives here. Web target serves app.heymey.app (try-it path).
 publish_to: none
 version: 1.0.0+1
 resolution: workspace

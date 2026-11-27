@@ -34,11 +34,6 @@ jobs:
       - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with: { channel: stable, cache: true }
 
-      - name: Add the web platform (aspirant app has no web/ folder yet)
-        if: matrix.target == 'app'
-        working-directory: apps/mobile
-        run: |
-          if [ ! -d web ]; then flutter create --platforms=web --project-name heymey_mobile --org app.heymey . ; fi
 
       - name: Build
         working-directory: ${{ matrix.dir }}
