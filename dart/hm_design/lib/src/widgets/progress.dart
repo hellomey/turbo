@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../tokens.dart';
 import 'buttons.dart';
 
-/// A chunky, rounded progress bar. When [value] grows the fill animates and a shine sweeps across
+/// A chunky Bauhaus progress bar (BOLT-0110): a square track with an ink outline and a flat fill. When [value] grows the fill animates and a shine sweeps across
 /// once (no looping, so it never keeps the CPU busy). No motion in Calm/Lite Mode or [HmPlain].
 class HmProgressBar extends StatefulWidget {
   const HmProgressBar({
@@ -60,14 +60,18 @@ class _HmProgressBarState extends State<HmProgressBar>
     final v = widget.value.clamp(0.0, 1.0);
     final still = _still(context);
     final fill = widget.color ?? p.primary;
-    final r = BorderRadius.circular(HmRadius.pill);
+    final r = BorderRadius.circular(HmRadius.sm);
     return Semantics(
       label: widget.semanticLabel,
       value: '${(v * 100).round()} percent',
       excludeSemantics: true,
       child: Container(
         height: widget.height,
-        decoration: BoxDecoration(color: p.surface3, borderRadius: r),
+        decoration: BoxDecoration(
+          color: p.surface2,
+          borderRadius: r,
+          border: Border.all(color: p.outline, width: HmBauhaus.strokeSmall),
+        ),
         child: LayoutBuilder(
           builder: (context, box) => Align(
             alignment: Alignment.centerLeft,
@@ -86,21 +90,6 @@ class _HmProgressBarState extends State<HmProgressBar>
                     child: Stack(
                       children: [
                         Positioned.fill(child: ColoredBox(color: fill)),
-                        // A soft highlight stripe along the top: the "glossy" look.
-                        Positioned(
-                          left: widget.height / 3,
-                          right: widget.height / 3,
-                          top: widget.height * 0.2,
-                          height: widget.height * 0.22,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: const Color(
-                                0xFFFFFFFF,
-                              ).withValues(alpha: 0.35),
-                              borderRadius: r,
-                            ),
-                          ),
-                        ),
                         if (!still)
                           AnimatedBuilder(
                             animation: _shine,

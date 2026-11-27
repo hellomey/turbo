@@ -1,10 +1,8 @@
-import 'dart:math' as math;
-
 import 'package:material_ui/material_ui.dart';
 import 'package:hm_design/hm_design.dart';
 
-/// A geometric lamp (a circle flame on a half-disc bowl and a bar base) drawn from theme colours, so
-/// any theme applies to it. [glow] runs from 0 (dark) to 1 (lit). Decorative: screen readers skip it.
+/// The lamp picture (Bauhaus SVGs from hm_design, BOLT-0110): the dark lamp fading into the lit
+/// lamp as [glow] runs from 0 (dark) to 1 (lit). Decorative: screen readers skip it.
 class LampArt extends StatelessWidget {
   const LampArt({super.key, required this.glow, this.size = 96});
 
@@ -13,17 +11,24 @@ class LampArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final g = glow.clamp(0.0, 1.0);
     return ExcludeSemantics(
       child: SizedBox.square(
         dimension: size,
-        child: CustomPaint(
-          painter: _LampPainter(
-            glow: glow.clamp(0.0, 1.0),
-            flame: cs.secondary,
-            body: cs.primary,
-            dark: cs.outline,
-          ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (g < 1)
+              Opacity(
+                opacity: 1 - g,
+                child: HmArt(HmArtName.lampDark, size: size),
+              ),
+            if (g > 0)
+              Opacity(
+                opacity: g,
+                child: HmArt(HmArtName.lampLit, size: size),
+              ),
+          ],
         ),
       ),
     );
@@ -51,57 +56,4 @@ class LightingLamp extends StatelessWidget {
       builder: (_, g, _) => LampArt(glow: g, size: size),
     );
   }
-}
-
-class _LampPainter extends CustomPainter {
-  _LampPainter({
-    required this.glow,
-    required this.flame,
-    required this.body,
-    required this.dark,
-  });
-
-  final double glow;
-  final Color flame;
-  final Color body;
-  final Color dark;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final w = size.width;
-    final h = size.height;
-    final flameCenter = Offset(w / 2, h * 0.36);
-    if (glow > 0) {
-      canvas.drawCircle(
-        flameCenter,
-        w * 0.34 * glow,
-        Paint()..color = flame.withValues(alpha: 0.22 * glow),
-      );
-    }
-    // Flame: a circle, dark when unlit.
-    canvas.drawCircle(
-      flameCenter,
-      w * 0.12,
-      Paint()..color = Color.lerp(dark, flame, glow)!,
-    );
-    // Bowl: a half disc.
-    final bowl = Rect.fromCenter(
-      center: Offset(w / 2, h * 0.56),
-      width: w * 0.62,
-      height: h * 0.36,
-    );
-    canvas.drawArc(bowl, 0, math.pi, true, Paint()..color = body);
-    // Base: a bar.
-    canvas.drawRect(
-      Rect.fromLTWH(w * 0.3, h * 0.78, w * 0.4, h * 0.08),
-      Paint()..color = body,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_LampPainter old) =>
-      old.glow != glow ||
-      old.flame != flame ||
-      old.body != body ||
-      old.dark != dark;
 }

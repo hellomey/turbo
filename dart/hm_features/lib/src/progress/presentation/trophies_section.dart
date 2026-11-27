@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hm_design/hm_design.dart';
 
 import '../application/progress_controller.dart';
 
@@ -14,43 +15,55 @@ class TrophiesSection extends ConsumerWidget {
     final text = Theme.of(context).textTheme;
     final p = ref.watch(myProgressProvider).value;
     if (p == null) return const SizedBox.shrink();
-    return Column(
-      key: const Key('profile-trophies'),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        Semantics(
-          header: true,
-          child: Text('Trophies', style: text.titleMedium),
-        ),
-        const SizedBox(height: 8),
-        if (p.trophies.isEmpty)
-          Text(
-            'Light your first lamp to earn your first trophy.',
-            style: text.bodyMedium,
-          )
-        else
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final t in p.trophies)
-                Chip(
-                  avatar: const Icon(Icons.emoji_events_outlined),
-                  label: Text(t.title),
+    // A Bauhaus tile (BOLT-0110) with the gold lamp badge beside the heading.
+    return Padding(
+      padding: const EdgeInsets.only(top: HmSpace.lg),
+      child: HmCard(
+        child: Column(
+          key: const Key('profile-trophies'),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Semantics(
+                    header: true,
+                    child: Text('Trophies', style: text.titleLarge),
+                  ),
                 ),
-            ],
-          ),
-        if (onOpenLeaderboard != null)
-          ListTile(
-            key: const Key('profile-open-leaderboard'),
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.leaderboard_outlined),
-            title: const Text('Weekly leaderboard'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: onOpenLeaderboard,
-          ),
-      ],
+                const HmArt(HmArtName.badgeGoldLamp, size: 40),
+              ],
+            ),
+            const SizedBox(height: 8),
+            if (p.trophies.isEmpty)
+              Text(
+                'Light your first lamp to earn your first trophy.',
+                style: text.bodyMedium,
+              )
+            else
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final t in p.trophies)
+                    Chip(
+                      avatar: const Icon(Icons.emoji_events_outlined),
+                      label: Text(t.title),
+                    ),
+                ],
+              ),
+            if (onOpenLeaderboard != null)
+              ListTile(
+                key: const Key('profile-open-leaderboard'),
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.leaderboard_outlined),
+                title: const Text('Weekly leaderboard'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: onOpenLeaderboard,
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

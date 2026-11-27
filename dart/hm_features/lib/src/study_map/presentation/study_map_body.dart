@@ -38,6 +38,13 @@ class StudyMapBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
+    final p = context.hm;
+    final all = [for (final s in map.subjects) ...s.topics];
+    final lit = all.where((t) => t.lamp.lit).length;
+    // Bauhaus colours and shapes take turns, so each subject reads as its own block.
+    final shapes = [HmShape.circle, HmShape.square, HmShape.triangle];
+    final colours = [p.primary, p.gold, p.blue];
+    // Bento (BOLT-0110): the hero tile counts lit lamps; each subject is a tile of lamps.
     return ListView(
       key: const Key('study-map'),
       padding: const EdgeInsets.fromLTRB(
@@ -47,76 +54,91 @@ class StudyMapBody extends StatelessWidget {
         HmSpace.xxl,
       ),
       children: [
+        HmBentoHero(
+          eyebrow: 'Study Map',
+          title: lit == 0
+              ? 'Light your first lamp'
+              : '$lit of ${all.length} lamps lit',
+          message: lit == 0
+              ? 'Every topic is a lamp. Read a lesson and pass its check to light it.'
+              : 'Keep them bright: relight a lamp when it starts to dim.',
+          art: lit == 0 ? HmArtName.sceneDarkHall : HmArtName.sceneFirstLamp,
+          footer: all.isEmpty
+              ? null
+              : HmProgressBar(
+                  value: lit / all.length,
+                  height: 14,
+                  color: p.gold,
+                  semanticLabel: 'Lamps lit',
+                ),
+        ),
+        const SizedBox(height: HmSpace.lg),
         ?header,
-        for (final subject in map.subjects) ...[
+        for (final (i, subject) in map.subjects.indexed) ...[
           if (lite)
             _LiteSubject(subject: subject, onTap: (t) => _tap(context, t))
           else
-            HmCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      HmIconBadge(
-                        icon: Icons.landscape_rounded,
-                        color: context.hm.primary,
-                      ),
-                      const SizedBox(width: HmSpace.md),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Semantics(
-                              header: true,
-                              child: Text(
-                                subject.name,
-                                style: text.titleMedium,
-                              ),
-                            ),
-                            Text(
-                              '${subject.topics.length} lamps',
-                              style: text.bodySmall?.copyWith(
-                                color: context.hm.textMuted,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: HmSpace.md),
-                  HmProgressBar(
-                    value: subject.topics.isEmpty
-                        ? 0
-                        : subject.topics.where((t) => t.lamp.lit).length /
-                              subject.topics.length,
-                    height: 10,
-                    color: context.hm.gold,
-                    semanticLabel: '${subject.name} lamps lit',
-                  ),
-                  const SizedBox(height: HmSpace.lg),
-                  Wrap(
-                    spacing: HmSpace.sm,
-                    runSpacing: HmSpace.md,
-                    children: [
-                      for (final topic in subject.topics)
-                        SizedBox(
-                          width: 96,
-                          child: Lamp(
-                            key: Key('lamp-${topic.id}'),
-                            label: topic.name,
-                            state: topic.lamp,
-                            size: 44,
-                            showLabel: true,
-                            onTap: onOpenTopic == null
-                                ? null
-                                : () => _tap(context, topic),
+            HmEnter(
+              index: i,
+              child: HmBentoTile(
+                shape: shapes[i % 3],
+                shapeColor: colours[i % 3],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: HmSpace.xl),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Semantics(
+                            header: true,
+                            child: Text(subject.name, style: text.titleLarge),
                           ),
-                        ),
-                    ],
-                  ),
-                ],
+                          Text(
+                            '${subject.topics.length} lamps',
+                            style: text.bodySmall?.copyWith(color: p.textMuted),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: HmSpace.md),
+                    HmProgressBar(
+                      value: subject.topics.isEmpty
+                          ? 0
+                          : subject.topics.where((t) => t.lamp.lit).length /
+                                subject.topics.length,
+                      height: 10,
+                      color: p.gold,
+                      semanticLabel: '${subject.name} lamps lit',
+                    ),
+                    const SizedBox(height: HmSpace.lg),
+                    Wrap(
+                      spacing: HmSpace.sm,
+                      runSpacing: HmSpace.md,
+                      children: [
+                        for (final topic in subject.topics)
+                          SizedBox(
+                            width: 96,
+                            // Shared element with the topic's lesson (Study Map -> topic).
+                            child: Hero(
+                              tag: 'lamp-${topic.id}',
+                              child: Lamp(
+                                key: Key('lamp-${topic.id}'),
+                                label: topic.name,
+                                state: topic.lamp,
+                                size: 52,
+                                showLabel: true,
+                                onTap: onOpenTopic == null
+                                    ? null
+                                    : () => _tap(context, topic),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           const SizedBox(height: HmSpace.lg),
@@ -345,42 +367,47 @@ class StudyActionsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: 12),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        HmPrimaryButton(
-          key: const Key('study-relight'),
-          label: 'Relight lamps',
-          icon: Icons.lightbulb_outline,
-          onPressed: actions.onRelight,
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            HmSecondaryButton(
-              key: const Key('study-practice'),
-              label: 'Practise',
-              expand: false,
-              onPressed: () => actions.onPractice(examCode),
-            ),
-            HmSecondaryButton(
-              key: const Key('study-mistakes'),
-              label: 'Mistakes',
-              expand: false,
-              onPressed: actions.onMistakes,
-            ),
-            HmSecondaryButton(
-              key: const Key('study-pyq'),
-              label: 'PYQ Vault',
-              expand: false,
-              onPressed: () => actions.onPyqVault(examCode),
-            ),
-          ],
-        ),
-      ],
+    padding: const EdgeInsets.only(bottom: HmSpace.lg),
+    child: HmBentoTile(
+      eyebrow: 'Keep your lamps bright',
+      shape: HmShape.triangle,
+      shapeColor: context.hm.blue,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          HmPrimaryButton(
+            key: const Key('study-relight'),
+            label: 'Relight lamps',
+            icon: Icons.lightbulb_outline,
+            onPressed: actions.onRelight,
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              HmSecondaryButton(
+                key: const Key('study-practice'),
+                label: 'Practise',
+                expand: false,
+                onPressed: () => actions.onPractice(examCode),
+              ),
+              HmSecondaryButton(
+                key: const Key('study-mistakes'),
+                label: 'Mistakes',
+                expand: false,
+                onPressed: actions.onMistakes,
+              ),
+              HmSecondaryButton(
+                key: const Key('study-pyq'),
+                label: 'PYQ Vault',
+                expand: false,
+                onPressed: () => actions.onPyqVault(examCode),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

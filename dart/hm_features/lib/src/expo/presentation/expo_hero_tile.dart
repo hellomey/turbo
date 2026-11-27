@@ -12,62 +12,63 @@ class ExpoHeroTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    // Bauhaus (BOLT-0110): the red hero block with an ink outline and hard shadow.
+    final p = context.hm;
+    final cs = (primary: p.primary, onPrimary: p.onPrimary);
     final text = Theme.of(context).textTheme;
     return Semantics(
       button: true,
       label: 'Expo Challenge: 10 questions. Start the challenge',
       child: ExcludeSemantics(
-        child: Material(
+        child: HmCard(
           key: const Key('today-expo-hero'),
           color: cs.primary,
-          child: InkWell(
-            onTap: onOpen,
-            child: Padding(
-              padding: const EdgeInsets.all(HmSpace.lg),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Expo Challenge: 10 questions',
-                          style: text.titleLarge?.copyWith(
-                            color: cs.onPrimary,
-                            fontWeight: FontWeight.w800,
-                          ),
+          onTap: onOpen,
+          padding: EdgeInsets.zero,
+          child: Padding(
+            padding: const EdgeInsets.all(HmSpace.xl),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Expo Challenge: 10 questions',
+                        style: text.titleLarge?.copyWith(
+                          color: cs.onPrimary,
+                          fontWeight: FontWeight.w900,
                         ),
-                        const SizedBox(height: HmSpace.xs),
-                        Text(
-                          'Answer each one before the bar runs out. Finish to get your sticker code.',
-                          style: text.bodyLarge?.copyWith(color: cs.onPrimary),
-                        ),
-                        const SizedBox(height: HmSpace.md),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Start the challenge',
-                              style: text.labelLarge?.copyWith(
-                                color: cs.onPrimary,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            const SizedBox(width: HmSpace.xs),
-                            Icon(
-                              Icons.arrow_forward_rounded,
+                      ),
+                      const SizedBox(height: HmSpace.xs),
+                      Text(
+                        'Answer each one before the bar runs out. Finish to get your sticker code.',
+                        style: text.bodyLarge?.copyWith(color: cs.onPrimary),
+                      ),
+                      const SizedBox(height: HmSpace.md),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Start the challenge',
+                            style: text.labelLarge?.copyWith(
                               color: cs.onPrimary,
+                              fontWeight: FontWeight.w800,
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          const SizedBox(width: HmSpace.xs),
+                          Icon(
+                            Icons.arrow_forward_rounded,
+                            color: cs.onPrimary,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: HmSpace.md),
-                  const LampArt(glow: 0, size: 72),
-                ],
-              ),
+                ),
+                const SizedBox(width: HmSpace.md),
+                const LampArt(glow: 0, size: 72),
+              ],
             ),
           ),
         ),

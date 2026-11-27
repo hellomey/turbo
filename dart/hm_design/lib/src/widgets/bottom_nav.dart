@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../tokens.dart';
+import 'art.dart';
 
 /// One tab of [HmBottomNav].
 @immutable
@@ -9,15 +10,20 @@ class HmNavItem {
     required this.label,
     required this.icon,
     IconData? selectedIcon,
+    this.art,
   }) : selectedIcon = selectedIcon ?? icon;
 
   final String label;
   final IconData icon;
   final IconData selectedIcon;
+
+  /// Bauhaus line icon (BOLT-0110). When set it replaces [icon] and [selectedIcon].
+  final HmArtName? art;
 }
 
-/// The five-tab bar (§10.5). The selected tab gets a rounded, coloured "pill" behind a filled
-/// icon and a bold label, so selection is shown by shape and weight, not colour alone (§10.9).
+/// The five-tab bar (§10.5). Bauhaus (BOLT-0110): a 3 px ink rule on top; the selected tab gets a
+/// yellow block with an ink outline and a bold label, so selection is shown by shape and weight,
+/// not colour alone (§10.9).
 class HmBottomNav extends StatelessWidget {
   const HmBottomNav({
     super.key,
@@ -37,7 +43,9 @@ class HmBottomNav extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: p.surface,
-        border: Border(top: BorderSide(color: p.outline, width: 2)),
+        border: Border(
+          top: BorderSide(color: p.outline, width: HmBauhaus.stroke),
+        ),
       ),
       child: SafeArea(
         top: false,
@@ -105,18 +113,24 @@ class _Tab extends StatelessWidget {
           duration: HmMotion.fast,
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
           decoration: BoxDecoration(
-            color: selected ? p.surface3 : Colors.transparent,
-            borderRadius: BorderRadius.circular(HmRadius.pill),
+            color: selected ? p.gold : Colors.transparent,
+            borderRadius: BorderRadius.circular(HmRadius.sm),
             border: Border.all(
-              color: selected ? p.primaryText : Colors.transparent,
-              width: 2,
+              color: selected ? p.outline : Colors.transparent,
+              width: HmBauhaus.strokeSmall,
             ),
           ),
-          child: Icon(
-            selected ? item.selectedIcon : item.icon,
-            color: selected ? p.primaryText : p.textMuted,
-            size: 24,
-          ),
+          child: item.art != null
+              ? HmArt(
+                  item.art!,
+                  size: 24,
+                  color: selected ? p.onGold : p.textMuted,
+                )
+              : Icon(
+                  selected ? item.selectedIcon : item.icon,
+                  color: selected ? p.onGold : p.textMuted,
+                  size: 24,
+                ),
         ),
         const SizedBox(height: 2),
         Text(

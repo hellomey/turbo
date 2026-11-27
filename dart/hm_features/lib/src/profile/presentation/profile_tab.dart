@@ -34,6 +34,41 @@ class ProfileTab extends ConsumerWidget {
   /// BOLT-0113: shows Trophies and the weekly leaderboard link when set.
   final VoidCallback? onOpenLeaderboard;
 
+  /// Profile links that have somewhere to go (a null callback hides its tile).
+  List<(String, String, IconData, VoidCallback)> get _links => [
+    (
+      'profile-readiness',
+      'Readiness',
+      Icons.insights_outlined,
+      onOpenReadiness,
+    ),
+    (
+      'profile-reports',
+      'Sunday Reports',
+      Icons.event_note_outlined,
+      onOpenReports,
+    ),
+    ('profile-alerts', 'Exam Alerts', Icons.campaign_outlined, onOpenAlerts),
+    (
+      'profile-alert-settings',
+      'Alert settings',
+      Icons.notifications_outlined,
+      onOpenAlertSettings,
+    ),
+    (
+      'profile-replay-story',
+      'Replay the story',
+      Icons.auto_stories_outlined,
+      onReplayStory,
+    ),
+    (
+      'profile-sticker',
+      'Your sticker code',
+      Icons.confirmation_number_outlined,
+      onOpenSticker,
+    ),
+  ].where((l) => l.$4 != null).map((l) => (l.$1, l.$2, l.$3, l.$4!)).toList();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final me = ref.watch(meProvider);
@@ -52,25 +87,41 @@ class ProfileTab extends ConsumerWidget {
           HmSpace.xxl,
         ),
         children: [
-          Semantics(
-            header: true,
-            child: Text('Profile', style: text.headlineMedium),
+          Row(
+            children: [
+              Expanded(
+                child: Semantics(
+                  header: true,
+                  child: Text('Profile', style: text.displaySmall),
+                ),
+              ),
+              const HmBetaChip(),
+            ],
           ),
           const SizedBox(height: HmSpace.lg),
+          // Bento hero (BOLT-0110): who you are, on a red block with the waving Lamplighter.
           HmCard(
+            color: context.hm.primary,
+            padding: const EdgeInsets.all(HmSpace.xl),
             child: Row(
               children: [
                 ExcludeSemantics(
-                  child: CircleAvatar(
-                    radius: 28,
-                    backgroundColor: context.hm.primary,
-                    foregroundColor: context.hm.onPrimary,
+                  child: Container(
+                    width: 56,
+                    height: 56,
+                    alignment: Alignment.center,
+                    decoration: HmBauhaus.box(
+                      context.hm,
+                      color: context.hm.gold,
+                      shape: BoxShape.circle,
+                      shadow: false,
+                    ),
                     child: Text(
                       (user.nickname ?? user.email ?? '').isEmpty
                           ? '?'
                           : (user.nickname ?? user.email!)[0].toUpperCase(),
                       style: text.titleLarge?.copyWith(
-                        color: context.hm.onPrimary,
+                        color: context.hm.onGold,
                       ),
                     ),
                   ),
@@ -81,17 +132,23 @@ class ProfileTab extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (user.nickname != null)
-                        Text(user.nickname!, style: text.titleMedium),
+                        Text(
+                          user.nickname!,
+                          style: text.headlineSmall?.copyWith(
+                            color: context.hm.onPrimary,
+                          ),
+                        ),
                       Text(
                         user.email ?? 'Guest',
                         key: const Key('profile-email'),
                         style: text.bodyLarge?.copyWith(
-                          color: context.hm.textMuted,
+                          color: context.hm.onPrimary,
                         ),
                       ),
                     ],
                   ),
                 ),
+                const HmArt(HmArtName.mascotWave, size: 72),
               ],
             ),
           ),
@@ -144,52 +201,29 @@ class ProfileTab extends ConsumerWidget {
               }
             },
           ),
-          for (final (key, label, icon, onTap) in [
-            (
-              'profile-readiness',
-              'Readiness',
-              Icons.insights_outlined,
-              onOpenReadiness,
+          if (_links.isNotEmpty) ...[
+            const SizedBox(height: HmSpace.lg),
+            HmBentoGrid(
+              children: [
+                for (final (key, label, icon, onTap) in _links)
+                  HmBentoTile(
+                    key: Key(key),
+                    semanticLabel: label,
+                    onTap: onTap,
+                    child: ExcludeSemantics(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HmIconBadge(icon: icon, size: 40),
+                          const SizedBox(height: HmSpace.sm),
+                          Text(label, style: text.titleSmall),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            (
-              'profile-reports',
-              'Sunday Reports',
-              Icons.event_note_outlined,
-              onOpenReports,
-            ),
-            (
-              'profile-alerts',
-              'Exam Alerts',
-              Icons.campaign_outlined,
-              onOpenAlerts,
-            ),
-            (
-              'profile-alert-settings',
-              'Alert settings',
-              Icons.notifications_outlined,
-              onOpenAlertSettings,
-            ),
-            (
-              'profile-replay-story',
-              'Replay the story',
-              Icons.auto_stories_outlined,
-              onReplayStory,
-            ),
-            (
-              'profile-sticker',
-              'Your sticker code',
-              Icons.confirmation_number_outlined,
-              onOpenSticker,
-            ),
-          ])
-            if (onTap != null)
-              ListTile(
-                key: Key(key),
-                leading: HmIconBadge(icon: icon, size: 40),
-                title: Text(label, style: text.titleSmall),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: onTap,
-              ),
+          ],
           const Divider(height: 32),
           const DataChoicesSection(),
           const Divider(height: 32),

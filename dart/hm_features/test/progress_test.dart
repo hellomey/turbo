@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:hm_design/hm_design.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hm_features/hm_features.dart';
 
@@ -32,7 +33,7 @@ void main() {
     expect(find.text('Level 2'), findsOneWidget);
     expect(find.text('150 / 300 XP'), findsOneWidget);
     expect(find.text('20 Points'), findsOneWidget);
-    final button = tester.widget<FilledButton>(
+    final button = tester.widget<HmPrimaryButton>(
       find.byKey(const Key('today-check-in')),
     );
     expect(button.onPressed, isNotNull);
@@ -52,7 +53,7 @@ void main() {
     expect(find.text('Checked in today'), findsOneWidget);
     expect(
       tester
-          .widget<FilledButton>(find.byKey(const Key('today-check-in')))
+          .widget<HmPrimaryButton>(find.byKey(const Key('today-check-in')))
           .onPressed,
       isNull,
     );

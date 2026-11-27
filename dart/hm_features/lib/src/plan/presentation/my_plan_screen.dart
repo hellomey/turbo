@@ -68,6 +68,11 @@ class MyPlanBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
+    final p = context.hm;
+    final items = [for (final d in days) ...d.items];
+    final done = items.where((i) => i.status == PlanItemStatusView.done).length;
+    final minutes = days.fold<int>(0, (sum, d) => sum + d.minutes);
+    // Bento hero (BOLT-0110): the plan at a glance, with Rebalance as its one action.
     return ListView(
       padding: const EdgeInsets.fromLTRB(
         HmSpace.lg,
@@ -76,11 +81,24 @@ class MyPlanBody extends StatelessWidget {
         HmSpace.xxl,
       ),
       children: [
-        Text(
-          'Missed a day? Rebalance spreads the work over the next days.',
-          style: text.bodyLarge?.copyWith(color: context.hm.textMuted),
+        HmBentoHero(
+          eyebrow: 'My Plan',
+          title: items.isEmpty
+              ? 'Your next days'
+              : '$done of ${items.length} steps done',
+          message: items.isEmpty
+              ? null
+              : '$minutes min planned. Missed a day? Rebalance spreads the work over the next days.',
+          art: HmArtName.scenePlanBoard,
         ),
-        const SizedBox(height: HmSpace.md),
+        if (items.isEmpty) ...[
+          const SizedBox(height: HmSpace.md),
+          Text(
+            'Missed a day? Rebalance spreads the work over the next days.',
+            style: text.bodyLarge?.copyWith(color: p.textMuted),
+          ),
+        ],
+        const SizedBox(height: HmSpace.lg),
         HmSecondaryButton(
           key: const Key('plan-rebalance'),
           label: rebalancing ? 'Rebalancing…' : 'Rebalance my plan',
@@ -103,9 +121,30 @@ class MyPlanBody extends StatelessWidget {
                 top: HmSpace.lg,
                 bottom: HmSpace.sm,
               ),
-              child: Text(
-                '${i == 0 ? 'Today, ' : ''}${formatDay(d.day)} · ${d.minutes} min',
-                style: text.titleMedium,
+              child: Row(
+                children: [
+                  // A Bauhaus day marker: a red square for today, yellow for later days.
+                  ExcludeSemantics(
+                    child: Container(
+                      width: 14,
+                      height: 14,
+                      margin: const EdgeInsets.only(right: HmSpace.sm),
+                      decoration: BoxDecoration(
+                        color: i == 0 ? p.primary : p.gold,
+                        border: Border.all(
+                          color: p.outline,
+                          width: HmBauhaus.strokeSmall,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '${i == 0 ? 'Today, ' : ''}${formatDay(d.day)} · ${d.minutes} min',
+                      style: text.titleMedium,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

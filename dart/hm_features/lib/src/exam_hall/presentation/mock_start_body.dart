@@ -35,7 +35,7 @@ class MockStartBody extends StatelessWidget {
       children: [
         Semantics(
           header: true,
-          child: Text(mock.title, style: text.headlineSmall),
+          child: Text(mock.title, style: text.headlineMedium),
         ),
         const SizedBox(height: 4),
         Text('${mock.accessLabel} · ${mock.facts}', style: text.bodyMedium),
@@ -46,7 +46,7 @@ class MockStartBody extends StatelessWidget {
             children: [
               Text('Before you start', style: text.titleMedium),
               const SizedBox(height: 8),
-              for (final line in [
+              for (final (i, line) in [
                 'The clock is set by the server and keeps running if you leave the app.',
                 'Your answers are saved on this phone and sent as you go.',
                 'You need an internet connection to start.',
@@ -54,10 +54,31 @@ class MockStartBody extends StatelessWidget {
                   'Wrong answers lose marks. Leave a question blank if you are not sure.',
                 if (mock.kind == MockKindView.stateMockSunday)
                   'Only attempts started on time and sent before the end time count for the rank.',
-              ])
+              ].indexed)
+                // Exam Hall stays plain (§9.10): numbered rules in ink squares, no colour, no motion.
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Text('• $line', style: text.bodyMedium),
+                  padding: const EdgeInsets.only(bottom: HmSpace.sm),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ExcludeSemantics(
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(right: HmSpace.md),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: context.hm.outline,
+                              width: HmBauhaus.strokeSmall,
+                            ),
+                          ),
+                          child: Text('${i + 1}', style: text.labelMedium),
+                        ),
+                      ),
+                      Expanded(child: Text(line, style: text.bodyMedium)),
+                    ],
+                  ),
                 ),
             ],
           ),

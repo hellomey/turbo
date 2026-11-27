@@ -41,7 +41,8 @@ class HeyMeyApp extends ConsumerWidget {
       title: 'HeyMey',
       theme: HmTheme.light(),
       darkTheme: HmTheme.dark(),
-      themeMode: ThemeMode.dark, // dark is the default (§10.3)
+      // Bauhaus light is the default (BOLT-0110); the OS dark setting switches to Bauhaus dark.
+      themeMode: ThemeMode.system,
       routerConfig: ref.watch(routerProvider),
       // Calm Mode (§10.7) and Lite Mode (§10.8) switch off celebrations and decorative motion.
       builder: (context, child) => HmModes(

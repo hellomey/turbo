@@ -17,8 +17,8 @@ class HmPlain extends InheritedWidget {
   bool updateShouldNotify(HmPlain old) => false;
 }
 
-/// A chunky, 3D-press button (BOLT-0021): a solid darker bottom edge that the face sinks into when
-/// pressed. At least 48 dp tall (§10.9); labels wrap at 200% text; screen readers hear [label]
+/// A chunky press button (BOLT-0021, Bauhaus since BOLT-0110): a 3 px ink outline and a hard offset
+/// shadow that the face slides onto when pressed. At least 48 dp tall (§10.9); labels wrap at 200% text; screen readers hear [label]
 /// (or [semanticLabel]) as a button. Inside [HmPlain] it renders flat.
 class HmChunkyButton extends StatefulWidget {
   const HmChunkyButton({
@@ -61,21 +61,19 @@ class _HmChunkyButtonState extends State<HmChunkyButton> {
     final p = context.hm;
     final plain = HmPlain.of(context);
     final enabled = widget.enabled;
-    final (face, shade, ink, border) = switch (widget.tone) {
-      _ when !enabled => (p.disabled, p.disabled, p.onDisabled, p.outline),
-      HmButtonTone.primary => (p.primary, p.primaryShade, p.onPrimary, null),
-      HmButtonTone.gold => (p.gold, p.goldShade, p.onGold, null),
-      HmButtonTone.danger => (p.errorTint, p.error, p.onErrorTint, p.error),
-      HmButtonTone.secondary => (
-        p.surface,
-        p.outline,
-        p.primaryText,
-        p.outline,
-      ),
+    // Bauhaus (BOLT-0110): a flat colour face, a 3 px ink outline and a hard offset shadow that
+    // the face slides onto when pressed.
+    final (face, ink) = switch (widget.tone) {
+      _ when !enabled => (p.disabled, p.onDisabled),
+      HmButtonTone.primary => (p.primary, p.onPrimary),
+      HmButtonTone.gold => (p.gold, p.onGold),
+      HmButtonTone.danger => (p.errorTint, p.onErrorTint),
+      HmButtonTone.secondary => (p.surface, p.text),
     };
-    final depth = plain || !enabled ? 0.0 : HmElevation.buttonDepth;
+    final depth = plain || !enabled ? 0.0 : HmBauhaus.shadow.dx;
     final sink = _pressed ? depth : 0.0;
     final radius = BorderRadius.circular(HmRadius.md);
+    final edge = enabled ? p.outline : p.onDisabled.withValues(alpha: 0.5);
     final labelStyle = Theme.of(
       context,
     ).textTheme.labelLarge?.copyWith(color: ink, fontWeight: FontWeight.w900);
@@ -115,8 +113,8 @@ class _HmChunkyButtonState extends State<HmChunkyButton> {
         color: face,
         borderRadius: radius,
         border: Border.all(
-          color: _focused ? p.text : (border ?? face),
-          width: _focused ? 3 : 2,
+          color: _focused ? p.blue : edge,
+          width: _focused ? HmBauhaus.stroke + 1 : HmBauhaus.stroke,
         ),
       ),
       child: Center(
@@ -130,15 +128,16 @@ class _HmChunkyButtonState extends State<HmChunkyButton> {
       children: [
         if (depth > 0)
           Positioned.fill(
+            left: depth,
             top: depth,
             child: DecoratedBox(
-              decoration: BoxDecoration(color: shade, borderRadius: radius),
+              decoration: BoxDecoration(color: p.shadow, borderRadius: radius),
             ),
           ),
         AnimatedPadding(
           duration: HmMotion.press,
           curve: HmMotion.standard,
-          padding: EdgeInsets.only(top: sink, bottom: depth - sink),
+          padding: EdgeInsets.fromLTRB(sink, sink, depth - sink, depth - sink),
           child: faceBox,
         ),
       ],

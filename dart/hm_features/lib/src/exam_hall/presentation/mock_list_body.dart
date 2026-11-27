@@ -40,7 +40,7 @@ class MockListBody extends StatelessWidget {
       children: [
         Semantics(
           header: true,
-          child: Text('Exam Hall', style: text.headlineSmall),
+          child: Text('Exam Hall', style: text.displaySmall),
         ),
         const SizedBox(height: 4),
         Text(
@@ -159,8 +159,8 @@ class _AccessChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: scheme.outline),
+        borderRadius: BorderRadius.circular(HmRadius.sm),
+        border: Border.all(color: scheme.outline, width: HmBauhaus.strokeSmall),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

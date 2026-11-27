@@ -2,7 +2,8 @@ import 'package:material_ui/material_ui.dart';
 
 import 'tokens.dart';
 
-/// The three shipped themes (§10.3), built from one token source ([HmPalette]). Dark is the default.
+/// The shipped themes (§10.3), built from one token source ([HmPalette]). Bauhaus light is the
+/// default (BOLT-0110); Bauhaus dark and high contrast are the alternatives.
 /// Calm Mode and Lite Mode change behaviour and motion ([HmModes]), not tokens.
 abstract final class HmTheme {
   static ThemeData dark() => fromPalette(HmPalette.dark);
@@ -72,13 +73,16 @@ abstract final class HmTheme {
       textTheme: text,
       materialTapTargetSize: MaterialTapTargetSize.padded,
       visualDensity: VisualDensity.standard,
-      dividerTheme: DividerThemeData(color: p.outline, thickness: 1),
+      dividerTheme: DividerThemeData(
+        color: p.outline.withValues(alpha: 0.25),
+        thickness: 2,
+      ),
       cardTheme: CardThemeData(
         color: p.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(HmRadius.lg),
-          side: BorderSide(color: p.outline, width: 1.5),
+          side: BorderSide(color: p.outline, width: HmBauhaus.stroke),
         ),
       ),
       appBarTheme: AppBarTheme(
@@ -112,7 +116,7 @@ abstract final class HmTheme {
           padding: pad,
           shape: shape,
           foregroundColor: p.primaryText,
-          side: BorderSide(color: p.outline, width: 2),
+          side: BorderSide(color: p.outline, width: HmBauhaus.stroke),
           textStyle: label,
         ),
       ),
@@ -129,28 +133,28 @@ abstract final class HmTheme {
         fillColor: p.surface,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(HmRadius.md),
-          borderSide: BorderSide(color: p.outline, width: 2),
+          borderSide: BorderSide(color: p.outline, width: HmBauhaus.stroke),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(HmRadius.md),
-          borderSide: BorderSide(color: p.outline, width: 2),
+          borderSide: BorderSide(color: p.outline, width: HmBauhaus.stroke),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(HmRadius.md),
-          borderSide: BorderSide(color: p.primaryText, width: 2),
+          borderSide: BorderSide(color: p.blue, width: HmBauhaus.stroke + 1),
         ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: p.surface2,
         labelStyle: text.labelLarge?.copyWith(color: p.text),
-        side: BorderSide(color: p.outline),
+        side: BorderSide(color: p.outline, width: HmBauhaus.strokeSmall),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(HmRadius.pill),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: p.surface,
-        indicatorColor: p.surface3,
+        indicatorColor: p.gold,
         labelTextStyle: WidgetStatePropertyAll(
           text.labelMedium?.copyWith(fontWeight: FontWeight.w800),
         ),
@@ -158,6 +162,7 @@ abstract final class HmTheme {
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: p.primary,
         linearTrackColor: p.surface3,
+        circularTrackColor: p.surface3,
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: p.surface,
@@ -173,6 +178,7 @@ abstract final class HmTheme {
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(HmRadius.xl),
+          side: BorderSide(color: p.outline, width: HmBauhaus.stroke),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
@@ -199,7 +205,7 @@ abstract final class HmTheme {
     );
   }
 
-  /// Rounded, friendly type scale. Headings are heavy (800-900), body is regular, labels bold.
+  /// Bauhaus type scale: big, heavy Nunito headings with tight leading; body stays readable.
   static TextTheme _textTheme(TextTheme base, HmPalette p) {
     TextStyle? s(TextStyle? t, double size, FontWeight w, {double h = 1.3}) =>
         t?.copyWith(
@@ -211,13 +217,13 @@ abstract final class HmTheme {
           letterSpacing: 0,
         );
     return base.copyWith(
-      displayLarge: s(base.displayLarge, 48, FontWeight.w900, h: 1.1),
-      displayMedium: s(base.displayMedium, 40, FontWeight.w900, h: 1.1),
-      displaySmall: s(base.displaySmall, 34, FontWeight.w900, h: 1.15),
-      headlineLarge: s(base.headlineLarge, 30, FontWeight.w900, h: 1.2),
-      headlineMedium: s(base.headlineMedium, 26, FontWeight.w800, h: 1.2),
-      headlineSmall: s(base.headlineSmall, 22, FontWeight.w800, h: 1.25),
-      titleLarge: s(base.titleLarge, 20, FontWeight.w800),
+      displayLarge: s(base.displayLarge, 52, FontWeight.w900, h: 1.05),
+      displayMedium: s(base.displayMedium, 44, FontWeight.w900, h: 1.05),
+      displaySmall: s(base.displaySmall, 36, FontWeight.w900, h: 1.1),
+      headlineLarge: s(base.headlineLarge, 32, FontWeight.w900, h: 1.15),
+      headlineMedium: s(base.headlineMedium, 28, FontWeight.w900, h: 1.15),
+      headlineSmall: s(base.headlineSmall, 24, FontWeight.w900, h: 1.2),
+      titleLarge: s(base.titleLarge, 20, FontWeight.w900),
       titleMedium: s(base.titleMedium, 17, FontWeight.w800),
       titleSmall: s(base.titleSmall, 15, FontWeight.w700),
       bodyLarge: s(base.bodyLarge, 17, FontWeight.w600, h: 1.45),

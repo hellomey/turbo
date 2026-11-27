@@ -1,11 +1,13 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../tokens.dart';
+import 'art.dart';
 import 'buttons.dart';
 import 'illustrations.dart';
 
-/// A rounded surface card with a solid bottom edge for depth. Tappable cards sink when pressed and
-/// are buttons for screen readers.
+/// A Bauhaus surface card (BOLT-0110): a 3 px ink outline and a hard offset shadow, no blur.
+/// Tappable cards slide onto their shadow when pressed and are buttons for screen readers.
+/// Inside [HmPlain] (the Exam Hall) the shadow goes and the outline thins.
 class HmCard extends StatefulWidget {
   const HmCard({
     super.key,
@@ -39,19 +41,27 @@ class _HmCardState extends State<HmCard> {
   Widget build(BuildContext context) {
     final p = context.hm;
     final plain = HmPlain.of(context);
-    final edge = widget.highlighted ? p.gold : p.outline;
-    final depth = plain ? 0.0 : HmElevation.cardDepth;
+    final depth = plain ? 0.0 : HmBauhaus.shadow.dx;
     final sink = _pressed ? depth : 0.0;
     final radius = BorderRadius.circular(HmRadius.lg);
+    final lift = depth - sink;
     Widget card = AnimatedContainer(
       duration: HmMotion.press,
-      margin: EdgeInsets.only(top: sink, bottom: depth - sink),
+      margin: EdgeInsets.fromLTRB(sink, sink, lift, lift),
       decoration: BoxDecoration(
         color: widget.color ?? p.surface,
         borderRadius: radius,
-        border: Border.all(color: edge, width: widget.highlighted ? 2.5 : 1.5),
-        boxShadow: depth - sink > 0
-            ? [BoxShadow(color: edge, offset: Offset(0, depth - sink))]
+        border: Border.all(
+          color: p.outline,
+          width: plain ? HmBauhaus.strokeSmall : HmBauhaus.stroke,
+        ),
+        boxShadow: lift > 0
+            ? [
+                BoxShadow(
+                  color: widget.highlighted ? p.gold : p.shadow,
+                  offset: Offset(lift, lift),
+                ),
+              ]
             : null,
       ),
       child: ClipRRect(
@@ -95,9 +105,13 @@ class _MessageView extends StatelessWidget {
     this.actionLabel,
     this.onAction,
     this.liveRegion = false,
+    this.art,
   });
 
   final HmIllustrationKind kind;
+
+  /// Bauhaus art (BOLT-0110); replaces the drawn illustration when set.
+  final HmArtName? art;
   final String? title;
   final String? message;
   final String? actionLabel;
@@ -116,7 +130,10 @@ class _MessageView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              HmIllustration(kind: kind, size: 112),
+              if (art != null)
+                HmArt(art!, size: 140)
+              else
+                HmIllustration(kind: kind, size: 112),
               const SizedBox(height: HmSpace.lg),
               if (title != null)
                 Text(
@@ -186,7 +203,11 @@ class HmEmptyView extends StatelessWidget {
     this.actionLabel,
     this.onAction,
     this.kind = HmIllustrationKind.empty,
+    this.art,
   });
+
+  /// Bauhaus art (BOLT-0110), e.g. [HmArtName.emptyNoAlerts]; wins over [kind].
+  final HmArtName? art;
 
   final String title;
   final String? message;
@@ -199,6 +220,7 @@ class HmEmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _MessageView(
     kind: kind,
+    art: art,
     title: title,
     message: message,
     actionLabel: actionLabel,

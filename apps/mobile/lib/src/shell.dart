@@ -18,26 +18,31 @@ class AppShell extends ConsumerStatefulWidget {
       label: 'Today',
       icon: Icons.wb_sunny_outlined,
       selectedIcon: Icons.wb_sunny_rounded,
+      art: HmArtName.navToday,
     ),
     HmNavItem(
       label: 'Study Map',
       icon: Icons.map_outlined,
       selectedIcon: Icons.map_rounded,
+      art: HmArtName.navMap,
     ),
     HmNavItem(
       label: 'Play',
       icon: Icons.sports_esports_outlined,
       selectedIcon: Icons.sports_esports_rounded,
+      art: HmArtName.navPlay,
     ),
     HmNavItem(
       label: 'Squad',
       icon: Icons.groups_outlined,
       selectedIcon: Icons.groups_rounded,
+      art: HmArtName.navSquad,
     ),
     HmNavItem(
       label: 'Profile',
       icon: Icons.person_outline,
       selectedIcon: Icons.person_rounded,
+      art: HmArtName.navProfile,
     ),
   ];
 

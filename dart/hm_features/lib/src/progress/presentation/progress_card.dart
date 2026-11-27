@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hm_design/hm_design.dart';
 
 import '../../common/ports.dart';
 import '../application/progress_controller.dart';
@@ -37,10 +38,11 @@ class _ProgressCardState extends ConsumerState<ProgressCard> {
     final text = Theme.of(context).textTheme;
     final p = ref.watch(myProgressProvider).value;
     if (p == null) return const SizedBox.shrink();
-    return Card(
+    // Drawn inside a Today bento tile (BOLT-0110), so no card of its own.
+    return KeyedSubtree(
       key: const Key('today-progress'),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,7 +58,12 @@ class _ProgressCardState extends ConsumerState<ProgressCard> {
             Semantics(
               label: '${p.xp} XP. Level ${p.level + 1} at ${p.nextLevelXp} XP',
               child: ExcludeSemantics(
-                child: LinearProgressIndicator(value: p.levelFraction),
+                child: HmProgressBar(
+                  value: p.levelFraction,
+                  height: 12,
+                  color: context.hm.gold,
+                  semanticLabel: 'XP',
+                ),
               ),
             ),
             const SizedBox(height: 4),
@@ -64,14 +71,16 @@ class _ProgressCardState extends ConsumerState<ProgressCard> {
             const SizedBox(height: 12),
             Row(
               children: [
-                FilledButton(
-                  key: const Key('today-check-in'),
-                  onPressed: p.checkedInToday || _busy ? null : _checkIn,
-                  child: Text(
-                    p.checkedInToday ? 'Checked in today' : 'Check in',
+                Flexible(
+                  child: HmPrimaryButton(
+                    key: const Key('today-check-in'),
+                    expand: false,
+                    tone: HmButtonTone.gold,
+                    label: p.checkedInToday ? 'Checked in today' : 'Check in',
+                    onPressed: p.checkedInToday || _busy ? null : _checkIn,
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: HmSpace.sm),
                 if (widget.onOpenLeaderboard != null)
                   TextButton(
                     key: const Key('today-open-leaderboard'),

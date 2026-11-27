@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:material_ui/material_ui.dart';
 
 import '../tokens.dart';
+import 'art.dart';
+import 'motion.dart';
 
 /// How bright a lamp is (§5.1: lamps dim when not revised).
 enum HmLampDim { bright, dimming, dim }
@@ -82,10 +84,7 @@ class Lamp extends StatelessWidget {
   Widget build(BuildContext context) {
     final pal = context.hm;
     final faint = pal.text.withValues(alpha: 0.3);
-    final icon = CustomPaint(
-      size: Size.square(size),
-      painter: LampPainter(state: state, faint: faint, palette: pal),
-    );
+    final icon = HmLampFace(state: state, size: size, faint: faint);
     final body = showLabel
         ? Column(
             mainAxisSize: MainAxisSize.min,
@@ -122,16 +121,68 @@ class Lamp extends StatelessWidget {
   }
 }
 
+/// The face of a lamp (BOLT-0110): the Bauhaus lamp SVG (dark, lit, fading or gold) inside the
+/// Steady arcs and the Gold octagon. When a lamp lights up it pops with a spring (320 ms) unless
+/// motion is off (Calm Mode, Lite Mode, reduce motion, Exam Hall).
+class HmLampFace extends StatelessWidget {
+  const HmLampFace({
+    super.key,
+    required this.state,
+    required this.size,
+    required this.faint,
+  });
+
+  final HmLampState state;
+  final double size;
+  final Color faint;
+
+  @override
+  Widget build(BuildContext context) {
+    final art = lampArtFor(
+      lit: state.lit,
+      gold: state.gold,
+      fading: state.dim != HmLampDim.bright,
+    );
+    return SizedBox.square(
+      dimension: size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          CustomPaint(
+            size: Size.square(size),
+            painter: LampPainter(
+              state: state,
+              faint: faint,
+              palette: context.hm,
+              paintCore: false,
+            ),
+          ),
+          HmPop(
+            trigger: art,
+            haptic: state.lit,
+            playOnFirstBuild: false,
+            child: HmArt(art, size: size * 0.62),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class LampPainter extends CustomPainter {
   LampPainter({
     required this.state,
     required this.faint,
-    this.palette = HmPalette.dark,
+    this.palette = HmPalette.light,
+    this.paintCore = true,
   });
 
   final HmLampState state;
   final Color faint;
   final HmPalette palette;
+
+  /// False leaves the centre empty for the lamp SVG ([HmLampFace]).
+  final bool paintCore;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -179,6 +230,8 @@ class LampPainter extends CustomPainter {
       );
     }
 
+    if (!paintCore) return;
+
     // Lit: solid inner circle with a soft glow when bright.
     if (state.lit && state.dim == HmLampDim.bright) {
       canvas.drawCircle(
@@ -201,7 +254,10 @@ class LampPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(LampPainter old) =>
-      old.state != state || old.faint != faint || old.palette != palette;
+      old.state != state ||
+      old.faint != faint ||
+      old.palette != palette ||
+      old.paintCore != paintCore;
 }
 
 /// The named lamp states shown on a badge (§5.1): Unlit, Lit, Steady 1-4, Dimming, Dim, Gold.
@@ -277,13 +333,10 @@ class HmLampBadge extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomPaint(
-                  size: Size.square(size),
-                  painter: LampPainter(
-                    state: state,
-                    faint: p.text.withValues(alpha: 0.3),
-                    palette: p,
-                  ),
+                HmLampFace(
+                  state: state,
+                  size: size,
+                  faint: p.text.withValues(alpha: 0.3),
                 ),
                 const SizedBox(height: HmSpace.xs),
                 Container(

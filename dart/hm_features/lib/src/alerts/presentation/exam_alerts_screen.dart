@@ -79,6 +79,7 @@ class ExamAlertsBody extends StatelessWidget {
     if (items.isEmpty) {
       return const HmEmptyView(
         kind: HmIllustrationKind.bell,
+        art: HmArtName.emptyNoAlerts,
         title: 'All quiet for now',
         message: AlertCopy.noAlerts,
       );
