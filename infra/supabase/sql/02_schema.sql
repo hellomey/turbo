@@ -237,6 +237,7 @@ CREATE TABLE "Source" (
     "citation" TEXT NOT NULL,
     "url" TEXT,
     "kind" TEXT NOT NULL,
+    "setName" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Source_pkey" PRIMARY KEY ("id")
@@ -926,6 +927,31 @@ CREATE TABLE "ConceptDrill" (
 );
 
 -- CreateTable
+CREATE TABLE "ExpoChallenge" (
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "questionIds" UUID[],
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "submittedAt" TIMESTAMP(3),
+    "score" INTEGER,
+
+    CONSTRAINT "ExpoChallenge_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StickerCode" (
+    "userId" UUID NOT NULL,
+    "code" TEXT NOT NULL,
+    "reason" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "redeemedAt" TIMESTAMP(3),
+    "redeemedBy" UUID,
+
+    CONSTRAINT "StickerCode_pkey" PRIMARY KEY ("userId")
+);
+
+-- CreateTable
 CREATE TABLE "ReadinessSnapshot" (
     "userId" UUID NOT NULL,
     "examCode" TEXT NOT NULL,
@@ -1138,6 +1164,9 @@ CREATE INDEX "Lesson_topicId_status_idx" ON "Lesson"("topicId", "status");
 CREATE UNIQUE INDEX "Lesson_topicId_version_key" ON "Lesson"("topicId", "version");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Source_setName_key" ON "Source"("setName");
+
+-- CreateIndex
 CREATE INDEX "Question_topicId_status_difficulty_idx" ON "Question"("topicId", "status", "difficulty");
 
 -- CreateIndex
@@ -1307,6 +1336,12 @@ CREATE UNIQUE INDEX "PracticeAnswer_userId_clientActionId_key" ON "PracticeAnswe
 
 -- CreateIndex
 CREATE INDEX "ConceptDrill_userId_status_idx" ON "ConceptDrill"("userId", "status");
+
+-- CreateIndex
+CREATE INDEX "ExpoChallenge_userId_createdAt_idx" ON "ExpoChallenge"("userId", "createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "StickerCode_code_key" ON "StickerCode"("code");
 
 -- CreateIndex
 CREATE INDEX "SundayReport_userId_createdAt_idx" ON "SundayReport"("userId", "createdAt");
