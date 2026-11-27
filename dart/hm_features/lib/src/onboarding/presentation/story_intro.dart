@@ -29,7 +29,7 @@ const storyIntroCards = [
     'A simple meter, and we show you how it works.',
   ),
   StoryIntroCard(
-    HmPic.meyCheer,
+    HmPic.logo,
     "Let's light your first lamp",
     'Answer a few questions and we will set you up.',
   ),

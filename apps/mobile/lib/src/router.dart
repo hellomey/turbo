@@ -48,8 +48,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/squad',
         builder: (context, _) => Scaffold(
-          appBar: AppBar(title: const Text('Squad')),
-          body: const SquadTab(),
+          appBar: AppBar(),
+          body: SquadTab(onBackToToday: () => context.go('/today')),
         ),
       ),
       GoRoute(
@@ -101,7 +101,11 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           StatefulShellBranch(
             routes: [
-              GoRoute(path: '/play', builder: (_, _) => const PlayTab()),
+              GoRoute(
+                path: '/play',
+                builder: (context, _) =>
+                    PlayTab(onOpenExpo: () => context.push('/expo')),
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -125,7 +129,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/exam-hall', builder: (_, _) => const ExamHallScreen()),
       // Stall (BOLT-0111): Expo Challenge deep link, sticker code, story replay.
       GoRoute(path: '/expo', builder: (_, _) => const ExpoChallengeScreen()),
-      GoRoute(path: '/sticker', builder: (_, _) => const StickerScreen()),
+      GoRoute(
+        path: '/sticker',
+        builder: (context, _) =>
+            StickerScreen(onBackToToday: () => context.go('/today')),
+      ),
       GoRoute(path: '/story', builder: (_, _) => const StoryReplayScreen()),
       GoRoute(
         path: '/leaderboard',

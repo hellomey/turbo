@@ -4,7 +4,7 @@ import '../tokens.dart';
 import 'bento.dart';
 import 'mey.dart';
 
-/// The opening screen (design/ui/01, BOLT-0117): Beta chip, Mey glowing, the wordmark, the
+/// The opening screen (design/ui/01, BOLT-0118): Beta chip, the round HeyMey logo (it carries the wordmark), the
 /// tagline and a looping amber loading bar. Screen readers hear "Opening HeyMey".
 class HmSplash extends StatefulWidget {
   const HmSplash({super.key});
@@ -54,15 +54,8 @@ class _HmSplashState extends State<HmSplash>
                   children: [
                     const HmBetaChip(),
                     const Spacer(),
-                    const HmMey(HmPic.meySplash, size: 240),
-                    const SizedBox(height: HmSpace.xl),
-                    Text(
-                      'HeyMey',
-                      style: text.displayMedium?.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    const SizedBox(height: HmSpace.xs),
+                    const HmMey(HmPic.logo, size: 260),
+                    const SizedBox(height: HmSpace.lg),
                     Text(
                       'Light up your TNPSC prep',
                       style: text.titleMedium?.copyWith(
