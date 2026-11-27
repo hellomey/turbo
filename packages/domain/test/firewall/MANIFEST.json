@@ -12,6 +12,9 @@
     "FW-009": "Ranked duel cap is 10 a day and is a constant, identical for every player",
     "FW-020": "Career Ladder rank is computed only from ring counts; Pro entitlement or purchases do not change it",
     "FW-021": "XP has no ledger and no conversion path to Points, Sparks or anything bought",
-    "FW-022": "Offline-synced study actions never produce ranked rewards (only study progress)"
+    "FW-022": "Offline-synced study actions never produce ranked rewards (only study progress)",
+    "FW-023": "Points can never be bought: no purchase, store or Sparks reason is accepted, and billing never touches Points",
+    "FW-024": "Daily check-in and games never credit Sparks",
+    "FW-025": "XP is awarded only for learning events and check-in, never for a purchase or a game stake"
   }
 }

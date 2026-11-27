@@ -15,8 +15,9 @@ Method | HTTP request | Description
 [**logoutAll**](AuthApi.md#logoutall) | **POST** /v1/auth/logout-all | Log out of all devices.
 [**refreshSession**](AuthApi.md#refreshsession) | **POST** /v1/auth/refresh | Rotate the refresh token. Re-using an old one revokes the whole session family.
 [**requestOtp**](AuthApi.md#requestotp) | **POST** /v1/auth/otp/request | Send a 6-digit code. Always 200: never reveals whether the email has an account.
+[**startGuestSession**](AuthApi.md#startguestsession) | **POST** /v1/auth/guest | Try HeyMey without an email (18+ only). Guest sessions last 30 days; sign in with email to keep progress.
 [**verifyDeskTotp**](AuthApi.md#verifydesktotp) | **POST** /v1/auth/desk/totp/verify | Complete Desk sign-in with the authenticator code.
-[**verifyOtp**](AuthApi.md#verifyotp) | **POST** /v1/auth/otp/verify | Exchange email + code for a session bound to this device (or a Desk 2FA challenge).
+[**verifyOtp**](AuthApi.md#verifyotp) | **POST** /v1/auth/otp/verify | Exchange email + code for a session bound to this device (or a Desk 2FA challenge). With a guest token it keeps the guest progress (see guestProgress).
 
 
 # **deleteAccount**
@@ -291,6 +292,49 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **startGuestSession**
+> TokenPair startGuestSession(idempotencyKey, guestSessionBody)
+
+Try HeyMey without an email (18+ only). Guest sessions last 30 days; sign in with email to keep progress.
+
+### Example
+```dart
+import 'package:hm_api/api.dart';
+
+final api_instance = AuthApi();
+final idempotencyKey = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | 
+final guestSessionBody = GuestSessionBody(); // GuestSessionBody | 
+
+try {
+    final result = api_instance.startGuestSession(idempotencyKey, guestSessionBody);
+    print(result);
+} catch (e) {
+    print('Exception when calling AuthApi->startGuestSession: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String**|  | 
+ **guestSessionBody** | [**GuestSessionBody**](GuestSessionBody.md)|  | [optional] 
+
+### Return type
+
+[**TokenPair**](TokenPair.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **verifyDeskTotp**
 > SessionGranted verifyDeskTotp(idempotencyKey, deskTotpVerifyBody)
 
@@ -337,7 +381,7 @@ No authorization required
 # **verifyOtp**
 > OtpVerifyResponse verifyOtp(idempotencyKey, otpVerifyBody)
 
-Exchange email + code for a session bound to this device (or a Desk 2FA challenge).
+Exchange email + code for a session bound to this device (or a Desk 2FA challenge). With a guest token it keeps the guest progress (see guestProgress).
 
 ### Example
 ```dart

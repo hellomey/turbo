@@ -17,6 +17,7 @@ class OtpVerifyResponse {
     required this.tokens,
     required this.isNewUser,
     required this.deletionCancelled,
+    this.guestProgress,
     required this.challengeToken,
     required this.totpEnrolled,
   });
@@ -29,6 +30,8 @@ class OtpVerifyResponse {
 
   bool deletionCancelled;
 
+  OtpVerifyResponseGuestProgressEnum? guestProgress;
+
   String challengeToken;
 
   bool totpEnrolled;
@@ -39,6 +42,7 @@ class OtpVerifyResponse {
     other.tokens == tokens &&
     other.isNewUser == isNewUser &&
     other.deletionCancelled == deletionCancelled &&
+    other.guestProgress == guestProgress &&
     other.challengeToken == challengeToken &&
     other.totpEnrolled == totpEnrolled;
 
@@ -49,11 +53,12 @@ class OtpVerifyResponse {
     (tokens.hashCode) +
     (isNewUser.hashCode) +
     (deletionCancelled.hashCode) +
+    (guestProgress == null ? 0 : guestProgress!.hashCode) +
     (challengeToken.hashCode) +
     (totpEnrolled.hashCode);
 
   @override
-  String toString() => 'OtpVerifyResponse[kind=$kind, tokens=$tokens, isNewUser=$isNewUser, deletionCancelled=$deletionCancelled, challengeToken=$challengeToken, totpEnrolled=$totpEnrolled]';
+  String toString() => 'OtpVerifyResponse[kind=$kind, tokens=$tokens, isNewUser=$isNewUser, deletionCancelled=$deletionCancelled, guestProgress=$guestProgress, challengeToken=$challengeToken, totpEnrolled=$totpEnrolled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -61,6 +66,11 @@ class OtpVerifyResponse {
       json[r'tokens'] = this.tokens;
       json[r'isNewUser'] = this.isNewUser;
       json[r'deletionCancelled'] = this.deletionCancelled;
+    if (this.guestProgress != null) {
+      json[r'guestProgress'] = this.guestProgress;
+    } else {
+      json[r'guestProgress'] = null;
+    }
       json[r'challengeToken'] = this.challengeToken;
       json[r'totpEnrolled'] = this.totpEnrolled;
     return json;
@@ -95,6 +105,7 @@ class OtpVerifyResponse {
         tokens: TokenPair.fromJson(json[r'tokens'])!,
         isNewUser: mapValueOfType<bool>(json, r'isNewUser')!,
         deletionCancelled: mapValueOfType<bool>(json, r'deletionCancelled')!,
+        guestProgress: OtpVerifyResponseGuestProgressEnum.fromJson(json[r'guestProgress']),
         challengeToken: mapValueOfType<String>(json, r'challengeToken')!,
         totpEnrolled: mapValueOfType<bool>(json, r'totpEnrolled')!,
       );
@@ -221,6 +232,80 @@ class OtpVerifyResponseKindEnumTypeTransformer {
 
   /// Singleton [OtpVerifyResponseKindEnumTypeTransformer] instance.
   static OtpVerifyResponseKindEnumTypeTransformer? _instance;
+}
+
+
+
+class OtpVerifyResponseGuestProgressEnum {
+  /// Instantiate a new enum with the provided [value].
+  const OtpVerifyResponseGuestProgressEnum._(this.value);
+
+  /// The underlying value of this enum member.
+  final String value;
+
+  @override
+  String toString() => value;
+
+  String toJson() => value;
+
+  static const kept = OtpVerifyResponseGuestProgressEnum._(r'kept');
+  static const notMerged = OtpVerifyResponseGuestProgressEnum._(r'not_merged');
+
+  /// List of all possible values in this [enum][OtpVerifyResponseGuestProgressEnum].
+  static const values = <OtpVerifyResponseGuestProgressEnum>[
+    kept,
+    notMerged,
+  ];
+
+  static OtpVerifyResponseGuestProgressEnum? fromJson(dynamic value) => OtpVerifyResponseGuestProgressEnumTypeTransformer().decode(value);
+
+  static List<OtpVerifyResponseGuestProgressEnum> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <OtpVerifyResponseGuestProgressEnum>[];
+    if (json is List && json.isNotEmpty) {
+      for (final row in json) {
+        final value = OtpVerifyResponseGuestProgressEnum.fromJson(row);
+        if (value != null) {
+          result.add(value);
+        }
+      }
+    }
+    return result.toList(growable: growable);
+  }
+}
+
+/// Transformation class that can [encode] an instance of [OtpVerifyResponseGuestProgressEnum] to String,
+/// and [decode] dynamic data back to [OtpVerifyResponseGuestProgressEnum].
+class OtpVerifyResponseGuestProgressEnumTypeTransformer {
+  factory OtpVerifyResponseGuestProgressEnumTypeTransformer() => _instance ??= const OtpVerifyResponseGuestProgressEnumTypeTransformer._();
+
+  const OtpVerifyResponseGuestProgressEnumTypeTransformer._();
+
+  String encode(OtpVerifyResponseGuestProgressEnum data) => data.value;
+
+  /// Decodes a [dynamic value][data] to a OtpVerifyResponseGuestProgressEnum.
+  ///
+  /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
+  /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
+  /// cannot be decoded successfully, then an [UnimplementedError] is thrown.
+  ///
+  /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
+  /// and users are still using an old app with the old code.
+  OtpVerifyResponseGuestProgressEnum? decode(dynamic data, {bool allowNull = true}) {
+    if (data != null) {
+      switch (data) {
+        case r'kept': return OtpVerifyResponseGuestProgressEnum.kept;
+        case r'not_merged': return OtpVerifyResponseGuestProgressEnum.notMerged;
+        default:
+          if (!allowNull) {
+            throw ArgumentError('Unknown enum value to decode: $data');
+          }
+      }
+    }
+    return null;
+  }
+
+  /// Singleton [OtpVerifyResponseGuestProgressEnumTypeTransformer] instance.
+  static OtpVerifyResponseGuestProgressEnumTypeTransformer? _instance;
 }
 
 

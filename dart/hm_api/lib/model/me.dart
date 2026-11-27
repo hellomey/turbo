@@ -15,6 +15,7 @@ class Me {
   Me({
     required this.id,
     required this.email,
+    required this.isGuest,
     required this.nickname,
     required this.district,
     required this.calmMode,
@@ -28,7 +29,10 @@ class Me {
 
   String id;
 
-  String email;
+  /// null for a guest (no email yet)
+  String? email;
+
+  bool isGuest;
 
   String? nickname;
 
@@ -53,6 +57,7 @@ class Me {
   bool operator ==(Object other) => identical(this, other) || other is Me &&
     other.id == id &&
     other.email == email &&
+    other.isGuest == isGuest &&
     other.nickname == nickname &&
     other.district == district &&
     other.calmMode == calmMode &&
@@ -67,7 +72,8 @@ class Me {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (id.hashCode) +
-    (email.hashCode) +
+    (email == null ? 0 : email!.hashCode) +
+    (isGuest.hashCode) +
     (nickname == null ? 0 : nickname!.hashCode) +
     (district == null ? 0 : district!.hashCode) +
     (calmMode.hashCode) +
@@ -79,12 +85,17 @@ class Me {
     (createdAt.hashCode);
 
   @override
-  String toString() => 'Me[id=$id, email=$email, nickname=$nickname, district=$district, calmMode=$calmMode, liteMode=$liteMode, hideFromLeaderboards=$hideFromLeaderboards, profile=$profile, roles=$roles, deletionScheduledFor=$deletionScheduledFor, createdAt=$createdAt]';
+  String toString() => 'Me[id=$id, email=$email, isGuest=$isGuest, nickname=$nickname, district=$district, calmMode=$calmMode, liteMode=$liteMode, hideFromLeaderboards=$hideFromLeaderboards, profile=$profile, roles=$roles, deletionScheduledFor=$deletionScheduledFor, createdAt=$createdAt]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'id'] = this.id;
+    if (this.email != null) {
       json[r'email'] = this.email;
+    } else {
+      json[r'email'] = null;
+    }
+      json[r'isGuest'] = this.isGuest;
     if (this.nickname != null) {
       json[r'nickname'] = this.nickname;
     } else {
@@ -129,7 +140,7 @@ class Me {
           assert(json.containsKey(key), 'Required key "Me[$key]" is missing from JSON.');
         });
         assert(json[r'id'] != null, 'Required key "Me[id]" has a null value in JSON.');
-        assert(json[r'email'] != null, 'Required key "Me[email]" has a null value in JSON.');
+        assert(json[r'isGuest'] != null, 'Required key "Me[isGuest]" has a null value in JSON.');
         assert(json[r'calmMode'] != null, 'Required key "Me[calmMode]" has a null value in JSON.');
         assert(json[r'hideFromLeaderboards'] != null, 'Required key "Me[hideFromLeaderboards]" has a null value in JSON.');
         assert(json[r'profile'] != null, 'Required key "Me[profile]" has a null value in JSON.');
@@ -140,7 +151,8 @@ class Me {
 
       return Me(
         id: mapValueOfType<String>(json, r'id')!,
-        email: mapValueOfType<String>(json, r'email')!,
+        email: mapValueOfType<String>(json, r'email'),
+        isGuest: mapValueOfType<bool>(json, r'isGuest')!,
         nickname: mapValueOfType<String>(json, r'nickname'),
         district: District.fromJson(json[r'district']),
         calmMode: mapValueOfType<bool>(json, r'calmMode')!,
@@ -199,6 +211,7 @@ class Me {
   static const requiredKeys = <String>{
     'id',
     'email',
+    'isGuest',
     'nickname',
     'district',
     'calmMode',

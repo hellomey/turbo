@@ -17,6 +17,7 @@ class SessionGranted {
     required this.tokens,
     required this.isNewUser,
     required this.deletionCancelled,
+    this.guestProgress,
   });
 
   SessionGrantedKindEnum kind;
@@ -27,12 +28,15 @@ class SessionGranted {
 
   bool deletionCancelled;
 
+  SessionGrantedGuestProgressEnum? guestProgress;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is SessionGranted &&
     other.kind == kind &&
     other.tokens == tokens &&
     other.isNewUser == isNewUser &&
-    other.deletionCancelled == deletionCancelled;
+    other.deletionCancelled == deletionCancelled &&
+    other.guestProgress == guestProgress;
 
   @override
   int get hashCode =>
@@ -40,10 +44,11 @@ class SessionGranted {
     (kind.hashCode) +
     (tokens.hashCode) +
     (isNewUser.hashCode) +
-    (deletionCancelled.hashCode);
+    (deletionCancelled.hashCode) +
+    (guestProgress == null ? 0 : guestProgress!.hashCode);
 
   @override
-  String toString() => 'SessionGranted[kind=$kind, tokens=$tokens, isNewUser=$isNewUser, deletionCancelled=$deletionCancelled]';
+  String toString() => 'SessionGranted[kind=$kind, tokens=$tokens, isNewUser=$isNewUser, deletionCancelled=$deletionCancelled, guestProgress=$guestProgress]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -51,6 +56,11 @@ class SessionGranted {
       json[r'tokens'] = this.tokens;
       json[r'isNewUser'] = this.isNewUser;
       json[r'deletionCancelled'] = this.deletionCancelled;
+    if (this.guestProgress != null) {
+      json[r'guestProgress'] = this.guestProgress;
+    } else {
+      json[r'guestProgress'] = null;
+    }
     return json;
   }
 
@@ -81,6 +91,7 @@ class SessionGranted {
         tokens: TokenPair.fromJson(json[r'tokens'])!,
         isNewUser: mapValueOfType<bool>(json, r'isNewUser')!,
         deletionCancelled: mapValueOfType<bool>(json, r'deletionCancelled')!,
+        guestProgress: SessionGrantedGuestProgressEnum.fromJson(json[r'guestProgress']),
       );
     }
     return null;
@@ -203,6 +214,80 @@ class SessionGrantedKindEnumTypeTransformer {
 
   /// Singleton [SessionGrantedKindEnumTypeTransformer] instance.
   static SessionGrantedKindEnumTypeTransformer? _instance;
+}
+
+
+
+class SessionGrantedGuestProgressEnum {
+  /// Instantiate a new enum with the provided [value].
+  const SessionGrantedGuestProgressEnum._(this.value);
+
+  /// The underlying value of this enum member.
+  final String value;
+
+  @override
+  String toString() => value;
+
+  String toJson() => value;
+
+  static const kept = SessionGrantedGuestProgressEnum._(r'kept');
+  static const notMerged = SessionGrantedGuestProgressEnum._(r'not_merged');
+
+  /// List of all possible values in this [enum][SessionGrantedGuestProgressEnum].
+  static const values = <SessionGrantedGuestProgressEnum>[
+    kept,
+    notMerged,
+  ];
+
+  static SessionGrantedGuestProgressEnum? fromJson(dynamic value) => SessionGrantedGuestProgressEnumTypeTransformer().decode(value);
+
+  static List<SessionGrantedGuestProgressEnum> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SessionGrantedGuestProgressEnum>[];
+    if (json is List && json.isNotEmpty) {
+      for (final row in json) {
+        final value = SessionGrantedGuestProgressEnum.fromJson(row);
+        if (value != null) {
+          result.add(value);
+        }
+      }
+    }
+    return result.toList(growable: growable);
+  }
+}
+
+/// Transformation class that can [encode] an instance of [SessionGrantedGuestProgressEnum] to String,
+/// and [decode] dynamic data back to [SessionGrantedGuestProgressEnum].
+class SessionGrantedGuestProgressEnumTypeTransformer {
+  factory SessionGrantedGuestProgressEnumTypeTransformer() => _instance ??= const SessionGrantedGuestProgressEnumTypeTransformer._();
+
+  const SessionGrantedGuestProgressEnumTypeTransformer._();
+
+  String encode(SessionGrantedGuestProgressEnum data) => data.value;
+
+  /// Decodes a [dynamic value][data] to a SessionGrantedGuestProgressEnum.
+  ///
+  /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
+  /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
+  /// cannot be decoded successfully, then an [UnimplementedError] is thrown.
+  ///
+  /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
+  /// and users are still using an old app with the old code.
+  SessionGrantedGuestProgressEnum? decode(dynamic data, {bool allowNull = true}) {
+    if (data != null) {
+      switch (data) {
+        case r'kept': return SessionGrantedGuestProgressEnum.kept;
+        case r'not_merged': return SessionGrantedGuestProgressEnum.notMerged;
+        default:
+          if (!allowNull) {
+            throw ArgumentError('Unknown enum value to decode: $data');
+          }
+      }
+    }
+    return null;
+  }
+
+  /// Singleton [SessionGrantedGuestProgressEnumTypeTransformer] instance.
+  static SessionGrantedGuestProgressEnumTypeTransformer? _instance;
 }
 
 

@@ -9,6 +9,8 @@ doc/AnswerInput.md
 doc/ApproveExamChangeBody.md
 doc/ApproveExamChangeBodyNewStageDate.md
 doc/AuthApi.md
+doc/CheckInResult.md
+doc/CheckInResultAwarded.md
 doc/CheckKind.md
 doc/CheckResult.md
 doc/ClientKind.md
@@ -34,6 +36,8 @@ doc/DeskTotpEnrollBody.md
 doc/DeskTotpEnrollResponse.md
 doc/DeskTotpVerifyBody.md
 doc/District.md
+doc/EarnedTrophy.md
+doc/EconomyApi.md
 doc/EligibilityCheckBody.md
 doc/EligibilityReason.md
 doc/EligibilityResult.md
@@ -61,8 +65,12 @@ doc/ExamsApi.md
 doc/GlossaryList.md
 doc/GlossaryListItemsInner.md
 doc/GradedAnswer.md
+doc/GuestSessionBody.md
 doc/HealthResponse.md
 doc/LampRing.md
+doc/LeaderboardEntry.md
+doc/LeaderboardOptIn.md
+doc/LeaderboardOptInBody.md
 doc/Lesson.md
 doc/LessonCompleteBody.md
 doc/LessonSource.md
@@ -86,6 +94,7 @@ doc/MockMode.md
 doc/MockReport.md
 doc/MockSectionView.md
 doc/MockSummary.md
+doc/MyProgress.md
 doc/NotificationsApi.md
 doc/OkResponse.md
 doc/OtpPurpose.md
@@ -181,6 +190,7 @@ doc/TokenPair.md
 doc/TopicCheck.md
 doc/TopicState.md
 doc/TopicStatePage.md
+doc/TrophyCode.md
 doc/UpdateMeBody.md
 doc/UpdatePlanItemBody.md
 doc/UserExams.md
@@ -188,11 +198,13 @@ doc/UserExamsBody.md
 doc/UserExamsMain.md
 doc/UsersApi.md
 doc/WebhooksApi.md
+doc/WeeklyLeaderboard.md
 git_push.sh
 lib/api.dart
 lib/api/auth_api.dart
 lib/api/content_api.dart
 lib/api/desk_api.dart
+lib/api/economy_api.dart
 lib/api/exam_hall_api.dart
 lib/api/exams_api.dart
 lib/api/mastery_api.dart
@@ -218,6 +230,8 @@ lib/model/alert_settings_quiet_hours.dart
 lib/model/answer_input.dart
 lib/model/approve_exam_change_body.dart
 lib/model/approve_exam_change_body_new_stage_date.dart
+lib/model/check_in_result.dart
+lib/model/check_in_result_awarded.dart
 lib/model/check_kind.dart
 lib/model/check_result.dart
 lib/model/client_kind.dart
@@ -241,6 +255,7 @@ lib/model/desk_totp_enroll_body.dart
 lib/model/desk_totp_enroll_response.dart
 lib/model/desk_totp_verify_body.dart
 lib/model/district.dart
+lib/model/earned_trophy.dart
 lib/model/eligibility_check_body.dart
 lib/model/eligibility_reason.dart
 lib/model/eligibility_result.dart
@@ -266,8 +281,12 @@ lib/model/exam_summary.dart
 lib/model/glossary_list.dart
 lib/model/glossary_list_items_inner.dart
 lib/model/graded_answer.dart
+lib/model/guest_session_body.dart
 lib/model/health_response.dart
 lib/model/lamp_ring.dart
+lib/model/leaderboard_entry.dart
+lib/model/leaderboard_opt_in.dart
+lib/model/leaderboard_opt_in_body.dart
 lib/model/lesson.dart
 lib/model/lesson_complete_body.dart
 lib/model/lesson_source.dart
@@ -290,6 +309,7 @@ lib/model/mock_mode.dart
 lib/model/mock_report.dart
 lib/model/mock_section_view.dart
 lib/model/mock_summary.dart
+lib/model/my_progress.dart
 lib/model/ok_response.dart
 lib/model/otp_purpose.dart
 lib/model/otp_request_body.dart
@@ -378,11 +398,13 @@ lib/model/token_pair.dart
 lib/model/topic_check.dart
 lib/model/topic_state.dart
 lib/model/topic_state_page.dart
+lib/model/trophy_code.dart
 lib/model/update_me_body.dart
 lib/model/update_plan_item_body.dart
 lib/model/user_exams.dart
 lib/model/user_exams_body.dart
 lib/model/user_exams_main.dart
+lib/model/weekly_leaderboard.dart
 pubspec.yaml
 test/alert_settings_quiet_hours_test.dart
 test/alert_settings_test.dart
@@ -390,6 +412,8 @@ test/answer_input_test.dart
 test/approve_exam_change_body_new_stage_date_test.dart
 test/approve_exam_change_body_test.dart
 test/auth_api_test.dart
+test/check_in_result_awarded_test.dart
+test/check_in_result_test.dart
 test/check_kind_test.dart
 test/check_result_test.dart
 test/client_kind_test.dart
@@ -415,6 +439,8 @@ test/desk_totp_enroll_body_test.dart
 test/desk_totp_enroll_response_test.dart
 test/desk_totp_verify_body_test.dart
 test/district_test.dart
+test/earned_trophy_test.dart
+test/economy_api_test.dart
 test/eligibility_check_body_test.dart
 test/eligibility_reason_test.dart
 test/eligibility_result_test.dart
@@ -442,8 +468,12 @@ test/exams_api_test.dart
 test/glossary_list_items_inner_test.dart
 test/glossary_list_test.dart
 test/graded_answer_test.dart
+test/guest_session_body_test.dart
 test/health_response_test.dart
 test/lamp_ring_test.dart
+test/leaderboard_entry_test.dart
+test/leaderboard_opt_in_body_test.dart
+test/leaderboard_opt_in_test.dart
 test/lesson_complete_body_test.dart
 test/lesson_source_test.dart
 test/lesson_test.dart
@@ -467,6 +497,7 @@ test/mock_mode_test.dart
 test/mock_report_test.dart
 test/mock_section_view_test.dart
 test/mock_summary_test.dart
+test/my_progress_test.dart
 test/notifications_api_test.dart
 test/ok_response_test.dart
 test/otp_purpose_test.dart
@@ -562,6 +593,7 @@ test/token_pair_test.dart
 test/topic_check_test.dart
 test/topic_state_page_test.dart
 test/topic_state_test.dart
+test/trophy_code_test.dart
 test/update_me_body_test.dart
 test/update_plan_item_body_test.dart
 test/user_exams_body_test.dart
@@ -569,3 +601,4 @@ test/user_exams_main_test.dart
 test/user_exams_test.dart
 test/users_api_test.dart
 test/webhooks_api_test.dart
+test/weekly_leaderboard_test.dart

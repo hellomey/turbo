@@ -83,6 +83,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0046 | Economy: Sparks, Points, XP, Trophies, Match chips, daily check-in, cosmetics, Season Pass | 0045 | Kaaval, Founder | Nov 25 | todo | - |
 | BOLT-0047 | Billing: Razorpay test mode, Play Billing, entitlements, restore, spending limits, paywalls with "Not now", `billing.live=false` | 0045 | Kaaval, Founder | Nov 27 | todo | Founder sets prices |
 | BOLT-0048 | Firewall audit across economy, billing and games | 0042-0047 | Kaaval | Dec 1 | todo | - |
+| BOLT-0113 | Phase B gamification part 1: XP and levels from learning events, Points, daily check-in, trophies, opt-in weekly leaderboard (API + Flutter) | - | Kaaval, Founder | Nov 28 | in review | Founder confirms XP amounts and trophy list |
 
 ### Koottam (social)
 

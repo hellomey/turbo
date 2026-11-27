@@ -191,6 +191,7 @@ class ErrorEnvelopeErrorCodeEnum {
   static const EXAM_CHANGE_ALREADY_REVIEWED = ErrorEnvelopeErrorCodeEnum._(r'EXAM_CHANGE_ALREADY_REVIEWED');
   static const SYNC_ACTION_TOO_OLD = ErrorEnvelopeErrorCodeEnum._(r'SYNC_ACTION_TOO_OLD');
   static const FIREWALL_VIOLATION = ErrorEnvelopeErrorCodeEnum._(r'FIREWALL_VIOLATION');
+  static const GUEST_NOT_ALLOWED = ErrorEnvelopeErrorCodeEnum._(r'GUEST_NOT_ALLOWED');
   static const PURCHASE_NOT_VERIFIED = ErrorEnvelopeErrorCodeEnum._(r'PURCHASE_NOT_VERIFIED');
   static const SPENDING_LIMIT_REACHED = ErrorEnvelopeErrorCodeEnum._(r'SPENDING_LIMIT_REACHED');
 
@@ -250,6 +251,7 @@ class ErrorEnvelopeErrorCodeEnum {
     EXAM_CHANGE_ALREADY_REVIEWED,
     SYNC_ACTION_TOO_OLD,
     FIREWALL_VIOLATION,
+    GUEST_NOT_ALLOWED,
     PURCHASE_NOT_VERIFIED,
     SPENDING_LIMIT_REACHED,
   ];
@@ -344,6 +346,7 @@ class ErrorEnvelopeErrorCodeEnumTypeTransformer {
         case r'EXAM_CHANGE_ALREADY_REVIEWED': return ErrorEnvelopeErrorCodeEnum.EXAM_CHANGE_ALREADY_REVIEWED;
         case r'SYNC_ACTION_TOO_OLD': return ErrorEnvelopeErrorCodeEnum.SYNC_ACTION_TOO_OLD;
         case r'FIREWALL_VIOLATION': return ErrorEnvelopeErrorCodeEnum.FIREWALL_VIOLATION;
+        case r'GUEST_NOT_ALLOWED': return ErrorEnvelopeErrorCodeEnum.GUEST_NOT_ALLOWED;
         case r'PURCHASE_NOT_VERIFIED': return ErrorEnvelopeErrorCodeEnum.PURCHASE_NOT_VERIFIED;
         case r'SPENDING_LIMIT_REACHED': return ErrorEnvelopeErrorCodeEnum.SPENDING_LIMIT_REACHED;
         default:

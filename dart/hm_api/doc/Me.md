@@ -9,7 +9,8 @@ import 'package:hm_api/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | 
-**email** | **String** |  | 
+**email** | **String** | null for a guest (no email yet) | 
+**isGuest** | **bool** |  | 
 **nickname** | **String** |  | 
 **district** | [**District**](District.md) |  | 
 **calmMode** | **bool** |  | 

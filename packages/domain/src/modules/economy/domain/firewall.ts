@@ -77,3 +77,12 @@ export function assertSparksSource(source: string): asserts source is SparksSour
 export function remainingEarnedSparks(earnedThisMonth: number): number {
   return Math.max(0, EARNED_SPARKS_MONTHLY_CAP - earnedThisMonth);
 }
+
+/** Ways Points may enter or leave the ledger. Buying is deliberately not one of them (Points are never bought). */
+export const POINTS_REASON_PREFIXES = ["check_in", "game:", "help_answer", "spend:"] as const;
+
+/** Rule 4: a Points ledger row must name one of the allowed reasons. Anything to do with money is refused. */
+export function assertPointsReason(reason: string): void {
+  const ok = POINTS_REASON_PREFIXES.some((p) => (p.endsWith(":") ? reason.startsWith(p) && reason.length > p.length : reason === p));
+  if (!ok) violation("POINTS_NEVER_BOUGHT", { reason });
+}

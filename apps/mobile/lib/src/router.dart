@@ -65,6 +65,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                   onStartItem: (item) => context.push(planItemRoute(item)),
                   onOpenRelight: () => context.push('/relight'),
                   onStartPocket: (_) => context.go('/map'),
+                  onOpenLeaderboard: () => context.push('/leaderboard'),
                 ),
               ),
             ],
@@ -106,6 +107,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                   onOpenReports: () => context.push('/reports'),
                   onOpenAlerts: () => context.push('/alerts'),
                   onOpenAlertSettings: () => context.push('/alert-settings'),
+                  onOpenLeaderboard: () => context.push('/leaderboard'),
                 ),
               ),
             ],
@@ -113,6 +115,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(path: '/exam-hall', builder: (_, _) => const ExamHallScreen()),
+      GoRoute(
+        path: '/leaderboard',
+        builder: (_, _) => const LeaderboardScreen(),
+      ),
       GoRoute(
         path: '/lesson/:topicId',
         builder: (context, state) {
