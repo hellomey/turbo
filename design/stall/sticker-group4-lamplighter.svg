@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HeyMey sticker: Group 4 Lamplighter. Trim 50 x 50 mm, bleed 2 mm each side, document 54 x 54 mm. 1 unit = 1 mm. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="54mm" height="54mm" viewBox="-2 -2 54 54">
+<rect x="-2" y="-2" width="54" height="54" fill="#FAF6EE"/>
+<circle cx="25" cy="25" r="23.5" fill="#FAF6EE" stroke="#111111" stroke-width="1.7999999999999998"/>
+<polygon points="25,6 37,28 13,28" fill="#F5C518" stroke="#111111" stroke-width="1.2"/>
+<text x="25" y="37" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="4.6" fill="#111111" text-anchor="middle">Group 4</text>
+<text x="25" y="42.5" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="4.6" fill="#111111" text-anchor="middle">Lamplighter</text>
+<g id="die-cut" display="none"><circle cx="25" cy="25" r="25" fill="none" stroke="#EC008C" stroke-width="0.3"/></g>
+<g id="trim-guide" display="none"><rect x="0" y="0" width="50" height="50" fill="none" stroke="#00AEEF" stroke-width="0.5"/></g>
+</svg>

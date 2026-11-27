@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HeyMey A3 Group 4 checklist poster. Trim 297 x 420 mm, bleed 3 mm each side, document 303 x 426 mm. 1 unit = 1 mm. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="303mm" height="426mm" viewBox="-3 -3 303 426">
+<rect x="-3" y="-3" width="303" height="426" fill="#FAF6EE"/>
+<rect x="-3" y="-3" width="303" height="62" fill="#1F4FA3"/>
+<text x="14" y="30" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="18" fill="#FFFFFF" text-anchor="start">Group 4 syllabus checklist</text>
+<text x="14" y="46" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="8" fill="#FFFFFF" text-anchor="start">Colour a lamp when you can explain the topic without notes.</text>
+<rect x="14" y="70" width="6" height="6" fill="#D7261E" stroke="#111111" stroke-width="1.2"/>
+<text x="24" y="76" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="7.5" fill="#111111" text-anchor="start">Indian Polity</text>
+<g>
+<polygon points="40.9,80 44.14,85.76 37.66,85.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="40.9" cy="89" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="35.5" y="92.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="40.9" y="103" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">The Preamble</text>
+<g>
+<polygon points="94.69999999999999,80 97.93999999999998,85.76 91.46,85.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="94.69999999999999" cy="89" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="89.29999999999998" y="92.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="94.69999999999999" y="103" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Fundamental Rights</text>
+<g>
+<polygon points="148.5,80 151.74,85.76 145.26,85.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="148.5" cy="89" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="143.1" y="92.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="148.5" y="103" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Directive Principles</text>
+<text x="148.5" y="107" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">of State Policy</text>
+<g>
+<polygon points="202.29999999999998,80 205.54,85.76 199.05999999999997,85.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="202.29999999999998" cy="89" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="196.89999999999998" y="92.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="202.29999999999998" y="103" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Parliament</text>
+<g>
+<polygon points="256.09999999999997,80 259.34,85.76 252.85999999999996,85.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="256.09999999999997" cy="89" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="250.69999999999996" y="92.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="256.09999999999997" y="103" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Local government</text>
+<text x="256.09999999999997" y="107" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">(Panchayati Raj)</text>
+<rect x="14" y="114" width="6" height="6" fill="#F5C518" stroke="#111111" stroke-width="1.2"/>
+<text x="24" y="120" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="7.5" fill="#111111" text-anchor="start">History of India</text>
+<g>
+<polygon points="40.9,124 44.14,129.76 37.66,129.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="40.9" cy="133" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="35.5" y="136.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="40.9" y="147" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Harappan (Indus</text>
+<text x="40.9" y="151" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Valley) Civilisation</text>
+<g>
+<polygon points="94.69999999999999,124 97.93999999999998,129.76 91.46,129.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="94.69999999999999" cy="133" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="89.29999999999998" y="136.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="94.69999999999999" y="147" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">The Mauryan Empire</text>
+<g>
+<polygon points="148.5,124 151.74,129.76 145.26,129.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="148.5" cy="133" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="143.1" y="136.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="148.5" y="147" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">The Delhi Sultanate</text>
+<g>
+<polygon points="202.29999999999998,124 205.54,129.76 199.05999999999997,129.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="202.29999999999998" cy="133" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="196.89999999999998" y="136.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="202.29999999999998" y="147" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Indian National</text>
+<text x="202.29999999999998" y="151" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Movement (1885-1947)</text>
+<rect x="14" y="158" width="6" height="6" fill="#1F4FA3" stroke="#111111" stroke-width="1.2"/>
+<text x="24" y="164" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="7.5" fill="#111111" text-anchor="start">Geography of India</text>
+<g>
+<polygon points="40.9,168 44.14,173.76 37.66,173.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="40.9" cy="177" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="35.5" y="180.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="40.9" y="191" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Physical features of</text>
+<text x="40.9" y="195" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">India</text>
+<g>
+<polygon points="94.69999999999999,168 97.93999999999998,173.76 91.46,173.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="94.69999999999999" cy="177" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="89.29999999999998" y="180.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="94.69999999999999" y="191" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Rivers of India</text>
+<g>
+<polygon points="148.5,168 151.74,173.76 145.26,173.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="148.5" cy="177" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="143.1" y="180.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="148.5" y="191" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Climate and the</text>
+<text x="148.5" y="195" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">monsoon</text>
+<g>
+<polygon points="202.29999999999998,168 205.54,173.76 199.05999999999997,173.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="202.29999999999998" cy="177" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="196.89999999999998" y="180.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="202.29999999999998" y="191" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Geography of Tamil</text>
+<text x="202.29999999999998" y="195" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Nadu</text>
+<rect x="14" y="202" width="6" height="6" fill="#D7261E" stroke="#111111" stroke-width="1.2"/>
+<text x="24" y="208" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="7.5" fill="#111111" text-anchor="start">Indian Economy</text>
+<g>
+<polygon points="40.9,212 44.14,217.76 37.66,217.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="40.9" cy="221" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="35.5" y="224.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="40.9" y="235" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Five-Year Plans and</text>
+<text x="40.9" y="239" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">NITI Aayog</text>
+<g>
+<polygon points="94.69999999999999,212 97.93999999999998,217.76 91.46,217.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="94.69999999999999" cy="221" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="89.29999999999998" y="224.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="94.69999999999999" y="235" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">National income</text>
+<g>
+<polygon points="148.5,212 151.74,217.76 145.26,217.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="148.5" cy="221" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="143.1" y="224.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="148.5" y="235" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Goods and Services Tax</text>
+<text x="148.5" y="239" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">(GST)</text>
+<rect x="14" y="246" width="6" height="6" fill="#F5C518" stroke="#111111" stroke-width="1.2"/>
+<text x="24" y="252" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="7.5" fill="#111111" text-anchor="start">General Science</text>
+<g>
+<polygon points="40.9,256 44.14,261.76 37.66,261.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="40.9" cy="265" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="35.5" y="268.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="40.9" y="279" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Human body systems</text>
+<g>
+<polygon points="94.69999999999999,256 97.93999999999998,261.76 91.46,261.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="94.69999999999999" cy="265" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="89.29999999999998" y="268.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="94.69999999999999" y="279" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Light</text>
+<g>
+<polygon points="148.5,256 151.74,261.76 145.26,261.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="148.5" cy="265" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="143.1" y="268.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="148.5" y="279" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Electricity</text>
+<g>
+<polygon points="202.29999999999998,256 205.54,261.76 199.05999999999997,261.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="202.29999999999998" cy="265" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="196.89999999999998" y="268.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="202.29999999999998" y="279" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Nutrition and health</text>
+<rect x="14" y="290" width="6" height="6" fill="#1F4FA3" stroke="#111111" stroke-width="1.2"/>
+<text x="24" y="296" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="7.5" fill="#111111" text-anchor="start">Aptitude and Mental Ability</text>
+<g>
+<polygon points="40.9,300 44.14,305.76 37.66,305.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="40.9" cy="309" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="35.5" y="312.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="40.9" y="323" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Percentage</text>
+<g>
+<polygon points="94.69999999999999,300 97.93999999999998,305.76 91.46,305.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="94.69999999999999" cy="309" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="89.29999999999998" y="312.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="94.69999999999999" y="323" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Ratio and proportion</text>
+<g>
+<polygon points="148.5,300 151.74,305.76 145.26,305.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="148.5" cy="309" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="143.1" y="312.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="148.5" y="323" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Simple and compound</text>
+<text x="148.5" y="327" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">interest</text>
+<g>
+<polygon points="202.29999999999998,300 205.54,305.76 199.05999999999997,305.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="202.29999999999998" cy="309" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="196.89999999999998" y="312.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="202.29999999999998" y="323" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Number series</text>
+<g>
+<polygon points="256.09999999999997,300 259.34,305.76 252.85999999999996,305.76" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<circle cx="256.09999999999997" cy="309" r="3.6" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+<rect x="250.69999999999996" y="312.96" width="10.799999999999999" height="3.96" fill="#FFFFFF" stroke="#111111" stroke-width="1.2"/>
+</g>
+<text x="256.09999999999997" y="323" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="3.4" fill="#111111" text-anchor="middle">Time and work</text>
+<g id="QR-PLACEHOLDER" data-url="https://heymey.app/try?src=poster">
+<rect x="222" y="340" width="62" height="62" fill="#FFFFFF" stroke="#111111" stroke-width="1.7999999999999998"/>
+<rect x="226.96" y="344.96" width="12.4" height="12.4" fill="none" stroke="#111111" stroke-width="1.7714285714285716"/><rect x="230.68" y="348.68" width="4.960000000000001" height="4.960000000000001" fill="#111111"/><rect x="266.64" y="344.96" width="12.4" height="12.4" fill="none" stroke="#111111" stroke-width="1.7714285714285716"/><rect x="270.36" y="348.68" width="4.960000000000001" height="4.960000000000001" fill="#111111"/><rect x="226.96" y="384.64" width="12.4" height="12.4" fill="none" stroke="#111111" stroke-width="1.7714285714285716"/><rect x="230.68" y="388.36" width="4.960000000000001" height="4.960000000000001" fill="#111111"/>
+<text x="253" y="369.76" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="4.340000000000001" fill="#D7261E" text-anchor="middle">QR PLACEHOLDER</text>
+<text x="253" y="375.96" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="2.48" fill="#111111" text-anchor="middle">https://heymey.app/try?src=poster</text>
+</g>
+<text x="14" y="356" font-family="Nunito, Arial, sans-serif" font-weight="900" font-size="10" fill="#111111" text-anchor="start">Track every lamp in the app.</text>
+<text x="14" y="370" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="7" fill="#111111" text-anchor="start">Scan to try HeyMey in your browser. Free, no install.</text>
+<text x="14" y="382" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="5.5" fill="#111111" text-anchor="start">HeyMey is in beta and still being built.</text>
+<text x="14" y="398" font-family="Nunito, Arial, sans-serif" font-weight="600" font-size="4.2" fill="#111111" text-anchor="start">A starting set of topics from the HeyMey Study Map. The full official syllabus is at tnpsc.gov.in.</text>
+<text x="14" y="410" font-family="Nunito, Arial, sans-serif" font-weight="800" font-size="5" fill="#111111" text-anchor="start">heymey.app/try</text>
+<g id="trim-guide" display="none"><rect x="0" y="0" width="297" height="420" fill="none" stroke="#00AEEF" stroke-width="0.5"/></g>
+</svg>
