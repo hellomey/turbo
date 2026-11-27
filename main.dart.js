@@ -21170,7 +21170,7 @@ aAS:function aAS(){},
 Nv:function Nv(a){this.a=a},
 a9J:function a9J(a){this.a=a},
 aGE(a){var s=A.aB()
-return new A.tO(A.aRT("https://heymey-api.vercel.app",!0,s),a)},
+return new A.tO(A.aRT("https://api.heymey.app",!0,s),a)},
 aRT(a,b,c){var s=a.length
 if(s!==0)return B.d.hz(a,"/")?B.d.S(a,0,s-1):a
 return"http://localhost:4567"},
