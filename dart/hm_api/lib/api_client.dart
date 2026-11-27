@@ -192,6 +192,10 @@ class ApiClient {
           return ApproveExamChangeBody.fromJson(value);
         case 'ApproveExamChangeBodyNewStageDate':
           return ApproveExamChangeBodyNewStageDate.fromJson(value);
+        case 'CheckInResult':
+          return CheckInResult.fromJson(value);
+        case 'CheckInResultAwarded':
+          return CheckInResultAwarded.fromJson(value);
         case 'CheckKind':
           return CheckKindTypeTransformer().decode(value);
         case 'CheckResult':
@@ -238,6 +242,8 @@ class ApiClient {
           return DeskTotpVerifyBody.fromJson(value);
         case 'District':
           return DistrictTypeTransformer().decode(value);
+        case 'EarnedTrophy':
+          return EarnedTrophy.fromJson(value);
         case 'EligibilityCheckBody':
           return EligibilityCheckBody.fromJson(value);
         case 'EligibilityReason':
@@ -304,6 +310,12 @@ class ApiClient {
           return HealthResponse.fromJson(value);
         case 'LampRing':
           return LampRing.fromJson(value);
+        case 'LeaderboardEntry':
+          return LeaderboardEntry.fromJson(value);
+        case 'LeaderboardOptIn':
+          return LeaderboardOptIn.fromJson(value);
+        case 'LeaderboardOptInBody':
+          return LeaderboardOptInBody.fromJson(value);
         case 'Lesson':
           return Lesson.fromJson(value);
         case 'LessonCompleteBody':
@@ -348,6 +360,8 @@ class ApiClient {
           return MockSectionView.fromJson(value);
         case 'MockSummary':
           return MockSummary.fromJson(value);
+        case 'MyProgress':
+          return MyProgress.fromJson(value);
         case 'MyStickerCode':
           return MyStickerCode.fromJson(value);
         case 'OkResponse':
@@ -534,6 +548,8 @@ class ApiClient {
           return TopicState.fromJson(value);
         case 'TopicStatePage':
           return TopicStatePage.fromJson(value);
+        case 'TrophyCode':
+          return TrophyCodeTypeTransformer().decode(value);
         case 'UpdateMeBody':
           return UpdateMeBody.fromJson(value);
         case 'UpdatePlanItemBody':
@@ -544,6 +560,8 @@ class ApiClient {
           return UserExamsBody.fromJson(value);
         case 'UserExamsMain':
           return UserExamsMain.fromJson(value);
+        case 'WeeklyLeaderboard':
+          return WeeklyLeaderboard.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

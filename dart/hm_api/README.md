@@ -84,6 +84,10 @@ Class | Method | HTTP request | Description
 *DeskApi* | [**redeemStickerCode**](doc//DeskApi.md#redeemstickercode) | **POST** /v1/desk/sticker-codes/redeem | Staff check a visitor's code and mark it used (one sticker per code). Role OPS, ADMIN or SUPPORT_AGENT. Audited.
 *DeskApi* | [**rejectExamChange**](doc//DeskApi.md#rejectexamchange) | **POST** /v1/desk/exam-changes/{changeId}/reject | 
 *DeskApi* | [**verifyDeskTotp**](doc//DeskApi.md#verifydesktotp) | **POST** /v1/auth/desk/totp/verify | Complete Desk sign-in with the authenticator code.
+*EconomyApi* | [**checkIn**](doc//EconomyApi.md#checkin) | **POST** /v1/me/check-in | Daily check-in, once per IST day: small XP + Points. Missing a day resets nothing.
+*EconomyApi* | [**getMyProgress**](doc//EconomyApi.md#getmyprogress) | **GET** /v1/me/progress | XP and level (from learning only), Points (never bought) and trophies.
+*EconomyApi* | [**getWeeklyLeaderboard**](doc//EconomyApi.md#getweeklyleaderboard) | **GET** /v1/leaderboard/weekly | This IST week's XP. Only real users who opted in, by nickname. Guests never appear.
+*EconomyApi* | [**putLeaderboardOptIn**](doc//EconomyApi.md#putleaderboardoptin) | **PUT** /v1/me/leaderboard-opt-in | Join or leave the weekly leaderboard (off by default). Guests get GUEST_NOT_ALLOWED when joining.
 *ExamHallApi* | [**getMockAttempt**](doc//ExamHallApi.md#getmockattempt) | **GET** /v1/mock-attempts/{attemptId} | Resume exactly where I left off, with server remaining time (§19.8 Q76).
 *ExamHallApi* | [**getMockReport**](doc//ExamHallApi.md#getmockreport) | **GET** /v1/mock-attempts/{attemptId}/report | 
 *ExamHallApi* | [**getMyStatewideRank**](doc//ExamHallApi.md#getmystatewiderank) | **GET** /v1/mocks/{mockId}/statewide-rank | My statewide rank. Only live, online, on-time attempts are ranked (§18, §39).
@@ -156,6 +160,8 @@ Class | Method | HTTP request | Description
  - [AnswerInput](doc//AnswerInput.md)
  - [ApproveExamChangeBody](doc//ApproveExamChangeBody.md)
  - [ApproveExamChangeBodyNewStageDate](doc//ApproveExamChangeBodyNewStageDate.md)
+ - [CheckInResult](doc//CheckInResult.md)
+ - [CheckInResultAwarded](doc//CheckInResultAwarded.md)
  - [CheckKind](doc//CheckKind.md)
  - [CheckResult](doc//CheckResult.md)
  - [ClientKind](doc//ClientKind.md)
@@ -179,6 +185,7 @@ Class | Method | HTTP request | Description
  - [DeskTotpEnrollResponse](doc//DeskTotpEnrollResponse.md)
  - [DeskTotpVerifyBody](doc//DeskTotpVerifyBody.md)
  - [District](doc//District.md)
+ - [EarnedTrophy](doc//EarnedTrophy.md)
  - [EligibilityCheckBody](doc//EligibilityCheckBody.md)
  - [EligibilityReason](doc//EligibilityReason.md)
  - [EligibilityResult](doc//EligibilityResult.md)
@@ -212,6 +219,9 @@ Class | Method | HTTP request | Description
  - [GuestSessionBody](doc//GuestSessionBody.md)
  - [HealthResponse](doc//HealthResponse.md)
  - [LampRing](doc//LampRing.md)
+ - [LeaderboardEntry](doc//LeaderboardEntry.md)
+ - [LeaderboardOptIn](doc//LeaderboardOptIn.md)
+ - [LeaderboardOptInBody](doc//LeaderboardOptInBody.md)
  - [Lesson](doc//Lesson.md)
  - [LessonCompleteBody](doc//LessonCompleteBody.md)
  - [LessonSource](doc//LessonSource.md)
@@ -234,6 +244,7 @@ Class | Method | HTTP request | Description
  - [MockReport](doc//MockReport.md)
  - [MockSectionView](doc//MockSectionView.md)
  - [MockSummary](doc//MockSummary.md)
+ - [MyProgress](doc//MyProgress.md)
  - [MyStickerCode](doc//MyStickerCode.md)
  - [OkResponse](doc//OkResponse.md)
  - [OtpPurpose](doc//OtpPurpose.md)
@@ -327,11 +338,13 @@ Class | Method | HTTP request | Description
  - [TopicCheck](doc//TopicCheck.md)
  - [TopicState](doc//TopicState.md)
  - [TopicStatePage](doc//TopicStatePage.md)
+ - [TrophyCode](doc//TrophyCode.md)
  - [UpdateMeBody](doc//UpdateMeBody.md)
  - [UpdatePlanItemBody](doc//UpdatePlanItemBody.md)
  - [UserExams](doc//UserExams.md)
  - [UserExamsBody](doc//UserExamsBody.md)
  - [UserExamsMain](doc//UserExamsMain.md)
+ - [WeeklyLeaderboard](doc//WeeklyLeaderboard.md)
 
 
 ## Documentation For Authorization

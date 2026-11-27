@@ -47,3 +47,33 @@ model TrophyLedger {
 
 // To model in week 3: Cosmetic (soldForMoney flag drives firewall FW-005), UserCosmetic,
 // CheckInTrack (never resets), Season, SeasonPassProgress, SpendingLimit.
+
+// BOLT-0113. XP is not a currency: these rows are an award log so each learning event is credited once. XP has no
+// conversion path to Points, Sparks or anything bought (FW-021, FW-025). Balance = SUM(amount).
+model XpAward {
+  id        BigInt   @id @default(autoincrement())
+  userId    String   @db.Uuid
+  amount    Int
+  reason    String // lesson_done | lit | recall_pass | relight | gold | mock_submitted | check_in
+  sourceKey String // stable per source event, e.g. "lit:<topicId>", "mock_submitted:<attemptId>", "check_in:<istDay>"
+  createdAt DateTime
+
+  @@unique([userId, sourceKey])
+  @@index([createdAt])
+}
+
+/// Badges (first lamp, first Gold, ...). Not the seasonal TROPHIES currency in TrophyLedger. One row per code.
+model UserTrophy {
+  userId   String   @db.Uuid
+  code     String
+  earnedAt DateTime
+
+  @@id([userId, code])
+}
+
+/// Weekly leaderboard opt-in. No row = not opted in (default off).
+model LeaderboardOptIn {
+  userId    String   @id @db.Uuid
+  optIn     Boolean
+  updatedAt DateTime
+}

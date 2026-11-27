@@ -197,6 +197,7 @@ class ErrorEnvelopeErrorCodeEnum {
   static const STICKER_CODE_NOT_FOUND = ErrorEnvelopeErrorCodeEnum._(r'STICKER_CODE_NOT_FOUND');
   static const STICKER_CODE_ALREADY_REDEEMED = ErrorEnvelopeErrorCodeEnum._(r'STICKER_CODE_ALREADY_REDEEMED');
   static const FIREWALL_VIOLATION = ErrorEnvelopeErrorCodeEnum._(r'FIREWALL_VIOLATION');
+  static const GUEST_NOT_ALLOWED = ErrorEnvelopeErrorCodeEnum._(r'GUEST_NOT_ALLOWED');
   static const PURCHASE_NOT_VERIFIED = ErrorEnvelopeErrorCodeEnum._(r'PURCHASE_NOT_VERIFIED');
   static const SPENDING_LIMIT_REACHED = ErrorEnvelopeErrorCodeEnum._(r'SPENDING_LIMIT_REACHED');
 
@@ -262,6 +263,7 @@ class ErrorEnvelopeErrorCodeEnum {
     STICKER_CODE_NOT_FOUND,
     STICKER_CODE_ALREADY_REDEEMED,
     FIREWALL_VIOLATION,
+    GUEST_NOT_ALLOWED,
     PURCHASE_NOT_VERIFIED,
     SPENDING_LIMIT_REACHED,
   ];
@@ -362,6 +364,7 @@ class ErrorEnvelopeErrorCodeEnumTypeTransformer {
         case r'STICKER_CODE_NOT_FOUND': return ErrorEnvelopeErrorCodeEnum.STICKER_CODE_NOT_FOUND;
         case r'STICKER_CODE_ALREADY_REDEEMED': return ErrorEnvelopeErrorCodeEnum.STICKER_CODE_ALREADY_REDEEMED;
         case r'FIREWALL_VIOLATION': return ErrorEnvelopeErrorCodeEnum.FIREWALL_VIOLATION;
+        case r'GUEST_NOT_ALLOWED': return ErrorEnvelopeErrorCodeEnum.GUEST_NOT_ALLOWED;
         case r'PURCHASE_NOT_VERIFIED': return ErrorEnvelopeErrorCodeEnum.PURCHASE_NOT_VERIFIED;
         case r'SPENDING_LIMIT_REACHED': return ErrorEnvelopeErrorCodeEnum.SPENDING_LIMIT_REACHED;
         default:

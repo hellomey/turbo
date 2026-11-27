@@ -18,6 +18,7 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   FORBIDDEN: 403,
   DESK_NOT_ALLOWED: 403,
   FIREWALL_VIOLATION: 403,
+  GUEST_NOT_ALLOWED: 403,
   NOT_FOUND: 404,
   EXAM_NOT_FOUND: 404,
   // BOLT-0009 (mastery)

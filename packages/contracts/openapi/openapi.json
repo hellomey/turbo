@@ -134,6 +134,7 @@
                   "STICKER_CODE_NOT_FOUND",
                   "STICKER_CODE_ALREADY_REDEEMED",
                   "FIREWALL_VIOLATION",
+                  "GUEST_NOT_ALLOWED",
                   "PURCHASE_NOT_VERIFIED",
                   "SPENDING_LIMIT_REACHED"
                 ]
@@ -4819,6 +4820,188 @@
           "morningAlertMinute",
           "dailyLimit"
         ]
+      },
+      "MyProgress": {
+        "type": "object",
+        "properties": {
+          "xp": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "levelStartXp": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "nextLevelXp": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "points": {
+            "type": "integer"
+          },
+          "checkedInToday": {
+            "type": "boolean"
+          },
+          "trophies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EarnedTrophy"
+            }
+          }
+        },
+        "required": [
+          "xp",
+          "level",
+          "levelStartXp",
+          "nextLevelXp",
+          "points",
+          "checkedInToday",
+          "trophies"
+        ]
+      },
+      "EarnedTrophy": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/TrophyCode"
+          },
+          "title": {
+            "type": "string"
+          },
+          "earnedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "earnedAt"
+        ]
+      },
+      "TrophyCode": {
+        "type": "string",
+        "enum": [
+          "first_lamp",
+          "first_gold",
+          "subject_lit",
+          "first_mock",
+          "five_study_days",
+          "expo_challenge"
+        ]
+      },
+      "CheckInResult": {
+        "type": "object",
+        "properties": {
+          "awarded": {
+            "type": "object",
+            "properties": {
+              "xp": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "points": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "xp",
+              "points"
+            ]
+          },
+          "alreadyCheckedIn": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "awarded",
+          "alreadyCheckedIn"
+        ]
+      },
+      "WeeklyLeaderboard": {
+        "type": "object",
+        "properties": {
+          "weekStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "weekEnd": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "optedIn": {
+            "type": "boolean"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LeaderboardEntry"
+            }
+          }
+        },
+        "required": [
+          "weekStart",
+          "weekEnd",
+          "optedIn",
+          "entries"
+        ]
+      },
+      "LeaderboardEntry": {
+        "type": "object",
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "xp": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "isMe": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "rank",
+          "displayName",
+          "xp",
+          "isMe"
+        ]
+      },
+      "LeaderboardOptIn": {
+        "type": "object",
+        "properties": {
+          "optIn": {
+            "type": "boolean"
+          },
+          "listed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "optIn",
+          "listed"
+        ]
+      },
+      "LeaderboardOptInBody": {
+        "type": "object",
+        "properties": {
+          "optIn": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "optIn"
+        ],
+        "additionalProperties": false
       },
       "ExpoChallenge": {
         "type": "object",
@@ -10841,6 +11024,323 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AlertSettings"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/progress": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "operationId": "getMyProgress",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "XP and level (from learning only), Points (never bought) and trophies.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Progress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyProgress"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/check-in": {
+      "post": {
+        "tags": [
+          "economy"
+        ],
+        "operationId": "checkIn",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Daily check-in, once per IST day: small XP + Points. Missing a day resets nothing.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 20,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Checked in (or already today)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckInResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/leaderboard/weekly": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "operationId": "getWeeklyLeaderboard",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "This IST week's XP. Only real users who opted in, by nickname. Guests never appear.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": false,
+        "responses": {
+          "200": {
+            "description": "Leaderboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeeklyLeaderboard"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (see Retry-After)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me/leaderboard-opt-in": {
+      "put": {
+        "tags": [
+          "economy"
+        ],
+        "operationId": "putLeaderboardOptIn",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Join or leave the weekly leaderboard (off by default). Guests get GUEST_NOT_ALLOWED when joining.",
+        "x-heymey-auth": "user",
+        "x-heymey-idempotent": true,
+        "x-heymey-rate-limit": [
+          {
+            "scope": "user",
+            "limit": 30,
+            "windowSeconds": 3600
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "name": "idempotency-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeaderboardOptInBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardOptIn"
                 }
               }
             }

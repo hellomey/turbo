@@ -42,6 +42,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0028 | Nightly `pg_dump` to Cloudflare R2; restore drill run and written up | 0026 | Kaaval, Vizhi | Nov 20 (drill passed by Nov 27) | todo | - |
 | BOLT-0029 | pgmq + `pg_cron` + `pg_net` wiring and request signing for `/internal/jobs/*` | 0026 | Kaaval | Nov 20 | todo | - |
 | BOLT-0030 | Signed APK in GitHub Actions, `dl.heymey.app` on R2, version manifest; Flutter web to `app.heymey.app`; Desk to `desk.heymey.app` | 0026 | Kaaval, Vizhi | Nov 24 | todo | Founder supplies keystore as a GitHub secret |
+| BOLT-0114 | Stall ops: real QR codes, PWA icons, release-signing code path, k6 stall load test, live URL checker, stall-day runbook | - | Kaaval, Vizhi | Dec 1 | review | Founder creates keystore and sets 4 GitHub secrets (SIGNING.md); sticker-code Desk page not built |
 
 ### Thoon (backend)
 
@@ -83,6 +84,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0046 | Economy: Sparks, Points, XP, Trophies, Match chips, daily check-in, cosmetics, Season Pass | 0045 | Kaaval, Founder | Nov 25 | todo | - |
 | BOLT-0047 | Billing: Razorpay test mode, Play Billing, entitlements, restore, spending limits, paywalls with "Not now", `billing.live=false` | 0045 | Kaaval, Founder | Nov 27 | todo | Founder sets prices |
 | BOLT-0048 | Firewall audit across economy, billing and games | 0042-0047 | Kaaval | Dec 1 | todo | - |
+| BOLT-0113 | Phase B gamification part 1: XP and levels from learning events, Points, daily check-in, trophies, opt-in weekly leaderboard (API + Flutter) | - | Kaaval, Founder | Nov 28 | in review | Founder confirms XP amounts and trophy list |
 
 ### Koottam (social)
 

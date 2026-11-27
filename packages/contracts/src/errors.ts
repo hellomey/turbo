@@ -72,6 +72,7 @@ export const ERROR_CODES = {
   STICKER_CODE_ALREADY_REDEEMED: "This sticker code was already used.",
 
   FIREWALL_VIOLATION: "This action is not allowed.",
+  GUEST_NOT_ALLOWED: "Sign in with your email to use this.",
   PURCHASE_NOT_VERIFIED: "We couldn't confirm this payment yet. If money was taken, we will add your purchase or refund you.",
   SPENDING_LIMIT_REACHED: "This is over the spending limit you set.",
 } as const;

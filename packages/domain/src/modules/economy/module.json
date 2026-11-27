@@ -9,14 +9,20 @@
     "UserCosmetic",
     "CheckInTrack",
     "Season",
-    "SeasonPassProgress"
+    "SeasonPassProgress",
+    "XpAward",
+    "UserTrophy",
+    "LeaderboardOptIn"
   ],
   "responsibilities": [
     "Two append-only ledgers that never convert",
     "earned-Sparks cap 50/month",
     "check-in track that never resets",
     "Season Pass (cosmetic only)",
-    "spending limits"
+    "spending limits",
+    "XP and levels from learning events only (idempotent per source event)",
+    "trophies (badges)",
+    "opt-in weekly XP leaderboard"
   ],
   "dependsOn": [
     "audit",
