@@ -9,7 +9,6 @@ import OneClickSection from "../components/OneClickSection";
 import ClmSection from "../components/ClmSection";
 import StylesGallery from "../components/StylesGallery";
 import FeaturesGrid from "../components/FeaturesGrid";
-import Testimonials from "../components/Testimonials";
 import Faq from "../components/Faq";
 import Footer from "../components/Footer";
 import { initAllAnimations } from "../lib/animations";
@@ -39,7 +38,6 @@ export default function Home() {
       <ClmSection />
       <StylesGallery />
       <FeaturesGrid />
-      <Testimonials />
       <Faq />
       <Footer />
     </main>
