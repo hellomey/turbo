@@ -11,12 +11,16 @@ dependencies:
   material_ui: ^1.7.0
   flutter:
     sdk: flutter
+  flutter_svg: ^2.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
+  # Bauhaus SVG art (BOLT-0110): hand-written, each file under 10 KB. Use HmArt, never paths.
+  assets:
+    - assets/svg/
   # Bundled so the app works offline; never fetched at runtime (BOLT-0021). Licence: assets/fonts/OFL.txt.
   fonts:
     - family: Nunito

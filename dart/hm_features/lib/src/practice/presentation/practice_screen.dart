@@ -91,7 +91,7 @@ class PracticeBody extends StatelessWidget {
     final usageLine = state.usage?.line;
     if (state.limitReached && (q == null || state.outcome == null)) {
       return _Center(
-        kind: HmIllustrationKind.soon,
+        art: HmArtName.mascotSleep,
         title: StudyCopy.limitTitle(state.usage?.limit),
         body: StudyCopy.limitBody,
         action: HmPrimaryButton(label: 'Done', onPressed: onDone),
@@ -100,7 +100,7 @@ class PracticeBody extends StatelessWidget {
     if (q == null) {
       final offline = state.savedOfflineCount;
       return _Center(
-        kind: HmIllustrationKind.trophy,
+        art: HmArtName.mascotCheer,
         title: 'Session done',
         body:
             '${state.correctCount} correct.'
@@ -134,16 +134,18 @@ class PracticeBody extends StatelessWidget {
                     ),
                   ),
                 ),
-              QuestionCard(
-                question: q,
-                number: 'Question ${state.index + 1} of $total',
-                chosen: state.chosen[q.id] ?? const [],
-                graded: outcome is Graded<PracticeAnswerView>
-                    ? outcome.value.graded
-                    : null,
-                onChoose: outcome == null ? onChoose : null,
+              HmCard(
+                child: QuestionCard(
+                  question: q,
+                  number: 'Question ${state.index + 1} of $total',
+                  chosen: state.chosen[q.id] ?? const [],
+                  graded: outcome is Graded<PracticeAnswerView>
+                      ? outcome.value.graded
+                      : null,
+                  onChoose: outcome == null ? onChoose : null,
+                ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: HmSpace.lg),
               switch (outcome) {
                 null => HmPrimaryButton(
                   key: const Key('practice-check'),
@@ -186,9 +188,9 @@ class _Center extends StatelessWidget {
     required this.title,
     required this.body,
     required this.action,
-    required this.kind,
+    required this.art,
   });
-  final HmIllustrationKind kind;
+  final HmArtName art;
   final String title;
   final String body;
   final Widget action;
@@ -197,7 +199,7 @@ class _Center extends StatelessWidget {
   Widget build(BuildContext context) => ListView(
     padding: const EdgeInsets.all(HmSpace.xl),
     children: [
-      Center(child: HmIllustration(kind: kind, size: 112)),
+      Center(child: HmPop(child: HmArt(art, size: 140))),
       const SizedBox(height: HmSpace.lg),
       Semantics(
         header: true,

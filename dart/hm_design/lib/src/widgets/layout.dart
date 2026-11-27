@@ -111,7 +111,7 @@ class HmSectionTitle extends StatelessWidget {
   }
 }
 
-/// A round, softly tinted icon: leading art for list cards.
+/// A Bauhaus circle with an ink outline and a tinted icon: leading art for list cards.
 class HmIconBadge extends StatelessWidget {
   const HmIconBadge({
     super.key,
@@ -134,8 +134,11 @@ class HmIconBadge extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: plain ? p.surface2 : c.withValues(alpha: 0.16),
-          borderRadius: BorderRadius.circular(HmRadius.md),
+          color: plain
+              ? p.surface2
+              : Color.alphaBlend(c.withValues(alpha: 0.18), p.surface),
+          shape: BoxShape.circle,
+          border: Border.all(color: p.outline, width: HmBauhaus.strokeSmall),
         ),
         child: Icon(icon, size: size * 0.55, color: plain ? p.text : c),
       ),
@@ -174,9 +177,7 @@ class HmHeroCard extends StatelessWidget {
     final plain = HmPlain.of(context);
     return HmCard(
       padding: const EdgeInsets.all(HmSpace.xl),
-      color: plain
-          ? null
-          : Color.alphaBlend(p.primary.withValues(alpha: 0.08), p.surface),
+      color: plain ? null : p.surface2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -247,7 +248,7 @@ class HmSkeletonList extends StatelessWidget {
             decoration: BoxDecoration(
               color: p.surface,
               borderRadius: BorderRadius.circular(HmRadius.lg),
-              border: Border.all(color: p.outline, width: 1.5),
+              border: Border.all(color: p.outline, width: HmBauhaus.stroke),
             ),
             child: HmSkeleton.card(),
           ),

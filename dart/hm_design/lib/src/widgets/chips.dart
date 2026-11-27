@@ -28,9 +28,10 @@ class _HmPill extends StatelessWidget {
         vertical: HmSpace.xs,
       ),
       decoration: BoxDecoration(
-        color: p.surface2,
+        color: p.surface,
         borderRadius: BorderRadius.circular(HmRadius.pill),
-        border: Border.all(color: p.outline, width: 1.5),
+        border: Border.all(color: p.outline, width: HmBauhaus.strokeSmall),
+        boxShadow: HmBauhaus.hardShadow(p, offset: const Offset(2, 2)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -112,7 +113,7 @@ class HmRankChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: p.gold,
           shape: BoxShape.circle,
-          border: Border.all(color: p.goldShade, width: 2),
+          border: Border.all(color: p.outline, width: HmBauhaus.strokeSmall),
         ),
         child: FittedBox(
           child: Text(

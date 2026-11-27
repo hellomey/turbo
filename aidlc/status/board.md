@@ -64,6 +64,7 @@ States: `todo`, `doing`, `review`, `blocked`, `done`. Depends lists bolts that m
 | BOLT-0039 | Finish stubs: `current_affairs`, `library`, `support`, `wellbeing`, `staff_quick_actions` | 0037 | Vizhi | Nov 27 | todo | - |
 | BOLT-0040 | Flutter web target, in-app "update available" prompt, "Collect your sticker" screen | 0030, 0036 | Vizhi, Kaaval | Nov 26 | todo | - |
 | BOLT-0103 | Aspirant app builds for web: drift WASM storage, committed `apps/mobile/web/`, web-deploy without `flutter create` (part of 0040) | - | Vizhi | Nov 27 | review (PR #33) | - |
+| BOLT-0110 | Bauhaus theme as the default (founder decision 2026-11-27): tokens, widgets, 32 hand-written SVGs with `HmArt`, bento Today/Study Map/Plan/Readiness/Profile, lesson reader, practice feedback motion, Beta chip | 0037 | Vizhi | Nov 28 | review | Goldens need regenerating on Linux CI |
 
 ### Vilaiyattu (games)
 

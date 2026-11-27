@@ -131,21 +131,35 @@ class FeedbackPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
+    final p = context.hm;
+    // Bauhaus feedback (BOLT-0110): a correct answer pops with the cheering Lamplighter; a wrong
+    // one shakes gently and leads with "why". Both are still in Calm Mode, Lite Mode and with
+    // reduce motion.
+    final ink = graded.correct ? p.onSuccessTint : p.text;
     final card = HmCard(
+      color: graded.correct ? p.successTint : p.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Semantics(
-            liveRegion: true,
-            header: true,
-            child: Text(
-              graded.correct ? 'Correct' : 'Not quite',
-              style: text.titleMedium?.copyWith(
-                color: graded.correct
-                    ? context.hm.onSuccessTint
-                    : context.hm.onErrorTint,
+          Row(
+            children: [
+              Expanded(
+                child: Semantics(
+                  liveRegion: true,
+                  header: true,
+                  child: Text(
+                    graded.correct ? 'Correct' : 'Not quite',
+                    style: text.headlineSmall?.copyWith(
+                      color: graded.correct ? p.onSuccessTint : p.onErrorTint,
+                    ),
+                  ),
+                ),
               ),
-            ),
+              HmArt(
+                graded.correct ? HmArtName.mascotCheer : HmArtName.mascotThink,
+                size: 64,
+              ),
+            ],
           ),
           if (!graded.correct && graded.whyChosenIsWrong != null) ...[
             const SizedBox(height: 8),
@@ -153,19 +167,31 @@ class FeedbackPanel extends StatelessWidget {
             Text(graded.whyChosenIsWrong!, style: text.bodyMedium),
           ],
           const SizedBox(height: 8),
-          Text('Why this is right', style: text.labelLarge),
-          Text(graded.explanation, style: text.bodyMedium),
+          Text(
+            'Why this is right',
+            style: text.labelLarge?.copyWith(color: ink),
+          ),
+          Text(
+            graded.explanation,
+            style: text.bodyMedium?.copyWith(color: ink),
+          ),
           const SizedBox(height: 8),
-          Text('Source: ${graded.source.line}', style: text.bodySmall),
+          Text(
+            'Source: ${graded.source.line}',
+            style: text.bodySmall?.copyWith(color: ink),
+          ),
         ],
       ),
     );
-    if (graded.correct || onRelight == null) return card;
+    final moved = graded.correct
+        ? HmPop(trigger: graded, child: card)
+        : HmShake(trigger: graded, child: card);
+    if (graded.correct || onRelight == null) return moved;
     // Outside the card: a Card merges its children into one screen-reader node (§10.9).
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        card,
+        moved,
         const SizedBox(height: 8),
         HmSecondaryButton(
           key: const Key('feedback-relight'),
@@ -188,7 +214,7 @@ class WillSyncNote extends StatelessWidget {
     key: const Key('will-sync'),
     child: Row(
       children: [
-        HmIconBadge(icon: Icons.cloud_off_outlined, color: context.hm.info),
+        const HmArt(HmArtName.emptyOffline, size: 48),
         const SizedBox(width: HmSpace.md),
         Expanded(
           child: Column(

@@ -130,11 +130,9 @@ class _HmCelebrationViewState extends State<HmCelebrationView>
                     child: CustomPaint(
                       painter: _ConfettiPainter(t, [
                         p.gold,
-                        p.flame,
                         p.primary,
-                        p.success,
-                        p.info,
-                      ]),
+                        p.blue,
+                      ], p.outline),
                     ),
                   ),
                   Center(
@@ -147,14 +145,15 @@ class _HmCelebrationViewState extends State<HmCelebrationView>
                           constraints: const BoxConstraints(maxWidth: 360),
                           decoration: BoxDecoration(
                             color: p.surface,
-                            borderRadius: BorderRadius.circular(HmRadius.xl),
-                            border: Border.all(color: accent, width: 3),
-                            boxShadow: [
-                              BoxShadow(
-                                color: p.goldShade,
-                                offset: const Offset(0, 6),
-                              ),
-                            ],
+                            borderRadius: BorderRadius.circular(HmRadius.lg),
+                            border: Border.all(
+                              color: p.outline,
+                              width: HmBauhaus.stroke,
+                            ),
+                            boxShadow: HmBauhaus.hardShadow(
+                              p,
+                              offset: const Offset(6, 6),
+                            ),
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -164,7 +163,14 @@ class _HmCelebrationViewState extends State<HmCelebrationView>
                                 height: 88,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: accent.withValues(alpha: 0.18),
+                                  color: Color.alphaBlend(
+                                    accent.withValues(alpha: 0.25),
+                                    p.surface,
+                                  ),
+                                  border: Border.all(
+                                    color: p.outline,
+                                    width: HmBauhaus.stroke,
+                                  ),
                                 ),
                                 child: Icon(icon, size: 56, color: accent),
                               ),
@@ -201,10 +207,13 @@ class _HmCelebrationViewState extends State<HmCelebrationView>
 }
 
 class _ConfettiPainter extends CustomPainter {
-  _ConfettiPainter(this.t, this.colors);
+  _ConfettiPainter(this.t, this.colors, this.ink);
 
   final double t;
   final List<Color> colors;
+
+  /// Bauhaus confetti (BOLT-0110): circles, squares and triangles with an ink outline.
+  final Color ink;
 
   // Fixed seed: confetti is decoration, not game randomness.
   static final _pieces = List.generate(48, (i) {
@@ -213,8 +222,8 @@ class _ConfettiPainter extends CustomPainter {
       angle: r.nextDouble() * math.pi * 2,
       speed: 0.35 + r.nextDouble() * 0.65,
       spin: r.nextDouble() * 6,
-      size: 6 + r.nextDouble() * 6,
-      round: r.nextBool(),
+      size: 8 + r.nextDouble() * 7,
+      shape: r.nextInt(3),
     );
   });
 
@@ -238,25 +247,37 @@ class _ConfettiPainter extends CustomPainter {
       canvas.save();
       canvas.translate(pos.dx, pos.dy);
       canvas.rotate(pc.spin * t * math.pi);
-      if (pc.round) {
-        canvas.drawCircle(Offset.zero, pc.size / 2, paint);
-      } else {
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
+      final h = pc.size / 2;
+      final path = switch (pc.shape) {
+        0 => Path()..addOval(Rect.fromCircle(center: Offset.zero, radius: h)),
+        1 =>
+          Path()..addRect(
             Rect.fromCenter(
               center: Offset.zero,
               width: pc.size,
-              height: pc.size * 0.5,
+              height: pc.size,
             ),
-            const Radius.circular(2),
           ),
-          paint,
+        _ =>
+          Path()
+            ..moveTo(0, -h)
+            ..lineTo(h, h)
+            ..lineTo(-h, h)
+            ..close(),
+      };
+      canvas
+        ..drawPath(path, paint)
+        ..drawPath(
+          path,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1.5
+            ..color = ink.withValues(alpha: fade.clamp(0.0, 1.0)),
         );
-      }
       canvas.restore();
     }
   }
 
   @override
-  bool shouldRepaint(_ConfettiPainter old) => old.t != t;
+  bool shouldRepaint(_ConfettiPainter old) => old.t != t || old.ink != ink;
 }

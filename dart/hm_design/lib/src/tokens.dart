@@ -67,6 +67,9 @@ class HmPalette extends ThemeExtension<HmPalette> {
     required this.onInfoTint,
     required this.disabled,
     required this.onDisabled,
+    this.blue = const Color(0xFF9CC2FF),
+    this.onBlue = const Color(0xFF000000),
+    this.shadow = const Color(0xFFFFFFFF),
   });
 
   final Brightness brightness;
@@ -88,70 +91,83 @@ class HmPalette extends ThemeExtension<HmPalette> {
   final Color info, infoTint, onInfoTint;
   final Color disabled, onDisabled;
 
-  /// Warm and bright: ivory background, white cards, vivid teal action, gold rewards.
+  /// Bauhaus blue (the third primary) and its label colour (BOLT-0110).
+  final Color blue, onBlue;
+
+  /// The hard offset shadow behind outlined cards and buttons: no blur (BOLT-0110).
+  final Color shadow;
+
+  /// Bauhaus light (BOLT-0110), the default: warm off-white paper, near-black ink, 3 px black
+  /// outlines with hard offset shadows, a red main action, yellow rewards and blue steady rings.
   static const light = HmPalette(
     brightness: Brightness.light,
-    background: Color(0xFFFFF8EC),
-    surface: Color(0xFFFFFFFF),
-    surface2: Color(0xFFFFF0D6),
-    surface3: Color(0xFFFFE6BD),
-    outline: Color(0xFFEBD3AE),
-    text: Color(0xFF2A1F14),
-    textMuted: Color(0xFF6B5A48),
-    primary: Color(0xFF19B5AE),
-    primaryShade: Color(0xFF0E8A84),
-    onPrimary: Color(0xFF052826),
-    primaryText: Color(0xFF0B7C78),
-    gold: Color(0xFFF2B33D),
-    goldShade: Color(0xFFC8862A),
-    onGold: Color(0xFF2B1B00),
-    goldText: Color(0xFF8A5A00),
-    flame: Color(0xFFFF8A3D),
-    steady: Color(0xFF0FA3A3),
-    success: Color(0xFF2FA866),
-    successTint: Color(0xFFE3F7EA),
-    onSuccessTint: Color(0xFF145C34),
-    error: Color(0xFFE2453C),
-    errorTint: Color(0xFFFDE8E6),
-    onErrorTint: Color(0xFFB3261E),
-    info: Color(0xFF2F6FEB),
-    infoTint: Color(0xFFE6EEFF),
-    onInfoTint: Color(0xFF1F55C9),
-    disabled: Color(0xFFEFE4D2),
-    onDisabled: Color(0xFF6B5A48),
+    background: Color(0xFFF4EFE4),
+    surface: Color(0xFFFFFCF5),
+    surface2: Color(0xFFEFE7D6),
+    surface3: Color(0xFFE5DAC4),
+    outline: Color(0xFF141414),
+    text: Color(0xFF141414),
+    textMuted: Color(0xFF4D4740),
+    primary: Color(0xFFD7261E),
+    primaryShade: Color(0xFF141414),
+    onPrimary: Color(0xFFFFFFFF),
+    primaryText: Color(0xFFB01E17),
+    gold: Color(0xFFF5C400),
+    goldShade: Color(0xFF141414),
+    onGold: Color(0xFF141414),
+    goldText: Color(0xFF6E5100),
+    flame: Color(0xFFE8501C),
+    steady: Color(0xFF1F4FBF),
+    success: Color(0xFF1E8A4C),
+    successTint: Color(0xFFDDF1E3),
+    onSuccessTint: Color(0xFF125A31),
+    error: Color(0xFFD7261E),
+    errorTint: Color(0xFFFBE3DF),
+    onErrorTint: Color(0xFF9E1A13),
+    info: Color(0xFF1F4FBF),
+    infoTint: Color(0xFFDCE6FA),
+    onInfoTint: Color(0xFF163C94),
+    disabled: Color(0xFFE5DCCB),
+    onDisabled: Color(0xFF4D4740),
+    blue: Color(0xFF1F4FBF),
+    onBlue: Color(0xFFFFFFFF),
+    shadow: Color(0xFF141414),
   );
 
-  /// Rich, not flat: deep indigo-violet layers with a glowing teal action and warm gold.
+  /// Bauhaus dark (BOLT-0110): warm near-black paper, cream ink and outlines, brighter primaries.
   static const dark = HmPalette(
     brightness: Brightness.dark,
-    background: Color(0xFF100D2B),
-    surface: Color(0xFF1C1846),
-    surface2: Color(0xFF262158),
-    surface3: Color(0xFF312A6B),
-    outline: Color(0xFF3E3780),
-    text: Color(0xFFF5F3FF),
-    textMuted: Color(0xFFB9B4E0),
-    primary: Color(0xFF2DD4C8),
-    primaryShade: Color(0xFF179A90),
-    onPrimary: Color(0xFF04201F),
-    primaryText: Color(0xFF2DD4C8),
-    gold: Color(0xFFFFC94D),
-    goldShade: Color(0xFFC8862A),
-    onGold: Color(0xFF2B1B00),
-    goldText: Color(0xFFFFD45C),
-    flame: Color(0xFFFF9A52),
-    steady: Color(0xFF2DD4C8),
-    success: Color(0xFF3DDC84),
-    successTint: Color(0xFF12382A),
+    background: Color(0xFF16140F),
+    surface: Color(0xFF221F19),
+    surface2: Color(0xFF2C2821),
+    surface3: Color(0xFF38332A),
+    outline: Color(0xFFEDE6D6),
+    text: Color(0xFFF4EFE4),
+    textMuted: Color(0xFFCBC2B0),
+    primary: Color(0xFFFF5446),
+    primaryShade: Color(0xFF000000),
+    onPrimary: Color(0xFF141414),
+    primaryText: Color(0xFFFF8A7F),
+    gold: Color(0xFFFFCF2E),
+    goldShade: Color(0xFF000000),
+    onGold: Color(0xFF141414),
+    goldText: Color(0xFFFFD84D),
+    flame: Color(0xFFFF7A45),
+    steady: Color(0xFF6F9BFF),
+    success: Color(0xFF46D483),
+    successTint: Color(0xFF12301F),
     onSuccessTint: Color(0xFF8EF0B8),
     error: Color(0xFFFF6B5E),
-    errorTint: Color(0xFF3D1A1F),
+    errorTint: Color(0xFF3D1A17),
     onErrorTint: Color(0xFFFFB4AB),
-    info: Color(0xFF7AA7FF),
-    infoTint: Color(0xFF1A2650),
+    info: Color(0xFF6F9BFF),
+    infoTint: Color(0xFF1A2440),
     onInfoTint: Color(0xFFA9C4FF),
-    disabled: Color(0xFF2B2752),
-    onDisabled: Color(0xFFB9B4E0),
+    disabled: Color(0xFF2C2821),
+    onDisabled: Color(0xFFCBC2B0),
+    blue: Color(0xFF6F9BFF),
+    onBlue: Color(0xFF141414),
+    shadow: Color(0xFF000000),
   );
 
   /// High contrast (§10.9): black and white with bright accents.
@@ -207,6 +223,7 @@ class HmPalette extends ThemeExtension<HmPalette> {
     'onErrorTint/surface': (onErrorTint, surface),
     'onInfoTint/infoTint': (onInfoTint, infoTint),
     'onDisabled/disabled': (onDisabled, disabled),
+    'onBlue/blue': (onBlue, blue),
   };
 
   /// WCAG 2.x contrast ratio between two opaque colours.
@@ -248,12 +265,12 @@ abstract final class HmSpace {
   static const xxxl = 48.0;
 }
 
-/// Corner radius scale: friendly, rounded.
+/// Corner radius scale. Bauhaus (BOLT-0110): squares stay nearly square; circles use [pill].
 abstract final class HmRadius {
-  static const sm = 8.0;
-  static const md = 14.0;
-  static const lg = 20.0;
-  static const xl = 28.0;
+  static const sm = 3.0;
+  static const md = 4.0;
+  static const lg = 6.0;
+  static const xl = 10.0;
   static const pill = 999.0;
 }
 
@@ -263,6 +280,45 @@ abstract final class HmElevation {
   static const cardDepth = 3.0;
   static const tileDepth = 3.0;
   static const navDepth = 0.0;
+}
+
+/// Bauhaus shape language (BOLT-0110): thick ink outlines and hard offset shadows with no blur.
+abstract final class HmBauhaus {
+  /// Outline width of cards, buttons and inputs.
+  static const stroke = 3.0;
+
+  /// Outline width of small pieces (chips, pills, progress tracks).
+  static const strokeSmall = 2.0;
+
+  /// Hard shadow offsets (down and right).
+  static const shadow = Offset(4, 4);
+  static const shadowSmall = Offset(3, 3);
+
+  /// A hard, blur-free shadow in the palette's shadow colour.
+  static List<BoxShadow> hardShadow(
+    HmPalette p, {
+    Offset offset = HmBauhaus.shadow,
+  }) => [BoxShadow(color: p.shadow, offset: offset)];
+
+  /// The standard outlined box: a fill, a 3 px ink outline, a small radius and a hard shadow.
+  /// Pass `shadow: false` inside the Exam Hall ([HmPlain]) and for nested boxes.
+  static BoxDecoration box(
+    HmPalette p, {
+    Color? color,
+    bool shadow = true,
+    double radius = HmRadius.lg,
+    double stroke = HmBauhaus.stroke,
+    Offset offset = HmBauhaus.shadow,
+    BoxShape shape = BoxShape.rectangle,
+  }) => BoxDecoration(
+    color: color ?? p.surface,
+    shape: shape,
+    borderRadius: shape == BoxShape.circle
+        ? null
+        : BorderRadius.circular(radius),
+    border: Border.all(color: p.outline, width: stroke),
+    boxShadow: shadow ? hardShadow(p, offset: offset) : null,
+  );
 }
 
 abstract final class HmMotion {
@@ -285,6 +341,14 @@ abstract final class HmMotion {
 
   static const Curve standard = Curves.easeOutCubic;
   static const Curve bounce = Curves.elasticOut;
+
+  /// Spring-like overshoot for pops and lamp lighting (BOLT-0110), used between 150 and 400 ms.
+  static const Curve spring = Curves.easeOutBack;
+
+  /// Correct-answer pop, lamp light-up, wrong-answer shake and tile entrance (BOLT-0110).
+  static const pop = Duration(milliseconds: 320);
+  static const shake = Duration(milliseconds: 360);
+  static const enter = Duration(milliseconds: 280);
 }
 
 abstract final class HmSizes {

@@ -15,3 +15,6 @@ export 'src/widgets/lamp.dart';
 export 'src/widgets/layout.dart';
 export 'src/widgets/progress.dart';
 export 'src/widgets/views.dart';
+export 'src/widgets/art.dart';
+export 'src/widgets/bento.dart';
+export 'src/widgets/motion.dart';

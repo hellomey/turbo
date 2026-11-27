@@ -46,56 +46,90 @@ class LessonBody extends ConsumerWidget {
     final status = ref.watch(listenControllerProvider);
     final listen = ref.read(listenControllerProvider.notifier);
     final opener = ref.read(linkOpenerProvider);
+    final p = context.hm;
+    // Lesson reader (BOLT-0110): a yellow header block (the hero) with the lamp that flew in from
+    // the Study Map, then plain, readable text. Reading screens stay calm: no tiles mid-text.
     return ListView(
       padding: const EdgeInsets.fromLTRB(
-        HmSpace.xl,
         HmSpace.lg,
-        HmSpace.xl,
+        HmSpace.lg,
+        HmSpace.lg,
         HmSpace.xxl,
       ),
       children: [
-        Semantics(
-          header: true,
-          child: Text(lesson.title, style: text.headlineSmall),
-        ),
-        const SizedBox(height: HmSpace.sm),
-        Row(
-          children: [
-            Icon(Icons.schedule_rounded, size: 18, color: context.hm.textMuted),
-            const SizedBox(width: HmSpace.xs),
-            Text(
-              '${lesson.readingMinutes} min read',
-              style: text.bodySmall?.copyWith(color: context.hm.textMuted),
-            ),
-          ],
-        ),
-        const SizedBox(height: HmSpace.lg),
-        if (status == ListenStatus.speaking)
-          HmSecondaryButton(
-            key: const Key('lesson-stop'),
-            label: 'Stop',
-            icon: Icons.stop,
-            onPressed: listen.stop,
-          )
-        else
-          HmSecondaryButton(
-            key: const Key('lesson-listen'),
-            label: 'Listen',
-            icon: Icons.volume_up_outlined,
-            onPressed: () => listen.listen(lesson.listenText),
+        HmCard(
+          color: p.gold,
+          padding: const EdgeInsets.all(HmSpace.xl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Semantics(
+                      header: true,
+                      child: Text(
+                        lesson.title,
+                        style: text.headlineMedium?.copyWith(color: p.onGold),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: HmSpace.md),
+                  // Shared element with the lamp on the Study Map.
+                  Hero(
+                    tag: 'lamp-${lesson.topicId}',
+                    child: const HmArt(HmArtName.lampDark, size: 56),
+                  ),
+                ],
+              ),
+              const SizedBox(height: HmSpace.sm),
+              Row(
+                children: [
+                  Icon(Icons.schedule_rounded, size: 18, color: p.onGold),
+                  const SizedBox(width: HmSpace.xs),
+                  Text(
+                    '${lesson.readingMinutes} min read',
+                    style: text.labelLarge?.copyWith(color: p.onGold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: HmSpace.lg),
+              if (status == ListenStatus.speaking)
+                HmSecondaryButton(
+                  key: const Key('lesson-stop'),
+                  label: 'Stop',
+                  icon: Icons.stop,
+                  onPressed: listen.stop,
+                )
+              else
+                HmSecondaryButton(
+                  key: const Key('lesson-listen'),
+                  label: 'Listen',
+                  icon: Icons.volume_up_outlined,
+                  onPressed: () => listen.listen(lesson.listenText),
+                ),
+              if (status == ListenStatus.unavailable)
+                Padding(
+                  padding: const EdgeInsets.only(top: HmSpace.sm),
+                  child: Text(
+                    'Listen is not available on this phone.',
+                    style: text.bodyMedium?.copyWith(color: p.onGold),
+                  ),
+                ),
+            ],
           ),
-        if (status == ListenStatus.unavailable)
-          const Padding(
-            padding: EdgeInsets.only(top: 8),
-            child: Text('Listen is not available on this phone.'),
-          ),
-        const SizedBox(height: 16),
-        MarkdownBlocks(blocks: lesson.blocks),
+        ),
+        const SizedBox(height: HmSpace.xl),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: HmSpace.xs),
+          child: MarkdownBlocks(blocks: lesson.blocks),
+        ),
         if (lesson.textbookRefs.isNotEmpty) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: HmSpace.xl),
           Semantics(
             header: true,
-            child: Text('Textbook', style: text.titleMedium),
+            child: Text('Textbook', style: text.titleLarge),
           ),
           for (final ref in lesson.textbookRefs)
             ListTile(
@@ -109,20 +143,31 @@ class LessonBody extends ConsumerWidget {
               onTap: ref.url == null ? null : () => opener.open(ref.url!),
             ),
         ],
-        const SizedBox(height: 16),
-        Semantics(header: true, child: Text('Source', style: text.titleMedium)),
-        const SizedBox(height: 4),
-        Text(lesson.citation, style: text.bodyMedium),
-        if (lesson.citationUrl != null)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton(
-              onPressed: () => opener.open(lesson.citationUrl!),
-              child: const Text('Open source'),
-            ),
+        const SizedBox(height: HmSpace.xl),
+        HmCard(
+          color: p.surface2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Semantics(
+                header: true,
+                child: Text('Source', style: text.titleMedium),
+              ),
+              const SizedBox(height: HmSpace.xs),
+              Text(lesson.citation, style: text.bodyMedium),
+              if (lesson.citationUrl != null)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    onPressed: () => opener.open(lesson.citationUrl!),
+                    child: const Text('Open source'),
+                  ),
+                ),
+            ],
           ),
+        ),
         if (onFinished != null) ...[
-          const SizedBox(height: 24),
+          const SizedBox(height: HmSpace.xl),
           HmPrimaryButton(
             key: const Key('lesson-done'),
             label: "I've finished",
@@ -170,7 +215,21 @@ class MarkdownBlocks extends StatelessWidget {
               MdBullet() => Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('•  ', style: text.bodyLarge),
+                  // A small red Bauhaus square as the bullet.
+                  ExcludeSemantics(
+                    child: Container(
+                      width: 10,
+                      height: 10,
+                      margin: const EdgeInsets.only(top: 9, right: HmSpace.md),
+                      decoration: BoxDecoration(
+                        color: context.hm.primary,
+                        border: Border.all(
+                          color: context.hm.outline,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
                   Expanded(child: Text.rich(spans(b, text.bodyLarge))),
                 ],
               ),

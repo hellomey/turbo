@@ -46,6 +46,7 @@ class RelightQueueBody extends StatelessWidget {
     if (queue.items.isEmpty) {
       return const HmEmptyView(
         kind: HmIllustrationKind.welcome,
+        art: HmArtName.lampGold,
         title: 'All bright',
         message: 'All your lamps are bright. Nothing to relight.',
       );
@@ -207,7 +208,14 @@ class MistakesBody extends StatelessWidget {
           child: Text('Your mistakes', style: text.titleMedium),
         ),
         const SizedBox(height: 8),
-        if (view.mistakes.isEmpty) const Text('No mistakes yet.'),
+        if (view.mistakes.isEmpty)
+          const Row(
+            children: [
+              HmArt(HmArtName.emptyNoMistakes, size: 72),
+              SizedBox(width: HmSpace.md),
+              Expanded(child: Text('No mistakes yet.')),
+            ],
+          ),
         for (final m in view.mistakes) ...[
           Text(m.stem, style: text.titleSmall),
           Text('Wrong ${m.wrongCount} times', style: text.bodySmall),

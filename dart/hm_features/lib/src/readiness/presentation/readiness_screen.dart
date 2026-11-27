@@ -44,6 +44,9 @@ class ReadinessBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
+    final p = context.hm;
+    // Bento (BOLT-0110): the label is the hero; each evidence bar is a tile. Locked Pro bars are
+    // small tiles side by side.
     return ListView(
       padding: const EdgeInsets.fromLTRB(
         HmSpace.lg,
@@ -52,58 +55,76 @@ class ReadinessBody extends StatelessWidget {
         HmSpace.xxl,
       ),
       children: [
-        Row(
+        HmBentoGrid(
           children: [
-            Expanded(
-              child: Semantics(
-                header: true,
-                child: Text(
-                  'Readiness: ${ReadinessCopy.label(view.label)}',
-                  key: const Key('readiness-label'),
-                  style: text.headlineSmall,
-                ),
+            HmBentoTile(
+              span: 2,
+              color: p.gold,
+              shape: HmShape.circle,
+              shapeColor: p.primary,
+              padding: const EdgeInsets.all(HmSpace.xl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Semantics(
+                    header: true,
+                    child: Text(
+                      'Readiness: ${ReadinessCopy.label(view.label)}',
+                      key: const Key('readiness-label'),
+                      style: text.headlineMedium?.copyWith(color: p.onGold),
+                    ),
+                  ),
+                  const SizedBox(height: HmSpace.xs),
+                  Text(
+                    'Updated ${formatIst(view.computedAt)}',
+                    style: text.bodyMedium?.copyWith(color: p.onGold),
+                  ),
+                  if (view.noEvidence) ...[
+                    const SizedBox(height: HmSpace.sm),
+                    Text(
+                      ReadinessCopy.noEvidence,
+                      style: text.bodyLarge?.copyWith(color: p.onGold),
+                    ),
+                  ],
+                  if (view.readyForFullMocks) ...[
+                    const SizedBox(height: HmSpace.sm),
+                    Semantics(
+                      label: 'Badge: Ready for full mocks',
+                      child: const ExcludeSemantics(
+                        child: Chip(
+                          avatar: Icon(Icons.verified_outlined),
+                          label: Text('Ready for full mocks'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
+            for (final bar in view.bars)
+              HmBentoTile(
+                span: bar.locked ? 1 : 2,
+                padding: EdgeInsets.zero,
+                child: _Bar(bar: bar, view: view),
+              ),
+            if (view.suggestion != null)
+              HmBentoTile(
+                span: 2,
+                eyebrow: 'Next step',
+                shape: HmShape.triangle,
+                shapeColor: p.blue,
+                child: Text(view.suggestion!, style: text.bodyLarge),
+              ),
           ],
         ),
-        const SizedBox(height: HmSpace.xs),
-        Text(
-          'Updated ${formatIst(view.computedAt)}',
-          style: text.bodySmall?.copyWith(color: context.hm.textMuted),
-        ),
-        if (view.noEvidence) ...[
-          const SizedBox(height: 8),
-          Text(ReadinessCopy.noEvidence, style: text.bodyLarge),
-        ],
-        if (view.readyForFullMocks) ...[
-          const SizedBox(height: 8),
-          Semantics(
-            label: 'Badge: Ready for full mocks',
-            child: const ExcludeSemantics(
-              child: Chip(
-                avatar: Icon(Icons.verified_outlined),
-                label: Text('Ready for full mocks'),
-              ),
-            ),
-          ),
-        ],
-        const SizedBox(height: HmSpace.lg),
-        for (final bar in view.bars) ...[
-          HmCard(
-            child: _Bar(bar: bar, view: view),
-          ),
-          const SizedBox(height: HmSpace.md),
-        ],
-        if (view.suggestion != null) ...[
-          HmCard(child: Text(view.suggestion!, style: text.bodyLarge)),
-          const SizedBox(height: 12),
-        ],
-        if (onOpenReports != null)
+        if (onOpenReports != null) ...[
+          const SizedBox(height: HmSpace.lg),
           HmSecondaryButton(
             key: const Key('readiness-open-reports'),
             label: 'See Sunday Reports',
             onPressed: onOpenReports,
           ),
+        ],
       ],
     );
   }
@@ -120,20 +141,23 @@ class _Bar extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     final name = ReadinessCopy.bar(bar.key);
     if (bar.locked) {
-      return HmCard(
+      return _BarBox(
         key: Key('readiness-bar-${bar.key.name}'),
         semanticLabel: '$name: locked. ${ReadinessCopy.proBarHint}',
         child: ExcludeSemantics(
           child: Row(
             children: [
               const Icon(Icons.lock_outline),
-              const SizedBox(width: 12),
-              Expanded(child: Text(name, style: text.titleMedium)),
+              const SizedBox(width: HmSpace.sm),
+              Expanded(child: Text(name, style: text.titleSmall)),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  gradient: HmColors.brassGradient,
-                  borderRadius: BorderRadius.circular(8),
+                  color: context.hm.gold,
+                  border: Border.all(
+                    color: context.hm.outline,
+                    width: HmBauhaus.strokeSmall,
+                  ),
                 ),
                 child: Text(
                   ReadinessCopy.proBar,
@@ -173,7 +197,7 @@ class _Bar extends StatelessWidget {
             HmProgressBar(
               value: (value ?? 0) / 100,
               height: 12,
-              color: context.hm.steady,
+              color: context.hm.blue,
               semanticLabel: name,
             ),
             const SizedBox(height: 6),
@@ -185,4 +209,19 @@ class _Bar extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The inside of a bar tile: padding plus semantics (the tile itself is the outlined box).
+class _BarBox extends StatelessWidget {
+  const _BarBox({super.key, required this.semanticLabel, required this.child});
+
+  final String semanticLabel;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    container: true,
+    label: semanticLabel,
+    child: Padding(padding: const EdgeInsets.all(HmSpace.lg), child: child),
+  );
 }
