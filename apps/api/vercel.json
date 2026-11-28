@@ -1,11 +1,28 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["bom1"],
+  "git": {
+    "deploymentEnabled": {
+      "**": false,
+      "main": true
+    }
+  },
+  "ignoreCommand": "[ \"$VERCEL_GIT_COMMIT_REF\" = \"main\" ] && ! git diff --quiet HEAD^ HEAD -- apps/api packages pnpm-lock.yaml && exit 1 || exit 0",
+  "regions": [
+    "bom1"
+  ],
   "installCommand": "cd ../.. && corepack enable && pnpm install --frozen-lockfile",
   "buildCommand": "cd ../.. && pnpm exec turbo run build --filter=@heymey/api...",
   "outputDirectory": ".",
   "functions": {
-    "api/index.mjs": { "maxDuration": 30, "includeFiles": "dist/**" }
+    "api/index.mjs": {
+      "maxDuration": 30,
+      "includeFiles": "dist/**"
+    }
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index"
+    }
+  ]
 }

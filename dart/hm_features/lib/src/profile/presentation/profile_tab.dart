@@ -19,7 +19,15 @@ class ProfileTab extends ConsumerWidget {
     this.onReplayStory,
     this.onOpenSticker,
     this.onOpenLeaderboard,
+    this.onOpenPlan,
+    this.onOpenSquad,
   });
+
+  /// Opens My Plan. Hidden when null.
+  final VoidCallback? onOpenPlan;
+
+  /// Opens Squads (coming soon). Hidden when null.
+  final VoidCallback? onOpenSquad;
 
   /// Profile links (§10.5 Profile: Readiness Meter, reports, Exam Alerts, settings). Hidden when null.
   final VoidCallback? onOpenReadiness;
@@ -38,6 +46,7 @@ class ProfileTab extends ConsumerWidget {
 
   /// Profile links that have somewhere to go (a null callback hides its tile).
   List<(String, String, IconData, VoidCallback)> get _links => [
+    ('profile-plan', 'My plan', Icons.calendar_month_outlined, onOpenPlan),
     (
       'profile-readiness',
       'Readiness',
@@ -69,6 +78,7 @@ class ProfileTab extends ConsumerWidget {
       Icons.confirmation_number_outlined,
       onOpenSticker,
     ),
+    ('profile-squad', 'Squads', Icons.groups_outlined, onOpenSquad),
   ].where((l) => l.$4 != null).map((l) => (l.$1, l.$2, l.$3, l.$4!)).toList();
 
   @override

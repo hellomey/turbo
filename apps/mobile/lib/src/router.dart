@@ -122,6 +122,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                   onReplayStory: () => context.push('/story'),
                   onOpenSticker: () => context.push('/sticker'),
                   onOpenLeaderboard: () => context.push('/leaderboard'),
+                  onOpenPlan: () => context.push('/plan'),
+                  onOpenSquad: () => context.push('/squad'),
                 ),
               ),
             ],
