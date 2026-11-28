@@ -90,8 +90,11 @@ abstract final class HmTheme {
         foregroundColor: p.text,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        centerTitle: false,
-        titleTextStyle: text.titleLarge,
+        centerTitle: true,
+        titleTextStyle: text.titleLarge?.copyWith(
+          fontWeight: FontWeight.w900,
+          color: p.text,
+        ),
       ),
       // Every button is at least 48 dp tall (§10.9).
       filledButtonTheme: FilledButtonThemeData(
