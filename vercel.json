@@ -1,4 +1,10 @@
 {
+  "git": {
+    "deploymentEnabled": {
+      "**": false,
+      "deploy/desk": true
+    }
+  },
   "cleanUrls": true,
   "rewrites": [
     {
