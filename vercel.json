@@ -1,4 +1,10 @@
 {
+  "git": {
+    "deploymentEnabled": {
+      "**": false,
+      "deploy/app": true
+    }
+  },
   "cleanUrls": true,
   "rewrites": [
     {
